@@ -50,9 +50,9 @@ export default Vue.extend({
             .post("/login", this.form)
             .then((res: loginData) => {
               window.console.log(res.data);
+              this.isConfirming = false;
+              this.loginSubmitBtn = "登录";
             });
-          this.isConfirming = false;
-          this.loginSubmitBtn = "登录";
         }
       });
     }
