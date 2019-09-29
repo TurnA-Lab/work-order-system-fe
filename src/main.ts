@@ -1,10 +1,10 @@
-import "./plugins/axios";
+import "./plugins/axios.js";
 import "./plugins/element";
+import "./plugins/trend.js";
 import "./mock.js";
 import App from "./App.vue";
 import router from "./router";
 import Vue from "vue";
-import VueRouter from "vue-router";
 
 Vue.config.productionTip = false;
 

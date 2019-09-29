@@ -4,10 +4,15 @@ import Login from "./views/Login.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: "/",
+      name: "index",
+      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    {
+      path: "/login",
       name: "login",
       component: Login
     },
@@ -21,3 +26,22 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "index") {
+    if (!localStorage.getItem("_at")) {
+      next({ path: "/login" });
+    } else {
+      next();
+    }
+  } else if (to.name === "login") {
+    if (localStorage.getItem("_at")) {
+      next({ path: "/" });
+    } else {
+      next();
+    }
+  }
+  next();
+});
+
+export default router;

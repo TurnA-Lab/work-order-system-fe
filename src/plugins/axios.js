@@ -1,4 +1,7 @@
-"use strict";
+(function () {
+  "use strict";
+})();
+
 
 import Vue from 'vue';
 import axios from "axios";
@@ -56,6 +59,6 @@ Plugin.install = function (Vue, options) {
   });
 };
 
-Vue.use(Plugin)
+Vue.use(Plugin);
 
 export default Plugin;
