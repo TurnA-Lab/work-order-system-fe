@@ -1,5 +1,5 @@
 <template>
-  <transition appear appear-class="slide-enter" appear-active-class="slide-enter-active">
+  <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
     <el-card class="login-card" shadow="hover" :body-style="{'padding': '20px 40px'}">
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item style="text-align: center;">
@@ -33,35 +33,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import Vue from "vue";
 import { AxiosResponse } from "axios";
 
 export default Vue.extend({
-  methods: {
-    submitForm(formName: string) {
-      (this as any).$refs[formName].validate((valid: boolean) => {
-        this.isConfirming = true;
-        this.loginSubmitBtn = "请稍候...";
-        if (valid) {
-          (this as any).$axios
-            .post("/login", this.form)
-            .then((res: AxiosResponse) => {
-              if (res.data.code === "-1") {
-                this.$message({
-                  message: "帐号或密码出错",
-                  type: "warning"
-                });
-              } else {
-                localStorage.setItem("_at", res.data.data.token);
-                this.$router.replace("/");
-              }
-              this.isConfirming = false;
-              this.loginSubmitBtn = "登录";
-            });
-        }
-      });
-    }
-  },
   data() {
     return {
       isConfirming: false,
@@ -76,6 +51,42 @@ export default Vue.extend({
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       }
     };
+  },
+  methods: {
+    submitForm(formName: string) {
+      (this as any).$refs[formName].validate((valid: boolean) => {
+        this.isConfirming = true;
+        this.loginSubmitBtn = "请稍候...";
+        if (valid) {
+          (this as any).$axios
+            .post("/login", this.form)
+            .then((res: AxiosResponse) => {
+              if (res.data.code === "-1") {
+                this.$message({
+                  message: res.data.msg || "未知错误",
+                  type: "warning"
+                });
+              } else {
+                // 关闭浏览器后即删除
+                sessionStorage.setItem("wo_name", res.data.data.name);
+                sessionStorage.setItem(
+                  "wo_department",
+                  res.data.data.department
+                );
+                sessionStorage.setItem(
+                  "wo_permission",
+                  res.data.data.permission
+                );
+                sessionStorage.setItem("wo_token", res.data.data.token);
+                // this.$store.commit("updateUserInfo", res.data.data);
+                this.$router.replace("/");
+              }
+              this.isConfirming = false;
+              this.loginSubmitBtn = "登录";
+            });
+        }
+      });
+    }
   }
 });
 </script>
@@ -86,11 +97,14 @@ export default Vue.extend({
 }
 
 // slide
-.slide-enter {
-  transform: translateY(-3vw);
+.slide-fade-enter {
+  opacity: 0;
+  transform: translateY(-10vw);
 }
 
-.slide-enter-active {
-  transition: transform 0.4s ease;
+.slide-fade-enter-active {
+  transition-property: opacity transform;
+  transition-delay: 0.2s 0s;
+  transition-duration: 0.6s 0.8s;
 }
 </style>

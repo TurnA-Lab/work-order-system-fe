@@ -1,22 +1,23 @@
 <template>
   <div class="login">
-    <header>JUST WO</header>
-    <login-form />
+    <transition appear appear-class="fade-enter" appear-active-class="fade-enter-active">
+      <header>JUST WO</header>
+    </transition>
+    <login-form></login-form>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 import LoginForm from "@/components/LoginForm";
+import Vue from "vue";
 
-export default {
-  name: "home",
+export default Vue.extend({
+  name: "login",
   components: {
-    // HelloWorld
     LoginForm
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -26,11 +27,6 @@ export default {
   justify-content: center;
   align-items: center;
 
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  background-color: #f8f9fa;
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -39,12 +35,20 @@ export default {
 
   header {
     text-align: center;
-    font-size: 3vw;
+    font-size: 48px;
     font-weight: 800;
     color: teal;
     margin-block-end: 1vw;
 
     user-select: none;
   }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity 0.8s;
 }
 </style>

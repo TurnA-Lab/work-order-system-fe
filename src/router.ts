@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
+import UserIndex from "./views/UserIndex.vue";
 
 Vue.use(Router);
 
@@ -9,7 +10,18 @@ const router = new Router({
     {
       path: "/",
       name: "index",
-      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
+      redirect: () => {
+        if (sessionStorage.getItem("wo_permission") === "0") {
+          return "/user";
+        } else {
+          return "/about";
+        }
+      }
+    },
+    {
+      path: "/user",
+      name: "user",
+      component: UserIndex
     },
     {
       path: "/login",
@@ -28,20 +40,18 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name === "index") {
-    if (!localStorage.getItem("_at")) {
-      next({ path: "/login" });
+  if (to.name === "login") {
+    if (sessionStorage.getItem("wo_permission")) {
+      next({ name: "index" });
     } else {
       next();
     }
-  } else if (to.name === "login") {
-    if (localStorage.getItem("_at")) {
-      next({ path: "/" });
-    } else {
-      next();
+  } else {
+    if (!sessionStorage.getItem("wo_permission")) {
+      next({ name: "login" });
     }
+    next();
   }
-  next();
 });
 
 export default router;
