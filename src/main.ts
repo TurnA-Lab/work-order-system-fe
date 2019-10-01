@@ -3,8 +3,8 @@ import "./plugins/element";
 import "./mock";
 import App from "./App.vue";
 import router from "./router";
-import Vue from "vue";
 import store from './store';
+import Vue from "vue";
 
 Vue.config.productionTip = false;
 

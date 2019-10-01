@@ -21,6 +21,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "@/colors/default.scss";
+
 .login {
   display: flex;
   flex-direction: column;
@@ -37,7 +39,7 @@ export default Vue.extend({
     text-align: center;
     font-size: 48px;
     font-weight: 800;
-    color: teal;
+    color: $--color-primary;
     margin-block-end: 1vw;
 
     user-select: none;

@@ -69,6 +69,7 @@ export default Vue.extend({
               } else {
                 // 关闭浏览器后即删除
                 sessionStorage.setItem("wo_name", res.data.data.name);
+                sessionStorage.setItem("wo_worknum", this.form.worknum);
                 sessionStorage.setItem(
                   "wo_department",
                   res.data.data.department
@@ -79,7 +80,7 @@ export default Vue.extend({
                 );
                 sessionStorage.setItem("wo_token", res.data.data.token);
                 // this.$store.commit("updateUserInfo", res.data.data);
-                this.$router.replace("/");
+                this.$router.replace({ name: "index" });
               }
               this.isConfirming = false;
               this.loginSubmitBtn = "登录";

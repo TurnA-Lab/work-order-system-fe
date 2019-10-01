@@ -14,6 +14,7 @@ const router = new Router({
         if (sessionStorage.getItem("wo_permission") === "0") {
           return "/user";
         } else {
+          // TODO:
           return "/about";
         }
       }
