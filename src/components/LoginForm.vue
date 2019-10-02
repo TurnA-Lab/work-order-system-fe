@@ -68,18 +68,22 @@ export default Vue.extend({
                 });
               } else {
                 // 关闭浏览器后即删除
-                sessionStorage.setItem("wo_name", res.data.data.name);
-                sessionStorage.setItem("wo_worknum", this.form.worknum);
-                sessionStorage.setItem(
-                  "wo_department",
-                  res.data.data.department
-                );
                 sessionStorage.setItem(
                   "wo_permission",
                   res.data.data.permission
                 );
-                sessionStorage.setItem("wo_token", res.data.data.token);
-                // this.$store.commit("updateUserInfo", res.data.data);
+                sessionStorage.setItem(
+                  "wo_user",
+                  JSON.stringify(
+                    Object.assign({}, res.data.data, {
+                      worknum: this.form.worknum
+                    })
+                  )
+                );
+                this.$store.commit(
+                  "updateUserInfo",
+                  JSON.parse(sessionStorage.getItem("wo_user") as string)
+                );
                 this.$router.replace({ name: "index" });
               }
               this.isConfirming = false;

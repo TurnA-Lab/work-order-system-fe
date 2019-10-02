@@ -11,6 +11,9 @@ export default new Vuex.Store({
   mutations: {
     updateUserInfo(state, newUserInfo: object) {
       state.userInfo = Object.assign({}, newUserInfo);
+    },
+    clearUserInfo(state) {
+      state.userInfo = {};
     }
   },
   actions: {

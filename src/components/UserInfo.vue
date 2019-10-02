@@ -11,10 +11,11 @@
 import Vue from "vue";
 export default Vue.extend({
   data() {
+    const userInfo = this.$store.state.userInfo;
     return {
-      name: sessionStorage.getItem("wo_name"),
-      worknum: sessionStorage.getItem("wo_worknum"),
-      department: sessionStorage.getItem("wo_department")
+      name: userInfo.name,
+      worknum: userInfo.worknum,
+      department: userInfo.department
     };
   }
 });
