@@ -1,15 +1,15 @@
 import "./plugins/axios";
 import "./plugins/element";
-import "./mock.js";
+import "./mock";
 import App from "./App.vue";
+import router from "./router";
+import store from './store';
 import Vue from "vue";
-import VueRouter from "vue-router";
-import router from './router'
-// import VueRouter from ""
 
 Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: (h) => h(App)
 }).$mount("#app");

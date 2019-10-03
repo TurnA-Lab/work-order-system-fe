@@ -4,12 +4,22 @@
   </div>
 </template>
 
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
+  created() {
+    if (sessionStorage.getItem("wo_user")) {
+      this.$store.commit(
+        "updateUserInfo",
+        JSON.parse(sessionStorage.getItem("wo_user") as string)
+      );
+    }
+  }
+});
+</script>
+
 <style lang="scss">
 #app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

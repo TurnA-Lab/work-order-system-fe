@@ -1,0 +1,35 @@
+<template>
+  <main class="user">
+    <user-card></user-card>
+    <user-menu></user-menu>
+  </main>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+// import UserHeader from "@/components/UserHeader.vue";
+import UserCard from "@/components/UserCard.vue";
+import UserMenu from "@/components/UserMenu.vue";
+
+export default Vue.extend({
+  name: "userIndex",
+  components: {
+    UserCard,
+    UserMenu
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.user {
+  position: fixed;
+  top: 5vh;
+  left: 5vw;
+
+  display: flex;
+  align-items: center;
+
+  height: 90vh;
+  padding: 0rem 3rem;
+}
+</style>

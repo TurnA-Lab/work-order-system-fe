@@ -1,0 +1,72 @@
+<template>
+  <transition appear appear-active-class="slide" @appear="lockCard" @after-appear="unlockCard">
+    <el-card class="box">
+      <header>
+        <slot name="header"></slot>
+      </header>
+      <main>
+        <slot name="main"></slot>
+      </main>
+      <footer>
+        <slot name="footer"></slot>
+      </footer>
+    </el-card>
+  </transition>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
+  data() {
+    return {};
+  },
+  methods: {
+    lockCard(el: HTMLElement) {
+      el.classList.add("lock-card");
+    },
+    unlockCard(el: HTMLElement) {
+      setTimeout(() => {
+        el.classList.remove("lock-card");
+      }, 100);
+    }
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.box {
+  height: 430px;
+  width: 430px * 0.7;
+  border-radius: 1rem;
+  text-align: center;
+
+  box-sizing: border-box;
+  user-select: none;
+
+  display: flex;
+  justify-content: center;
+}
+
+.slide {
+  animation: slide 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+}
+
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateX(5vw);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0vw);
+  }
+}
+.lock-card {
+  pointer-events: none;
+}
+</style>
