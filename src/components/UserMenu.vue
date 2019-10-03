@@ -1,20 +1,29 @@
 <template>
   <main>
-    <user-menu-card class="item"></user-menu-card>
+    <user-menu-card class="item">
+      <template v-slot:header>
+        <el-button type="text">
+          <router-link to="/user/info">账户信息</router-link>
+        </el-button>
+      </template>
+      <template v-slot:main>
+        <router-view></router-view>
+      </template>
+    </user-menu-card>
     <user-menu-card class="item"></user-menu-card>
     <user-menu-card class="item"></user-menu-card>
     <user-menu-card class="item flex-box">
       <template v-slot:main>
         <div class="grid">
           <el-tooltip content="夜间模式" placement="top">
-            <el-button class="btn" @click="logout" icon="el-icon-sunny" circle disabled plain></el-button>
+            <el-button class="btn" @click="logout" circle disabled plain></el-button>
           </el-tooltip>
           <div></div>
           <div></div>
           <!-- <el-button class="btn" circle disabled></el-button>
           <el-button class="btn" style="pointer-events: none;" circle disabled></el-button>-->
           <el-tooltip content="更换主题" placement="top">
-            <el-button class="btn" @click="logout" icon="el-icon-help" circle disabled plain></el-button>
+            <el-button class="btn" @click="logout" circle disabled plain></el-button>
           </el-tooltip>
           <el-tooltip content="全屏模式" placement="bottom">
             <el-button
@@ -76,7 +85,15 @@ main {
   padding: 0rem 8rem;
 
   .item {
+    // opacity: 0;
     transition: all 0.3s;
+
+    @for $i from 0 to 4 {
+      &:nth-of-type(#{$i + 1}) {
+        z-index: $i;
+        animation-delay: $i * 0.1s;
+      }
+    }
 
     &:not(:last-of-type):hover {
       transform: translateY(-1rem);

@@ -2,11 +2,17 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import UserIndex from "./views/UserIndex.vue";
+import UserInfo from "./views/UserInfo.vue";
 
 Vue.use(Router);
 
 const router = new Router({
   routes: [
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
     {
       path: "/",
       name: "index",
@@ -25,9 +31,9 @@ const router = new Router({
       component: UserIndex
     },
     {
-      path: "/login",
-      name: "login",
-      component: Login
+      path: "/user/info",
+      name: "info",
+      component: UserInfo
     },
     {
       path: "/about",

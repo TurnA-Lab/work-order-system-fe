@@ -99,6 +99,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .login-card {
   width: 480px; //35vw
+  border-radius: 1rem;
 }
 
 // slide
