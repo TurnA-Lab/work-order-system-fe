@@ -3,11 +3,8 @@
     <user-menu-card class="item">
       <template v-slot:header>
         <el-button type="text">
-          <router-link to="/user/info">账户信息</router-link>
+          <router-link :to="{name: 'userInfoProfile'}">账户信息</router-link>
         </el-button>
-      </template>
-      <template v-slot:main>
-        <router-view></router-view>
       </template>
     </user-menu-card>
     <user-menu-card class="item"></user-menu-card>

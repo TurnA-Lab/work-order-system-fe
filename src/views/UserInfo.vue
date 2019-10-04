@@ -1,15 +1,66 @@
 <template>
   <!-- <transition appear appear-active-class="expand-enter-active"> -->
-  <el-card class="card slide-up"></el-card>
+  <el-card class="card slide-up">
+    <header>
+      <a class="back" type="info" @click="goBack">
+        <span id="backIcon" class="el-icon-back"></span> 返回
+      </a>
+      <el-divider direction="vertical"></el-divider>
+      <el-button
+        type="text"
+        @click="loadProfile"
+        :disabled="this.$store.state.userInfoPage.profileBtnIsDisabled"
+      >个人资料</el-button>
+      <el-divider direction="vertical"></el-divider>
+      <el-button
+        type="text"
+        @click="loadPassword"
+        :disabled="this.$store.state.userInfoPage.passwordBtnIsDisabled"
+      >修改密码</el-button>
+    </header>
+    <main>
+      <router-view></router-view>
+    </main>
+  </el-card>
   <!-- </transition> -->
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+import UserInfoProfile from "@/components/UserMenuCard.vue";
+
+export default Vue.extend({
+  components: {
+    UserInfoProfile
+  },
+  data() {
+    return {
+      profileIsDisabled: false,
+      passwordIsDisabled: false
+    };
+  },
+  methods: {
+    goBack() {
+      // window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+      this.$router.push({ name: "index" });
+    },
+    loadProfile() {
+      // this.$data.profileIsDisabled = true;
+      // this.$data.passwordIsDisabled = false;
+      this.$router.push({ name: "userInfoProfile" });
+    },
+    loadPassword() {
+      // this.$data.profileIsDisabled = false;
+      // this.$data.passwordIsDisabled = true;
+      this.$router.push({ name: "userInfoPassword" });
+    }
+  }
+});
 </script>
 
 <style lang="scss" scoped>
+@import "@/colors/default.scss";
+
 .card {
   width: 90vw;
   height: 95vh;
@@ -17,7 +68,7 @@ export default Vue.extend({});
 
   position: fixed;
   left: 5vw;
-  top: 10vh;
+  top: 5vh;
 
   opacity: 0;
 }
@@ -38,23 +89,28 @@ export default Vue.extend({});
   }
 }
 
-// .expand-enter-active {
-//   animation: expand 0.4s ease-in forwards;
-// }
+.back {
+  color: #95a5a6;
 
-// @keyframes expand {
-//   0% {
-//     opacity: 0;
-//     transform: scale(0.2);
-//   }
+  cursor: pointer;
+  user-select: none;
+  margin-inline-start: 12px;
 
-//   30% {
-//     opacity: 1;
-//   }
+  &:hover > span {
+    animation: arrow-move 0.8s;
+  }
+}
 
-//   100% {
-//     opacity: 1;
-//     transform: scale(1);
-//   }
-// }
+@keyframes arrow-move {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0px);
+  }
+
+  25%,
+  75% {
+    transform: translateX(-0.8vw);
+  }
+}
 </style>
