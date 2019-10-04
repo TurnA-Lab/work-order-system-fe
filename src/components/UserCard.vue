@@ -46,10 +46,16 @@ export default Vue.extend({
 @keyframes fade {
   from {
     opacity: 0;
+    transform: translateY(-3vw);
+  }
+
+  50% {
+    opacity: 1;
   }
 
   to {
     opacity: 1;
+    transform: translateY(0vw);
   }
 }
 

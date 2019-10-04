@@ -6,7 +6,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: {
-    userInfo: {}
+    userInfo: {},
+    userInfoPage: {
+      profileBtnIsDisabled: true,
+      passwordBtnIsDisabled: false
+    }
   },
   mutations: {
     updateUserInfo(state, newUserInfo: object) {
@@ -14,6 +18,12 @@ export default new Vuex.Store({
     },
     clearUserInfo(state) {
       state.userInfo = {};
+    },
+    disableProfileBtn(state) {
+      state.userInfoPage.profileBtnIsDisabled = !state.userInfoPage.profileBtnIsDisabled;
+    },
+    disablePasswordBtn(state) {
+      state.userInfoPage.passwordBtnIsDisabled = !state.userInfoPage.passwordBtnIsDisabled;
     }
   },
   actions: {

@@ -27,7 +27,7 @@ export default Vue.extend({
     unlockCard(el: HTMLElement) {
       setTimeout(() => {
         el.classList.remove("lock-card");
-      }, 100);
+      }, 500);
     }
   }
 });

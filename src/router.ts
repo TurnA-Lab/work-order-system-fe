@@ -32,8 +32,21 @@ const router = new Router({
     },
     {
       path: "/user/info",
-      name: "info",
-      component: UserInfo
+      name: "userInfo",
+      component: UserInfo,
+      redirect: { name: "userInfoProfile" },
+      children: [
+        {
+          path: "profile",
+          name: "userInfoProfile",
+          component: () => import("./components/UserInfoProfile.vue")
+        },
+        {
+          path: "password",
+          name: "userInfoPassword",
+          component: () => import("./components/UserInfoPassword.vue")
+        }
+      ]
     },
     {
       path: "/about",
