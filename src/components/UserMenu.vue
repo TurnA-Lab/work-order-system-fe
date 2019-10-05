@@ -79,7 +79,7 @@ main {
   display: flex;
 
   height: 430px;
-  padding: 0rem 8rem;
+  padding-left: 16em;
 
   .item {
     // opacity: 0;

@@ -30,5 +30,9 @@ export default Vue.extend({
   height: 100vh;
   top: 0%;
   left: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -22,10 +22,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .user {
-  position: fixed;
-  top: 5vh;
-  left: 5vw;
-
   display: flex;
   align-items: center;
 

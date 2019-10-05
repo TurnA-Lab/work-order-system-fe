@@ -1,5 +1,4 @@
 <template>
-  <!-- <transition appear appear-active-class="expand-enter-active"> -->
   <el-card class="card slide-up">
     <header>
       <a class="back" type="info" @click="goBack">
@@ -22,7 +21,6 @@
       <router-view></router-view>
     </main>
   </el-card>
-  <!-- </transition> -->
 </template>
 
 <script lang="ts">
@@ -41,17 +39,12 @@ export default Vue.extend({
   },
   methods: {
     goBack() {
-      // window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
       this.$router.push({ name: "index" });
     },
     loadProfile() {
-      // this.$data.profileIsDisabled = true;
-      // this.$data.passwordIsDisabled = false;
       this.$router.push({ name: "userInfoProfile" });
     },
     loadPassword() {
-      // this.$data.profileIsDisabled = false;
-      // this.$data.passwordIsDisabled = true;
       this.$router.push({ name: "userInfoPassword" });
     }
   }
@@ -62,13 +55,11 @@ export default Vue.extend({
 @import "@/colors/default.scss";
 
 .card {
+  align-self: flex-end;
+
   width: 90vw;
   height: 95vh;
   border-radius: 1rem 1rem 0rem 0rem;
-
-  position: fixed;
-  left: 5vw;
-  top: 5vh;
 
   opacity: 0;
 }

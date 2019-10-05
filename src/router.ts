@@ -19,9 +19,11 @@ const router = new Router({
       redirect: () => {
         if (sessionStorage.getItem("wo_permission") === "0") {
           return "/user";
-        } else {
+        } else if (sessionStorage.getItem("wo_permission") === "1") {
           // TODO:
           return "/about";
+        } else {
+          return "/login";
         }
       }
     },

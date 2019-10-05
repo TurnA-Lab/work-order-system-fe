@@ -17,8 +17,7 @@ import Vue from "vue";
 export default Vue.extend({
   created() {
     if (!this.$store.state.userInfoPage.profileBtnIsDisabled) {
-      this.$store.commit("disableProfileBtn");
-      this.$store.commit("disablePasswordBtn");
+      this.$store.dispatch("toggleTwoBtn");
     }
   },
   data() {
