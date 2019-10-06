@@ -3,15 +3,15 @@
     <header>
       <h2>个人资料</h2>
     </header>
-    <main>
-      <div>
-        <el-table v-loading="isLoading" :data="table1" :show-header="false">
+    <main v-loading="isLoading">
+      <div class="table">
+        <el-table :data="table1" :show-header="false">
           <el-table-column prop="key" width="180"></el-table-column>
           <el-table-column prop="value"></el-table-column>
         </el-table>
       </div>
-      <div>
-        <el-table v-loading="isLoading" :data="table2" :show-header="false">
+      <div class="table">
+        <el-table :data="table2" :show-header="false">
           <el-table-column prop="key" width="180"></el-table-column>
           <el-table-column prop="value"></el-table-column>
         </el-table>
@@ -134,7 +134,7 @@ main {
   display: flex;
   justify-content: space-between;
 
-  div {
+  .table {
     width: 40vw;
   }
 }

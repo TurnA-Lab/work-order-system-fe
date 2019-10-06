@@ -25,12 +25,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import UserInfoProfile from "@/components/UserMenuCard.vue";
 
 export default Vue.extend({
-  components: {
-    UserInfoProfile
-  },
   data() {
     return {
       profileIsDisabled: false,

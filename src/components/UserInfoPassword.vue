@@ -98,10 +98,14 @@ export default Vue.extend({
       if (!value) {
         callback(new Error("密码不能为空"));
       } else {
-        if (value.length < 5 || value.length > 32) {
-          callback(new Error("密码位数应大于 5 位，小于 32 位"));
+        if (value === this.$data.form.oldPassword) {
+          callback(new Error("输入的新密码不能与原密码相同"));
         } else {
-          callback();
+          if (value.length < 5 || value.length > 32) {
+            callback(new Error("密码位数应大于 5 位，小于 32 位"));
+          } else {
+            callback();
+          }
         }
       }
     };
@@ -132,7 +136,7 @@ export default Vue.extend({
         oldPassword: [{ validator: validateOldPassword, trigger: "blur" }],
         newPassword: [{ validator: validateNewPassword, trigger: "blur" }],
         newPasswordCopy: [
-          { validator: validateNewPasswordCopy, trigger: "change" }
+          { validator: validateNewPasswordCopy, trigger: ["change", "blur"] }
         ]
       }
     };
