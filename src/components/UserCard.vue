@@ -5,8 +5,14 @@
       <h2>{{name}}</h2>
     </div>
     <div class="slide-enter">
-      <h5>工号 {{worknum}}</h5>
-      <h5>隶属于 {{department}}</h5>
+      <h5>
+        工号
+        <span>{{worknum}}</span>
+      </h5>
+      <h5>
+        隶属于
+        <span>{{department}}</span>
+      </h5>
     </div>
   </el-card>
 </template>
@@ -80,6 +86,10 @@ h5 {
   font-weight: 100;
   color: white;
   user-select: none;
+
+  span {
+    color: #ecf0f1;
+  }
 }
 
 .slide-enter {

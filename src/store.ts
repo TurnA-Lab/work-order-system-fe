@@ -19,14 +19,17 @@ export default new Vuex.Store({
     clearUserInfo(state) {
       state.userInfo = {};
     },
-    disableProfileBtn(state) {
+    toggleProfileBtn(state) {
       state.userInfoPage.profileBtnIsDisabled = !state.userInfoPage.profileBtnIsDisabled;
     },
-    disablePasswordBtn(state) {
+    togglePasswordBtn(state) {
       state.userInfoPage.passwordBtnIsDisabled = !state.userInfoPage.passwordBtnIsDisabled;
     }
   },
   actions: {
-
+    toggleTwoBtn(context) {
+      context.commit("togglePasswordBtn");
+      context.commit("toggleProfileBtn");
+    }
   }
 });

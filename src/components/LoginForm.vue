@@ -2,8 +2,8 @@
   <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
     <el-card class="login-card" shadow="hover" :body-style="{'padding': '20px 40px'}">
       <el-form ref="form" :model="form" :rules="rules">
-        <el-form-item style="text-align: center;">
-          <el-radio-group v-model="form.mode">
+        <el-form-item style="text-align: center;" prop="permission">
+          <el-radio-group v-model="form.permission">
             <el-radio-button label="0">普通帐户</el-radio-button>
             <el-radio-button label="1">管理员账户</el-radio-button>
           </el-radio-group>
@@ -24,7 +24,7 @@
             type="primary"
             @click="submitForm('form')"
             :loading="isConfirming"
-            style="width: 100%"
+            style="width: 100%;"
           >{{loginSubmitBtn}}</el-button>
         </el-form-item>
       </el-form>
@@ -42,7 +42,7 @@ export default Vue.extend({
       isConfirming: false,
       loginSubmitBtn: "登录",
       form: {
-        mode: "0",
+        permission: "0",
         worknum: "",
         password: ""
       },
@@ -52,16 +52,20 @@ export default Vue.extend({
       }
     };
   },
+  watch: {
+    isConfirming() {
+      this.loginSubmitBtn = this.isConfirming ? "请稍后..." : "登录";
+    }
+  },
   methods: {
     submitForm(formName: string) {
       (this as any).$refs[formName].validate((valid: boolean) => {
         this.isConfirming = true;
-        this.loginSubmitBtn = "请稍候...";
         if (valid) {
           (this as any).$axios
             .post("/login", this.form)
             .then((res: AxiosResponse) => {
-              if (res.data.code === "-1") {
+              if (res.data.code === -1) {
                 this.$message({
                   message: res.data.msg || "未知错误",
                   type: "warning"
@@ -87,7 +91,6 @@ export default Vue.extend({
                 this.$router.replace({ name: "index" });
               }
               this.isConfirming = false;
-              this.loginSubmitBtn = "登录";
             });
         }
       });
