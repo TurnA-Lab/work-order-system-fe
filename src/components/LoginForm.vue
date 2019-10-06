@@ -52,11 +52,15 @@ export default Vue.extend({
       }
     };
   },
+  watch: {
+    isConfirming() {
+      this.loginSubmitBtn = this.isConfirming ? "请稍后..." : "登录";
+    }
+  },
   methods: {
     submitForm(formName: string) {
       (this as any).$refs[formName].validate((valid: boolean) => {
         this.isConfirming = true;
-        this.loginSubmitBtn = "请稍候...";
         if (valid) {
           (this as any).$axios
             .post("/login", this.form)
@@ -87,7 +91,6 @@ export default Vue.extend({
                 this.$router.replace({ name: "index" });
               }
               this.isConfirming = false;
-              this.loginSubmitBtn = "登录";
             });
         }
       });
