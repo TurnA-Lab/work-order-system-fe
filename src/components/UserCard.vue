@@ -44,6 +44,7 @@ export default Vue.extend({
   box-sizing: border-box;
   padding-block-end: 1.5rem;
   padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
 
   opacity: 0;
   animation: fade 0.6s ease-in-out forwards;

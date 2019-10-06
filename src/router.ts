@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Login from "./views/Login.vue";
 import UserIndex from "./views/UserIndex.vue";
 import UserInfo from "./views/UserInfo.vue";
+import UserWorkOrder from "./views/UserWorkOrder.vue";
 
 Vue.use(Router);
 
@@ -49,6 +50,11 @@ const router = new Router({
           component: () => import("./components/UserInfoPassword.vue")
         }
       ]
+    },
+    {
+      path: "/user/work-order",
+      name: "userWorkOrder",
+      component: UserWorkOrder
     },
     {
       path: "/about",

@@ -1,5 +1,5 @@
 <template>
-  <el-card class="card slide-up">
+  <el-card class="card slide-up" :class="{fullscreen: wheel}">
     <header>
       <a class="back" type="info" @click="goBack">
         <span id="backIcon" class="el-icon-back"></span> 返回
@@ -8,13 +8,13 @@
       <el-button
         type="text"
         @click="loadProfile"
-        :disabled="this.$store.state.userInfoPage.profileBtnIsDisabled"
+        :disabled="this.$store.state.userInfoPage.btnIsDisabled"
       >个人资料</el-button>
       <el-divider direction="vertical"></el-divider>
       <el-button
         type="text"
         @click="loadPassword"
-        :disabled="this.$store.state.userInfoPage.passwordBtnIsDisabled"
+        :disabled="!this.$store.state.userInfoPage.btnIsDisabled"
       >修改密码</el-button>
     </header>
     <main>
@@ -27,10 +27,19 @@
 import Vue from "vue";
 
 export default Vue.extend({
+  created() {
+    window.addEventListener("wheel", event => {
+      if (event.deltaY > 20) {
+        this.wheel = true;
+      }
+      if (event.deltaY < -20) {
+        this.wheel = false;
+      }
+    });
+  },
   data() {
     return {
-      profileIsDisabled: false,
-      passwordIsDisabled: false
+      wheel: false
     };
   },
   methods: {
@@ -48,8 +57,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/colors/default.scss";
-
 .card {
   align-self: flex-end;
 
@@ -74,6 +81,12 @@ export default Vue.extend({
     opacity: 1;
     transform: translateY(0vw);
   }
+}
+
+.fullscreen {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0%;
 }
 
 .back {

@@ -8,8 +8,7 @@ export default new Vuex.Store({
   state: {
     userInfo: {},
     userInfoPage: {
-      profileBtnIsDisabled: true,
-      passwordBtnIsDisabled: false
+      btnIsDisabled: true,
     }
   },
   mutations: {
@@ -19,17 +18,10 @@ export default new Vuex.Store({
     clearUserInfo(state) {
       state.userInfo = {};
     },
-    toggleProfileBtn(state) {
-      state.userInfoPage.profileBtnIsDisabled = !state.userInfoPage.profileBtnIsDisabled;
-    },
-    togglePasswordBtn(state) {
-      state.userInfoPage.passwordBtnIsDisabled = !state.userInfoPage.passwordBtnIsDisabled;
+    toggleUserInfoBtn(state) {
+      state.userInfoPage.btnIsDisabled = !state.userInfoPage.btnIsDisabled;
     }
   },
   actions: {
-    toggleTwoBtn(context) {
-      context.commit("togglePasswordBtn");
-      context.commit("toggleProfileBtn");
-    }
   }
 });

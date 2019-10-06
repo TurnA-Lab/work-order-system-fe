@@ -69,8 +69,8 @@ import { AxiosResponse } from "axios";
 
 export default Vue.extend({
   created() {
-    if (!this.$store.state.userInfoPage.passwordBtnIsDisabled) {
-      this.$store.dispatch("toggleTwoBtn");
+    if (this.$store.state.userInfoPage.btnIsDisabled) {
+      this.$store.commit("toggleUserInfoBtn");
     }
   },
   data() {
