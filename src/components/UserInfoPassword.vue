@@ -3,7 +3,7 @@
     <header>
       <h2>
         修改密码
-        <el-popover placement="bottom-start" width="200" trigger="hover" content="修改成功后，将会强制重新登录">
+        <el-popover placement="bottom-start" width="200" trigger="hover" content="修改成功后，将会强制重新登录。">
           <el-button class="tooltipBtn" slot="reference" icon="el-icon-question" type="text" circle></el-button>
         </el-popover>
       </h2>

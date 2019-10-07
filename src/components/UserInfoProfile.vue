@@ -122,7 +122,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 header,
 main {
-  // font-size: 2rem;
   margin-left: 15px;
 }
 
