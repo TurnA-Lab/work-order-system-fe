@@ -29,19 +29,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 export default Vue.extend({
   data() {
     return {
       active: 1
-    }
+    };
   },
   watch: {
     active() {
       this.$router.push({ name: `userNewOrderProcess${this.active}` });
     }
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

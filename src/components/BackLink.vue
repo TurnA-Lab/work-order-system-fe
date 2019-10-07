@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 export default Vue.extend({
   methods: {
     clickFun() {
       this.$emit("click");
     }
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
