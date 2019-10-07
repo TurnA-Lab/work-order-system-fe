@@ -68,11 +68,6 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 
 export default Vue.extend({
-  created() {
-    if (this.$store.state.userInfoPage.btnIsDisabled) {
-      this.$store.commit("toggleUserInfoBtn");
-    }
-  },
   data() {
     const validateOldPassword = (
       rule: object,
@@ -146,8 +141,8 @@ export default Vue.extend({
       this.confirmBtn = this.isConfirming
         ? ""
         : this.confirmBtnIcon
-        ? ""
-        : "验证";
+          ? ""
+          : "验证";
     },
     isSaving() {
       this.submitBtn = this.isSaving ? "请稍后..." : "保存修改";

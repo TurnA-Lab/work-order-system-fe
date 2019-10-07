@@ -43,10 +43,6 @@ interface UserInfo {
 
 export default Vue.extend({
   created() {
-    if (!this.$store.state.userInfoPage.btnIsDisabled) {
-      this.$store.commit("toggleUserInfoBtn");
-    }
-
     let userInfo: UserInfo;
     (this as any).$axios
       .post("/userInfo", {
