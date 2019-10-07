@@ -52,9 +52,22 @@ const router = new Router({
       ]
     },
     {
-      path: "/user/work-order",
+      path: "/user/work_order",
       name: "userWorkOrder",
-      component: UserWorkOrder
+      component: UserWorkOrder,
+      redirect: { name: "userOrders" },
+      children: [
+        {
+          path: "orders",
+          name: "userOrders",
+          component: () => import("./components/UserOrders.vue")
+        },
+        {
+          path: "new_order",
+          name: "userNewOrder",
+          component: () => import("./components/UserNewOrder.vue")
+        }
+      ]
     },
     {
       path: "/about",
