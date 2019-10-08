@@ -26,9 +26,16 @@ export default Vue.extend({
     VerticalDivider
   },
   data() {
-    return {
-      btnIsDisabled: true
-    };
+    return {};
+  },
+  computed: {
+    btnIsDisabled() {
+      if (this.$route.name === "userOrders") {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     goBack() {
@@ -36,15 +43,9 @@ export default Vue.extend({
     },
     loadOrders() {
       this.$router.push({ name: "userOrders" });
-      if (!this.btnIsDisabled) {
-        this.btnIsDisabled = !this.btnIsDisabled;
-      }
     },
     loadNewOrder() {
       this.$router.push({ name: "userNewOrder" });
-      if (this.btnIsDisabled) {
-        this.btnIsDisabled = !this.btnIsDisabled;
-      }
     }
   }
 });

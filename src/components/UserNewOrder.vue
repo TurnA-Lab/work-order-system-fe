@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="flex-box">
     <header>
       <h2>
         提交工单
@@ -15,14 +15,16 @@
     </header>
     <div class="body">
       <aside>
-        <el-steps direction="vertical" :active="active">
+        <el-steps direction="vertical" :active="$store.state.order.active" finish-status="success">
           <el-step title="选择类别"></el-step>
           <el-step title="填写工单"></el-step>
           <el-step title="确认工单"></el-step>
         </el-steps>
       </aside>
       <main>
-        <router-view></router-view>
+        <keep-alive>
+          <component :is="process"></component>
+        </keep-alive>
       </main>
     </div>
   </div>
@@ -30,22 +32,30 @@
 
 <script lang="ts">
 import Vue from "vue";
+import process1 from "@/components/UserNewOrderProcess1.vue";
+import process2 from "@/components/UserNewOrderProcess2.vue";
+
 export default Vue.extend({
-  data() {
-    return {
-      active: 1
-    };
+  components: {
+    process1,
+    process2
   },
-  watch: {
-    active() {
-      this.$router.push({ name: `userNewOrderProcess${this.active}` });
+  destroyed() {
+    this.$store.commit("clearOrder");
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    process() {
+      return "process" + this.$store.state.order.active;
     }
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.box {
+.flex-box {
   display: flex;
   flex-direction: column;
 

@@ -7,8 +7,9 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: {
     userInfo: {},
-    userInfoPage: {
-      btnIsDisabled: true,
+    order: {
+      active: 1,
+      class: 0
     }
   },
   mutations: {
@@ -18,8 +19,18 @@ export default new Vuex.Store({
     clearUserInfo(state) {
       state.userInfo = {};
     },
-    toggleUserInfoBtn(state) {
-      state.userInfoPage.btnIsDisabled = !state.userInfoPage.btnIsDisabled;
+    repealActive(state) {
+      state.order.active--;
+    },
+    orderClass(state, num: number) {
+      state.order.class = num;
+      state.order.active = 2;
+    },
+    clearOrder(state) {
+      state.order = Object.assign({}, {
+        active: 1,
+        class: 0
+      });
     }
   },
   actions: {

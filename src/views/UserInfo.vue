@@ -26,9 +26,16 @@ export default Vue.extend({
     VerticalDivider
   },
   data() {
-    return {
-      btnIsDisabled: true
-    };
+    return {};
+  },
+  computed: {
+    btnIsDisabled() {
+      if (this.$route.name === "userInfoProfile") {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     goBack() {
@@ -36,15 +43,9 @@ export default Vue.extend({
     },
     loadProfile() {
       this.$router.push({ name: "userInfoProfile" });
-      if (!this.btnIsDisabled) {
-        this.btnIsDisabled = !this.btnIsDisabled;
-      }
     },
     loadPassword() {
       this.$router.push({ name: "userInfoPassword" });
-      if (this.btnIsDisabled) {
-        this.btnIsDisabled = !this.btnIsDisabled;
-      }
     }
   }
 });

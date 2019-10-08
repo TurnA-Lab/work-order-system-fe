@@ -66,14 +66,14 @@ const router = new Router({
           path: "new_order",
           name: "userNewOrder",
           component: () => import("./components/UserNewOrder.vue"),
-          redirect: { name: "userNewOrderProcess1" },
-          children: [
-            {
-              path: "process/1",
-              name: "userNewOrderProcess1",
-              component: () => import("./components/UserNewOrderProcess1.vue")
-            }
-          ]
+          // redirect: { name: "userNewOrderProcess1" },
+          // children: [
+          //   {
+          //     path: "process/1",
+          //     name: "userNewOrderProcess1",
+          //     component: () => import("./components/UserNewOrderProcess1.vue")
+          //   }
+          // ]
         }
       ]
     },
