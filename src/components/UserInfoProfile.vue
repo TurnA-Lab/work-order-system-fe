@@ -42,6 +42,13 @@ interface UserInfo {
 }
 
 export default Vue.extend({
+  data() {
+    return {
+      isLoading: true,
+      table1: [],
+      table2: []
+    };
+  },
   created() {
     let userInfo: UserInfo;
     (this as any).$axios
@@ -108,13 +115,6 @@ export default Vue.extend({
           }
         ];
       });
-  },
-  data() {
-    return {
-      isLoading: true,
-      table1: [],
-      table2: []
-    };
   }
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <el-card class="card slide-up" :class="{fullscreen: wheel}">
+  <el-card class="card slide-up" :class="{fullscreen: wheel}" @mousewheel.native="mouseWheel">
     <header>
       <slot name="header"></slot>
     </header>
@@ -15,16 +15,6 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  created() {
-    window.addEventListener("wheel", (event) => {
-      if (event.deltaY > 20) {
-        this.wheel = true;
-      }
-      if (event.deltaY < -20) {
-        this.wheel = false;
-      }
-    });
-  },
   data() {
     return {
       wheel: false
@@ -33,6 +23,14 @@ export default Vue.extend({
   methods: {
     goBack() {
       this.$router.push({ name: "index" });
+    },
+    mouseWheel() {
+      if ((event as any).deltaY > 20) {
+        this.wheel = true;
+      }
+      if ((event as any).deltaY < -20) {
+        this.wheel = false;
+      }
     }
   }
 });
@@ -48,6 +46,7 @@ export default Vue.extend({
 
   opacity: 0;
   transition: all 0.4s;
+  user-select: none;
 }
 
 .slide-up {
