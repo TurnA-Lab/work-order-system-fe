@@ -115,9 +115,9 @@ Mock.mock("/departmentList", "post", (options) => {
 	const reqBody = JSON.parse(options.body);
 	if (reqBody.token === token) {
 		return {
-			"code": 1,
-			"msg": "",
-			"data": [{
+			code: 1,
+			msg: "",
+			data: [{
 					label: "党政办公室",
 					value: 1
 				},
@@ -244,9 +244,9 @@ Mock.mock("/sortList", "post", (options) => {
 	const reqBody = JSON.parse(options.body);
 	if (reqBody.token === token) {
 		return {
-			"code": 1,
-			"msg": "",
-			"data": [{
+			code: 1,
+			msg: "",
+			data: [{
 					label: "教改教研",
 					value: "1",
 					children: [{
@@ -420,5 +420,50 @@ Mock.mock("/sortList", "post", (options) => {
 			msg: "由于未知因素，暂时无法获取数据，请稍候再试",
 			data: {}
 		};
+	}
+});
+
+Mock.mock("/rankList", "post", (options) => {
+	const reqBody = JSON.parse(options.body);
+	if (reqBody.token === token) {
+		return {
+			code: 1,
+			msg: "",
+			data: [{
+					label: "无",
+					value: 0
+				},
+				{
+					label: "江科大",
+					value: 1
+				},
+				{
+					label: "苏理工",
+					value: 2
+				},
+				{
+					label: "市级",
+					value: 3
+				},
+				{
+					label: "省部级",
+					value: 4
+				},
+				{
+					label: "国家级",
+					value: 5
+				},
+				{
+					label: "其他类",
+					value: 6
+				},
+			]
+		};
+	} else {
+		return {
+			code: -1,
+			msg: "由于未知因素，暂时无法获取数据，请稍候再试",
+			data: {}
+		}
 	}
 });
