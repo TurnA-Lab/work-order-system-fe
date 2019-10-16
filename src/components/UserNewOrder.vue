@@ -80,7 +80,7 @@ export default Vue.extend({
 
     & > main {
       flex-grow: 1;
-      padding: 0vw 1vw;
+      padding: 0vw 3vw;
       height: 70vh;
     }
   }

@@ -8,7 +8,7 @@
       label-position="left"
       label-width="auto"
     >
-      <el-form-item label="院部">
+      <el-form-item class="form-item" label="院部">
         <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
           <el-option
             :key="item.value"
@@ -18,11 +18,10 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="项目名称">
-        <el-input v-model="form.projectName"></el-input>
+      <el-form-item class="form-item" label="项目名称">
+        <el-input v-model="form.projectName" placeholder="请输入项目名称"></el-input>
       </el-form-item>
       <el-form-item label="项目负责人">
-        <!-- <el-input v-model="form.principalName"></el-input> -->
         <el-tag
           :key="name"
           v-for="name in form.principalNames"
@@ -37,14 +36,13 @@
           @keyup.enter.native="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
           @blur="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
         ></el-input>
-        <el-button v-else class="button-new-member" @click="showPrincipalInput()">+ 新负责人</el-button>
+        <el-button v-else class="button-new-member" @click="showPrincipalInput()" plain>+ 新负责人</el-button>
       </el-form-item>
       <el-form-item label="课题组成员">
         <el-tag
           :key="name"
           v-for="name in form.memberNames"
           closable
-          :disable-transitions="false"
           @close="handleClose(form.memberNames,name)"
         >{{name}}</el-tag>
         <el-input
@@ -55,12 +53,12 @@
           @keyup.enter.native="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
           @blur="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
         ></el-input>
-        <el-button v-else class="button-new-member" @click="showMemberInput()">+ 新成员</el-button>
+        <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
       </el-form-item>
-      <el-form-item label="立项年度">
-        <el-date-picker v-model="form.projectYear" type="year"></el-date-picker>
+      <el-form-item class="form-item" label="立项年度">
+        <el-date-picker v-model="form.projectYear" type="year" placeholder="请选择立项年度"></el-date-picker>
       </el-form-item>
-      <el-form-item label="项目起止年月">
+      <el-form-item class="form-item" label="项目起止年月">
         <el-date-picker
           v-model="form.startNEndDate"
           type="daterange"
@@ -69,10 +67,10 @@
           end-placeholder="结束日期"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="主办单位">
-        <el-input v-model="form.sponsor"></el-input>
+      <el-form-item class="form-item" label="主办单位">
+        <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
       </el-form-item>
-      <el-form-item label="项目类别">
+      <el-form-item class="form-item" label="项目类别">
         <el-cascader
           v-model="form.sort"
           placeholder="请选择，或输入以查找"
@@ -82,7 +80,7 @@
           filterable
         ></el-cascader>
       </el-form-item>
-      <el-form-item label="项目级别">
+      <el-form-item class="form-item" label="项目级别">
         <el-select v-model="form.rank" placeholder="请选择，或输入以查找" filterable>
           <el-option
             v-for="item in options.rank"
@@ -92,7 +90,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item>
+      <el-form-item class="form-item" label="佐证材料">
         <el-upload
           class="upload-demo"
           drag
@@ -106,6 +104,10 @@
           </div>
           <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
+      </el-form-item>
+      <el-form-item class="form-item btn-line">
+        <el-button plain>上一步</el-button>
+        <el-button type="primary" plain>下一步</el-button>
       </el-form-item>
     </el-form>
   </main>
@@ -165,7 +167,7 @@ export default Vue.extend({
     },
 
     handleInputConfirm(nameField: string[], inputVisible: boolean) {
-      let inputValue = this.etc.inputValue;
+      const inputValue = this.etc.inputValue;
       if (inputValue) {
         nameField.push(inputValue);
       }
@@ -231,8 +233,16 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .form-part {
-  column-count: 2;
-  column-width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  height: 70vh;
+  user-select: none;
+
+  .form-item {
+    width: 480px;
+  }
 }
 
 .el-tag + .el-tag {
@@ -240,11 +250,10 @@ export default Vue.extend({
 }
 
 .button-new-member {
-  height: 32px;
-  line-height: 32px;
+  height: 36px;
+  line-height: 36px;
   padding-top: 0;
   padding-bottom: 0;
-  vertical-align: bottom;
 
   color: #bbbbbb;
 
@@ -254,9 +263,9 @@ export default Vue.extend({
 }
 
 .input-new-member {
-  width: 90px;
-  height: 32px;
-  vertical-align: bottom;
+  height: 36px;
+  width: 120px;
+  // vertical-align: bottom;
 
   .el-tag + & {
     margin-left: 10px;
@@ -264,6 +273,11 @@ export default Vue.extend({
 }
 
 .uploadField {
-  align-self: start;
+  -webkit-column-break-before: always;
+}
+
+.btn-line {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

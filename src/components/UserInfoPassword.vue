@@ -4,7 +4,13 @@
       <h2>
         修改密码
         <el-popover placement="bottom-start" width="200" trigger="hover" content="修改成功后，将会强制重新登录。">
-          <el-button class="tooltipBtn" slot="reference" icon="el-icon-question" type="text" circle></el-button>
+          <el-button
+            class="tooltip-btn"
+            slot="reference"
+            icon="el-icon-question"
+            type="text"
+            circle
+          ></el-button>
         </el-popover>
       </h2>
     </header>
@@ -48,7 +54,7 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item class="btnLine">
+          <el-form-item class="btn-line">
             <el-button type="primary" @click="resetForm('form')" plain>重置</el-button>
             <el-button
               type="primary"
@@ -141,8 +147,8 @@ export default Vue.extend({
       this.confirmBtn = this.isConfirming
         ? ""
         : this.confirmBtnIcon
-          ? ""
-          : "验证";
+        ? ""
+        : "验证";
     },
     isSaving() {
       this.submitBtn = this.isSaving ? "请稍后..." : "保存修改";
@@ -227,7 +233,7 @@ main {
   margin-left: 15px;
 }
 
-.tooltipBtn {
+.tooltip-btn {
   padding: 0%;
 }
 
@@ -235,7 +241,7 @@ main {
   width: 30%;
 }
 
-.btnLine {
+.btn-line {
   display: flex;
   justify-content: flex-end;
 }
