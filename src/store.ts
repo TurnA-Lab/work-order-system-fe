@@ -7,9 +7,9 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: {
     userInfo: {},
-    userInfoPage: {
-      profileBtnIsDisabled: true,
-      passwordBtnIsDisabled: false
+    order: {
+      active: 1,
+      class: 0
     }
   },
   mutations: {
@@ -19,17 +19,20 @@ export default new Vuex.Store({
     clearUserInfo(state) {
       state.userInfo = {};
     },
-    toggleProfileBtn(state) {
-      state.userInfoPage.profileBtnIsDisabled = !state.userInfoPage.profileBtnIsDisabled;
+    repealActive(state) {
+      state.order.active--;
     },
-    togglePasswordBtn(state) {
-      state.userInfoPage.passwordBtnIsDisabled = !state.userInfoPage.passwordBtnIsDisabled;
+    orderClass(state, num: number) {
+      state.order.class = num;
+      state.order.active = 2;
+    },
+    clearOrder(state) {
+      state.order = Object.assign({}, {
+        active: 1,
+        class: 0
+      });
     }
   },
   actions: {
-    toggleTwoBtn(context) {
-      context.commit("togglePasswordBtn");
-      context.commit("toggleProfileBtn");
-    }
   }
 });

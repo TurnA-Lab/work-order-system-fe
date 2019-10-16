@@ -35,7 +35,7 @@
     width: 50px;
     height: 50px;
     background-color: rgba(#fff, 0.15);
-    color: #ccc;
+    color: #dfdfdf;
     animation: bubble 15s infinite;
     &:nth-child(1) {
       left: 10%;

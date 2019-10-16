@@ -10,7 +10,7 @@
     <user-menu-card class="item">
       <template v-slot:header>
         <el-button type="text">
-          <router-link :to="{name: 'userWO'}">工单系统</router-link>
+          <router-link :to="{name: 'userWorkOrder'}">工单系统</router-link>
         </el-button>
       </template>
     </user-menu-card>

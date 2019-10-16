@@ -3,15 +3,15 @@
     <header>
       <h2>个人资料</h2>
     </header>
-    <main>
-      <div>
-        <el-table v-loading="isLoading" :data="table1" :show-header="false">
+    <main v-loading="isLoading">
+      <div class="table">
+        <el-table :data="table1" :show-header="false">
           <el-table-column prop="key" width="180"></el-table-column>
           <el-table-column prop="value"></el-table-column>
         </el-table>
       </div>
-      <div>
-        <el-table v-loading="isLoading" :data="table2" :show-header="false">
+      <div class="table">
+        <el-table :data="table2" :show-header="false">
           <el-table-column prop="key" width="180"></el-table-column>
           <el-table-column prop="value"></el-table-column>
         </el-table>
@@ -42,11 +42,14 @@ interface UserInfo {
 }
 
 export default Vue.extend({
+  data() {
+    return {
+      isLoading: true,
+      table1: [],
+      table2: []
+    };
+  },
   created() {
-    if (!this.$store.state.userInfoPage.profileBtnIsDisabled) {
-      this.$store.dispatch("toggleTwoBtn");
-    }
-
     let userInfo: UserInfo;
     (this as any).$axios
       .post("/userInfo", {
@@ -112,13 +115,6 @@ export default Vue.extend({
           }
         ];
       });
-  },
-  data() {
-    return {
-      isLoading: true,
-      table1: [],
-      table2: []
-    };
   }
 });
 </script>
@@ -126,7 +122,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 header,
 main {
-  // font-size: 2rem;
   margin-left: 15px;
 }
 
@@ -134,8 +129,8 @@ main {
   display: flex;
   justify-content: space-between;
 
-  div {
-    width: 40vw;
+  .table {
+    width: 48%;
   }
 }
 </style>

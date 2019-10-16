@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Login from "./views/Login.vue";
 import UserIndex from "./views/UserIndex.vue";
 import UserInfo from "./views/UserInfo.vue";
+import UserWorkOrder from "./views/UserWorkOrder.vue";
 
 Vue.use(Router);
 
@@ -47,6 +48,32 @@ const router = new Router({
           path: "password",
           name: "userInfoPassword",
           component: () => import("./components/UserInfoPassword.vue")
+        }
+      ]
+    },
+    {
+      path: "/user/work_order",
+      name: "userWorkOrder",
+      component: UserWorkOrder,
+      redirect: { name: "userOrders" },
+      children: [
+        {
+          path: "orders",
+          name: "userOrders",
+          component: () => import("./components/UserOrders.vue")
+        },
+        {
+          path: "new_order",
+          name: "userNewOrder",
+          component: () => import("./components/UserNewOrder.vue"),
+          // redirect: { name: "userNewOrderProcess1" },
+          // children: [
+          //   {
+          //     path: "process/1",
+          //     name: "userNewOrderProcess1",
+          //     component: () => import("./components/UserNewOrderProcess1.vue")
+          //   }
+          // ]
         }
       ]
     },

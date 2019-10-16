@@ -3,7 +3,7 @@
     <header>
       <h2>
         修改密码
-        <el-popover placement="bottom-start" width="200" trigger="hover" content="修改成功后，将会强制重新登录">
+        <el-popover placement="bottom-start" width="200" trigger="hover" content="修改成功后，将会强制重新登录。">
           <el-button class="tooltipBtn" slot="reference" icon="el-icon-question" type="text" circle></el-button>
         </el-popover>
       </h2>
@@ -68,11 +68,6 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 
 export default Vue.extend({
-  created() {
-    if (!this.$store.state.userInfoPage.passwordBtnIsDisabled) {
-      this.$store.dispatch("toggleTwoBtn");
-    }
-  },
   data() {
     const validateOldPassword = (
       rule: object,
@@ -98,10 +93,14 @@ export default Vue.extend({
       if (!value) {
         callback(new Error("密码不能为空"));
       } else {
-        if (value.length < 5 || value.length > 32) {
-          callback(new Error("密码位数应大于 5 位，小于 32 位"));
+        if (value === this.$data.form.oldPassword) {
+          callback(new Error("输入的新密码不能与原密码相同"));
         } else {
-          callback();
+          if (value.length < 5 || value.length > 32) {
+            callback(new Error("密码位数应大于 5 位，小于 32 位"));
+          } else {
+            callback();
+          }
         }
       }
     };
@@ -132,7 +131,7 @@ export default Vue.extend({
         oldPassword: [{ validator: validateOldPassword, trigger: "blur" }],
         newPassword: [{ validator: validateNewPassword, trigger: "blur" }],
         newPasswordCopy: [
-          { validator: validateNewPasswordCopy, trigger: "change" }
+          { validator: validateNewPasswordCopy, trigger: ["change", "blur"] }
         ]
       }
     };
@@ -142,8 +141,8 @@ export default Vue.extend({
       this.confirmBtn = this.isConfirming
         ? ""
         : this.confirmBtnIcon
-        ? ""
-        : "验证";
+          ? ""
+          : "验证";
     },
     isSaving() {
       this.submitBtn = this.isSaving ? "请稍后..." : "保存修改";

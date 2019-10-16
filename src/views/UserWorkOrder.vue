@@ -3,9 +3,9 @@
     <template v-slot:header>
       <back-link @click="goBack"></back-link>
       <vertical-divider isTransparent="true"></vertical-divider>
-      <el-button type="text" @click="loadProfile" :disabled="btnIsDisabled">个人资料</el-button>
+      <el-button type="text" :disabled="btnIsDisabled" @click="loadOrders">我的工单</el-button>
       <vertical-divider></vertical-divider>
-      <el-button type="text" @click="loadPassword" :disabled="!btnIsDisabled">修改密码</el-button>
+      <el-button type="text" :disabled="!btnIsDisabled" @click="loadNewOrder">提交工单</el-button>
     </template>
     <template v-slot:main>
       <router-view></router-view>
@@ -30,7 +30,7 @@ export default Vue.extend({
   },
   computed: {
     btnIsDisabled() {
-      if (this.$route.name === "userInfoProfile") {
+      if (this.$route.name === "userOrders") {
         return true;
       } else {
         return false;
@@ -41,11 +41,11 @@ export default Vue.extend({
     goBack() {
       this.$router.push({ name: "index" });
     },
-    loadProfile() {
-      this.$router.push({ name: "userInfoProfile" });
+    loadOrders() {
+      this.$router.push({ name: "userOrders" });
     },
-    loadPassword() {
-      this.$router.push({ name: "userInfoPassword" });
+    loadNewOrder() {
+      this.$router.push({ name: "userNewOrder" });
     }
   }
 });
