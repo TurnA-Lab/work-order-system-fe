@@ -467,3 +467,42 @@ Mock.mock("/rankList", "post", (options) => {
 		}
 	}
 });
+
+Mock.mock("/principalWorknum", "post", (options) => {
+	const reqBody = JSON.parse(options.body);
+	if (reqBody.token === token && reqBody.worknum === man.worknum) {
+		return {
+			code: 1,
+			msg: "",
+			data: {}
+		}
+	} else {
+		return {
+			code: -1,
+			msg: "",
+			data: {}
+		}
+	}
+});
+
+
+const newForm = (options) => {
+	const reqBody = JSON.parse(options.body);
+	if (reqBody.token === token) {
+		return {
+			code: 1,
+			msg: "",
+			data: {}
+		}
+	} else {
+		return {
+			code: -1,
+			msg: "",
+			data: {}
+		}
+	}
+};
+
+Mock.mock("/newForm1", "post", newForm);
+Mock.mock("/newForm2", "post", newForm);
+Mock.mock("/newForm3", "post", newForm);

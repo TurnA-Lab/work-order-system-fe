@@ -9,7 +9,7 @@
 
 <script>
 // @ is an alias to /src
-import LoginForm from "@/components/LoginForm";
+import LoginForm from "@/components/Login/Form";
 import Vue from "vue";
 
 export default Vue.extend({

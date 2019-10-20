@@ -15,7 +15,7 @@
     </header>
     <div class="body">
       <aside>
-        <el-steps direction="vertical" :active="$store.state.order.active" finish-status="success">
+        <el-steps direction="vertical" :active="$store.state.order.active">
           <el-step title="选择类别"></el-step>
           <el-step title="填写工单"></el-step>
           <el-step title="确认工单"></el-step>
@@ -32,13 +32,15 @@
 
 <script lang="ts">
 import Vue from "vue";
-import process1 from "@/components/UserNewOrderProcess1.vue";
-import process2 from "@/components/UserNewOrderProcess2.vue";
+import process1 from "@/components/User/NewOrder/Process/1.vue";
+import process2 from "@/components/User/NewOrder/Process/2.vue";
+import process3 from "@/components/User/NewOrder/Process/3.vue";
 
 export default Vue.extend({
   components: {
     process1,
-    process2
+    process2,
+    process3
   },
   destroyed() {
     this.$store.commit("clearOrder");

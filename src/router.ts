@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
-import UserIndex from "./views/UserIndex.vue";
-import UserInfo from "./views/UserInfo.vue";
-import UserWorkOrder from "./views/UserWorkOrder.vue";
+import UserIndex from "./views/User/index.vue";
+import UserInfo from "./views/User/Info.vue";
+import UserWorkOrder from "./views/User/WorkOrder.vue";
 
 Vue.use(Router);
 
@@ -42,12 +42,12 @@ const router = new Router({
         {
           path: "profile",
           name: "userInfoProfile",
-          component: () => import("./components/UserInfoProfile.vue")
+          component: () => import("./components/User/Info/Profile.vue")
         },
         {
           path: "password",
           name: "userInfoPassword",
-          component: () => import("./components/UserInfoPassword.vue")
+          component: () => import("./components/User/Info/Password.vue")
         }
       ]
     },
@@ -60,12 +60,12 @@ const router = new Router({
         {
           path: "orders",
           name: "userOrders",
-          component: () => import("./components/UserOrders.vue")
+          component: () => import("./components/User/Orders/index.vue")
         },
         {
           path: "new_order",
           name: "userNewOrder",
-          component: () => import("./components/UserNewOrder.vue"),
+          component: () => import("./components/User/NewOrder/index.vue"),
           // redirect: { name: "userNewOrderProcess1" },
           // children: [
           //   {

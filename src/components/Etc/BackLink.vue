@@ -24,19 +24,17 @@ export default Vue.extend({
   margin-inline-start: 12px;
 
   &:hover > span {
-    animation: arrow-move 0.8s;
+    animation: arrow-move 0.4s;
   }
 }
 
 @keyframes arrow-move {
   0%,
-  50%,
   100% {
     transform: translateX(0px);
   }
 
-  25%,
-  75% {
+  50% {
     transform: translateX(-0.8vw);
   }
 }

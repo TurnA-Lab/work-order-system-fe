@@ -21,9 +21,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    goBack() {
-      this.$router.push({ name: "index" });
-    },
     mouseWheel() {
       if ((event as any).deltaY > 20) {
         this.wheel = true;
