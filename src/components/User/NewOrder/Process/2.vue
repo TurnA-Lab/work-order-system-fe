@@ -4,9 +4,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import form1 from "@/components/UserNewOrderForm1.vue";
-import form2 from "@/components/UserNewOrderForm2.vue";
-import form3 from "@/components/UserNewOrderForm3.vue";
+import form1 from "@/components/User/NewOrder/Form/1.vue";
+import form2 from "@/components/User/NewOrder/Form/2.vue";
+import form3 from "@/components/User/NewOrder/Form/3.vue";
 
 export default Vue.extend({
   components: {

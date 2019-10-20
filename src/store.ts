@@ -9,7 +9,8 @@ export default new Vuex.Store({
     userInfo: {},
     order: {
       active: 1,
-      class: 0
+      class: 0,
+      form: {}
     }
   },
   mutations: {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     clearUserInfo(state) {
       state.userInfo = {};
     },
+    nextActive(state) {
+      state.order.active++;
+    },
     repealActive(state) {
       state.order.active--;
     },
@@ -26,10 +30,14 @@ export default new Vuex.Store({
       state.order.class = num;
       state.order.active = 2;
     },
+    orderForm(state, ...forms) {
+      state.order.form = Object.assign({}, state.order.form, ...forms);
+    },
     clearOrder(state) {
       state.order = Object.assign({}, {
         active: 1,
-        class: 0
+        class: 0,
+        form: {}
       });
     }
   },

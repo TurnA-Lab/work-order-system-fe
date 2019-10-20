@@ -15,9 +15,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import MainCard from "@/components/MainCard.vue";
-import BackLink from "@/components/BackLink.vue";
-import VerticalDivider from "@/components/VerticalDivider.vue";
+import MainCard from "@/components/User/Etc/MainCard.vue";
+import BackLink from "@/components/Etc/BackLink.vue";
+import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
 
 export default Vue.extend({
   components: {
