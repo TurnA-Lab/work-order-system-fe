@@ -30,8 +30,8 @@ export default new Vuex.Store({
       state.order.class = num;
       state.order.active = 2;
     },
-    orderForm(state, form: {}) {
-      state.order.form = Object.assign({}, state.order.form, form);
+    orderForm(state, ...forms) {
+      state.order.form = Object.assign({}, state.order.form, ...forms);
     },
     clearOrder(state) {
       state.order = Object.assign({}, {

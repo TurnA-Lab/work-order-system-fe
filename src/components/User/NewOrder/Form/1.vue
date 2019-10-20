@@ -90,7 +90,7 @@
         ></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item class="form-item" label="佐证材料" prop="uploadField">
+    <el-form-item class="form-item" label="佐证材料" prop="uploadField" required>
       <el-upload class="upload-demo" drag action multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">

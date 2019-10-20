@@ -1,7 +1,7 @@
 <template>
   <main class="user">
-    <user-card></user-card>
-    <user-menu></user-menu>
+    <user-card />
+    <user-menu />
   </main>
 </template>
 

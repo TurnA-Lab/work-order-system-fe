@@ -468,6 +468,241 @@ Mock.mock("/rankList", "post", (options) => {
 	}
 });
 
+Mock.mock("/honorList", "post", (options) => {
+	const reqBody = JSON.parse(options.body);
+	if (reqBody.token === token) {
+		return {
+			code: 1,
+			msg: "",
+			data: [{
+					label: "学术专著",
+					value: 1,
+					children: [{
+							label: "专著",
+							value: 1
+						},
+						{
+							label: "译著",
+							value: 2
+						},
+						{
+							label: "编著",
+							value: 3
+						},
+						{
+							label: "其他类",
+							value: 4
+						}
+					]
+				},
+				{
+					label: "艺术作品",
+					value: 2,
+					children: [{
+						label: "艺术作品",
+						value: 1
+					}]
+				},
+				{
+					label: "学术论文",
+					value: 3,
+					children: [{
+							label: "SCI",
+							value: 1
+						},
+						{
+							label: "EI",
+							value: 2
+						},
+						{
+							label: "ISTP",
+							value: 3
+						},
+						{
+							label: "人大复印",
+							value: 4
+						},
+						{
+							label: "新华文摘转载",
+							value: 5
+						},
+						{
+							label: "其他核心",
+							value: 6
+						},
+						{
+							label: "一般",
+							value: 7
+						}
+					]
+				},
+				{
+					label: "专利",
+					value: 4,
+					children: [{
+							label: "发明专利",
+							value: 1
+						},
+						{
+							label: "实用新型专利",
+							value: 2
+						},
+						{
+							label: "外观设计专利",
+							value: 3
+						},
+						{
+							label: "其他类",
+							value: 4
+						},
+						{
+							label: "软件著作权",
+							value: 5
+						}
+					]
+				}
+			]
+		}
+	} else {
+		return {
+			code: -1,
+			msg: "由于未知因素，暂时无法获取数据，请稍候再试",
+			data: {}
+		}
+	}
+});
+
+Mock.mock("/bonusClassList", "post", (options) => {
+	const reqBody = JSON.parse(options.body);
+	if (reqBody.token === token) {
+		return {
+			code: 1,
+			msg: "",
+			data: [{
+					label: "专业负责人业绩津贴",
+					value: 1,
+					children: [{
+						label: "专业负责人业绩津贴",
+						value: 1
+					}]
+				},
+				{
+					label: "省优秀毕业设计奖励",
+					value: 2,
+					children: [{
+						label: "省优秀毕业设计奖励",
+						value: 1
+					}]
+				},
+				{
+					label: "教师获奖",
+					value: 3,
+					children: [{
+							label: "教学成果奖",
+							value: 1
+						},
+						{
+							label: "教育科学研究优秀成果奖",
+							value: 2
+						},
+						{
+							label: "讲课比赛",
+							value: 3
+						},
+						{
+							label: "微课比赛",
+							value: 4
+						},
+						{
+							label: "课程（群）奖",
+							value: 5
+						},
+						{
+							label: "教材奖",
+							value: 6
+						},
+						{
+							label: "全国教育科学研究优秀成果奖",
+							value: 7
+						},
+						{
+							label: "高等教育科学研究成果奖",
+							value: 8
+						},
+						{
+							label: "江苏省教育科学研究优秀成果奖",
+							value: 9
+						},
+						{
+							label: "江苏省教育科学研究精品课题",
+							value: 10
+						},
+						{
+							label: "江苏省高等教育科学研究成果奖",
+							value: 11
+						},
+						{
+							label: "镇江市教育科学研究优秀成果奖",
+							value: 12
+						},
+						{
+							label: "江苏科技大学高等教育科学研究成果奖",
+							value: 13
+						}
+					]
+				}
+			]
+		}
+	} else {
+		return {
+			code: -1,
+			msg: "",
+			data: {}
+		}
+	}
+});
+
+Mock.mock("/levelList", "post", (options) => {
+	const reqBody = JSON.parse(options.body);
+	if (reqBody.token === token) {
+		return {
+			code: 1,
+			msg: "",
+			data: [{
+				label: "特等奖",
+				value: 1
+			}, {
+				label: "一等奖",
+				value: 2
+			}, {
+				label: "二等奖",
+				value: 3
+			}, {
+				label: "三等奖",
+				value: 4
+			}, {
+				label: "优胜奖",
+				value: 5
+			}, {
+				label: "优秀奖",
+				value: 6
+			}, {
+				label: "组织奖",
+				value: 7
+			}, {
+				label: "无",
+				value: 8
+			}]
+		}
+	} else {
+		return {
+			code: -1,
+			msg: "",
+			data: {}
+		}
+	}
+});
+
 Mock.mock("/principalWorknum", "post", (options) => {
 	const reqBody = JSON.parse(options.body);
 	if (reqBody.token === token && reqBody.worknum === man.worknum) {
