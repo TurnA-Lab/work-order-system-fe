@@ -34,9 +34,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "@/stylesheet/default.scss";
+
 .box {
-  height: 430px;
-  width: 430px * 0.7;
+  height: $card-width * 1.414;
+  width: $card-width;
   border-radius: 1rem;
   text-align: center;
 

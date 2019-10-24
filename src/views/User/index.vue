@@ -23,8 +23,9 @@ export default Vue.extend({
 .user {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   height: 90vh;
-  padding: 0rem 3rem;
+  width: 85vw;
 }
 </style>

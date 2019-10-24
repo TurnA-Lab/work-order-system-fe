@@ -9,7 +9,8 @@ Mock.setup({
 // 工具人
 const man = {
 	worknum: "111111",
-	permission: "0",
+	// permission: "0",
+	permission: "1",
 	name: "郝未来",
 	sex: "男",
 	birthDate: "1970年10月1日",
