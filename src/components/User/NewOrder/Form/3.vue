@@ -238,9 +238,15 @@ export default Vue.extend({
 
     // 请求院部列表
     (this as any).$axios
-      .post("/departmentList", {
-        token: stateToken
-      })
+      .post(
+        "/departmentList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.department = res.data.data;
@@ -254,9 +260,15 @@ export default Vue.extend({
 
     // 请求奖项列表
     (this as any).$axios
-      .post("/levelList", {
-        token: stateToken
-      })
+      .post(
+        "/levelList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.level = res.data.data;
@@ -270,9 +282,15 @@ export default Vue.extend({
 
     // 请求级别列表
     (this as any).$axios
-      .post("/rankList", {
-        token: stateToken
-      })
+      .post(
+        "/rankList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.rank = res.data.data;
@@ -286,9 +304,15 @@ export default Vue.extend({
 
     // 请求类型列表
     (this as any).$axios
-      .post("/bonusClassList", {
-        token: stateToken
-      })
+      .post(
+        "/bonusClassList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.bonusClass = res.data.data;

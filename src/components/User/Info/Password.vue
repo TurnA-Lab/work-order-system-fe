@@ -30,7 +30,7 @@
                 @click="confirmOldPassword('form')"
                 :loading="isConfirming"
                 :disabled="!isDisable"
-              >{{confirmBtn}}</el-button>
+              >{{confirmBtnText}}</el-button>
             </el-input>
           </el-form-item>
 
@@ -61,7 +61,7 @@
               @click="submitForm('form')"
               :loading="isSaving"
               :disabled="isDisable"
-            >{{submitBtn}}</el-button>
+            >{{submitBtnText}}</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -142,16 +142,16 @@ export default Vue.extend({
       }
     };
   },
-  watch: {
-    isConfirming() {
-      this.confirmBtn = this.isConfirming
+  computed: {
+    confirmBtnText() {
+      return this.$data.isConfirming
         ? ""
-        : this.confirmBtnIcon
+        : this.$data.confirmBtnIcon
         ? ""
         : "验证";
     },
-    isSaving() {
-      this.submitBtn = this.isSaving ? "请稍后..." : "保存修改";
+    submitBtnText() {
+      return this.$data.isSaving ? "请稍后..." : "保存修改";
     }
   },
   methods: {
@@ -162,10 +162,17 @@ export default Vue.extend({
           if (!errorMsg) {
             this.isConfirming = true;
             (this as any).$axios
-              .post("/password", {
-                password: this.form.oldPassword,
-                token: this.$store.state.userInfo.token
-              })
+              .post(
+                "/password",
+                {
+                  password: this.form.oldPassword
+                },
+                {
+                  headers: {
+                    token: this.$store.state.userInfo.token
+                  }
+                }
+              )
               .then((res: AxiosResponse) => {
                 this.isConfirming = false;
                 if (res.data.code === -1) {

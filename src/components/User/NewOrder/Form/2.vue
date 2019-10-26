@@ -249,9 +249,15 @@ export default Vue.extend({
     const stateToken = this.$store.state.userInfo.token;
     // 请求院部列表
     (this as any).$axios
-      .post("/departmentList", {
-        token: stateToken
-      })
+      .post(
+        "/departmentList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.department = res.data.data;
@@ -265,9 +271,15 @@ export default Vue.extend({
 
     // 请求成果列表
     (this as any).$axios
-      .post("/honorList", {
-        token: stateToken
-      })
+      .post(
+        "/honorList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.honor = res.data.data;

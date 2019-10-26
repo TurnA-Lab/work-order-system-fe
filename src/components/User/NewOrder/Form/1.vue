@@ -238,11 +238,18 @@ export default Vue.extend({
     }
   },
   created() {
+    const stateToken = this.$store.state.userInfo.token;
     // 请求院部列表
     (this as any).$axios
-      .post("/departmentList", {
-        token: this.$store.state.userInfo.token
-      })
+      .post(
+        "/departmentList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.department = res.data.data;
@@ -256,9 +263,15 @@ export default Vue.extend({
 
     // 请求项目类别列表
     (this as any).$axios
-      .post("/sortList", {
-        token: this.$store.state.userInfo.token
-      })
+      .post(
+        "/sortList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.sort = res.data.data;
@@ -272,9 +285,15 @@ export default Vue.extend({
 
     // 请求项目级别列表
     (this as any).$axios
-      .post("/rankList", {
-        token: this.$store.state.userInfo.token
-      })
+      .post(
+        "/rankList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         if (res.data.code === 1) {
           this.options.rank = res.data.data;

@@ -1,13 +1,13 @@
 <template>
   <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
-    <el-card class="login-card" shadow="hover" :body-style="{'padding': '20px 40px'}">
+    <el-card class="login-card" shadow="hover" :body-style="{'padding': '50px 30px 30px 30px'}">
       <el-form ref="form" :model="form" :rules="rules">
-        <el-form-item style="text-align: center;" prop="permission">
+        <!-- <el-form-item style="text-align: center;" prop="permission">
           <el-radio-group v-model="form.permission">
             <el-radio-button label="0">普通帐户</el-radio-button>
             <el-radio-button label="1">管理员账户</el-radio-button>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item prop="worknum">
           <el-input v-model="form.worknum" prefix-icon="el-icon-user" placeholder="工号"></el-input>
         </el-form-item>
@@ -25,7 +25,7 @@
             @click="submitForm('form')"
             :loading="isConfirming"
             style="width: 100%;"
-          >{{loginSubmitBtn}}</el-button>
+          >{{submitBtnText}}</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -40,9 +40,8 @@ export default Vue.extend({
   data() {
     return {
       isConfirming: false,
-      loginSubmitBtn: "登录",
       form: {
-        permission: "0",
+        // permission: "0",
         worknum: "",
         password: ""
       },
@@ -52,9 +51,9 @@ export default Vue.extend({
       }
     };
   },
-  watch: {
-    isConfirming() {
-      this.loginSubmitBtn = this.isConfirming ? "请稍后..." : "登录";
+  computed: {
+    submitBtnText() {
+      return this.$data.isConfirming ? "请稍后..." : "登录";
     }
   },
   methods: {
@@ -76,18 +75,11 @@ export default Vue.extend({
                   "wo_permission",
                   res.data.data.permission
                 );
-                sessionStorage.setItem(
-                  "wo_user",
-                  JSON.stringify(
-                    Object.assign({}, res.data.data, {
-                      worknum: this.form.worknum
-                    })
-                  )
-                );
-                this.$store.commit(
-                  "updateUserInfo",
-                  JSON.parse(sessionStorage.getItem("wo_user") as string)
-                );
+                const woUser = Object.assign({}, res.data.data, {
+                  worknum: this.form.worknum
+                });
+                sessionStorage.setItem("wo_user", JSON.stringify(woUser));
+                this.$store.commit("updateUserInfo", woUser);
                 this.$router.replace({ name: "index" });
               }
               this.isConfirming = false;

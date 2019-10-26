@@ -21,15 +21,15 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/colors/default.scss";
+@import "@/stylesheet/default.scss";
 
 .login {
   header {
     text-align: center;
     font-size: 48px;
     font-weight: 800;
-    color: $--color-primary;
-    margin-block-end: 1vw;
+    color: $main;
+    margin-block-end: 0.5vw;
 
     user-select: none;
   }

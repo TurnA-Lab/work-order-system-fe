@@ -4,6 +4,7 @@ import Login from "./views/Login.vue";
 import UserIndex from "./views/User/index.vue";
 import UserInfo from "./views/User/Info.vue";
 import UserWorkOrder from "./views/User/WorkOrder.vue";
+import RootIndex from "./views/Root/index.vue";
 
 Vue.use(Router);
 
@@ -21,8 +22,7 @@ const router = new Router({
         if (sessionStorage.getItem("wo_permission") === "0") {
           return "/user";
         } else if (sessionStorage.getItem("wo_permission") === "1") {
-          // TODO:
-          return "/about";
+          return "/root";
         } else {
           return "/login";
         }
@@ -77,13 +77,18 @@ const router = new Router({
         }
       ]
     },
+    // {
+    //   path: "/about",
+    //   name: "about",
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
+    // },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
+      path: "/root",
+      name: "root",
+      component: RootIndex
     }
   ]
 });
