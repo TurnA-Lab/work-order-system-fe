@@ -75,14 +75,4 @@ export default Vue.extend({
     overflow: hidden;
   }
 }
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
 </style>

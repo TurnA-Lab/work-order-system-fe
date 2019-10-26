@@ -52,9 +52,15 @@ export default Vue.extend({
   created() {
     let userInfo: UserInfo;
     (this as any).$axios
-      .post("/userInfo", {
-        token: this.$store.state.userInfo.token
-      })
+      .post(
+        "/userInfo",
+        {},
+        {
+          headers: {
+            token: this.$store.state.userInfo.token
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
         this.isLoading = false;
         userInfo = res.data.data;

@@ -29,7 +29,7 @@ export default Vue.extend({
     font-size: 48px;
     font-weight: 800;
     color: $main;
-    margin-block-end: 1vw;
+    margin-block-end: 0.5vw;
 
     user-select: none;
   }

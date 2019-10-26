@@ -57,17 +57,31 @@ export default Vue.extend({
       const state = this.$store.state;
       this.isConfirming = true;
       (this as any).$axios
-        .post("/principalWorknum", {
-          worknum: this.input,
-          token: state.userInfo.token
-        })
+        .post(
+          "/principalWorknum",
+          {
+            worknum: this.input
+          },
+          {
+            headers: {
+              token: state.userInfo.token
+            }
+          }
+        )
         .then((res: AxiosResponse) => {
           if (res.data.code === 1) {
             (this as any).$axios
-              .post(`/newForm${state.order.class}`, {
-                form: state.order.form,
-                token: state.userInfo.token
-              })
+              .post(
+                `/newForm${state.order.class}`,
+                {
+                  form: state.order.form
+                },
+                {
+                  headers: {
+                    token: state.userInfo.token
+                  }
+                }
+              )
               .then((response: AxiosResponse) => {
                 if (response.data.code === 1) {
                   this.isConfirming = false;
