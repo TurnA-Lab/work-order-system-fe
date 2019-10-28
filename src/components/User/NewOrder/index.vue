@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:47:05 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:47:05 
+ */
+
 <template>
   <div class="flex-box">
     <header>

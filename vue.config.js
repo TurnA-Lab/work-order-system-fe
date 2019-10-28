@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:48:49 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:48:49 
+ */
+
 module.exports = {
 	devServer: {
 		open: true, //浏览器自动打开页面
@@ -5,11 +12,11 @@ module.exports = {
 		port: 8080,
 		proxy: {
 			//配置跨域
-			'^/api': {
-				target: "http://localhost:8082",
+			'^/api': (process.env.NODE_ENV === "development") ? {
+				target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e/api",
 				ws: true,
 				changOrigin: true,
-			}
+			} : {}
 		}
 	}
 }

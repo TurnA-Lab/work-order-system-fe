@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:44:41 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:44:41 
+ */
+
 <template>
   <div>
     <header>
@@ -28,17 +35,17 @@ interface UserInfo {
   worknum: string;
   permission: string;
   name: string;
-  sex: string;
-  birthDate: string;
-  entranceDate: string;
-  jobTitle: string;
-  topEducation: string;
-  topDegree: string;
-  graduatedSchool: string;
-  profession: string;
-  phoneNum: string;
-  department: string;
-  departmentNum: string;
+  gender: string;
+  birthday: string;
+  enterTime: string;
+  techTittle: string;
+  eduBgd: string;
+  degree: string;
+  school: string;
+  major: string;
+  phone: string;
+  dptname: string;
+  dtpId: string;
 }
 
 export default Vue.extend({
@@ -53,7 +60,7 @@ export default Vue.extend({
     let userInfo: UserInfo;
     (this as any).$axios
       .post(
-        "/userInfo",
+        "/api/online/user/getMyInfo",
         {},
         {
           headers: {
@@ -75,49 +82,49 @@ export default Vue.extend({
           },
           {
             key: "性别",
-            value: userInfo.sex
+            value: userInfo.gender
           },
           {
             key: "联系电话",
-            value: userInfo.phoneNum
+            value: userInfo.phone
           },
           {
             key: "工作部门",
-            value: userInfo.department
+            value: userInfo.dptname
           },
           {
             key: "单位号",
-            value: userInfo.departmentNum
+            value: ""
           },
           {
             key: "出生日期",
-            value: userInfo.birthDate
+            value: userInfo.birthday
           },
           {
             key: "入校时间",
-            value: userInfo.entranceDate
+            value: userInfo.enterTime
           }
         ];
         (this.table2 as Array<{ key: string; value: string }>) = [
           {
             key: "专业技术职称",
-            value: userInfo.jobTitle
+            value: userInfo.techTittle
           },
           {
             key: "最高学历",
-            value: userInfo.topEducation
+            value: userInfo.eduBgd
           },
           {
             key: "最高学位",
-            value: userInfo.topDegree
+            value: userInfo.degree
           },
           {
             key: "授学位单位名称",
-            value: userInfo.graduatedSchool
+            value: userInfo.school
           },
           {
             key: "获最高学位的专业名称",
-            value: userInfo.profession
+            value: userInfo.major
           }
         ];
       });
