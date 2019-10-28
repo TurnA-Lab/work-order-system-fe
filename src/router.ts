@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:48:30
+ * @Last Modified by:   Skye Young
+ * @Last Modified time: 2019-10-28 19:48:30
+ */
+
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";

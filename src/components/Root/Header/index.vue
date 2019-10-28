@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:49:00 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:49:00 
+ */
+
 <template>
   <div class="header">
     <div class="menu-part">

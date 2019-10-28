@@ -1,13 +1,20 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:49:23 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:49:23 
+ */
+
 <template>
   <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
-    <el-card class="login-card" shadow="hover" :body-style="{'padding': '50px 30px 30px 30px'}">
+    <el-card class="login-card" shadow="hover" :body-style="{'padding': '20px 40px'}">
       <el-form ref="form" :model="form" :rules="rules">
-        <!-- <el-form-item style="text-align: center;" prop="permission">
+        <el-form-item style="text-align: center;" prop="permission">
           <el-radio-group v-model="form.permission">
             <el-radio-button label="0">普通帐户</el-radio-button>
             <el-radio-button label="1">管理员账户</el-radio-button>
           </el-radio-group>
-        </el-form-item>-->
+        </el-form-item>
         <el-form-item prop="worknum">
           <el-input v-model="form.worknum" prefix-icon="el-icon-user" placeholder="工号"></el-input>
         </el-form-item>
@@ -41,7 +48,7 @@ export default Vue.extend({
     return {
       isConfirming: false,
       form: {
-        // permission: "0",
+        permission: "0",
         worknum: "",
         password: ""
       },
@@ -62,19 +69,22 @@ export default Vue.extend({
         this.isConfirming = true;
         if (valid) {
           (this as any).$axios
-            .post("/login", this.form)
+            .post("/outline/login", this.form)
             .then((res: AxiosResponse) => {
               if (res.data.code === -1) {
                 this.$message({
                   message: res.data.msg || "未知错误",
                   type: "warning"
                 });
-              } else {
+              } else if (res.data.code === 1) {
+                this.isConfirming = false;
+                this.$message({
+                  message: res.data.msg || "请求超时",
+                  type: "warning"
+                });
+              } else if (res.data.code === 0) {
                 // 关闭浏览器后即删除
-                sessionStorage.setItem(
-                  "wo_permission",
-                  res.data.data.permission
-                );
+                sessionStorage.setItem("wo_permission", this.form.permission);
                 const woUser = Object.assign({}, res.data.data, {
                   worknum: this.form.worknum
                 });

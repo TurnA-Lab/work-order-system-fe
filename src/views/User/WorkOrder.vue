@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:47:46 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:47:46 
+ */
+
 <template>
   <main-card>
     <template v-slot:header>

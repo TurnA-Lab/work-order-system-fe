@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:45:55 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:45:55 
+ */
+
 <template>
   <span class="submit-btn">
     <el-button type="primary" plain @click="nextActive">确认提交</el-button>

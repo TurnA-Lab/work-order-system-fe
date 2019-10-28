@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:45:47 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:45:47 
+ */
+
 <template>
   <main>
     <user-menu-card class="item">

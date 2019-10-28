@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:49:43 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-28 19:50:11
+ */
+
 <template>
   <div class="divider" :class="{transparent: isTransparent}"></div>
 </template>
