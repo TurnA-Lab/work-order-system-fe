@@ -182,22 +182,24 @@ export default Vue.extend({
               )
               .then((res: AxiosResponse) => {
                 this.isConfirming = false;
-                if (res.data.code === -1) {
-                  this.isDisable = true;
-                  this.$message({
-                    message: "请检查密码",
-                    type: "warning"
-                  });
-                } else if (res.data.code === 0) {
-                  this.confirmBtnIcon = "el-icon-check";
+                if (res.data.code === 0) {
                   this.isDisable = false;
+                  this.confirmBtnIcon = "el-icon-check";
                 } else {
                   this.isDisable = true;
                   this.$message({
-                    message: "由于未知因素，暂时无法验证密码",
+                    message: res.data.msg || "请检查密码",
                     type: "warning"
                   });
                 }
+              })
+              .catch(() => {
+                this.isConfirming = false;
+                this.isDisable = true;
+                this.$message({
+                  message: "由于未知因素，暂时无法验证密码",
+                  type: "warning"
+                });
               });
           }
         }
@@ -229,12 +231,7 @@ export default Vue.extend({
             )
             .then((res: AxiosResponse) => {
               this.resetForm("form");
-              if (res.data.code === -1) {
-                this.$message({
-                  message: res.data.msg,
-                  type: "warning"
-                });
-              } else if (res.data.code === 0) {
+              if (res.data.code === 0) {
                 this.$message({
                   message: "修改成功，正在跳转至登录页...",
                   type: "success"
@@ -246,10 +243,16 @@ export default Vue.extend({
                 }, 1000);
               } else {
                 this.$message({
-                  message: "出现未知错误，暂时无法修改密码",
+                  message: res.data.msg,
                   type: "warning"
                 });
               }
+            })
+            .catch(() => {
+              this.$message({
+                message: "出现未知错误，暂时无法修改密码",
+                type: "warning"
+              });
             });
         }
       });

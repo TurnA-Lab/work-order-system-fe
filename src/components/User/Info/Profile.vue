@@ -70,63 +70,77 @@ export default Vue.extend({
       )
       .then((res: AxiosResponse) => {
         this.isLoading = false;
-        userInfo = res.data.data;
-        (this.table1 as Array<{ key: string; value: string }>) = [
-          {
-            key: "姓名",
-            value: userInfo.name
-          },
-          {
-            key: "工号",
-            value: userInfo.worknum
-          },
-          {
-            key: "性别",
-            value: userInfo.gender
-          },
-          {
-            key: "联系电话",
-            value: userInfo.phone
-          },
-          {
-            key: "工作部门",
-            value: userInfo.dptname
-          },
-          {
-            key: "单位号",
-            value: ""
-          },
-          {
-            key: "出生日期",
-            value: userInfo.birthday
-          },
-          {
-            key: "入校时间",
-            value: userInfo.enterTime
-          }
-        ];
-        (this.table2 as Array<{ key: string; value: string }>) = [
-          {
-            key: "专业技术职称",
-            value: userInfo.techTittle
-          },
-          {
-            key: "最高学历",
-            value: userInfo.eduBgd
-          },
-          {
-            key: "最高学位",
-            value: userInfo.degree
-          },
-          {
-            key: "授学位单位名称",
-            value: userInfo.school
-          },
-          {
-            key: "获最高学位的专业名称",
-            value: userInfo.major
-          }
-        ];
+        if (res.data.code === 0) {
+          userInfo = res.data.data;
+          (this.table1 as Array<{ key: string; value: string }>) = [
+            {
+              key: "姓名",
+              value: userInfo.name
+            },
+            {
+              key: "工号",
+              value: userInfo.worknum
+            },
+            {
+              key: "性别",
+              value: userInfo.gender
+            },
+            {
+              key: "联系电话",
+              value: userInfo.phone
+            },
+            {
+              key: "工作部门",
+              value: userInfo.dptname
+            },
+            {
+              key: "单位号",
+              value: ""
+            },
+            {
+              key: "出生日期",
+              value: userInfo.birthday
+            },
+            {
+              key: "入校时间",
+              value: userInfo.enterTime
+            }
+          ];
+          (this.table2 as Array<{ key: string; value: string }>) = [
+            {
+              key: "专业技术职称",
+              value: userInfo.techTittle
+            },
+            {
+              key: "最高学历",
+              value: userInfo.eduBgd
+            },
+            {
+              key: "最高学位",
+              value: userInfo.degree
+            },
+            {
+              key: "授学位单位名称",
+              value: userInfo.school
+            },
+            {
+              key: "获最高学位的专业名称",
+              value: userInfo.major
+            }
+          ];
+        } else {
+          this.$message({
+            message: res.data.msg || "暂时无法获取个人信息",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.isLoading = false;
+        this.$message({
+          message: "由于未知因素，暂时无法获取个人信息",
+          type: "warning"
+        });
       });
   }
 });

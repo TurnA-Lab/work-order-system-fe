@@ -267,6 +267,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取院部列表",
+          type: "warning"
+        });
       });
 
     // 请求项目类型列表
@@ -291,6 +297,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取项目类型列表",
+          type: "warning"
+        });
       });
 
     // 请求项目级别列表
@@ -313,6 +325,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取项目级别列表",
+          type: "warning"
+        });
       });
   }
 });

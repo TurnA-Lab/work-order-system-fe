@@ -263,6 +263,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取院部列表",
+          type: "warning"
+        });
       });
 
     // 请求奖项列表FIXME:
@@ -285,6 +291,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取奖项列表",
+          type: "warning"
+        });
       });
 
     // 请求级别列表
@@ -307,6 +319,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取获奖级别列表",
+          type: "warning"
+        });
       });
 
     // 请求获奖类型列表
@@ -331,6 +349,12 @@ export default Vue.extend({
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取获奖类型列表",
+          type: "warning"
+        });
       });
   }
 });

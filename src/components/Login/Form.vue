@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:23 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-28 20:37:05
+ * @Last Modified time: 2019-10-30 19:02:29
  */
 
 <template>
@@ -69,7 +69,7 @@ export default Vue.extend({
         this.isConfirming = true;
         if (valid) {
           this.$http
-            .post("/api/outline/login", this.form)
+            .post("/api/outline/logn", this.form)
             .then((res: AxiosResponse) => {
               if (res.data.code === 0) {
                 // 关闭浏览器后即删除
@@ -82,10 +82,17 @@ export default Vue.extend({
                 this.$router.replace({ name: "index" });
               } else {
                 this.$message({
-                  message: res.data.msg || "未知错误",
+                  message: res.data.msg,
                   type: "warning"
                 });
               }
+              this.isConfirming = false;
+            })
+            .catch(() => {
+              this.$message({
+                message: "未知错误",
+                type: "warning"
+              });
               this.isConfirming = false;
             });
         }

@@ -76,7 +76,7 @@ export default Vue.extend({
           }
         )
         .then((res: AxiosResponse) => {
-          if (res.data.code === 1) {
+          if (res.data.code === 0) {
             this.$http
               .post(
                 `/newForm${state.order.class}`,
@@ -90,7 +90,7 @@ export default Vue.extend({
                 }
               )
               .then((response: AxiosResponse) => {
-                if (response.data.code === 1) {
+                if (response.data.code === 0) {
                   this.isConfirming = false;
                   this.$store.commit("nextActive");
                   this.isVisible = false;
@@ -100,11 +100,17 @@ export default Vue.extend({
               });
           } else {
             this.$message({
-              message: "项目负责人必须与当前登录用户相同",
+              message: res.data.msg || "项目负责人必须与当前登录用户相同",
               type: "warning"
             });
             this.isConfirming = false;
           }
+        })
+        .catch(() => {
+          this.$message({
+            message: "由于未知因素，暂时无法提交表单",
+            type: "warning"
+          });
         });
     }
   },
