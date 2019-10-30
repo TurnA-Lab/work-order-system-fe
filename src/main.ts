@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:18
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-30 16:24:08
+ * @Last Modified time: 2019-10-30 22:03:05
  */
 
 import Vue from "vue";
@@ -12,8 +12,13 @@ import "@/plugins/axios";
 import "@/plugins/element";
 import App from "./App.vue";
 
+// 引入 vue-awesome
+Vue.component('v-icon', () => import("vue-awesome/components/Icon.vue"));
+
+//
 Vue.config.productionTip = false;
 
+// axios 设置
 declare module 'axios/' {
   interface AxiosRequestConfig {
     retry?: number;

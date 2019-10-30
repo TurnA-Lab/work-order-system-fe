@@ -73,29 +73,21 @@ const router = new Router({
           path: "new_order",
           name: "userNewOrder",
           component: () => import("@/components/User/NewOrder/index.vue"),
-          // redirect: { name: "userNewOrderProcess1" },
-          // children: [
-          //   {
-          //     path: "process/1",
-          //     name: "userNewOrderProcess1",
-          //     component: () => import("./components/UserNewOrderProcess1.vue")
-          //   }
-          // ]
         }
       ]
     },
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
-    // },
     {
       path: "/root",
       name: "root",
-      component: RootIndex
+      component: RootIndex,
+      redirect: { name: "rootHome" },
+      children: [
+        {
+          path: "home",
+          name: "rootHome",
+          component: () => import("@/components/Root/Main/Index/index.vue")
+        }
+      ]
     }
   ]
 });

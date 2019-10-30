@@ -69,7 +69,7 @@ export default Vue.extend({
         this.isConfirming = true;
         if (valid) {
           this.$http
-            .post("/api/outline/logn", this.form)
+            .post("/api/outline/login", this.form)
             .then((res: AxiosResponse) => {
               if (res.data.code === 0) {
                 // 关闭浏览器后即删除
