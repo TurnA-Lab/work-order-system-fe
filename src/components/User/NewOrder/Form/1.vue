@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:06 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:46:06 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-29 13:02:36
  */
 
 <template>
@@ -246,10 +246,11 @@ export default Vue.extend({
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
+
     // 请求院部列表
-    (this as any).$axios
+    this.$http
       .post(
-        "/departmentList",
+        "/api/online/getDepartmentList",
         {},
         {
           headers: {
@@ -258,21 +259,23 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.department = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取院部列表",
             type: "warning"
           });
         }
       });
 
-    // 请求项目类别列表
-    (this as any).$axios
+    // 请求项目类型列表
+    this.$http
       .post(
-        "/sortList",
-        {},
+        "/api/online/getTypeList",
+        {
+          class1: "建设类"
+        },
         {
           headers: {
             token: stateToken
@@ -280,20 +283,20 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.sort = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
             type: "warning"
           });
         }
       });
 
     // 请求项目级别列表
-    (this as any).$axios
+    this.$http
       .post(
-        "/rankList",
+        "/api/online/getLevelSet",
         {},
         {
           headers: {
@@ -302,11 +305,11 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.rank = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
             type: "warning"
           });
         }

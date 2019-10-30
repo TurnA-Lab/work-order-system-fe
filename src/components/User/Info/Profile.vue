@@ -58,7 +58,7 @@ export default Vue.extend({
   },
   created() {
     let userInfo: UserInfo;
-    (this as any).$axios
+    this.$http
       .post(
         "/api/online/user/getMyInfo",
         {},

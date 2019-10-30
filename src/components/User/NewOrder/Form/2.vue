@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:18 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:46:18 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-29 13:17:01
  */
 
 <template>
@@ -255,9 +255,9 @@ export default Vue.extend({
   created() {
     const stateToken = this.$store.state.userInfo.token;
     // 请求院部列表
-    (this as any).$axios
+    this.$http
       .post(
-        "/departmentList",
+        "/api/online/getDepartmentList",
         {},
         {
           headers: {
@@ -266,21 +266,23 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.department = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取院部列表",
             type: "warning"
           });
         }
       });
 
-    // 请求成果列表
-    (this as any).$axios
+    // 请求成果类型列表
+    this.$http
       .post(
-        "/honorList",
-        {},
+        "/api/online/getTypeList",
+        {
+          class1: "成果类"
+        },
         {
           headers: {
             token: stateToken
@@ -288,11 +290,11 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.honor = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
             type: "warning"
           });
         }

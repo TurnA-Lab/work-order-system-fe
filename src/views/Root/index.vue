@@ -10,7 +10,7 @@
     <root-menu :is-collapse="menuIsCollapse" />
     <main>
       <root-header :is-collapse="menuIsCollapse" @click="toggleIsCollapse"></root-header>
-      <main></main>
+      <root-main></root-main>
     </main>
   </div>
 </template>
@@ -19,11 +19,13 @@
 import Vue from "vue";
 import RootMenu from "@/components/Root/Menu/index.vue";
 import RootHeader from "@/components/Root/Header/index.vue";
+import RootMain from "@/components/Root/Main/index.vue";
 
 export default Vue.extend({
   components: {
     RootMenu,
-    RootHeader
+    RootHeader,
+    RootMain
   },
   data() {
     return {

@@ -63,7 +63,7 @@ export default Vue.extend({
     submit() {
       const state = this.$store.state;
       this.isConfirming = true;
-      (this as any).$axios
+      this.$http
         .post(
           "/principalWorknum",
           {
@@ -77,7 +77,7 @@ export default Vue.extend({
         )
         .then((res: AxiosResponse) => {
           if (res.data.code === 1) {
-            (this as any).$axios
+            this.$http
               .post(
                 `/newForm${state.order.class}`,
                 {

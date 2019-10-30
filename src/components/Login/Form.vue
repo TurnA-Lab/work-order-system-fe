@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:23 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:49:23 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-28 20:37:05
  */
 
 <template>
@@ -68,21 +68,10 @@ export default Vue.extend({
       (this as any).$refs[formName].validate((valid: boolean) => {
         this.isConfirming = true;
         if (valid) {
-          (this as any).$axios
-            .post("/outline/login", this.form)
+          this.$http
+            .post("/api/outline/login", this.form)
             .then((res: AxiosResponse) => {
-              if (res.data.code === -1) {
-                this.$message({
-                  message: res.data.msg || "未知错误",
-                  type: "warning"
-                });
-              } else if (res.data.code === 1) {
-                this.isConfirming = false;
-                this.$message({
-                  message: res.data.msg || "请求超时",
-                  type: "warning"
-                });
-              } else if (res.data.code === 0) {
+              if (res.data.code === 0) {
                 // 关闭浏览器后即删除
                 sessionStorage.setItem("wo_permission", this.form.permission);
                 const woUser = Object.assign({}, res.data.data, {
@@ -91,6 +80,11 @@ export default Vue.extend({
                 sessionStorage.setItem("wo_user", JSON.stringify(woUser));
                 this.$store.commit("updateUserInfo", woUser);
                 this.$router.replace({ name: "index" });
+              } else {
+                this.$message({
+                  message: res.data.msg || "未知错误",
+                  type: "warning"
+                });
               }
               this.isConfirming = false;
             });
