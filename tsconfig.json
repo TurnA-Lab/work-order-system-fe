@@ -31,7 +31,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/plugins/axios.js", "src/mock.js", "src/plugins/trend.js"
+    "tests/**/*.tsx", "src/plugins/axios.ts", "src/plugins/mock.js", "src/plugins/trend.js"
   ],
   "exclude": [
     "node_modules"

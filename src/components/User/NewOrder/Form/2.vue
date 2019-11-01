@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:18 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:46:18 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-01 21:53:28
  */
 
 <template>
@@ -26,71 +26,57 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果名称" prop="projectName" required>
-      <el-input v-model="form.projectName" placeholder="请输入成果名称"></el-input>
+    <el-form-item class="form-item" label="成果名称" prop="production" required>
+      <el-input v-model="form.production" placeholder="请输入成果名称"></el-input>
     </el-form-item>
 
     <el-form-item label="第一作者" required>
-      <el-tag
-        :key="name"
-        v-for="name in form.principalNames"
-        closable
-        @close="handleClose(form.principalNames,name)"
-      >{{name}}</el-tag>
-      <el-input
-        class="input-new-member"
-        v-if="etc.principalNames.inputVisible"
-        v-model="etc.inputValue"
-        ref="principalInput"
-        @keyup.enter.native="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
-        @blur="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
-      ></el-input>
-      <el-button v-else class="button-new-member" @click="showPrincipalInput()" plain>+ 第一作者</el-button>
+      <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
     </el-form-item>
 
     <el-form-item label="组员">
       <el-tag
         :key="name"
-        v-for="name in form.memberNames"
+        v-for="name in form.teammate"
         closable
-        @close="handleClose(form.memberNames,name)"
+        @close="handleClose(form.teammate,name)"
       >{{name}}</el-tag>
       <el-input
         class="input-new-member"
-        v-if="etc.memberNames.inputVisible"
+        v-if="etc.teammate.inputVisible"
         v-model="etc.inputValue"
         ref="memberInput"
-        @keyup.enter.native="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
-        @blur="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
+        @keyup.enter.native="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
+        @blur="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
       ></el-input>
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新组员</el-button>
     </el-form-item>
     <!--  -->
-    <el-form-item class="form-item" label="成果类别" prop="honor" required>
+    <el-form-item class="form-item" label="成果类别" prop="sort" required>
       <el-cascader
-        v-model="form.honor"
+        v-model="form.sort"
         placeholder="请选择，或输入以查找"
-        :options="options.honor"
+        :options="options.sort"
         :props="{ expandTrigger: 'hover' }"
         :show-all-levels="false"
         filterable
       ></el-cascader>
     </el-form-item>
-    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="sponsor" required>
-      <el-input v-model="form.sponsor" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
+    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit" required>
+      <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
     </el-form-item>
-    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="isTransfered" required>
-      <el-select v-model="form.isTransfered" placeholder="请选择">
+    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent" required>
+      <el-select v-model="form.patent" placeholder="请选择">
         <el-option
-          v-for="item in options.isTransfered"
+          v-for="item in options.patent"
           :key="item.value"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item class="form-item" label="发表/出版/授权时间" prop="honorDate" required>
-      <el-date-picker v-model="form.honorDate" type="month" placeholder="发表/出版/授权时间"></el-date-picker>
+    <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime" required>
+      <el-date-picker v-model="form.publishTime" type="month" placeholder="发表/出版/授权时间"></el-date-picker>
     </el-form-item>
     <el-form-item class="form-item" label="佐证材料" prop="uploadField" required>
       <el-upload class="upload-demo" drag action multiple>
@@ -173,18 +159,18 @@ export default Vue.extend({
     return {
       form: {
         department: "",
-        projectName: "",
-        principalNames: [],
-        memberNames: [],
-        isTransfered: 0,
-        sponsor: "",
-        honor: "",
-        honorDate: ""
+        production: "",
+        name: "",
+        teammate: [],
+        patent: "空",
+        unit: "",
+        sort: "",
+        publishTime: ""
       },
       options: {
         department: [],
-        honor: [],
-        isTransfered: [
+        sort: [],
+        patent: [
           {
             label: "空",
             value: 0
@@ -200,17 +186,17 @@ export default Vue.extend({
         ]
       },
       rules: {
-        projectName: [{ validator: validateProjectName, trigger: "blur" }],
-        principalNames: [{ validaor: validatePrincipalNames, trigger: "blur" }],
-        sponsor: [{ validator: validateSponsor, trigger: "blur" }],
-        honor: [{ validator: validateHonor, trigger: "blur" }],
-        honorDate: [{ validator: validateHonorDate, trigger: "blur" }]
+        production: [{ validator: validateProjectName, trigger: "blur" }],
+        name: [{ validaor: validatePrincipalNames, trigger: "blur" }],
+        unit: [{ validator: validateSponsor, trigger: "blur" }],
+        sort: [{ validator: validateHonor, trigger: "blur" }],
+        publishTime: [{ validator: validateHonorDate, trigger: "blur" }]
       },
       etc: {
-        principalNames: {
+        name: {
           inputVisible: false
         },
-        memberNames: {
+        teammate: {
           inputVisible: false
         },
         inputValue: ""
@@ -222,13 +208,13 @@ export default Vue.extend({
       nameField.splice(nameField.indexOf(member), 1);
     },
     showPrincipalInput() {
-      this.etc.principalNames.inputVisible = true;
+      this.etc.name.inputVisible = true;
       this.$nextTick(() => {
         (this as any).$refs.principalInput.$refs.input.focus();
       });
     },
     showMemberInput() {
-      this.etc.memberNames.inputVisible = true;
+      this.etc.teammate.inputVisible = true;
       this.$nextTick(() => {
         (this as any).$refs.memberInput.$refs.input.focus();
       });
@@ -238,10 +224,10 @@ export default Vue.extend({
       if (inputValue) {
         nameField.push(inputValue);
       }
-      if (this.etc.principalNames.inputVisible === inputVisible) {
-        this.etc.principalNames.inputVisible = false;
+      if (this.etc.name.inputVisible === inputVisible) {
+        this.etc.name.inputVisible = false;
       } else {
-        this.etc.memberNames.inputVisible = false;
+        this.etc.teammate.inputVisible = false;
       }
       this.etc.inputValue = "";
     },
@@ -249,15 +235,26 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      this.$store.commit("orderForm", this.form);
+      (this as any).$refs.form.validate((valid: boolean) => {
+        if (valid) {
+          this.$store.commit(
+            "orderForm",
+            Object.assign({}, this.form, {
+              class2: this.form.sort[0],
+              class3: this.form.sort[1],
+              teammate: this.form.teammate.toString()
+            })
+          );
+        }
+      });
     }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
     // 请求院部列表
-    (this as any).$axios
+    this.$http
       .post(
-        "/departmentList",
+        "/api/online/getDepartmentList",
         {},
         {
           headers: {
@@ -266,21 +263,29 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.department = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取院部列表",
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取院部列表",
+          type: "warning"
+        });
       });
 
-    // 请求成果列表
-    (this as any).$axios
+    // 请求成果类型列表
+    this.$http
       .post(
-        "/honorList",
-        {},
+        "/api/online/getTypeList",
+        {
+          class1: "成果类"
+        },
         {
           headers: {
             token: stateToken
@@ -288,14 +293,20 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
-          this.options.honor = res.data.data;
+        if (res.data.code === 0) {
+          this.options.sort = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取成果类型列表",
+          type: "warning"
+        });
       });
   }
 });

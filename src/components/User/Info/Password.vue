@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:05 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:45:05 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-29 12:57:45
  */
 
 <template>
@@ -168,9 +168,9 @@ export default Vue.extend({
         (errorMsg: string) => {
           if (!errorMsg) {
             this.isConfirming = true;
-            (this as any).$axios
+            this.$http
               .post(
-                "/password",
+                "/api/online/password",
                 {
                   password: this.form.oldPassword
                 },
@@ -182,16 +182,24 @@ export default Vue.extend({
               )
               .then((res: AxiosResponse) => {
                 this.isConfirming = false;
-                if (res.data.code === -1) {
+                if (res.data.code === 0) {
+                  this.isDisable = false;
+                  this.confirmBtnIcon = "el-icon-check";
+                } else {
                   this.isDisable = true;
                   this.$message({
-                    message: "请检查密码",
+                    message: res.data.msg || "请检查密码",
                     type: "warning"
                   });
-                } else {
-                  this.confirmBtnIcon = "el-icon-check";
-                  this.isDisable = false;
                 }
+              })
+              .catch(() => {
+                this.isConfirming = false;
+                this.isDisable = true;
+                this.$message({
+                  message: "由于未知因素，暂时无法验证密码",
+                  type: "warning"
+                });
               });
           }
         }
@@ -208,20 +216,22 @@ export default Vue.extend({
       (this as any).$refs[formName].validate((valid: boolean) => {
         this.isSaving = true;
         if (valid) {
-          (this as any).$axios
-            .post("/newPassword", {
-              oldPassword: this.form.oldPassword,
-              newPassword: this.form.newPassword,
-              token: this.$store.state.userInfo.token
-            })
+          this.$http
+            .post(
+              "/api/online/newPassword",
+              {
+                password: this.form.oldPassword,
+                newPassword: this.form.newPassword
+              },
+              {
+                headers: {
+                  token: this.$store.state.userInfo.token
+                }
+              }
+            )
             .then((res: AxiosResponse) => {
               this.resetForm("form");
-              if (res.data.code === -1) {
-                this.$message({
-                  message: res.data.msg || "未知错误",
-                  type: "warning"
-                });
-              } else {
+              if (res.data.code === 0) {
                 this.$message({
                   message: "修改成功，正在跳转至登录页...",
                   type: "success"
@@ -231,7 +241,18 @@ export default Vue.extend({
                   sessionStorage.clear();
                   this.$router.replace({ name: "login" });
                 }, 1000);
+              } else {
+                this.$message({
+                  message: res.data.msg,
+                  type: "warning"
+                });
               }
+            })
+            .catch(() => {
+              this.$message({
+                message: "出现未知错误，暂时无法修改密码",
+                type: "warning"
+              });
             });
         }
       });

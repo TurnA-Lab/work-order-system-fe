@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:49 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:48:49 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-30 22:12:24
  */
 
 module.exports = {
@@ -12,11 +12,11 @@ module.exports = {
 		port: 8080,
 		proxy: {
 			//配置跨域
-			'^/api': (process.env.NODE_ENV === "development") ? {
-				target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e/api",
+			"^/api": {
+				target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e",
 				ws: true,
 				changOrigin: true,
-			} : {}
+			}
 		}
 	}
 }
