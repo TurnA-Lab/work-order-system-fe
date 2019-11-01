@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:18
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-30 22:03:05
+ * @Last Modified time: 2019-11-01 20:16:12
  */
 
 import Vue from "vue";
@@ -27,7 +27,7 @@ declare module 'axios/' {
   }
 }
 
-Vue.axios.defaults.retry = 4;
+Vue.axios.defaults.retry = 2;
 Vue.axios.defaults.retryDelay = 1000;
 
 Vue.axios.interceptors.response.use(undefined, async function axiosRetryInterceptor(err) {

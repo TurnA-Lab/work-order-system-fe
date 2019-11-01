@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:55 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:45:55 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-01 21:15:23
  */
 
 <template>
@@ -26,7 +26,7 @@
         <span>输入负责人工号以进行确认</span>
       </main>
       <footer>
-        <el-input class="item" v-model.trim="input" :disabled="inputIsDisable"></el-input>
+        <el-input class="item" v-model.trim="input" :disabled="!isConfirming"></el-input>
         <el-button
           class="item"
           type="danger"
@@ -48,7 +48,6 @@ export default Vue.extend({
   data() {
     return {
       isVisible: false,
-      inputIsDisable: false,
       submitIsDisable: true,
       isConfirming: false,
       submitBtn: "我已检查，进行提交",
@@ -62,6 +61,7 @@ export default Vue.extend({
     },
     submit() {
       const state = this.$store.state;
+
       this.isConfirming = true;
       this.$http
         .post(
@@ -97,6 +97,13 @@ export default Vue.extend({
                 } else {
                   this.isConfirming = true;
                 }
+              })
+              .catch(() => {
+                this.isConfirming = false;
+                this.$message({
+                  message: "由于未知因素，暂时无法提交表单",
+                  type: "warning"
+                });
               });
           } else {
             this.$message({
@@ -107,20 +114,20 @@ export default Vue.extend({
           }
         })
         .catch(() => {
+          this.isConfirming = false;
           this.$message({
-            message: "由于未知因素，暂时无法提交表单",
+            message: "由于未知因素，暂时无法验证身份",
             type: "warning"
           });
         });
     }
   },
-  watch: {
-    input(newData: string, oldData: string) {
-      this.submitIsDisable = newData ? false : true;
+  computed: {
+    submitIsDisable() {
+      return this.$data.input ? false : true;
     },
-    isConfirming(newData: boolean, oldData: boolean) {
-      this.inputIsDisable = !this.inputIsDisable;
-      this.submitBtn = newData ? "请稍后……" : "我已检查，进行提交";
+    submitBtn() {
+      return this.$data.isConfirming ? "请稍后……" : "我已检查，进行提交";
     }
   }
 });

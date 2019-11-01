@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:44:41 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:44:41 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-01 20:22:59
  */
 
 <template>
@@ -92,10 +92,6 @@ export default Vue.extend({
             {
               key: "工作部门",
               value: userInfo.dptname
-            },
-            {
-              key: "单位号",
-              value: ""
             },
             {
               key: "出生日期",

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-30 16:21:07
+ * @Last Modified time: 2019-11-01 18:12:40
  */
 
 <template>
@@ -42,5 +42,14 @@ export default Vue.extend({
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .fa-icon {
+    width: auto;
+    height: 2vw; /* or any other relative font sizes */
+
+    /* You would have to include the following two lines to make this work in Safari */
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 </style>

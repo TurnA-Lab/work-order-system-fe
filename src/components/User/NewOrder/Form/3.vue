@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:28 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-29 13:31:01
+ * @Last Modified time: 2019-11-01 22:03:45
  */
 
 <template>
@@ -21,86 +21,72 @@
           :key="item.value"
           v-for="item in options.department"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖名称" prop="projectName" required>
-      <el-input v-model="form.projectName" placeholder="请输入获奖名称"></el-input>
+    <el-form-item class="form-item" label="获奖名称" prop="content" required>
+      <el-input v-model="form.content" placeholder="请输入获奖名称"></el-input>
     </el-form-item>
 
     <el-form-item label="获奖教师（第一）" required>
-      <el-tag
-        :key="name"
-        v-for="name in form.principalNames"
-        closable
-        @close="handleClose(form.principalNames,name)"
-      >{{name}}</el-tag>
-      <el-input
-        class="input-new-member"
-        v-if="etc.principalNames.inputVisible"
-        v-model="etc.inputValue"
-        ref="principalInput"
-        @keyup.enter.native="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
-        @blur="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
-      ></el-input>
-      <el-button v-else class="button-new-member" @click="showPrincipalInput()" plain>+ 获奖教师</el-button>
+      <el-input v-model="form.name" placeholder="请输入获奖教师（第一）"></el-input>
     </el-form-item>
 
     <el-form-item label="获奖成员">
       <el-tag
         :key="name"
-        v-for="name in form.memberNames"
+        v-for="name in form.teammate"
         closable
-        @close="handleClose(form.memberNames,name)"
+        @close="handleClose(form.teammate,name)"
       >{{name}}</el-tag>
       <el-input
         class="input-new-member"
-        v-if="etc.memberNames.inputVisible"
+        v-if="etc.teammate.inputVisible"
         v-model="etc.inputValue"
         ref="memberInput"
-        @keyup.enter.native="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
-        @blur="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
+        @keyup.enter.native="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
+        @blur="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
       ></el-input>
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
     </el-form-item>
     <!--  -->
-    <el-form-item class="form-item" label="奖项" prop="level" required>
-      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
+    <el-form-item class="form-item" label="奖项" prop="prize" required>
+      <el-select v-model="form.prize" placeholder="请选择，或输入以查找" filterable>
         <el-option
-          v-for="item in options.level"
+          v-for="item in options.prize"
           :key="item.value"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item class="form-item" label="项目类型" prop="bonusClass" required>
+    <el-form-item class="form-item" label="获奖类型" prop="sort" required>
       <el-cascader
-        v-model="form.bonusClass"
+        v-model="form.sort"
         placeholder="请选择，或输入以查找"
-        :options="options.bonusClass"
+        :options="options.sort"
         :props="{ expandTrigger: 'hover' }"
         :show-all-levels="false"
         filterable
       ></el-cascader>
     </el-form-item>
-    <el-form-item class="form-item" label="级别" prop="rank" required>
-      <el-select v-model="form.rank" placeholder="请选择，或输入以查找" filterable>
+    <el-form-item class="form-item" label="级别" prop="level" required>
+      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
-          v-for="item in options.rank"
+          v-for="item in options.level"
           :key="item.value"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item class="form-item" label="颁奖部门" prop="sponsor" required>
-      <el-input v-model="form.sponsor" placeholder="请输入颁奖部门"></el-input>
+    <el-form-item class="form-item" label="颁奖部门" prop="awardUnit" required>
+      <el-input v-model="form.awardUnit" placeholder="请输入颁奖部门"></el-input>
     </el-form-item>
-    <el-form-item class="form-item" label="获奖时间" prop="honorDate" required>
-      <el-date-picker v-model="form.honorDate" type="date" placeholder="获奖时间"></el-date-picker>
+    <el-form-item class="form-item" label="获奖时间" prop="awardTime" required>
+      <el-date-picker v-model="form.awardTime" type="date" placeholder="获奖时间"></el-date-picker>
     </el-form-item>
     <el-form-item class="form-item" label="证书" prop="uploadField" required>
       <el-upload class="upload-demo" drag action multiple>
@@ -173,32 +159,32 @@ export default Vue.extend({
     return {
       form: {
         department: "",
-        projectName: "",
-        principalNames: [],
-        memberNames: [],
-        sponsor: "",
-        honorDate: "",
+        content: "",
+        name: "",
+        teammate: [],
+        awardUnit: "",
+        awardTime: "",
+        prize: "",
         level: "",
-        rank: "",
-        bonusClass: ""
+        sort: ""
       },
       options: {
         department: [],
+        prize: [],
         level: [],
-        rank: [],
-        bonusClass: []
+        sort: []
       },
       rules: {
-        projectName: [{ validator: validateProjectName, trigger: "blur" }],
-        principalNames: [{ validaor: validatePrincipalNames, trigger: "blur" }],
-        sponsor: [{ validator: validateSponsor, trigger: "blur" }],
-        honorDate: [{ validator: validateHonorDate, trigger: "blur" }]
+        content: [{ validator: validateProjectName, trigger: "blur" }],
+        name: [{ validaor: validatePrincipalNames, trigger: "blur" }],
+        awardUnit: [{ validator: validateSponsor, trigger: "blur" }],
+        awardTime: [{ validator: validateHonorDate, trigger: "blur" }]
       },
       etc: {
-        principalNames: {
+        name: {
           inputVisible: false
         },
-        memberNames: {
+        teammate: {
           inputVisible: false
         },
         inputValue: ""
@@ -210,13 +196,13 @@ export default Vue.extend({
       nameField.splice(nameField.indexOf(member), 1);
     },
     showPrincipalInput() {
-      this.etc.principalNames.inputVisible = true;
+      this.etc.name.inputVisible = true;
       this.$nextTick(() => {
         (this as any).$refs.principalInput.$refs.input.focus();
       });
     },
     showMemberInput() {
-      this.etc.memberNames.inputVisible = true;
+      this.etc.teammate.inputVisible = true;
       this.$nextTick(() => {
         (this as any).$refs.memberInput.$refs.input.focus();
       });
@@ -226,10 +212,10 @@ export default Vue.extend({
       if (inputValue) {
         nameField.push(inputValue);
       }
-      if (this.etc.principalNames.inputVisible === inputVisible) {
-        this.etc.principalNames.inputVisible = false;
+      if (this.etc.name.inputVisible === inputVisible) {
+        this.etc.name.inputVisible = false;
       } else {
-        this.etc.memberNames.inputVisible = false;
+        this.etc.teammate.inputVisible = false;
       }
       this.etc.inputValue = "";
     },
@@ -237,7 +223,18 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      this.$store.commit("orderForm", this.form);
+      (this as any).$refs.form.validate((valid: boolean) => {
+        if (valid) {
+          this.$store.commit(
+            "orderForm",
+            Object.assign(this.form, {
+              class2: this.form.sort[0],
+              class3: this.form.sort[1],
+              teammate: this.form.teammate.toString()
+            })
+          );
+        }
+      });
     }
   },
   created() {
@@ -271,10 +268,10 @@ export default Vue.extend({
         });
       });
 
-    // 请求奖项列表FIXME:
+    // 请求奖项列表
     this.$http
       .post(
-        "/levelList",
+        "/api/online/getPrizeList",
         {},
         {
           headers: {
@@ -283,8 +280,8 @@ export default Vue.extend({
         }
       )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
-          this.options.level = res.data.data;
+        if (res.data.code === 0) {
+          this.options.prize = res.data.data;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取奖项列表",
@@ -312,7 +309,7 @@ export default Vue.extend({
       )
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
-          this.options.rank = res.data.data;
+          this.options.level = res.data.data;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
@@ -342,7 +339,7 @@ export default Vue.extend({
       )
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
-          this.options.bonusClass = res.data.data;
+          this.options.sort = res.data.data;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取获奖类型列表",
