@@ -20,7 +20,7 @@ export default Vue.extend({
     return {
       isDisable: true,
       isOff: true,
-      isLoading: false,
+      isLoading: true,
       getStatus: () => {
         this.$http
           .post(
@@ -34,6 +34,7 @@ export default Vue.extend({
           )
           .then((res: AxiosResponse) => {
             this.$data.isDisable = false;
+            this.$data.isLoading = false;
             if (res.data.code === 0) {
               this.$data.isOff = false;
             } else {
@@ -43,6 +44,7 @@ export default Vue.extend({
           .catch(() => {
             this.$data.isDisable = true;
             this.$data.isOff = true;
+            this.$data.isLoading = false;
             setTimeout(() => {
               this.$message({
                 message: `由于未知因素，无法获取${this.title}状态`,
@@ -148,7 +150,7 @@ export default Vue.extend({
       position: absolute;
       opacity: 0;
       transform: scale(0);
-      transition: all 0.3s 0.1s;
+      transition: all 0.2s 0.1s;
     }
 
     &:hover {
