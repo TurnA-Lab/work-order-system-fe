@@ -6,6 +6,9 @@
  */
 
 module.exports = {
+	publicPath: process.env.NODE_ENV === "production" ?
+		"/work-order-system-fe/" :
+		"/",
 	devServer: {
 		open: true, //浏览器自动打开页面
 		host: "0.0.0.0", //如果是真机测试，就使用这个IP
