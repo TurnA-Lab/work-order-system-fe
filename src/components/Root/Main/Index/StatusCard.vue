@@ -1,5 +1,5 @@
 <template>
-  <el-card class="status-card" :class="{disable: isDisable}" @click.native="showIsDisable">
+  <el-card class="status-card" :class="{disable: isDisable}" @click="showIsDisable">
     <el-tooltip class="item" effect="dark" content="点击切换状态" placement="top">
       <figure class="status-icon" :class="{off: isOff}" v-loading="isLoading" @click="toggleStatus">
         <div class="status-info">{{isOff ?"关闭中" : "开启中"}}</div>
@@ -154,7 +154,7 @@ export default Vue.extend({
     }
 
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.08);
 
       & > svg {
         transform: scale(0);
