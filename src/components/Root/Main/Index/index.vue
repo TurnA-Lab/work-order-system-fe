@@ -18,14 +18,14 @@
       <status-card
         title="信息录入入口"
         icon="pen-alt"
-        fetch-api="/api/online/postOrderStatus"
-        amend-api="/api/online/postOrderStatus"
+        fetch-api="/api/online/user/getEntrancePermission"
+        amend-api="/api/online/root/manageUserEntrance"
       ></status-card>
       <status-card
         title="下属管理员获取入口"
         icon="clipboard-list"
         fetch-api="/api/online/fetchOrdersStatus"
-        amend-api="/api/online/fetchOrdersStatus"
+        amend-api="/api/online/root/manageAdminEntrance"
       ></status-card>
     </div>
   </main>

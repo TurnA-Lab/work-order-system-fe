@@ -59,6 +59,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import "@/stylesheet/default.scss";
+
 .offline {
   pointer-events: none;
 
@@ -74,7 +76,6 @@ export default Vue.extend({
   & > .offline-msg {
     transform: translateY(0vh) !important;
     opacity: 1 !important;
-    filter: blur(0px);
   }
 }
 
@@ -103,7 +104,6 @@ export default Vue.extend({
     opacity: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #dddddd;
     z-index: 999;
     transition: all 0.4s;
     pointer-events: none;
@@ -113,7 +113,6 @@ export default Vue.extend({
     position: fixed;
     top: 2vh;
 
-    // height: 8vh;
     font-size: 1.4vw;
     border-radius: 2vh;
     text-align: center;

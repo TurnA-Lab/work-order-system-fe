@@ -28,10 +28,12 @@
         </el-form-item>
         <el-form-item>
           <el-button
+            style="width: 100%;"
             type="primary"
             @click="submitForm('form')"
+            @keyup.enter="submitForm('form')"
             :loading="isConfirming"
-            style="width: 100%;"
+            :autofocus="true"
           >{{submitBtnText}}</el-button>
         </el-form-item>
       </el-form>

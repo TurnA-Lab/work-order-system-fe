@@ -21,6 +21,8 @@ export default Vue.extend({
       isDisable: true,
       isOff: true,
       isLoading: true,
+      status: {},
+      statusInfo: {},
       getStatus: () => {
         this.$http
           .post(
@@ -37,6 +39,7 @@ export default Vue.extend({
             this.$data.isLoading = false;
             if (res.data.code === 0) {
               this.$data.isOff = false;
+              this.$data.status = res.data.data;
             } else {
               this.$data.isOff = true;
             }
@@ -55,19 +58,22 @@ export default Vue.extend({
       }
     };
   },
+  watch: {
+    status(newInfo, oldInfo) {
+      for (const key of Object.keys(newInfo)) {
+        (this.statusInfo as any)[key] = !newInfo[key];
+      }
+    }
+  },
   methods: {
     toggleStatus() {
       this.isLoading = true;
       this.$http
-        .post(
-          this.amendApi,
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
+        .post(this.amendApi, this.statusInfo, {
+          headers: {
+            token: this.$store.state.userInfo.token
           }
-        )
+        })
         .then((res: AxiosResponse) => {
           this.isLoading = false;
           if (res.data.code !== 0) {

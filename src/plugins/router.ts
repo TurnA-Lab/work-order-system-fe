@@ -86,6 +86,11 @@ const router = new Router({
           path: "home",
           name: "rootHome",
           component: () => import("@/components/Root/Main/Index/index.vue")
+        },
+        {
+          path: "type_manager",
+          name: "rootTypeManager",
+          component: () => import("@/components/Root/Main/TypeManager/index.vue")
         }
       ]
     }
