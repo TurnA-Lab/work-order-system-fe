@@ -48,7 +48,6 @@ export default Vue.extend({
   data() {
     return {
       isVisible: false,
-      submitIsDisable: true,
       isConfirming: false,
       submitBtn: "我已检查，进行提交",
       input: ""

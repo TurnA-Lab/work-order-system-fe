@@ -86,6 +86,11 @@ const router = new Router({
           path: "home",
           name: "rootHome",
           component: () => import("@/components/Root/Main/Index/index.vue")
+        },
+        {
+          path: "type_manager",
+          name: "rootTypeManager",
+          component: () => import("@/components/Root/Main/TypeManager/index.vue")
         }
       ]
     }
@@ -106,5 +111,10 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location: string) {
+  return (originalPush.call(this, location) as any).catch((err: string) => err);
+};
 
 export default router;

@@ -1,5 +1,5 @@
 <template>
-  <el-card class="status-card" :class="{disable: isDisable}" @click.native="showIsDisable">
+  <el-card class="status-card" :class="{disable: isDisable}" @click="showIsDisable">
     <el-tooltip class="item" effect="dark" content="点击切换状态" placement="top">
       <figure class="status-icon" :class="{off: isOff}" v-loading="isLoading" @click="toggleStatus">
         <div class="status-info">{{isOff ?"关闭中" : "开启中"}}</div>
@@ -21,6 +21,8 @@ export default Vue.extend({
       isDisable: true,
       isOff: true,
       isLoading: true,
+      status: {},
+      statusInfo: {},
       getStatus: () => {
         this.$http
           .post(
@@ -37,6 +39,7 @@ export default Vue.extend({
             this.$data.isLoading = false;
             if (res.data.code === 0) {
               this.$data.isOff = false;
+              this.$data.status = res.data.data;
             } else {
               this.$data.isOff = true;
             }
@@ -55,19 +58,22 @@ export default Vue.extend({
       }
     };
   },
+  watch: {
+    status(newInfo, oldInfo) {
+      for (const key of Object.keys(newInfo)) {
+        (this.statusInfo as any)[key] = !newInfo[key];
+      }
+    }
+  },
   methods: {
     toggleStatus() {
       this.isLoading = true;
       this.$http
-        .post(
-          this.amendApi,
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
+        .post(this.amendApi, this.statusInfo, {
+          headers: {
+            token: this.$store.state.userInfo.token
           }
-        )
+        })
         .then((res: AxiosResponse) => {
           this.isLoading = false;
           if (res.data.code !== 0) {
@@ -154,7 +160,7 @@ export default Vue.extend({
     }
 
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.08);
 
       & > svg {
         transform: scale(0);

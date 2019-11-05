@@ -75,6 +75,10 @@ export default Vue.extend({
       this.$store.commit("clearUserInfo");
       sessionStorage.clear();
       this.$router.replace({ name: "login" });
+      this.$message({
+        type: "success",
+        message: "退出登录成功!"
+      });
     },
     toggleFullScreen() {
       if (document.fullscreen) {
