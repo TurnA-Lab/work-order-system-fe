@@ -329,7 +329,7 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "成果类"
+          class1: "获奖类"
         },
         {
           headers: {

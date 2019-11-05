@@ -104,8 +104,8 @@ export default Vue.extend({
     opacity: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 999;
     transition: all 0.4s;
+    z-index: 999;
     pointer-events: none;
   }
 

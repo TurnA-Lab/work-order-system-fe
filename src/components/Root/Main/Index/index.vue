@@ -52,10 +52,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 main {
-  flex-grow: 1;
-  padding: 0.5vw 1vw;
-  user-select: none;
-
   // display: grid;
   .user-info {
     width: 100%;

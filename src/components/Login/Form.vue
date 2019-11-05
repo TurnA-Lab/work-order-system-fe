@@ -7,7 +7,12 @@
 
 <template>
   <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
-    <el-card class="login-card" shadow="hover" :body-style="{'padding': '20px 40px'}">
+    <el-card
+      class="login-card"
+      shadow="hover"
+      :body-style="{'padding': '20px 40px'}"
+      @keyup.enter.native="submitForm('form')"
+    >
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item style="text-align: center;" prop="permission">
           <el-radio-group v-model="form.permission">
@@ -31,9 +36,7 @@
             style="width: 100%;"
             type="primary"
             @click="submitForm('form')"
-            @keyup.enter="submitForm('form')"
             :loading="isConfirming"
-            :autofocus="true"
           >{{submitBtnText}}</el-button>
         </el-form-item>
       </el-form>

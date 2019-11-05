@@ -39,7 +39,7 @@
     </el-submenu>
     <el-menu-item index="3" :route="{name: 'rootTypeManager'}">
       <i class="el-icon-menu"></i>
-      <span slot="title">表单类别 / 级别管理</span>
+      <span slot="title">类型 / 级别管理</span>
     </el-menu-item>
     <el-menu-item index="4" disabled>
       <i class="el-icon-document"></i>

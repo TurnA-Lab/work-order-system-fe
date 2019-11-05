@@ -6,7 +6,11 @@
  */
 
 <template>
-  <router-view></router-view>
+  <main>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+  </main>
 </template>
 
 <script lang="ts">
@@ -15,4 +19,9 @@ export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
+main {
+  flex-grow: 1;
+  padding: 0.5vw 1vw;
+  user-select: none;
+}
 </style>

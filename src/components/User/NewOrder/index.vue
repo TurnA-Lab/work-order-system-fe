@@ -112,11 +112,8 @@ export default Vue.extend({
   }
 
   &::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
   }
 
   & > .off-info {
@@ -142,6 +139,16 @@ export default Vue.extend({
 
   & > .body {
     display: flex;
+    pointer-events: all;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+    }
 
     & > .off-info {
       position: absolute;
@@ -151,6 +158,7 @@ export default Vue.extend({
       font-size: 2.4vw;
       width: 86vw;
       z-index: 999;
+      pointer-events: none;
     }
 
     & > aside {
