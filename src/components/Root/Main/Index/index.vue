@@ -24,7 +24,7 @@
       <status-card
         title="下属管理员获取入口"
         icon="clipboard-list"
-        fetch-api="/api/online/fetchOrdersStatus"
+        fetch-api="/api/online/collegeAdmin/getAdminEnterPermission"
         amend-api="/api/online/root/manageAdminEntrance"
       ></status-card>
     </div>
