@@ -82,8 +82,7 @@ export default Vue.extend({
   background-color: white;
   margin: 0px 1vw 1vw 1vw;
   padding: 1vw 2vw;
-  border-radius: 2vw 2px 2px 2vw;
+  border-radius: 1rem 2px 2px 1rem;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.4s;
 }
 </style>
