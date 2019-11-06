@@ -10,6 +10,7 @@
               :type-data="{'class1': '建设类'}"
               remove-api="/api/online/root/deleteType"
               remove-type="class3"
+              append-api="/api/online/root/addType"
             ></type-tree>
           </el-tab-pane>
           <el-tab-pane label="成果类">
@@ -19,6 +20,7 @@
               :type-data="{'class1': '成果类'}"
               remove-api="/api/online/root/deleteType"
               remove-type="class3"
+              append-api="/api/online/root/addType"
             ></type-tree>
           </el-tab-pane>
           <el-tab-pane label="获奖类">
@@ -28,6 +30,7 @@
               :type-data="{'class1': '获奖类'}"
               remove-api="/api/online/root/deleteType"
               remove-type="class3"
+              append-api="/api/online/root/addType"
             ></type-tree>
           </el-tab-pane>
         </el-tabs>
@@ -37,10 +40,22 @@
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="奖项">
-            <type-tree type="奖项" type-api="/api/online/getPrizeList"></type-tree>
+            <type-tree
+              type="奖项"
+              type-api="/api/online/getPrizeList"
+              remove-api="/api/online/root/deleteLevel"
+              remove-type="level"
+              append-api="/api/online/root/addLevel"
+            ></type-tree>
           </el-tab-pane>
           <el-tab-pane label="获奖级别">
-            <type-tree type="获奖级别" type-api="/api/online/getLevelSet"></type-tree>
+            <type-tree
+              type="获奖级别"
+              type-api="/api/online/getLevelSet"
+              remove-api="/api/online/root/deleteLevel"
+              remove-type="level"
+              append-api="/api/online/root/addLevel"
+            ></type-tree>
           </el-tab-pane>
         </el-tabs>
       </div>
