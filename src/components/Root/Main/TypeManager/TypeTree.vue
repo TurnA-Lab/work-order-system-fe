@@ -349,7 +349,7 @@ export default Vue.extend({
                           parent.data.children.push(newChild);
                         } else {
                           this.$message({
-                            message: `由于未知因素，无法编辑${data.label}}}`,
+                            message: `由于未知因素，无法编辑${data.label}`,
                             type: "warning"
                           });
                         }

@@ -91,6 +91,11 @@ const router = new Router({
           path: "type_manager",
           name: "rootTypeManager",
           component: () => import("@/components/Root/Main/TypeManager/index.vue")
+        },
+        {
+          path: "about",
+          name: "rootAbout",
+          component: () => import("@/components/Etc/UploadFile.vue")
         }
       ]
     }
