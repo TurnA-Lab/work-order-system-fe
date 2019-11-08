@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-11-08 10:18:14 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-11-08 10:18:14 
+ */
+
 <template>
   <el-tabs tab-position="right" class="custom-tabs">
     <el-tab-pane label="类型">

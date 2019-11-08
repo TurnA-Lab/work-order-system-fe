@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:28 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 22:03:45
+ * @Last Modified time: 2019-11-08 22:23:53
  */
 
 <template>
@@ -51,7 +51,6 @@
       ></el-input>
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
     </el-form-item>
-    <!--  -->
     <el-form-item class="form-item" label="奖项" prop="prize" required>
       <el-select v-model="form.prize" placeholder="请选择，或输入以查找" filterable>
         <el-option
@@ -88,17 +87,9 @@
     <el-form-item class="form-item" label="获奖时间" prop="awardTime" required>
       <el-date-picker v-model="form.awardTime" type="date" placeholder="获奖时间"></el-date-picker>
     </el-form-item>
-    <el-form-item class="form-item" label="证书" prop="uploadField" required>
-      <el-upload class="upload-demo" drag action multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-        </div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
+    <el-form-item class="form-item" label="证书" prop="uploadField">
+      <upload-btn></upload-btn>
     </el-form-item>
-    <!--  -->
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
       <submit-btn @click="nextActive"></submit-btn>
@@ -109,11 +100,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import submitBtn from "../Etc/submitFormBtn.vue";
+import SubmitBtn from "../Etc/SubmitFormBtn.vue";
+import UploadBtn from "../Etc/UploadBtn.vue";
 
 export default Vue.extend({
   components: {
-    submitBtn
+    SubmitBtn,
+    UploadBtn
   },
   data() {
     const validateProjectName = (

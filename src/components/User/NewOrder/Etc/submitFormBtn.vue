@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 21:15:23
+ * @Last Modified time: 2019-11-08 22:29:47
  */
 
 <template>
@@ -26,7 +26,7 @@
         <span>输入负责人工号以进行确认</span>
       </main>
       <footer>
-        <el-input class="item" v-model.trim="input" :disabled="!isConfirming"></el-input>
+        <el-input class="item" v-model.trim="input" :disabled="!inputIsDisable"></el-input>
         <el-button
           class="item"
           type="danger"
@@ -49,7 +49,6 @@ export default Vue.extend({
     return {
       isVisible: false,
       isConfirming: false,
-      submitBtn: "我已检查，进行提交",
       input: ""
     };
   },

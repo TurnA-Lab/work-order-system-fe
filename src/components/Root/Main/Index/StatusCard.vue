@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-11-08 10:18:28 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-11-08 10:18:28 
+ */
+
 <template>
   <el-card class="status-card" :class="{disable: isDisable}" @click="showIsDisable">
     <el-tooltip class="item" effect="dark" content="点击切换状态" placement="top">
