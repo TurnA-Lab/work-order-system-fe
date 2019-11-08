@@ -45,7 +45,7 @@
       <i class="el-icon-document"></i>
       <span slot="title">导航三</span>
     </el-menu-item>
-    <el-menu-item index="5">
+    <el-menu-item index="5" :route="{name: 'rootAbout'}">
       <i class="el-icon-setting"></i>
       <span slot="title">导航四</span>
     </el-menu-item>
