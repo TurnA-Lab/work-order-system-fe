@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:28 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-08 22:23:53
+ * @Last Modified time: 2019-11-08 23:33:12
  */
 
 <template>
@@ -30,7 +30,7 @@
       <el-input v-model="form.content" placeholder="请输入获奖名称"></el-input>
     </el-form-item>
 
-    <el-form-item label="获奖教师（第一）" required>
+    <el-form-item class="form-item" label="获奖教师（第一）" required>
       <el-input v-model="form.name" placeholder="请输入获奖教师（第一）"></el-input>
     </el-form-item>
 

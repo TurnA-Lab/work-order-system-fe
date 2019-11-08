@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:17:34 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-08 21:39:33
+ * @Last Modified time: 2019-11-09 00:38:04
  */
 
 /* 
@@ -74,6 +74,7 @@ export default Vue.extend({
     const stateToken = this.$store.state.userInfo.token;
 
     return {
+      filesUuid: [],
       acceptTypes: [
         "image/*",
         "text/*",
@@ -148,6 +149,10 @@ export default Vue.extend({
                         .then((confirmRes: AxiosResponse) => {
                           // if (res.data.code === 0) {
                           if (res.statusText === "OK") {
+                            // 存入
+                            (this.$data.filesUuid as string[]).push(
+                              res.data.uuid
+                            );
                             load(res.data.uuid);
                           } else {
                             this.$message({
@@ -223,7 +228,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .filepond--root {
-  max-height: 60vh;
+  max-height: 50vh;
 }
 
 .filepond-label {
