@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:47:31 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:47:31 
+ */
+
 <template>
   <main class="user">
     <user-card />
@@ -23,8 +30,9 @@ export default Vue.extend({
 .user {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   height: 90vh;
-  padding: 0rem 3rem;
+  width: 85vw;
 }
 </style>

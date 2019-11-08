@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:45:37 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:45:37 
+ */
+
 <template>
   <transition appear appear-active-class="slide" @appear="lockCard" @after-appear="unlockCard">
     <el-card class="box">
@@ -34,9 +41,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "@/stylesheet/default.scss";
+
 .box {
-  height: 430px;
-  width: 430px * 0.7;
+  height: $card-width * 1.414;
+  width: $card-width;
   border-radius: 1rem;
   text-align: center;
 

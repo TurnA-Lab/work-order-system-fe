@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:48:38
+ * @Last Modified by:   Skye Young
+ * @Last Modified time: 2019-10-28 19:48:38
+ */
+
 import Vue from "vue";
 import Vuex from "vuex";
 

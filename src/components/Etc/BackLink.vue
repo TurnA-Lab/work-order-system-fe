@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:49:31 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:49:31 
+ */
+
 <template>
   <a class="back" @click="clickFun">
     <span id="backIcon" class="el-icon-back"></span> 返回

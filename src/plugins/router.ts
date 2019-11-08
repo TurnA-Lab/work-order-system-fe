@@ -1,9 +1,17 @@
+/*
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:48:30
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-30 16:13:47
+ */
+
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "./views/Login.vue";
-import UserIndex from "./views/User/index.vue";
-import UserInfo from "./views/User/Info.vue";
-import UserWorkOrder from "./views/User/WorkOrder.vue";
+import Login from "@/views/Login.vue";
+import UserIndex from "@/views/User/index.vue";
+import UserInfo from "@/views/User/Info.vue";
+import UserWorkOrder from "@/views/User/WorkOrder.vue";
+import RootIndex from "@/views/Root/index.vue";
 
 Vue.use(Router);
 
@@ -21,8 +29,7 @@ const router = new Router({
         if (sessionStorage.getItem("wo_permission") === "0") {
           return "/user";
         } else if (sessionStorage.getItem("wo_permission") === "1") {
-          // TODO:
-          return "/about";
+          return "/root";
         } else {
           return "/login";
         }
@@ -42,12 +49,12 @@ const router = new Router({
         {
           path: "profile",
           name: "userInfoProfile",
-          component: () => import("./components/User/Info/Profile.vue")
+          component: () => import("@/components/User/Info/Profile.vue")
         },
         {
           path: "password",
           name: "userInfoPassword",
-          component: () => import("./components/User/Info/Password.vue")
+          component: () => import("@/components/User/Info/Password.vue")
         }
       ]
     },
@@ -60,30 +67,37 @@ const router = new Router({
         {
           path: "orders",
           name: "userOrders",
-          component: () => import("./components/User/Orders/index.vue")
+          component: () => import("@/components/User/Orders/index.vue")
         },
         {
           path: "new_order",
           name: "userNewOrder",
-          component: () => import("./components/User/NewOrder/index.vue"),
-          // redirect: { name: "userNewOrderProcess1" },
-          // children: [
-          //   {
-          //     path: "process/1",
-          //     name: "userNewOrderProcess1",
-          //     component: () => import("./components/UserNewOrderProcess1.vue")
-          //   }
-          // ]
+          component: () => import("@/components/User/NewOrder/index.vue"),
         }
       ]
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
+      path: "/root",
+      name: "root",
+      component: RootIndex,
+      redirect: { name: "rootHome" },
+      children: [
+        {
+          path: "home",
+          name: "rootHome",
+          component: () => import("@/components/Root/Main/Index/index.vue")
+        },
+        {
+          path: "type_manager",
+          name: "rootTypeManager",
+          component: () => import("@/components/Root/Main/TypeManager/index.vue")
+        },
+        {
+          path: "about",
+          name: "rootAbout",
+          component: () => import("@/components/Etc/UploadFile.vue")
+        }
+      ]
     }
   ]
 });
@@ -102,5 +116,10 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location: string) {
+  return (originalPush.call(this, location) as any).catch((err: string) => err);
+};
 
 export default router;

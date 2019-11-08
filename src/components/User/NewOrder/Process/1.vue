@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:46:37 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:46:37 
+ */
+
 <template>
   <div class="box">
     <el-card class="card" shadow="hover">
@@ -39,6 +46,8 @@ export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
+@import "@/stylesheet/default.scss";
+
 .box {
   display: flex;
   flex-direction: row;
@@ -49,12 +58,8 @@ export default Vue.extend({});
   padding: 0% 4vw;
 
   .card {
-    height: 430px;
-    width: 430px * 0.7;
-
-    .select-btn {
-      align-self: flex-end;
-    }
+    height: $card-width * 1.414;
+    width: $card-width;
   }
 }
 </style>

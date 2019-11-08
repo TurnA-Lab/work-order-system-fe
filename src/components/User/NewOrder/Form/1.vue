@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:46:06 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-01 21:15:32
+ */
+
 <template>
   <el-form
     class="form-part"
@@ -18,49 +25,35 @@
         ></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item class="form-item" label="项目名称" prop="projectName" required>
-      <el-input v-model="form.projectName" placeholder="请输入项目名称"></el-input>
+    <el-form-item class="form-item" label="项目名称" prop="project" required>
+      <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
     </el-form-item>
-    <el-form-item label="项目负责人" required>
-      <el-tag
-        :key="name"
-        v-for="name in form.principalNames"
-        closable
-        @close="handleClose(form.principalNames,name)"
-      >{{name}}</el-tag>
-      <el-input
-        class="input-new-member"
-        v-if="etc.principalNames.inputVisible"
-        v-model="etc.inputValue"
-        ref="principalInput"
-        @keyup.enter.native="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
-        @blur="handleInputConfirm(form.principalNames,etc.principalNames.inputVisible)"
-      ></el-input>
-      <el-button v-else class="button-new-member" @click="showPrincipalInput()" plain>+ 新负责人</el-button>
+    <el-form-item class="form-item" label="项目负责人" required>
+      <el-input v-model="form.name" placeholder="请输入项目负责人"></el-input>
     </el-form-item>
     <el-form-item label="课题组成员">
       <el-tag
         :key="name"
-        v-for="name in form.memberNames"
+        v-for="name in form.teammate"
         closable
-        @close="handleClose(form.memberNames,name)"
+        @close="handleClose(form.teammate,name)"
       >{{name}}</el-tag>
       <el-input
         class="input-new-member"
-        v-if="etc.memberNames.inputVisible"
+        v-if="etc.teammate.inputVisible"
         v-model="etc.inputValue"
         ref="memberInput"
-        @keyup.enter.native="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
-        @blur="handleInputConfirm(form.memberNames,etc.memberNames.inputVisible)"
+        @keyup.enter.native="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
+        @blur="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
       ></el-input>
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
     </el-form-item>
-    <el-form-item class="form-item" label="立项年度" prop="projectYear" required>
-      <el-date-picker v-model="form.projectYear" type="year" placeholder="请选择立项年度"></el-date-picker>
+    <el-form-item class="form-item" label="立项年度" prop="startTime" required>
+      <el-date-picker v-model="form.startTime" type="year" placeholder="请选择立项年度"></el-date-picker>
     </el-form-item>
-    <el-form-item class="form-item" label="项目起止年月" prop="startNEndDate" required>
+    <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime" required>
       <el-date-picker
-        v-model="form.startNEndDate"
+        v-model="form.beginToEndTime"
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
@@ -80,13 +73,13 @@
         filterable
       ></el-cascader>
     </el-form-item>
-    <el-form-item class="form-item" label="项目级别" prop="rank" required>
-      <el-select v-model="form.rank" placeholder="请选择，或输入以查找" filterable>
+    <el-form-item class="form-item" label="项目级别" prop="level" required>
+      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
-          v-for="item in options.rank"
+          v-for="item in options.level"
           :key="item.value"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
@@ -170,32 +163,33 @@ export default Vue.extend({
     return {
       form: {
         department: "",
-        projectName: "",
-        principalNames: [],
-        memberNames: [],
-        projectYear: "",
-        startNEndDate: "",
+        project: "",
+        name: "",
+        teammate: [],
+        startTime: "",
+        beginToEndTime: "",
         sponsor: "",
         sort: "",
-        rank: ""
+        level: "",
+        testimonial: ""
       },
       options: {
         department: [],
         sort: [],
-        rank: []
+        level: []
       },
       rules: {
-        projectName: [{ validator: validateProjectName, trigger: "blur" }],
-        principalNames: [{ validaor: validatePrincipalNames, trigger: "blur" }],
-        projectYear: [{ validator: validateProjectYear, trigger: "blur" }],
-        startNEndDate: [{ validator: validateStartNEndDate, trigger: "blur" }],
+        project: [{ validator: validateProjectName, trigger: "blur" }],
+        name: [{ validaor: validatePrincipalNames, trigger: "blur" }],
+        startTime: [{ validator: validateProjectYear, trigger: "blur" }],
+        beginToEndTime: [{ validator: validateStartNEndDate, trigger: "blur" }],
         sponsor: [{ validator: validateSponsor, trigger: "blur" }]
       },
       etc: {
-        principalNames: {
+        name: {
           inputVisible: false
         },
-        memberNames: {
+        teammate: {
           inputVisible: false
         },
         inputValue: ""
@@ -207,13 +201,13 @@ export default Vue.extend({
       nameField.splice(nameField.indexOf(member), 1);
     },
     showPrincipalInput() {
-      this.etc.principalNames.inputVisible = true;
+      this.etc.name.inputVisible = true;
       this.$nextTick(() => {
         (this as any).$refs.principalInput.$refs.input.focus();
       });
     },
     showMemberInput() {
-      this.etc.memberNames.inputVisible = true;
+      this.etc.teammate.inputVisible = true;
       this.$nextTick(() => {
         (this as any).$refs.memberInput.$refs.input.focus();
       });
@@ -223,10 +217,10 @@ export default Vue.extend({
       if (inputValue) {
         nameField.push(inputValue);
       }
-      if (this.etc.principalNames.inputVisible === inputVisible) {
-        this.etc.principalNames.inputVisible = false;
+      if (this.etc.name.inputVisible === inputVisible) {
+        this.etc.name.inputVisible = false;
       } else {
-        this.etc.memberNames.inputVisible = false;
+        this.etc.teammate.inputVisible = false;
       }
       this.etc.inputValue = "";
     },
@@ -234,56 +228,107 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      this.$store.commit("orderForm", this.form);
+      (this as any).$refs.form.validate((valid: boolean) => {
+        if (valid) {
+          this.$store.commit(
+            "orderForm",
+            Object.assign({}, this.form, {
+              class2: this.form.sort[0],
+              class3: this.form.sort[1],
+              teammate: this.form.teammate.toString()
+            })
+          );
+        }
+      });
     }
   },
   created() {
+    const stateToken = this.$store.state.userInfo.token;
+
     // 请求院部列表
-    (this as any).$axios
-      .post("/departmentList", {
-        token: this.$store.state.userInfo.token
-      })
+    this.$http
+      .post(
+        "/api/online/getDepartmentList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.department = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取院部列表",
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取院部列表",
+          type: "warning"
+        });
       });
 
-    // 请求项目类别列表
-    (this as any).$axios
-      .post("/sortList", {
-        token: this.$store.state.userInfo.token
-      })
+    // 请求项目类型列表
+    this.$http
+      .post(
+        "/api/online/getTypeList",
+        {
+          class1: "建设类"
+        },
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           this.options.sort = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取项目类型列表",
+          type: "warning"
+        });
       });
 
     // 请求项目级别列表
-    (this as any).$axios
-      .post("/rankList", {
-        token: this.$store.state.userInfo.token
-      })
+    this.$http
+      .post(
+        "/api/online/getLevelSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
       .then((res: AxiosResponse) => {
-        if (res.data.code === 1) {
-          this.options.rank = res.data.data;
+        if (res.data.code === 0) {
+          this.options.level = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg,
+            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
             type: "warning"
           });
         }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取项目级别列表",
+          type: "warning"
+        });
       });
   }
 });

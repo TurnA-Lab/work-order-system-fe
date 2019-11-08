@@ -1,5 +1,12 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:47:05 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:47:05 
+ */
+
 <template>
-  <div class="flex-box">
+  <div class="flex-box" v-loading="isLoading">
     <header>
       <h2>
         提交工单
@@ -13,7 +20,8 @@
         </el-popover>
       </h2>
     </header>
-    <div class="body">
+    <div class="body" :class="{off: isOff}">
+      <div class="off-info">当前无法提交工单</div>
       <aside>
         <el-steps direction="vertical" :active="$store.state.order.active">
           <el-step title="选择类别"></el-step>
@@ -32,6 +40,8 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { AxiosResponse } from "axios";
+
 import process1 from "@/components/User/NewOrder/Process/1.vue";
 import process2 from "@/components/User/NewOrder/Process/2.vue";
 import process3 from "@/components/User/NewOrder/Process/3.vue";
@@ -42,21 +52,76 @@ export default Vue.extend({
     process2,
     process3
   },
-  destroyed() {
-    this.$store.commit("clearOrder");
-  },
   data() {
-    return {};
+    return {
+      isOff: false,
+      isLoading: true,
+      getStatus: () => {
+        this.$http
+          .post(
+            "/api/online/user/getEntrancePermission",
+            {},
+            {
+              headers: {
+                token: this.$store.state.userInfo.token
+              }
+            }
+          )
+          .then((res: AxiosResponse) => {
+            this.$data.isLoading = false;
+            if (res.data.code === 0) {
+              this.$data.isOff = false;
+            } else {
+              this.$data.isOff = true;
+            }
+          })
+          .catch(() => {
+            this.$data.isOff = true;
+            this.$data.isLoading = false;
+            setTimeout(() => {
+              this.$message({
+                message: `由于未知因素，无法获取工单提交入口状态`,
+                type: "warning"
+              });
+            }, Math.random());
+          });
+      }
+    };
   },
   computed: {
     process() {
       return "process" + this.$store.state.order.active;
     }
+  },
+  mounted() {
+    this.getStatus();
+  },
+  destroyed() {
+    this.$store.commit("clearOrder");
   }
 });
 </script>
 
 <style lang="scss" scoped>
+@import "@/stylesheet/default.scss";
+
+.off {
+  & > aside,
+  & > main {
+    filter: blur(10px);
+  }
+
+  &::before {
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
+  }
+
+  & > .off-info {
+    opacity: 1 !important;
+    filter: blur(0px) !important;
+  }
+}
+
 .flex-box {
   display: flex;
   flex-direction: column;
@@ -74,10 +139,32 @@ export default Vue.extend({
 
   & > .body {
     display: flex;
+    pointer-events: all;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    & > .off-info {
+      position: absolute;
+      opacity: 0;
+      text-align: center;
+      line-height: 70vh;
+      font-size: 2.4vw;
+      width: 86vw;
+      z-index: 999;
+      pointer-events: none;
+    }
 
     & > aside {
       flex-basis: 7vw;
       height: 70vh;
+      width: 10vw;
     }
 
     & > main {

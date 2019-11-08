@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:45:47 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:45:47 
+ */
+
 <template>
   <main>
     <user-menu-card class="item">
@@ -68,6 +75,10 @@ export default Vue.extend({
       this.$store.commit("clearUserInfo");
       sessionStorage.clear();
       this.$router.replace({ name: "login" });
+      this.$message({
+        type: "success",
+        message: "退出登录成功!"
+      });
     },
     toggleFullScreen() {
       if (document.fullscreen) {
@@ -81,11 +92,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "@/stylesheet/default.scss";
+
 main {
   display: flex;
 
-  height: 430px;
-  padding-left: 16em;
+  height: $card-width * 1.414;
+  // padding-left: 16em;
 
   .item {
     // opacity: 0;
@@ -102,12 +115,12 @@ main {
       transform: translateY(-1rem);
 
       & ~ .item {
-        transform: translateX(430px * 0.7 * 0.45);
+        transform: translateX($card-width * 0.45);
       }
     }
 
     &:not(:first-of-type) {
-      margin-left: -430px * 0.7 * 0.45;
+      margin-left: -$card-width * 0.45;
     }
   }
 
@@ -124,8 +137,8 @@ main {
     grid-template-columns: 50% 50%;
     place-items: center;
 
-    height: 430px * 0.7 * 0.8;
-    width: 430px * 0.7 * 0.4;
+    height: $card-width * 0.8;
+    width: $card-width * 0.4;
   }
 
   .btn {

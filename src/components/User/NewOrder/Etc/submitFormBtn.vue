@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:45:55 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-01 21:15:23
+ */
+
 <template>
   <span class="submit-btn">
     <el-button type="primary" plain @click="nextActive">确认提交</el-button>
@@ -19,7 +26,7 @@
         <span>输入负责人工号以进行确认</span>
       </main>
       <footer>
-        <el-input class="item" v-model.trim="input" :disabled="inputIsDisable"></el-input>
+        <el-input class="item" v-model.trim="input" :disabled="!isConfirming"></el-input>
         <el-button
           class="item"
           type="danger"
@@ -41,8 +48,6 @@ export default Vue.extend({
   data() {
     return {
       isVisible: false,
-      inputIsDisable: false,
-      submitIsDisable: true,
       isConfirming: false,
       submitBtn: "我已检查，进行提交",
       input: ""
@@ -55,45 +60,73 @@ export default Vue.extend({
     },
     submit() {
       const state = this.$store.state;
+
       this.isConfirming = true;
-      (this as any).$axios
-        .post("/principalWorknum", {
-          worknum: this.input,
-          token: state.userInfo.token
-        })
+      this.$http
+        .post(
+          "/principalWorknum",
+          {
+            worknum: this.input
+          },
+          {
+            headers: {
+              token: state.userInfo.token
+            }
+          }
+        )
         .then((res: AxiosResponse) => {
-          if (res.data.code === 1) {
-            (this as any).$axios
-              .post(`/newForm${state.order.class}`, {
-                form: state.order.form,
-                token: state.userInfo.token
-              })
+          if (res.data.code === 0) {
+            this.$http
+              .post(
+                `/newForm${state.order.class}`,
+                {
+                  form: state.order.form
+                },
+                {
+                  headers: {
+                    token: state.userInfo.token
+                  }
+                }
+              )
               .then((response: AxiosResponse) => {
-                if (response.data.code === 1) {
+                if (response.data.code === 0) {
                   this.isConfirming = false;
                   this.$store.commit("nextActive");
                   this.isVisible = false;
                 } else {
                   this.isConfirming = true;
                 }
+              })
+              .catch(() => {
+                this.isConfirming = false;
+                this.$message({
+                  message: "由于未知因素，暂时无法提交表单",
+                  type: "warning"
+                });
               });
           } else {
             this.$message({
-              message: "项目负责人必须与当前登录用户相同",
+              message: res.data.msg || "项目负责人必须与当前登录用户相同",
               type: "warning"
             });
             this.isConfirming = false;
           }
+        })
+        .catch(() => {
+          this.isConfirming = false;
+          this.$message({
+            message: "由于未知因素，暂时无法验证身份",
+            type: "warning"
+          });
         });
     }
   },
-  watch: {
-    input(newData: string, oldData: string) {
-      this.submitIsDisable = newData ? false : true;
+  computed: {
+    submitIsDisable() {
+      return this.$data.input ? false : true;
     },
-    isConfirming(newData: boolean, oldData: boolean) {
-      this.inputIsDisable = !this.inputIsDisable;
-      this.submitBtn = newData ? "请稍后……" : "我已检查，进行提交";
+    submitBtn() {
+      return this.$data.isConfirming ? "请稍后……" : "我已检查，进行提交";
     }
   }
 });

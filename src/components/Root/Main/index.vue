@@ -1,13 +1,15 @@
 /*
  * @Author: Skye Young 
- * @Date: 2019-10-28 19:46:56 
+ * @Date: 2019-10-30 20:30:14 
  * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:46:56 
+ * @Last Modified time: 2019-10-30 20:30:14 
  */
 
 <template>
   <main>
-    <h1>工单已成功提交。</h1>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </main>
 </template>
 
@@ -18,10 +20,8 @@ export default Vue.extend({});
 
 <style lang="scss" scoped>
 main {
-  height: 60vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-grow: 1;
+  padding: 0.5vw 1vw;
+  user-select: none;
 }
 </style>

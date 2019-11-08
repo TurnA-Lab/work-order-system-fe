@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:47:59 
+ * @Last Modified by:   Skye Young 
+ * @Last Modified time: 2019-10-28 19:47:59 
+ */
+
 <template>
   <div class="login">
     <transition appear appear-class="fade-enter" appear-active-class="fade-enter-active">
@@ -21,15 +28,15 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/colors/default.scss";
+@import "@/stylesheet/default.scss";
 
 .login {
   header {
     text-align: center;
     font-size: 48px;
     font-weight: 800;
-    color: $--color-primary;
-    margin-block-end: 1vw;
+    color: $main;
+    margin-block-end: 0.5vw;
 
     user-select: none;
   }

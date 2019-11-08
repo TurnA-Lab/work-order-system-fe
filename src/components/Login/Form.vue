@@ -1,6 +1,18 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-10-28 19:49:23 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-10-30 19:02:29
+ */
+
 <template>
   <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
-    <el-card class="login-card" shadow="hover" :body-style="{'padding': '20px 40px'}">
+    <el-card
+      class="login-card"
+      shadow="hover"
+      :body-style="{'padding': '20px 40px'}"
+      @keyup.enter.native="submitForm('form')"
+    >
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item style="text-align: center;" prop="permission">
           <el-radio-group v-model="form.permission">
@@ -21,11 +33,11 @@
         </el-form-item>
         <el-form-item>
           <el-button
+            style="width: 100%;"
             type="primary"
             @click="submitForm('form')"
             :loading="isConfirming"
-            style="width: 100%;"
-          >{{loginSubmitBtn}}</el-button>
+          >{{submitBtnText}}</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -40,7 +52,6 @@ export default Vue.extend({
   data() {
     return {
       isConfirming: false,
-      loginSubmitBtn: "登录",
       form: {
         permission: "0",
         worknum: "",
@@ -52,9 +63,9 @@ export default Vue.extend({
       }
     };
   },
-  watch: {
-    isConfirming() {
-      this.loginSubmitBtn = this.isConfirming ? "请稍后..." : "登录";
+  computed: {
+    submitBtnText() {
+      return this.$data.isConfirming ? "请稍后..." : "登录";
     }
   },
   methods: {
@@ -62,34 +73,31 @@ export default Vue.extend({
       (this as any).$refs[formName].validate((valid: boolean) => {
         this.isConfirming = true;
         if (valid) {
-          (this as any).$axios
-            .post("/login", this.form)
+          this.$http
+            .post("/api/outline/login", this.form)
             .then((res: AxiosResponse) => {
-              if (res.data.code === -1) {
+              if (res.data.code === 0) {
+                // 关闭浏览器后即删除
+                sessionStorage.setItem("wo_permission", this.form.permission);
+                const woUser = Object.assign({}, res.data.data, {
+                  worknum: this.form.worknum
+                });
+                sessionStorage.setItem("wo_user", JSON.stringify(woUser));
+                this.$store.commit("updateUserInfo", woUser);
+                this.$router.replace({ name: "index" });
+              } else {
                 this.$message({
-                  message: res.data.msg || "未知错误",
+                  message: res.data.msg,
                   type: "warning"
                 });
-              } else {
-                // 关闭浏览器后即删除
-                sessionStorage.setItem(
-                  "wo_permission",
-                  res.data.data.permission
-                );
-                sessionStorage.setItem(
-                  "wo_user",
-                  JSON.stringify(
-                    Object.assign({}, res.data.data, {
-                      worknum: this.form.worknum
-                    })
-                  )
-                );
-                this.$store.commit(
-                  "updateUserInfo",
-                  JSON.parse(sessionStorage.getItem("wo_user") as string)
-                );
-                this.$router.replace({ name: "index" });
               }
+              this.isConfirming = false;
+            })
+            .catch(() => {
+              this.$message({
+                message: "未知错误",
+                type: "warning"
+              });
               this.isConfirming = false;
             });
         }
