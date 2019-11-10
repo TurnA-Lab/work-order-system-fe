@@ -2,8 +2,10 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 21:15:23
+ * @Last Modified time: 2019-11-09 00:49:16
  */
+
+//  TODO: 缺少验证工号的 API
 
 <template>
   <span class="submit-btn">
@@ -26,7 +28,7 @@
         <span>输入负责人工号以进行确认</span>
       </main>
       <footer>
-        <el-input class="item" v-model.trim="input" :disabled="!isConfirming"></el-input>
+        <el-input class="item" v-model.trim="input" :disabled="isConfirming"></el-input>
         <el-button
           class="item"
           type="danger"
@@ -44,12 +46,13 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 
+const formApi = ["addConstruction", "addAchievement", "addAward"];
+
 export default Vue.extend({
   data() {
     return {
       isVisible: false,
       isConfirming: false,
-      submitBtn: "我已检查，进行提交",
       input: ""
     };
   },
@@ -76,9 +79,10 @@ export default Vue.extend({
         )
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
+            // 根据对应接口提交表单
             this.$http
               .post(
-                `/newForm${state.order.class}`,
+                `/api/online/user/${formApi[state.order.class - 1]}`,
                 {
                   form: state.order.form
                 },

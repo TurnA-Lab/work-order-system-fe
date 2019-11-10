@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 18:12:40
+ * @Last Modified time: 2019-11-08 22:12:54
  */
 
 <template>
@@ -131,6 +131,14 @@ export default Vue.extend({
     transform: translateY(-10vh);
     opacity: 0;
     transition: opacity, transform 0.6s, 0.6s;
+  }
+
+  .main {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
   }
 
   // vue-awesome

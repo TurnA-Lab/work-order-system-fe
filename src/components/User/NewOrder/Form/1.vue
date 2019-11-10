@@ -83,15 +83,8 @@
         ></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item class="form-item" label="佐证材料" prop="uploadField" required>
-      <el-upload class="upload-demo" drag action multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-        </div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
+    <el-form-item class="form-item" label="佐证材料" prop="uploadField">
+      <upload-btn></upload-btn>
     </el-form-item>
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
@@ -103,11 +96,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import submitBtn from "../Etc/submitFormBtn.vue";
+import SubmitBtn from "../Etc/SubmitFormBtn.vue";
+import UploadBtn from "../Etc/UploadBtn.vue";
 
 export default Vue.extend({
   components: {
-    submitBtn
+    SubmitBtn,
+    UploadBtn
   },
   data() {
     const validateProjectName = (

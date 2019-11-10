@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-11-08 10:18:07 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-08 12:05:40
+ */
+
 <template>
   <div>
     <el-tree
@@ -15,30 +22,21 @@
           @click.stop="appendLevel(node, data)"
           class="level-btn"
           type="primary"
-          icon="el-icon-plus"
           circle
-        ></el-button>
+        >
+          <span class="el-icon-plus hover-action"></span>
+        </el-button>
         <span>{{ node.label }}</span>
         <span>
-          <el-button
-            v-if="!node.isLeaf"
-            icon="el-icon-plus"
-            type="text"
-            @click.stop="append(node, data)"
-          ></el-button>
-          <el-button
-            v-if="node.isLeaf"
-            icon="el-icon-edit"
-            type="text"
-            @click.stop="edit(node, data)"
-          ></el-button>
-          <el-button
-            v-if="node.isLeaf"
-            class="red"
-            icon="el-icon-delete"
-            type="text"
-            @click.stop="remove(node, data)"
-          ></el-button>
+          <el-button v-if="!node.isLeaf" type="text" @click.stop="append(node, data)">
+            <span class="el-icon-plus hover-action"></span>
+          </el-button>
+          <el-button v-if="node.isLeaf" type="text" @click.stop="edit(node, data)">
+            <span class="el-icon-edit hover-action"></span>
+          </el-button>
+          <el-button v-if="node.isLeaf" class="red" type="text" @click.stop="remove(node, data)">
+            <span class="el-icon-delete hover-action"></span>
+          </el-button>
         </span>
       </span>
     </el-tree>
@@ -475,5 +473,13 @@ export default Vue.extend({
 
 .red {
   color: #f56c6c;
+}
+
+.hover-action {
+  transition: transform 0.1s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 </style>
