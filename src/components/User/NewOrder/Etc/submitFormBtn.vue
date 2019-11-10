@@ -46,6 +46,8 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 
+const formApi = ["addConstruction", "addAchievement", "addAward"];
+
 export default Vue.extend({
   data() {
     return {
@@ -77,9 +79,10 @@ export default Vue.extend({
         )
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
+            // 根据对应接口提交表单
             this.$http
               .post(
-                `/newForm${state.order.class}`,
+                `/api/online/user/${formApi[state.order.class - 1]}`,
                 {
                   form: state.order.form
                 },

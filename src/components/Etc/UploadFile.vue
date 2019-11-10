@@ -27,7 +27,7 @@
     labelTapToCancel="单击右侧按钮以取消"
     labelTapToRetry="单击右侧按钮以重试"
     labelFileTypeNotAllowed="不被允许的文件类型"
-    fileValidateTypeLabelExpectedTypes="仅允许图片、Pdf、Xls 类型"
+    fileValidateTypeLabelExpectedTypes="仅允许图片、文本、Pdf、Xls 类型"
     :acceptedFileTypes="acceptTypes"
     :allowRevert="false"
     :instantUpload="false"
@@ -57,6 +57,7 @@ interface AxiosError extends Error {
 }
 
 // 蓝眼网盘 url
+// http://10.3.4.18:8998
 const panUrl = "http://test.iskye.cn";
 
 const FilePond = vueFilePond(
@@ -102,6 +103,7 @@ export default Vue.extend({
           const source = cancelToken.source();
 
           // 请求上传 token
+          // /api/online/getPanToken
           this.$http
             .post(
               "/local/getUploadToken",
@@ -132,6 +134,7 @@ export default Vue.extend({
                   .then((response: AxiosResponse) => {
                     if (response.data.code === "OK") {
                       // 验证上传
+                      // /api/online/confirmUploaded
                       this.$http
                         .post(
                           `/local/confirmUploaded`,
