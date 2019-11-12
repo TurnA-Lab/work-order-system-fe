@@ -27,7 +27,6 @@ export default Vue.extend({
   color: #95a5a6;
 
   cursor: pointer;
-  user-select: none;
   margin-inline-start: 12px;
 
   &:hover > span {

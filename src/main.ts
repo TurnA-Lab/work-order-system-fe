@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:18
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-08 12:46:48
+ * @Last Modified time: 2019-11-12 20:24:33
  */
 
 import Vue from "vue";
@@ -10,6 +10,7 @@ import router from "@/plugins/router";
 import store from '@/plugins/store';
 import "@/plugins/axios";
 import "@/plugins/element";
+import "@/plugins/easytable";
 import App from "./App.vue";
 
 // 引入 vue-awesome

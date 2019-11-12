@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:18:14 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-11-08 10:18:14 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-12 20:55:56
  */
 
 <template>
@@ -84,9 +84,10 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .custom-tabs {
   width: 80vw;
+  max-height: 80vh;
 }
 .tabs-body {
-  background-color: white;
+  background-color: #ffffff;
   margin: 0px 1vw 1vw 1vw;
   padding: 1vw 2vw;
   border-radius: 1rem 2px 2px 1rem;

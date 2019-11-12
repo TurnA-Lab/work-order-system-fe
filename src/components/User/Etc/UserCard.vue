@@ -77,9 +77,8 @@ export default Vue.extend({
 
 h1,
 h2 {
-  color: white;
+  color: #ffffff;
   font-weight: 800;
-  user-select: none;
 }
 
 h1 {
@@ -97,8 +96,7 @@ h5 {
   line-height: 1.2vw;
   font-weight: 100;
   font-size: 0.96vw;
-  color: white;
-  user-select: none;
+  color: #ffffff;
 
   span {
     color: #ecf0f1;
