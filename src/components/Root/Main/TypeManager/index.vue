@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:18:14 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-12 20:55:56
+ * @Last Modified time: 2019-11-13 20:31:29
  */
 
 <template>
@@ -86,6 +86,7 @@ export default Vue.extend({
   width: 80vw;
   max-height: 80vh;
 }
+
 .tabs-body {
   background-color: #ffffff;
   margin: 0px 1vw 1vw 1vw;
