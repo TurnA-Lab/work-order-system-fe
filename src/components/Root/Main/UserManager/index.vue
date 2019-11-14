@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 20:18:38 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-13 22:21:51
+ * @Last Modified time: 2019-11-14 20:19:44
  */
 
 <template>
@@ -45,14 +45,13 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .custom-tabs {
   width: 80vw;
-  max-height: 80vh;
 }
 
 .tabs-body {
   background-color: #ffffff;
   min-height: 60vh;
   margin: 0px 1vw 1vw 1vw;
-  padding: 1vw 2vw;
+  padding: 1vh 2vw;
   border-radius: 1rem 2px 2px 1rem;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
