@@ -225,7 +225,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .upload-area {
-  width: 430px;
+  width: 400px;
 }
 </style>
 
