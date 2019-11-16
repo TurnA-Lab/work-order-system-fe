@@ -2,19 +2,19 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-14 21:08:25
+ * @Last Modified time: 2019-11-16 22:25:22
  */
 
 <template>
   <div>
-    <el-table class="table" header-align="center" :data="tableData" :height="autoHeight" stripe>
+    <!-- <el-table class="table" header-align="center" :data="tableData" :height="autoHeight" stripe>
       <el-table-column prop="name" label="姓名" width="120" sortable fixed></el-table-column>
       <el-table-column prop="gender" label="性别" width="100" sortable></el-table-column>
       <el-table-column prop="worknum" label="工号" width="200" sortable></el-table-column>
       <el-table-column prop="dptname" label="部门" width="200" sortable></el-table-column>
-      <!-- <el-table-column prop="techTittle" label="职称" width="180"></el-table-column> -->
+      <el-table-column prop="techTittle" label="职称" width="180"></el-table-column>
       <el-table-column prop="phone" label="手机号" width="200" sortable></el-table-column>
-      <!-- <el-table-column prop="degree" label="最高学历" width="180"></el-table-column> -->
+      <el-table-column prop="degree" label="最高学历" width="180"></el-table-column>
       <el-table-column label="操作" fixed="right">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -24,16 +24,60 @@
     </el-table>
     <div class="block">
       <el-pagination layout="prev, pager, next" :total="1000"></el-pagination>
-    </div>
+    </div>-->
+    <what-table
+      :columns="columns"
+      :dataSource="tableData"
+      :options="options"
+      :pagination="pagination"
+    ></what-table>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import WhatTable from "@/components/Etc/WhatTable.vue";
+
 export default Vue.extend({
+  components: {
+    WhatTable
+  },
   data() {
     return {
-      autoHeight: 0,
+      columns: [
+        {
+          prop: "name",
+          label: "姓名"
+          // width: 60
+        },
+        {
+          prop: "gender",
+          label: "性别"
+        },
+        {
+          prop: "worknum",
+          label: "工号"
+        },
+        {
+          prop: "phone",
+          label: "手机号"
+        },
+        {
+          prop: "techTittle",
+          label: "职称"
+        }
+      ],
+      options: {
+        mutiSelect: false,
+        index: true, // 显示序号， 多选则 mutiSelect
+        loading: false, // 表格动画
+        initTable: true // 是否一挂载就加载数据
+      },
+      pagination: {
+        total: 9,
+        pageIndex: 1,
+        pageSize: 9
+      },
       tableData: [
         {
           dtpId: 0,
@@ -246,18 +290,12 @@ export default Vue.extend({
         }
       ]
     };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.autoHeight =
-        (this.$parent.$parent.$parent as any).$el.offsetHeight - 5;
-    }, 100);
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.table {
-  height: 60vh !important;
-}
+// .table {
+//   height: 60vh !important;
+// }
 </style>

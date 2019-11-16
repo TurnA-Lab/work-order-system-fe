@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 20:18:38 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-14 20:19:44
+ * @Last Modified time: 2019-11-16 22:02:08
  */
 
 <template>
@@ -49,7 +49,7 @@ export default Vue.extend({
 
 .tabs-body {
   background-color: #ffffff;
-  min-height: 60vh;
+  // min-height: 60vh;
   margin: 0px 1vw 1vw 1vw;
   padding: 1vh 2vw;
   border-radius: 1rem 2px 2px 1rem;
