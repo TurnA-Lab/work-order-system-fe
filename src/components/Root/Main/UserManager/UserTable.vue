@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 18:29:14
+ * @Last Modified time: 2019-11-17 22:13:00
  */
 
 <template>
@@ -14,13 +14,15 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
+    <edit-user></edit-user>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import { AxiosResponse } from "axios/";
+import EditUser from "./EditUser.vue";
+import { AxiosResponse } from "axios";
 
 interface Row {
   dtpId: number;
@@ -44,10 +46,13 @@ interface Row {
 
 export default Vue.extend({
   components: {
-    WhatTable
+    WhatTable,
+    EditUser
   },
   data() {
     return {
+      userData: {},
+      tableData: [],
       columns: [
         {
           prop: "name",
@@ -85,7 +90,8 @@ export default Vue.extend({
               plain: true,
               onClick: (row: Row, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                console.log(row, index);
+                this.$data.userData = row;
+                this.$store.commit("toggleEditUser");
               }
             },
             {
@@ -114,20 +120,19 @@ export default Vue.extend({
         total: 0,
         pageIndex: 1,
         pageSize: 20
-      },
-      tableData: []
+      }
     };
   },
   methods: {
     fetchData() {
-      this.options.loading = true;
+      this.$data.options.loading = true;
 
       this.$http
         .post(
           "/api/userTableData",
           {
-            pageIndex: this.pagination.pageIndex,
-            pageSize: this.pagination.pageSize
+            pageIndex: this.$data.pagination.pageIndex,
+            pageSize: this.$data.pagination.pageSize
           },
           {
             headers: {
@@ -138,24 +143,27 @@ export default Vue.extend({
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
-            this.tableData = list;
-            this.pagination.total = total;
+            this.$data.tableData = list;
+            this.$data.pagination.total = total;
           } else {
             this.$message({
               message: res.data.msg || "由于未知因素，无法获取表格",
               type: "warning"
             });
           }
-          this.options.loading = false;
+          this.$data.options.loading = false;
         })
         .catch(() => {
           this.$message({
             message: "由于未知因素，无法获取表格",
             type: "warning"
           });
-          this.options.loading = false;
+          this.$data.options.loading = false;
         });
     }
+  },
+  beforeDestroy() {
+    this.$store.commit("toggleEditUser", false);
   }
 });
 </script>

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:18 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 21:53:28
+ * @Last Modified time: 2019-11-17 20:21:50
  */
 
 <template>
@@ -51,6 +51,7 @@
       ></el-input>
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新组员</el-button>
     </el-form-item>
+
     <el-form-item class="form-item" label="成果类别" prop="sort" required>
       <el-cascader
         v-model="form.sort"
@@ -61,9 +62,11 @@
         filterable
       ></el-cascader>
     </el-form-item>
+
     <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit" required>
       <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
     </el-form-item>
+
     <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent" required>
       <el-select v-model="form.patent" placeholder="请选择">
         <el-option
@@ -74,12 +77,15 @@
         ></el-option>
       </el-select>
     </el-form-item>
+
     <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime" required>
       <el-date-picker v-model="form.publishTime" type="month" placeholder="发表/出版/授权时间"></el-date-picker>
     </el-form-item>
+
     <el-form-item class="form-item" label="佐证材料" prop="uploadField">
       <upload-btn></upload-btn>
     </el-form-item>
+
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
       <submit-btn @click="nextActive"></submit-btn>

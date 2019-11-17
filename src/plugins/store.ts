@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:38
- * @Last Modified by:   Skye Young
- * @Last Modified time: 2019-10-28 19:48:38
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-17 22:07:13
  */
 
 import Vue from "vue";
@@ -18,6 +18,9 @@ export default new Vuex.Store({
       active: 1,
       class: 0,
       form: {}
+    },
+    rootPages: {
+      editUserIsVisible: false
     }
   },
   mutations: {
@@ -46,6 +49,13 @@ export default new Vuex.Store({
         class: 0,
         form: {}
       });
+    },
+    toggleEditUser(state, isVisible: boolean) {
+      if (typeof (isVisible) === "undefined") {
+        state.rootPages.editUserIsVisible = !state.rootPages.editUserIsVisible;
+      } else {
+        state.rootPages.editUserIsVisible = isVisible;
+      }
     }
   },
   actions: {
