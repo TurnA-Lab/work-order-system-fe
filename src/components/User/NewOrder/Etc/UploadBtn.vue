@@ -64,7 +64,6 @@ export default Vue.extend({
   border-radius: 1rem;
   width: 30vw;
   min-width: 450px;
-  user-select: none;
 }
 
 .upload-field {

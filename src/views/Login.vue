@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:59 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:47:59 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-12 22:13:09
  */
 
 <template>
@@ -37,8 +37,6 @@ export default Vue.extend({
     font-weight: 800;
     color: $main;
     margin-block-end: 0.5vw;
-
-    user-select: none;
   }
 }
 

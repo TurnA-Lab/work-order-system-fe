@@ -50,7 +50,6 @@ export default Vue.extend({
   text-align: center;
 
   box-sizing: border-box;
-  user-select: none;
 
   display: flex;
   justify-content: center;

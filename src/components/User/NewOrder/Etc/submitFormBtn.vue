@@ -2,10 +2,8 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-09 00:49:16
+ * @Last Modified time: 2019-11-12 20:29:10
  */
-
-//  TODO: 缺少验证工号的 API
 
 <template>
   <span class="submit-btn">
@@ -67,7 +65,7 @@ export default Vue.extend({
       this.isConfirming = true;
       this.$http
         .post(
-          "/principalWorknum",
+          "/api/online/validate",
           {
             worknum: this.input
           },
@@ -141,8 +139,6 @@ export default Vue.extend({
 .wo-dialog {
   border-radius: 1rem;
   width: 430px;
-
-  user-select: none;
 }
 </style>
 

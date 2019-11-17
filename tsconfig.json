@@ -31,7 +31,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/plugins/axios.ts", "src/plugins/mock.js", "src/plugins/trend.js", "src/components/Etc/vue-filepond.d.ts"
+    "tests/**/*.tsx", "src/plugins/vue-easytable.d.ts", "src/plugins/vue-filepond.d.ts"
   ],
   "exclude": [
     "node_modules"

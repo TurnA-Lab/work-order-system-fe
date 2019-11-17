@@ -312,7 +312,6 @@ export default Vue.extend({
   flex-wrap: wrap;
 
   height: 70vh;
-  user-select: none;
 
   .form-item {
     width: 480px;

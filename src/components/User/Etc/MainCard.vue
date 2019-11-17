@@ -50,7 +50,6 @@ export default Vue.extend({
 
   opacity: 0;
   transition: all 0.4s;
-  user-select: none;
 }
 
 .slide-up {

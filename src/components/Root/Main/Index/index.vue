@@ -59,16 +59,16 @@ main {
 
     h1 {
       margin: unset;
-      font-size: 2vw;
+      font-size: 2rem;
       span {
-        font-size: 1.6vw;
+        font-size: 1.6rem;
       }
     }
 
     h6 {
       margin: unset;
       margin-block-start: 0.4vh;
-      font-size: 0.9vw;
+      font-size: 0.8rem;
       font-weight: 200;
     }
   }
