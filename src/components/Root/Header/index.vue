@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:00 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-29 22:22:56
+ * @Last Modified time: 2019-11-12 20:34:36
  */
 
 <template>
@@ -116,10 +116,9 @@ export default Vue.extend({
 header {
   display: flex;
   justify-content: space-between;
-  user-select: none;
 
   & > .before-part {
-    padding-block-start: 0.5vw;
+    padding-block-start: 1vh;
     padding-inline-start: 1vw;
 
     & > .tittle {
@@ -128,8 +127,8 @@ header {
   }
 
   & > .after-part {
-    padding-block-start: 0.5vw;
-    padding-block-end: 0.5vw;
+    padding-block-start: 1vh;
+    padding-block-end: 1vh;
     padding-inline-end: 1vw;
   }
 }

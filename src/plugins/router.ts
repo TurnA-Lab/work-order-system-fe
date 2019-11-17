@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-30 16:13:47
+ * @Last Modified time: 2019-11-12 20:21:39
  */
 
 import Vue from "vue";
@@ -91,6 +91,11 @@ const router = new Router({
           path: "type_manager",
           name: "rootTypeManager",
           component: () => import("@/components/Root/Main/TypeManager/index.vue")
+        },
+        {
+          path: "user_manager",
+          name: "rootUserManager",
+          component: () => import("@/components/Root/Main/UserManager/index.vue")
         },
         {
           path: "about",

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-08 22:12:54
+ * @Last Modified time: 2019-11-12 22:15:24
  */
 
 <template>
@@ -95,6 +95,7 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   pointer-events: all;
+  user-select: none;
 
   &::before {
     content: "";
@@ -116,7 +117,7 @@ export default Vue.extend({
     font-size: 1.4vw;
     border-radius: 2vh;
     text-align: center;
-    background-color: white;
+    background-color: #ffffff;
     color: #999;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     padding: 1vw 4vw;
@@ -125,7 +126,6 @@ export default Vue.extend({
     justify-content: center;
     align-items: center;
 
-    user-select: none;
     z-index: 1000;
 
     transform: translateY(-10vh);

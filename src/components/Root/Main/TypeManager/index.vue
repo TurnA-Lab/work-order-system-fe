@@ -1,12 +1,12 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:18:14 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-11-08 10:18:14 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-14 20:19:42
  */
 
 <template>
-  <el-tabs tab-position="right" class="custom-tabs">
+  <el-tabs tab-position="right">
     <el-tab-pane label="类型">
       <div class="tabs-body">
         <el-tabs>
@@ -82,13 +82,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.custom-tabs {
-  width: 80vw;
-}
 .tabs-body {
-  background-color: white;
+  background-color: #ffffff;
   margin: 0px 1vw 1vw 1vw;
-  padding: 1vw 2vw;
+  padding: 1vh 2vw;
   border-radius: 1rem 2px 2px 1rem;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
