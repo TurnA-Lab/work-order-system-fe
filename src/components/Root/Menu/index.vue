@@ -82,7 +82,7 @@ export default Vue.extend({
 
   &:not(.el-menu--collapse) {
     width: 300px;
-    min-height: 400px;
+    // min-height: 400px;
   }
 
   header {

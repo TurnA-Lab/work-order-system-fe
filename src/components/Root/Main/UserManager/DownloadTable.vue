@@ -44,7 +44,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .download-page {
-  min-height: inherit;
+  height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;

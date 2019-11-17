@@ -1,3 +1,15 @@
+/*
+ * @Author: Skye Young 
+ * @Date: 2019-11-17 16:41:10 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-17 17:19:42
+ */
+
+/*
+ * @Origin: guodada
+ * @Url: https://juejin.im/post/5b45e4c55188251b1a7b2301
+ */
+
 <template>
   <div class="limit-height">
     <el-table
@@ -11,10 +23,23 @@
       header-row-class-name="table-header-row"
     >
       <!--selection选择框-->
-      <el-table-column v-if="options.mutiSelect" type="selection" style="width:50px" align="center"></el-table-column>
+      <el-table-column
+        v-if="options.mutiSelect"
+        type="selection"
+        style="width:50px"
+        align="center"
+        :fixed="options.mutiSelectFixed"
+      ></el-table-column>
 
       <!--序号-->
-      <el-table-column v-if="options.index" label="序号" type="index" width="50" align="center"></el-table-column>
+      <el-table-column
+        v-if="options.index"
+        label="#"
+        type="index"
+        width="50"
+        align="center"
+        :fixed="options.indexFixed"
+      ></el-table-column>
 
       <!--数据列-->
       <template v-for="(column, index) in columns">
@@ -59,7 +84,7 @@
     <el-pagination
       v-if="pagination"
       :total="pagination.total"
-      :page-sizes="[20, 50, 100, 500, 5000]"
+      :page-sizes="[20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
       @current-change="handleIndexChange"
@@ -131,15 +156,18 @@ export default {
 </script>
 
 <style>
-/* .el-table th,
-.el-table tr.table-header-row {
-  background: #e5c5d2; 示例， 对表格样式上的修饰
-} */
 .el-table {
   max-height: 70vh !important;
 }
 
-.el-table__body-wrapper {
+.el-table th,
+.el-table tr.table-header-row {
+  background: #fdfdfd;
+  /* border-block-end: 1px solid #dddddd; */
+}
+
+.el-table__body-wrapper,
+.el-table__fixed-body-wrapper {
   max-height: 60vh !important;
 }
 </style>

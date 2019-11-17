@@ -6,7 +6,7 @@
  */
 
 <template>
-  <el-tabs tab-position="right" class="custom-tabs">
+  <el-tabs tab-position="right">
     <el-tab-pane label="管理">
       <div class="tabs-body">
         <el-tabs>
@@ -43,10 +43,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.custom-tabs {
-  width: 80vw;
-}
-
 .tabs-body {
   background-color: #ffffff;
   // min-height: 60vh;
