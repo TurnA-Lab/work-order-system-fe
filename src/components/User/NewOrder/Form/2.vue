@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:18 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 20:21:50
+ * @Last Modified time: 2019-11-18 21:32:15
  */
 
 <template>
@@ -30,7 +30,7 @@
       <el-input v-model="form.production" placeholder="请输入成果名称"></el-input>
     </el-form-item>
 
-    <el-form-item label="第一作者" required>
+    <el-form-item class="form-item" label="第一作者" required>
       <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
     </el-form-item>
 
@@ -312,47 +312,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.form-part {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  height: 70vh;
-
-  .form-item {
-    width: 480px;
-  }
-}
-
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-member {
-  height: 36px;
-  line-height: 36px;
-  padding-top: 0;
-  padding-bottom: 0;
-
-  color: #bbbbbb;
-
-  .el-tag + & {
-    margin-left: 10px;
-  }
-}
-
-.input-new-member {
-  height: 36px;
-  width: 120px;
-  // vertical-align: bottom;
-
-  .el-tag + & {
-    margin-left: 10px;
-  }
-}
-
-.btn-line {
-  display: flex;
-  justify-content: flex-end;
-}
+@import "@/stylesheet/user-form.scss";
 </style>

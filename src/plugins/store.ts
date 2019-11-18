@@ -19,9 +19,6 @@ export default new Vuex.Store({
       class: 0,
       form: {}
     },
-    rootPages: {
-      editUserIsVisible: false
-    }
   },
   mutations: {
     updateUserInfo(state, newUserInfo: object) {
@@ -50,13 +47,7 @@ export default new Vuex.Store({
         form: {}
       });
     },
-    toggleEditUser(state, isVisible: boolean) {
-      if (typeof (isVisible) === "undefined") {
-        state.rootPages.editUserIsVisible = !state.rootPages.editUserIsVisible;
-      } else {
-        state.rootPages.editUserIsVisible = isVisible;
-      }
-    }
+
   },
   actions: {
   }

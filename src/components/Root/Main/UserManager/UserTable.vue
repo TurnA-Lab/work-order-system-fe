@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 22:13:00
+ * @Last Modified time: 2019-11-18 19:47:06
  */
 
 <template>
@@ -14,7 +14,11 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit-user></edit-user>
+    <edit-user
+      :user-data="userData"
+      :is-visible="editUserIsVisible"
+      @toggle-is-visible="toggleEditUserIsVisible"
+    ></edit-user>
   </div>
 </template>
 
@@ -24,7 +28,7 @@ import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditUser from "./EditUser.vue";
 import { AxiosResponse } from "axios";
 
-interface Row {
+interface UserData {
   dtpId: number;
   dptname: string;
   name: string;
@@ -51,6 +55,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      editUserIsVisible: false,
       userData: {},
       tableData: [],
       columns: [
@@ -88,10 +93,10 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (row: Row, index: number) => {
+              onClick: (UserData: UserData, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.userData = row;
-                this.$store.commit("toggleEditUser");
+                this.$data.userData = UserData;
+                this.$data.editUserIsVisible = true;
               }
             },
             {
@@ -99,10 +104,9 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick(row: Row) {
+              onClick(UserData: UserData) {
                 // 这种写法的 this 代表 group 里的对象
                 this.disabled = true;
-                console.log(this);
               }
             }
           ]
@@ -125,14 +129,14 @@ export default Vue.extend({
   },
   methods: {
     fetchData() {
-      this.$data.options.loading = true;
+      this.options.loading = true;
 
       this.$http
         .post(
           "/api/userTableData",
           {
-            pageIndex: this.$data.pagination.pageIndex,
-            pageSize: this.$data.pagination.pageSize
+            pageIndex: this.pagination.pageIndex,
+            pageSize: this.pagination.pageSize
           },
           {
             headers: {
@@ -143,27 +147,27 @@ export default Vue.extend({
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
-            this.$data.tableData = list;
-            this.$data.pagination.total = total;
+            this.tableData = list;
+            this.pagination.total = total;
           } else {
             this.$message({
               message: res.data.msg || "由于未知因素，无法获取表格",
               type: "warning"
             });
           }
-          this.$data.options.loading = false;
+          this.options.loading = false;
         })
         .catch(() => {
           this.$message({
             message: "由于未知因素，无法获取表格",
             type: "warning"
           });
-          this.$data.options.loading = false;
+          this.options.loading = false;
         });
+    },
+    toggleEditUserIsVisible() {
+      this.editUserIsVisible = !this.editUserIsVisible;
     }
-  },
-  beforeDestroy() {
-    this.$store.commit("toggleEditUser", false);
   }
 });
 </script>

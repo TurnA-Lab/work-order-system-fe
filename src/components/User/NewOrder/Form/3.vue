@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:28 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 20:23:47
+ * @Last Modified time: 2019-11-18 21:33:13
  */
 
 <template>
@@ -96,7 +96,7 @@
     <el-form-item class="form-item" label="证书" prop="uploadField">
       <upload-btn></upload-btn>
     </el-form-item>
-    
+
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
       <submit-btn @click="nextActive"></submit-btn>
@@ -358,47 +358,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.form-part {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  height: 70vh;
-
-  .form-item {
-    width: 480px;
-  }
-}
-
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-member {
-  height: 36px;
-  line-height: 36px;
-  padding-top: 0;
-  padding-bottom: 0;
-
-  color: #bbbbbb;
-
-  .el-tag + & {
-    margin-left: 10px;
-  }
-}
-
-.input-new-member {
-  height: 36px;
-  width: 120px;
-  // vertical-align: bottom;
-
-  .el-tag + & {
-    margin-left: 10px;
-  }
-}
-
-.btn-line {
-  display: flex;
-  justify-content: flex-end;
-}
+@import "@/stylesheet/user-form.scss";
 </style>

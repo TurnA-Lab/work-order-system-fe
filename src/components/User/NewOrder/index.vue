@@ -165,6 +165,7 @@ export default Vue.extend({
       flex-basis: 7vw;
       height: 70vh;
       width: 10vw;
+      min-width: 100px;
     }
 
     & > main {
