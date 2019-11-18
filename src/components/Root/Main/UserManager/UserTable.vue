@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 18:29:14
+ * @Last Modified time: 2019-11-18 19:47:06
  */
 
 <template>
@@ -14,15 +14,21 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
+    <edit-user
+      :user-data="userData"
+      :is-visible="editUserIsVisible"
+      @toggle-is-visible="toggleEditUserIsVisible"
+    ></edit-user>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import { AxiosResponse } from "axios/";
+import EditUser from "./EditUser.vue";
+import { AxiosResponse } from "axios";
 
-interface Row {
+interface UserData {
   dtpId: number;
   dptname: string;
   name: string;
@@ -44,10 +50,14 @@ interface Row {
 
 export default Vue.extend({
   components: {
-    WhatTable
+    WhatTable,
+    EditUser
   },
   data() {
     return {
+      editUserIsVisible: false,
+      userData: {},
+      tableData: [],
       columns: [
         {
           prop: "name",
@@ -83,9 +93,10 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (row: Row, index: number) => {
+              onClick: (UserData: UserData, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                console.log(row, index);
+                this.$data.userData = UserData;
+                this.$data.editUserIsVisible = true;
               }
             },
             {
@@ -93,10 +104,9 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick(row: Row) {
+              onClick(UserData: UserData) {
                 // 这种写法的 this 代表 group 里的对象
                 this.disabled = true;
-                console.log(this);
               }
             }
           ]
@@ -114,8 +124,7 @@ export default Vue.extend({
         total: 0,
         pageIndex: 1,
         pageSize: 20
-      },
-      tableData: []
+      }
     };
   },
   methods: {
@@ -155,6 +164,9 @@ export default Vue.extend({
           });
           this.options.loading = false;
         });
+    },
+    toggleEditUserIsVisible() {
+      this.editUserIsVisible = !this.editUserIsVisible;
     }
   }
 });

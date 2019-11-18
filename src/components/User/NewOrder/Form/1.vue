@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 21:15:32
+ * @Last Modified time: 2019-11-18 21:25:11
  */
 
 <template>
@@ -25,13 +25,16 @@
         ></el-option>
       </el-select>
     </el-form-item>
+
     <el-form-item class="form-item" label="项目名称" prop="project" required>
       <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
     </el-form-item>
-    <el-form-item class="form-item" label="项目负责人" required>
+
+    <el-form-item class="form-item" label="项目负责人" prop="name" required>
       <el-input v-model="form.name" placeholder="请输入项目负责人"></el-input>
     </el-form-item>
-    <el-form-item label="课题组成员">
+
+    <el-form-item class="form-item" label="课题组成员">
       <el-tag
         :key="name"
         v-for="name in form.teammate"
@@ -48,9 +51,11 @@
       ></el-input>
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
     </el-form-item>
+
     <el-form-item class="form-item" label="立项年度" prop="startTime" required>
       <el-date-picker v-model="form.startTime" type="year" placeholder="请选择立项年度"></el-date-picker>
     </el-form-item>
+
     <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime" required>
       <el-date-picker
         v-model="form.beginToEndTime"
@@ -60,9 +65,11 @@
         end-placeholder="结束日期"
       ></el-date-picker>
     </el-form-item>
+
     <el-form-item class="form-item" label="主办单位" prop="sponsor" required>
       <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
     </el-form-item>
+
     <el-form-item class="form-item" label="项目类型" prop="sort" required>
       <el-cascader
         v-model="form.sort"
@@ -73,6 +80,7 @@
         filterable
       ></el-cascader>
     </el-form-item>
+
     <el-form-item class="form-item" label="项目级别" prop="level" required>
       <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
@@ -83,6 +91,7 @@
         ></el-option>
       </el-select>
     </el-form-item>
+
     <el-form-item class="form-item" label="佐证材料" prop="uploadField">
       <upload-btn></upload-btn>
     </el-form-item>
@@ -330,51 +339,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.form-part {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  height: 70vh;
-
-  .form-item {
-    width: 480px;
-  }
-}
-
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-member {
-  height: 36px;
-  line-height: 36px;
-  padding-top: 0;
-  padding-bottom: 0;
-
-  color: #bbbbbb;
-
-  .el-tag + & {
-    margin-left: 10px;
-  }
-}
-
-.input-new-member {
-  height: 36px;
-  width: 120px;
-  // vertical-align: bottom;
-
-  .el-tag + & {
-    margin-left: 10px;
-  }
-}
-
-.uploadField {
-  -webkit-column-break-before: always;
-}
-
-.btn-line {
-  display: flex;
-  justify-content: flex-end;
-}
+@import "@/stylesheet/user-form.scss";
 </style>
