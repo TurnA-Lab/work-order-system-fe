@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 21:41:50 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-09 00:34:13
+ * @Last Modified time: 2019-11-19 13:13:59
  */
 
 <template>
@@ -61,9 +61,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .wo-dialog {
-  border-radius: 1rem;
   width: 30vw;
-  min-width: 450px;
 }
 
 .upload-field {

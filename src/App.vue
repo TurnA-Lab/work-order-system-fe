@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-18 11:13:47
+ * @Last Modified time: 2019-11-19 13:14:02
  */
 
 <template>
@@ -150,5 +150,24 @@ export default Vue.extend({
     max-width: 100%;
     max-height: 100%;
   }
+}
+
+// Dialog
+.el-dialog__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.wo-dialog {
+  border-radius: 1rem;
+
+  min-width: 450px;
+  max-height: 80vh;
+  margin: 0px !important;
+
+  overflow: hidden;
 }
 </style>

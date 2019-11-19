@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-18 19:47:06
+ * @Last Modified time: 2019-11-19 12:49:19
  */
 
 <template>
@@ -17,7 +17,7 @@
     <edit-user
       :user-data="userData"
       :is-visible="editUserIsVisible"
-      @toggle-is-visible="toggleEditUserIsVisible"
+      @toggle-is-visible="toggleEditUser"
     ></edit-user>
   </div>
 </template>
@@ -75,7 +75,7 @@ export default Vue.extend({
         },
         {
           prop: "phone",
-          label: "手机号"
+          label: "联系电话"
         },
         {
           prop: "techTittle",
@@ -93,9 +93,9 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (UserData: UserData, index: number) => {
+              onClick: (userData: UserData, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.userData = UserData;
+                this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
               }
             },
@@ -104,7 +104,7 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick(UserData: UserData) {
+              onClick(userData: UserData) {
                 // 这种写法的 this 代表 group 里的对象
                 this.disabled = true;
               }
@@ -165,8 +165,12 @@ export default Vue.extend({
           this.options.loading = false;
         });
     },
-    toggleEditUserIsVisible() {
-      this.editUserIsVisible = !this.editUserIsVisible;
+    toggleEditUser(isVisible: boolean) {
+      if (typeof isVisible === "undefined") {
+        this.editUserIsVisible = !this.editUserIsVisible;
+      } else {
+        this.editUserIsVisible = isVisible;
+      }
     }
   }
 });
