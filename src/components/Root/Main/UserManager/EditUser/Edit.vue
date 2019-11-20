@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 20:11:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-19 22:31:17
+ * @Last Modified time: 2019-11-20 21:38:55
  */
 
 <template>
@@ -14,14 +14,33 @@
     append-to-body
   >
     <div slot="title">编辑用户信息</div>
-    <div class="form-part">
-      <el-form ref="form" :model="form" size="medium" label-position="left" label-width="auto">
+    <div>
+      <el-form
+        :class="{'is-disable': isDisable}"
+        class="form-part"
+        ref="form"
+        :model="form"
+        size="medium"
+        label-position="left"
+        label-width="auto"
+      >
         <el-form-item class="form-item" label="姓名">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="工号">
           <el-input v-model="form.worknum"></el-input>
+        </el-form-item>
+
+        <el-form-item class="form-item" label="权限">
+          <el-select v-model="form.permission" placeholder="请选择">
+            <el-option
+              :key="item.value"
+              v-for="item in options.permission"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item class="form-item" label="性别">
@@ -59,7 +78,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.techTittle"></el-input>
+          <el-input v-model="form.techTitle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -110,12 +129,12 @@
             ></el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item class="btn-line form-item">
-          <el-button @click="close" type="primary" plain>取消</el-button>
-          <el-button type="primary">确认</el-button>
-        </el-form-item>
       </el-form>
+    </div>
+
+    <div slot="footer" class="dialog-btn-line">
+      <el-button @click="close" type="primary" plain>取消编辑</el-button>
+      <el-button :loading="isDisable" @click="updateUserInfo" type="primary">{{saveBtnText}}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -133,7 +152,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  techTittle: string;
+  techTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -141,13 +160,16 @@ interface UserData {
   doubleTeacher: number | string;
   background: number | string;
   tutor: number | string;
-  permission: number;
+  permission: number | string;
 }
+
+const permissionText = ["普通用户", "学院管理员", " root 管理员"];
 
 export default Vue.extend({
   props: ["userData", "isVisible"],
   data() {
     return {
+      isDisable: false,
       form: {},
       options: {
         department: [],
@@ -190,6 +212,20 @@ export default Vue.extend({
             label: "是",
             value: "1"
           }
+        ],
+        permission: [
+          {
+            label: "普通用户",
+            value: "0"
+          },
+          {
+            label: "学院管理员",
+            value: "1"
+          },
+          {
+            label: " root 管理员",
+            value: "2"
+          }
         ]
       }
     };
@@ -197,6 +233,42 @@ export default Vue.extend({
   methods: {
     close() {
       this.$emit("toggle-is-visible", false);
+    },
+    updateUserInfo() {
+      this.isDisable = true;
+      this.$http
+        .post("/api/online/root/updateUserInfo", this.form, {
+          headers: {
+            token: this.$store.state.userInfo.token
+          }
+        })
+        .then((res: AxiosResponse) => {
+          this.isDisable = false;
+          if (res.data.code === 0) {
+            this.close();
+            this.$message({
+              message: res.data.msg || "用户信息保存成功",
+              type: "success"
+            });
+          } else {
+            this.$message({
+              message: res.data.msg || "用户信息保存失败",
+              type: "warning"
+            });
+          }
+        })
+        .catch(() => {
+          this.isDisable = false;
+          this.$message({
+            message: "未知错误",
+            type: "warning"
+          });
+        });
+    }
+  },
+  computed: {
+    saveBtnText() {
+      return this.$data.isDisable ? "正在保存..." : "保存编辑";
     }
   },
   watch: {
@@ -204,6 +276,7 @@ export default Vue.extend({
       newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
       newValue.background = newValue.background === 0 ? "否" : "是";
       newValue.tutor = newValue.tutor === 0 ? "否" : "是";
+      newValue.permission = permissionText[newValue.permission as number];
       this.form = newValue;
     }
   },
@@ -241,25 +314,31 @@ export default Vue.extend({
 });
 </script>
 
+<style lang="scss" scoped>
+.form-item {
+  width: 450px;
+}
+
+.is-disable {
+  filter: blur(10px);
+  cursor: not-allowed;
+}
+</style>
+
 <style lang="scss">
 .wo-dialog {
   width: 60vw;
 }
 
-.form-item {
-  width: 400px;
-}
-
-.el-form {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
+.form-part {
+  width: inherit;
   height: 60vh;
+  overflow: auto;
 }
 
-.btn-line {
-  display: inline-flex;
-  justify-content: flex-end;
+.dialog-btn-line {
+  position: fixed;
+  bottom: 20vh;
+  right: 25vw;
 }
 </style>

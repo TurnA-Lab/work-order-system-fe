@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-12 20:21:39
+ * @Last Modified time: 2019-11-20 17:04:36
  */
 
 import Vue from "vue";
@@ -104,7 +104,8 @@ const router = new Router({
         }
       ]
     }
-  ]
+  ],
+
 });
 
 router.beforeEach((to, from, next) => {

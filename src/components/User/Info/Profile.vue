@@ -38,7 +38,7 @@ interface UserInfo {
   gender: string;
   birthday: string;
   enterTime: string;
-  techTittle: string;
+  techTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -105,7 +105,7 @@ export default Vue.extend({
           (this.table2 as Array<{ key: string; value: string }>) = [
             {
               key: "专业技术职称",
-              value: userInfo.techTittle
+              value: userInfo.techTitle
             },
             {
               key: "最高学历",
