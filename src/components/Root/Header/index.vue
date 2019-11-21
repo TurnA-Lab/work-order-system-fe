@@ -12,7 +12,7 @@
         <el-button :icon="btnIcon" @click="clickFun" circle></el-button>
       </el-tooltip>
       <vertical-divider isTransparent="true"></vertical-divider>
-      <span class="tittle">管理后台</span>
+      <span class="title">管理后台</span>
     </div>
     <div class="after-part">
       <el-tooltip content="全屏模式" placement="bottom">
@@ -72,12 +72,7 @@ export default Vue.extend({
             message: "切换成功!"
           });
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消"
-          });
-        });
+        .catch(() => {});
     },
     menuCommand(command: string) {
       switch (command) {
@@ -121,7 +116,7 @@ header {
     padding-block-start: 1vh;
     padding-inline-start: 1vw;
 
-    & > .tittle {
+    & > .title {
       font-weight: 800;
     }
   }

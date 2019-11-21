@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:17:34 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-09 00:38:04
+ * @Last Modified time: 2019-11-19 13:08:35
  */
 
 /* 
@@ -27,7 +27,7 @@
     labelTapToCancel="单击右侧按钮以取消"
     labelTapToRetry="单击右侧按钮以重试"
     labelFileTypeNotAllowed="不被允许的文件类型"
-    fileValidateTypeLabelExpectedTypes="仅允许图片、文本、Pdf、Xls 类型"
+    fileValidateTypeLabelExpectedTypes="仅允许图片、文本、PDF、XLS 类型"
     :acceptedFileTypes="acceptTypes"
     :allowRevert="false"
     :instantUpload="false"
