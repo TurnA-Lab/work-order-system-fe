@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 16:41:10 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 17:19:42
+ * @Last Modified time: 2019-11-20 21:03:13
  */
 
 /*
@@ -11,7 +11,7 @@
  */
 
 <template>
-  <div class="limit-height">
+  <div>
     <el-table
       v-loading="options.loading"
       :data="dataSource"
@@ -132,7 +132,8 @@ export default {
       this.options
     );
 
-    this.options.initTable && this.fetch();
+    /* this.options.initTable &&  */
+    this.fetch();
   },
   methods: {
     handleSizeChange(size) {
@@ -155,7 +156,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .el-table {
   max-height: 70vh !important;
 }

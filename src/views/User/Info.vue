@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:39 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:47:39 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-18 12:40:03
  */
 
 <template>
@@ -57,6 +57,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-</style>

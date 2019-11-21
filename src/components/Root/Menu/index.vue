@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:07 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-12 20:16:28
+ * @Last Modified time: 2019-11-20 22:17:26
  */
 
 <template>
@@ -19,6 +19,7 @@
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
+
     <el-submenu index="2">
       <template slot="title">
         <i class="el-icon-location"></i>
@@ -37,17 +38,20 @@
         <el-menu-item index="1-4-1">选项1</el-menu-item>
       </el-submenu>
     </el-submenu>
+
     <el-menu-item index="3" :route="{name: 'rootTypeManager'}">
       <i class="el-icon-menu"></i>
       <span slot="title">类型 / 级别管理</span>
     </el-menu-item>
+
+    <el-menu-item index="5" :route="{name: 'rootAbout'}">
+      <i class="el-icon-setting"></i>
+      <span slot="title">奖金 / 业绩管理</span>
+    </el-menu-item>
+
     <el-menu-item index="4" :route="{name: 'rootUserManager'}">
       <i class="el-icon-document"></i>
       <span slot="title">用户管理</span>
-    </el-menu-item>
-    <el-menu-item index="5" :route="{name: 'rootAbout'}">
-      <i class="el-icon-setting"></i>
-      <span slot="title">导航四</span>
     </el-menu-item>
   </el-menu>
 </template>
