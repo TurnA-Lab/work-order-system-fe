@@ -27,7 +27,7 @@
     labelTapToCancel="单击右侧按钮以取消"
     labelTapToRetry="单击右侧按钮以重试"
     labelFileTypeNotAllowed="不被允许的文件类型"
-    fileValidateTypeLabelExpectedTypes="仅允许图片、文本、Pdf、Xls 类型"
+    fileValidateTypeLabelExpectedTypes="仅允许图片、文本、PDF、XLS 类型"
     :acceptedFileTypes="acceptTypes"
     :allowRevert="false"
     :instantUpload="false"

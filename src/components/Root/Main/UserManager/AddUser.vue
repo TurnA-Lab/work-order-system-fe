@@ -261,7 +261,7 @@ export default Vue.extend({
 }
 
 .el-form {
-  height: 76vh;
+  height: 78vh;
   width: inherit;
   overflow: auto;
 }

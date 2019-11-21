@@ -192,8 +192,8 @@ export default Vue.extend({
   },
   methods: {
     fetchData(needAlert: boolean) {
-      if (this.isFilled) {
-        this.options.loading = true;
+      if (this.$data.isFilled) {
+        this.$data.options.loading = true;
 
         this.$http
           .post(
@@ -201,10 +201,10 @@ export default Vue.extend({
             Object.assign(
               {},
               {
-                pageIndex: this.pagination.pageIndex,
-                pageSize: this.pagination.pageSize
+                pageIndex: this.$data.pagination.pageIndex,
+                pageSize: this.$data.pagination.pageSize
               },
-              this.filterForm
+              this.$data.filterForm
             ),
             {
               headers: {
@@ -215,22 +215,22 @@ export default Vue.extend({
           .then((res: AxiosResponse) => {
             if (res.data.code === 0) {
               const { list, total } = res.data.data;
-              this.tableData = list;
-              this.pagination.total = total;
+              this.$data.tableData = list;
+              this.$data.pagination.total = total;
             } else {
               this.$message({
                 message: res.data.msg || "由于未知因素，无法获取表格",
                 type: "warning"
               });
             }
-            this.options.loading = false;
+            this.$data.options.loading = false;
           })
           .catch(() => {
             this.$message({
               message: "由于未知因素，无法获取表格",
               type: "warning"
             });
-            this.options.loading = false;
+            this.$data.options.loading = false;
           });
       } else {
         if (needAlert) {
@@ -243,9 +243,9 @@ export default Vue.extend({
     },
     toggleEditUser(isVisible: boolean) {
       if (typeof isVisible === "undefined") {
-        this.editUserIsVisible = !this.editUserIsVisible;
+        this.$data.editUserIsVisible = !this.$data.editUserIsVisible;
       } else {
-        this.editUserIsVisible = isVisible;
+        this.$data.editUserIsVisible = isVisible;
       }
     }
   }

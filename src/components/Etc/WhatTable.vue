@@ -132,7 +132,8 @@ export default {
       this.options
     );
 
-    /* this.options.initTable &&  */ this.fetch();
+    /* this.options.initTable &&  */
+    this.fetch();
   },
   methods: {
     handleSizeChange(size) {

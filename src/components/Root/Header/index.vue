@@ -72,12 +72,7 @@ export default Vue.extend({
             message: "切换成功!"
           });
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消"
-          });
-        });
+        .catch(() => {});
     },
     menuCommand(command: string) {
       switch (command) {
