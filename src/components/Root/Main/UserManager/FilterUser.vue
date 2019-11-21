@@ -70,6 +70,7 @@ export default Vue.extend({
         name: "",
         worknum: ""
       },
+      isFilled: false,
       editUserIsVisible: false,
       userData: {},
       tableData: [],
@@ -185,15 +186,13 @@ export default Vue.extend({
       }
     };
   },
-  computed: {
-    isFilled() {
-      return this.$data.filterForm.name || this.$data.filterForm.worknum;
-    }
-  },
   methods: {
     fetchData(needAlert: boolean) {
-      if (this.$data.isFilled) {
-        this.$data.options.loading = true;
+      this.isFilled =
+        this.filterForm.name !== "" || this.filterForm.worknum !== "";
+
+      if (this.isFilled) {
+        this.options.loading = true;
 
         this.$http
           .post(
@@ -201,10 +200,10 @@ export default Vue.extend({
             Object.assign(
               {},
               {
-                pageIndex: this.$data.pagination.pageIndex,
-                pageSize: this.$data.pagination.pageSize
+                pageIndex: this.pagination.pageIndex,
+                pageSize: this.pagination.pageSize
               },
-              this.$data.filterForm
+              this.filterForm
             ),
             {
               headers: {
@@ -215,22 +214,22 @@ export default Vue.extend({
           .then((res: AxiosResponse) => {
             if (res.data.code === 0) {
               const { list, total } = res.data.data;
-              this.$data.tableData = list;
-              this.$data.pagination.total = total;
+              this.tableData = list;
+              this.pagination.total = total;
             } else {
               this.$message({
                 message: res.data.msg || "由于未知因素，无法获取表格",
                 type: "warning"
               });
             }
-            this.$data.options.loading = false;
+            this.options.loading = false;
           })
           .catch(() => {
             this.$message({
               message: "由于未知因素，无法获取表格",
               type: "warning"
             });
-            this.$data.options.loading = false;
+            this.options.loading = false;
           });
       } else {
         if (needAlert) {
@@ -243,9 +242,9 @@ export default Vue.extend({
     },
     toggleEditUser(isVisible: boolean) {
       if (typeof isVisible === "undefined") {
-        this.$data.editUserIsVisible = !this.$data.editUserIsVisible;
+        this.editUserIsVisible = !this.editUserIsVisible;
       } else {
-        this.$data.editUserIsVisible = isVisible;
+        this.editUserIsVisible = isVisible;
       }
     }
   }

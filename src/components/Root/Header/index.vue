@@ -63,16 +63,14 @@ export default Vue.extend({
           cancelButtonText: "取消",
           type: "warning"
         }
-      )
-        .then(() => {
-          sessionStorage.setItem("wo_permission", "0");
-          this.$router.replace({ name: "index" });
-          this.$message({
-            type: "success",
-            message: "切换成功!"
-          });
-        })
-        .catch(() => {});
+      ).then(() => {
+        sessionStorage.setItem("wo_permission", "0");
+        this.$router.replace({ name: "index" });
+        this.$message({
+          type: "success",
+          message: "切换成功!"
+        });
+      });
     },
     menuCommand(command: string) {
       switch (command) {
