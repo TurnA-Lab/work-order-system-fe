@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-20 17:04:36
+ * @Last Modified time: 2019-11-25 12:30:54
  */
 
 import Vue from "vue";
@@ -12,6 +12,7 @@ import UserIndex from "@/views/User/index.vue";
 import UserInfo from "@/views/User/Info.vue";
 import UserWorkOrder from "@/views/User/WorkOrder.vue";
 import RootIndex from "@/views/Root/index.vue";
+import Page404 from "@/views/404.vue";
 
 Vue.use(Router);
 
@@ -103,6 +104,11 @@ const router = new Router({
           component: () => import("@/components/Etc/UploadFile.vue")
         }
       ]
+    },
+    {
+      path: "*",
+      name: "page404",
+      component: Page404
     }
   ],
 

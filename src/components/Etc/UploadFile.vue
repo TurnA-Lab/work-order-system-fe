@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:17:34 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-19 13:08:35
+ * @Last Modified time: 2019-11-25 13:18:00
  */
 
 /* 
@@ -235,7 +235,7 @@ export default Vue.extend({
 }
 
 .filepond-label {
-  box-shadow: 0px 0.125rem #ccc, 0px -0.56rem #ccc inset;
+  box-shadow: 0px 0.1rem #ccc, 0px -0.56rem #ccc inset;
 }
 
 .filepond-label-upload {
