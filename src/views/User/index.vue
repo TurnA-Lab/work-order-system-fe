@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import UserCard from "@/components/User/Etc/UserCard.vue";
+import UserCard from "@/components/User/Menu/UserCard.vue";
 import UserMenu from "@/components/User/Menu/index.vue";
 
 export default Vue.extend({
@@ -27,6 +27,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "@/stylesheet/default.scss";
+
 .user {
   display: flex;
   align-items: center;
@@ -34,5 +36,11 @@ export default Vue.extend({
 
   height: 90vh;
   width: 85vw;
+}
+
+@include screen($larger) {
+  .user {
+    width: $static-card-width * 4;
+  }
 }
 </style>

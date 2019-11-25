@@ -1,7 +1,12 @@
 {
   "name": "work-order-system-fe",
   "version": "0.2.0",
+  "author": "SkyeYoung",
   "private": true,
+  "repository": {
+    "url": "https://github.com/SkyeYoung/work-order-system-fe"
+  },
+  "license": "AGPLv3",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

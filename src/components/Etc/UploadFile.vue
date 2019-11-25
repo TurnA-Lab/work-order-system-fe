@@ -235,7 +235,7 @@ export default Vue.extend({
 }
 
 .filepond-label {
-  box-shadow: 0px 0.1rem #ccc, 0px -0.56rem #ccc inset;
+  box-shadow: 0px 0.1rem #ddd, 0px -0.56rem #ddd inset;
 }
 
 .filepond-label-upload {

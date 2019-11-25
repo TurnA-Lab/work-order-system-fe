@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:47 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:45:47 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-25 21:44:48
  */
 
 <template>
@@ -14,6 +14,7 @@
         </el-button>
       </template>
     </user-menu-card>
+
     <user-menu-card class="item">
       <template v-slot:header>
         <el-button type="text">
@@ -21,7 +22,9 @@
         </el-button>
       </template>
     </user-menu-card>
+
     <user-menu-card class="item"></user-menu-card>
+
     <user-menu-card class="item flex-box">
       <template v-slot:main>
         <div class="grid">
@@ -30,8 +33,6 @@
           </el-tooltip>
           <div></div>
           <div></div>
-          <!-- <el-button class="btn" circle disabled></el-button>
-          <el-button class="btn" style="pointer-events: none;" circle disabled></el-button>-->
           <el-tooltip content="更换主题" placement="top">
             <el-button class="btn" @click="logout" circle disabled plain></el-button>
           </el-tooltip>
@@ -42,13 +43,9 @@
               icon="el-icon-full-screen"
               circle
               plain
-            >
-              <!-- <div class="icon fullscreen"></div> -->
-            </el-button>
+            ></el-button>
           </el-tooltip>
           <div></div>
-          <!-- <el-button class="btn" style="pointer-events: none;" circle disabled></el-button>
-          <el-button class="btn" style="pointer-events: none;" circle disabled></el-button>-->
           <div></div>
           <el-tooltip content="退出登录" placement="bottom-start">
             <el-button class="btn" @click="logout" icon="el-icon-switch-button" circle plain></el-button>
@@ -66,9 +63,6 @@ import UserMenuCard from "@/components/User/Menu/Card.vue";
 export default Vue.extend({
   components: {
     UserMenuCard
-  },
-  data() {
-    return {};
   },
   methods: {
     logout() {
@@ -98,16 +92,14 @@ main {
   display: flex;
 
   height: $card-width * 1.414;
-  // padding-left: 16em;
 
   .item {
-    // opacity: 0;
     transition: all 0.3s;
 
-    @for $i from 0 to 4 {
+    @for $i from 1 to 4 {
       &:nth-of-type(#{$i + 1}) {
         z-index: $i;
-        animation-delay: $i * 0.1s;
+        animation-delay: $i * 0.15s;
       }
     }
 
@@ -143,6 +135,29 @@ main {
 
   .btn {
     margin-left: 0px;
+  }
+}
+
+@include screen($larger) {
+  main {
+    height: $static-card-width * 1.414;
+
+    .item {
+      &:not(:last-of-type):hover {
+        & ~ .item {
+          transform: translateX($static-card-width * 0.45);
+        }
+      }
+
+      &:not(:first-of-type) {
+        margin-left: -$static-card-width * 0.45;
+      }
+    }
+
+    .grid {
+      height: $static-card-width * 0.8;
+      width: $static-card-width * 0.4;
+    }
   }
 }
 </style>

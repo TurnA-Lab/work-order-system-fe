@@ -5,6 +5,7 @@
  * @Last Modified time: 2019-11-13 21:35:07
  */
 
+import Console from "./utils/console";
 import Vue from "vue";
 import router from "@/plugins/router";
 import store from '@/plugins/store';
@@ -15,7 +16,7 @@ import App from "./App.vue";
 // 引入 vue-awesome
 Vue.component('v-icon', () => import("vue-awesome/components/Icon.vue"));
 
-//
+// productionTip 设置
 Vue.config.productionTip = false;
 
 // axios 设置
@@ -65,3 +66,5 @@ new Vue({
   store,
   render: (h) => h(App)
 }).$mount("#app");
+
+Console.snapShoot();

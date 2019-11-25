@@ -55,6 +55,13 @@ export default Vue.extend({
   justify-content: center;
 }
 
+@include screen($larger) {
+  .box {
+    height: $static-card-width * 1.414;
+    width: $static-card-width;
+  }
+}
+
 .slide {
   animation: slide 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) both;
 }

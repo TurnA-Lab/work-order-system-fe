@@ -9,6 +9,7 @@ $--color-primary: $main;
 $small: "min-width: 576px";
 $middile: "min-width: 768px";
 $large: "min-width: 1200px";
+$larger: "min-width: 1920px";
 
 @mixin screen($screenSize) {
 	@media (#{$screenSize}) {
@@ -19,4 +20,4 @@ $large: "min-width: 1200px";
 
 /* User-Card */
 $card-width: 20vw;
-// $card-width: 301px;
+$static-card-width: 301px;

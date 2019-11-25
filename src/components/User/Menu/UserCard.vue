@@ -51,9 +51,9 @@ export default Vue.extend({
   border-radius: 1rem;
 
   box-sizing: border-box;
-  padding-block-end: 1.2rem;
-  padding-inline-start: 1rem;
-  padding-inline-end: 1rem;
+  padding-block-end: 1.2vh;
+  padding-inline-start: 1vw;
+  padding-inline-end: 1vw;
 
   opacity: 0;
   animation: fade 0.6s ease-in-out forwards;
@@ -127,6 +127,26 @@ h5 {
   to {
     opacity: 1;
     transform: translateY(0vw);
+  }
+}
+
+@include screen($larger) {
+  .box {
+    height: $static-card-width * 1.414;
+    width: $static-card-width;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h5 {
+    line-height: 1rem;
+    font-size: 0.76rem;
   }
 }
 </style>

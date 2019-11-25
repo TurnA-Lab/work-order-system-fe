@@ -7,8 +7,8 @@
 
 <template>
   <a class="back" @click="clickFun">
-    <span id="backIcon" class="el-icon-back"></span>
-    <slot>{{text || "返回"}}</slot>
+    <span class="el-icon-back"></span>
+    <slot>{{text || "&nbsp;返回"}}</slot>
   </a>
 </template>
 
@@ -31,27 +31,12 @@ export default Vue.extend({
   cursor: pointer;
   margin-inline-start: 12px;
 
+  & > span {
+    transition: transform 0.4s;
+  }
+
   &:hover > span {
-    animation: arrow-move 0.6s;
-  }
-}
-
-@keyframes arrow-move {
-  0%,
-  100% {
-    transform: translateX(0px);
-  }
-
-  50% {
-    transform: translateX(-0.8vw);
-  }
-
-  70% {
-    transform: translateX(2px);
-  }
-
-  90% {
-    transform: translateX(-0.6vw);
+    transform: translateX(-0.6rem);
   }
 }
 </style>
