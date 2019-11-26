@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:37 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:45:37 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-26 21:38:46
  */
 
 <template>
@@ -12,7 +12,7 @@
         <slot name="header"></slot>
       </header>
       <main>
-        <slot name="main"></slot>
+        <slot></slot>
       </main>
       <footer>
         <slot name="footer"></slot>

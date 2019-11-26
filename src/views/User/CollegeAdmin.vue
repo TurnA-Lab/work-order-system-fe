@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
- * @Date: 2019-10-28 19:47:39 
+ * @Date: 2019-11-26 21:10:26 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-26 21:39:47
+ * @Last Modified time: 2019-11-26 21:41:18
  */
 
 <template>
@@ -10,9 +10,9 @@
     <template v-slot:header>
       <back-link @click="goBack"></back-link>
       <vertical-divider isTransparent="true"></vertical-divider>
-      <el-button type="text" @click="loadProfile" :disabled="btnIsDisabled">个人资料</el-button>
+      <el-button type="text" @click="loadMemberManager" :disabled="btnIsDisabled">部门成员管理</el-button>
       <vertical-divider></vertical-divider>
-      <el-button type="text" @click="loadPassword" :disabled="!btnIsDisabled">修改密码</el-button>
+      <el-button type="text" @click="loadSheetExport" :disabled="!btnIsDisabled">确认表导出</el-button>
     </template>
     <router-view></router-view>
   </main-card>
@@ -32,7 +32,7 @@ export default Vue.extend({
   },
   computed: {
     btnIsDisabled() {
-      if (this.$route.name === "userInfoProfile") {
+      if (this.$route.name === "userCollegeAdminMemberManager") {
         return true;
       } else {
         return false;
@@ -43,12 +43,15 @@ export default Vue.extend({
     goBack() {
       this.$router.push({ name: "index" });
     },
-    loadProfile() {
-      this.$router.push({ name: "userInfoProfile" });
+    loadMemberManager() {
+      this.$router.push({ name: "userCollegeAdminMemberManager" });
     },
-    loadPassword() {
-      this.$router.push({ name: "userInfoPassword" });
+    loadSheetExport() {
+      this.$router.push({ name: "userCollegeAdminSheetExport" });
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+</style>

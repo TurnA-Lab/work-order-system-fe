@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-25 12:30:54
+ * @Last Modified time: 2019-11-26 21:50:18
  */
 
 import Vue from "vue";
@@ -11,6 +11,7 @@ import Login from "@/views/Login.vue";
 import UserIndex from "@/views/User/index.vue";
 import UserInfo from "@/views/User/Info.vue";
 import UserWorkOrder from "@/views/User/WorkOrder.vue";
+import UserCollegeAdmin from "@/views/User/CollegeAdmin.vue";
 import RootIndex from "@/views/Root/index.vue";
 import Page404 from "@/views/404.vue";
 
@@ -39,7 +40,7 @@ const router = new Router({
     {
       path: "/user",
       name: "user",
-      component: UserIndex
+      component: UserIndex,
     },
     {
       path: "/user/info",
@@ -73,7 +74,25 @@ const router = new Router({
         {
           path: "new_order",
           name: "userNewOrder",
-          component: () => import("@/components/User/NewOrder/index.vue"),
+          component: () => import("@/components/User/NewOrder/index.vue")
+        }
+      ]
+    },
+    {
+      path: "/user/college_admin",
+      name: "userCollegeAdmin",
+      component: UserCollegeAdmin,
+      redirect: { name: "userCollegeAdminMemberManager" },
+      children: [
+        {
+          path: "member_manager",
+          name: "userCollegeAdminMemberManager",
+          component: () => import("@/components/User/CollegeAdmin/MemberManager/index.vue")
+        },
+        {
+          path: "sheet_export",
+          name: "userCollegeAdminSheetExport",
+          component: () => import("@/components/User/CollegeAdmin/SheetExport.vue")
         }
       ]
     },

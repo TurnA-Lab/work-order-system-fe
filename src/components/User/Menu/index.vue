@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:47 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-25 21:44:48
+ * @Last Modified time: 2019-11-26 21:32:56
  */
 
 <template>
@@ -23,42 +23,41 @@
       </template>
     </user-menu-card>
 
-    <user-menu-card class="item"></user-menu-card>
+    <user-menu-card class="item">
+      <div v-if="isCollegeAdmin">
+        <router-link :to="{name: 'userCollegeAdmin'}">学院管理入口</router-link>
+      </div>
+      <div v-else>
+        <span>Powered by JUSTNC</span>
+      </div>
+    </user-menu-card>
 
     <user-menu-card class="item flex-box">
-      <template v-slot:main>
-        <div class="grid">
-          <el-tooltip content="夜间模式" placement="top">
-            <el-button class="btn" @click="logout" circle disabled plain></el-button>
-          </el-tooltip>
-          <div></div>
-          <div></div>
-          <el-tooltip content="更换主题" placement="top">
-            <el-button class="btn" @click="logout" circle disabled plain></el-button>
-          </el-tooltip>
-          <el-tooltip content="全屏模式" placement="bottom">
-            <el-button
-              class="btn"
-              @click="toggleFullScreen"
-              icon="el-icon-full-screen"
-              circle
-              plain
-            ></el-button>
-          </el-tooltip>
-          <div></div>
-          <div></div>
-          <el-tooltip content="退出登录" placement="bottom-start">
-            <el-button class="btn" @click="logout" icon="el-icon-switch-button" circle plain></el-button>
-          </el-tooltip>
-        </div>
-      </template>
+      <div class="grid">
+        <el-tooltip content="夜间模式" placement="top">
+          <el-button class="btn" @click="logout" circle disabled plain></el-button>
+        </el-tooltip>
+        <div></div>
+        <div></div>
+        <el-tooltip content="更换主题" placement="top">
+          <el-button class="btn" @click="logout" circle disabled plain></el-button>
+        </el-tooltip>
+        <el-tooltip content="全屏模式" placement="bottom">
+          <el-button class="btn" @click="toggleFullScreen" icon="el-icon-full-screen" circle plain></el-button>
+        </el-tooltip>
+        <div></div>
+        <div></div>
+        <el-tooltip content="退出登录" placement="bottom-start">
+          <el-button class="btn" @click="logout" icon="el-icon-switch-button" circle plain></el-button>
+        </el-tooltip>
+      </div>
     </user-menu-card>
   </main>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import UserMenuCard from "@/components/User/Menu/Card.vue";
+import UserMenuCard from "./Card.vue";
 
 export default Vue.extend({
   components: {
@@ -80,6 +79,11 @@ export default Vue.extend({
       } else {
         document.documentElement.requestFullscreen();
       }
+    }
+  },
+  computed: {
+    isCollegeAdmin() {
+      return this.$store.state.userInfo.permission === 1;
     }
   }
 });

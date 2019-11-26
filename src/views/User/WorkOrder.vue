@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:46 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-18 18:08:28
+ * @Last Modified time: 2019-11-26 21:40:07
  */
 
 <template>
@@ -14,9 +14,7 @@
       <vertical-divider></vertical-divider>
       <el-button type="text" :disabled="!btnIsDisabled" @click="loadNewOrder">提交工单</el-button>
     </template>
-    <template v-slot:main>
-      <router-view></router-view>
-    </template>
+    <router-view></router-view>
   </main-card>
 </template>
 
