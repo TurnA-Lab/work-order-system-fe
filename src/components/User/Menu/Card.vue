@@ -24,9 +24,6 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  data() {
-    return {};
-  },
   methods: {
     lockCard(el: HTMLElement) {
       el.classList.add("lock-card");

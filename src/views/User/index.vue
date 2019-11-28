@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:31 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 21:26:24
+ * @Last Modified time: 2019-11-28 22:15:55
  */
 
 <template>
@@ -24,17 +24,20 @@ export default Vue.extend({
     UserMenu
   },
   created() {
-    // if (!localStorage.getItem("collageAdminAlertCount")) {
-    this.$notify({
-      title: "注意",
-      dangerouslyUseHTMLString: true,
-      message:
-        "基于功能考虑，学院管理员被合并到用户页面，当前版本可通过<span style='color: #f39c12'>第三张卡片</span>进行访问。",
-      type: "warning",
-      duration: 6000
-    });
-    localStorage.setItem("collageAdminAlertCount", "1");
-    // }
+    if (
+      sessionStorage.getItem("wo_permission") === "1" &&
+      !localStorage.getItem("collageAdminAlertCount")
+    ) {
+      this.$notify({
+        title: "注意",
+        dangerouslyUseHTMLString: true,
+        message:
+          "基于功能考虑，学院管理员被合并到用户页面，当前版本可通过<span style='color: #f39c12'>第三张卡片</span>进行访问。",
+        type: "warning",
+        duration: 6000
+      });
+      localStorage.setItem("collageAdminAlertCount", "1");
+    }
   }
 });
 </script>

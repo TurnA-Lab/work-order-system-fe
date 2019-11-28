@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:47 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 21:24:27
+ * @Last Modified time: 2019-11-28 22:22:32
  */
 
 <template>
@@ -28,7 +28,10 @@
         <router-link :to="{name: 'userCollegeAdmin'}">学院管理入口</router-link>
       </div>
       <div v-else class="user-about">
-        <span>Powered by JUSTNC</span>
+        <span>
+          Powered by
+          <br />JUSTNC
+        </span>
       </div>
     </user-menu-card>
 
@@ -142,13 +145,14 @@ main {
   }
 
   .user-about {
-    height: 100%;
+    height: $static-card-width * 1.414;
     display: flex;
     align-items: center;
     justify-content: center;
 
     span {
       color: #d3dbe2;
+      text-align: center;
     }
   }
 }
