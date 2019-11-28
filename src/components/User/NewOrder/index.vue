@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:05 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-08 22:13:21
+ * @Last Modified time: 2019-11-28 20:43:37
  */
 
 <template>
@@ -54,7 +54,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      isOff: false,
+      isOff: true,
       isLoading: true,
       getStatus: () => {
         this.$http

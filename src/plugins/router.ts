@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-26 21:50:18
+ * @Last Modified time: 2019-11-28 21:20:05
  */
 
 import Vue from "vue";
@@ -28,9 +28,12 @@ const router = new Router({
       path: "/",
       name: "index",
       redirect: () => {
-        if (sessionStorage.getItem("wo_permission") === "0") {
+        const permission = sessionStorage.getItem("wo_permission");
+        if (permission === "0" || permission === "1") {
           return "/user";
-        } else if (sessionStorage.getItem("wo_permission") === "1") {
+        } else if (permission === "2") {
+          return "/officeAdmin";
+        } else if (permission === "3") {
           return "/root";
         } else {
           return "/login";
@@ -79,7 +82,7 @@ const router = new Router({
       ]
     },
     {
-      path: "/user/college_admin",
+      path: "/college_admin",
       name: "userCollegeAdmin",
       component: UserCollegeAdmin,
       redirect: { name: "userCollegeAdminMemberManager" },
