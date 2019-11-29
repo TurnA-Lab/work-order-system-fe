@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:23 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 21:02:14
+ * @Last Modified time: 2019-11-29 22:07:23
  */
 
 <template>
@@ -78,7 +78,21 @@ export default Vue.extend({
             .then((res: AxiosResponse) => {
               if (res.data.code === 0) {
                 // 关闭浏览器后即删除
-                sessionStorage.setItem("wo_permission", this.form.permission);
+
+                const permission = res.data.data.permission;
+                if (this.form.permission === "0") {
+                  sessionStorage.setItem("wo_permission", this.form.permission);
+                } else if (this.form.permission === "1") {
+                  if (permission > 0) {
+                    sessionStorage.setItem("wo_permission", permission);
+                  } else {
+                    this.$message({
+                      message: res.data.msg,
+                      type: "warning"
+                    });
+                  }
+                }
+
                 const woUser = Object.assign({}, res.data.data, {
                   worknum: this.form.worknum
                 });

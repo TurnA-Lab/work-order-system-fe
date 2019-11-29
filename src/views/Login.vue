@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:59 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-12 22:13:09
+ * @Last Modified time: 2019-11-29 21:51:27
  */
 
 <template>
@@ -11,18 +11,20 @@
       <header>JUST WO</header>
     </transition>
     <login-form></login-form>
+    <background-ani></background-ani>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import LoginForm from "@/components/Login/Form";
+import LoginForm from "@/components/Login/Form.vue";
+import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
 import Vue from "vue";
 
 export default Vue.extend({
   name: "login",
   components: {
-    LoginForm
+    LoginForm,
+    BackgroundAni
   }
 });
 </script>

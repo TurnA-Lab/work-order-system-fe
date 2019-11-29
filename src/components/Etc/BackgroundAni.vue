@@ -1,37 +1,39 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:16 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:49:16 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-29 21:53:28
  */
 
 <template>
-  <div class="bruce">
-    <ul class="bubble-bgwall">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
+  <ul class="bubble-bgwall">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
 </template>
 
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({});
+</script>
+
 <style lang="scss" scoped>
-.bruce {
-  background-image: linear-gradient(270deg, #8146b4, #6990f6);
-}
 .bubble-bgwall {
+  z-index: -100;
   overflow: hidden;
-  position: relative;
-  margin: 0 auto;
-  width: 1200px;
-  height: 100%;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100vw;
+  height: 100vh;
   li {
     display: flex;
     position: absolute;
@@ -41,7 +43,7 @@
     border-radius: 10px;
     width: 50px;
     height: 50px;
-    background-color: rgba(#fff, 0.15);
+    background-color: rgba(#fff, 0.9);
     color: #dfdfdf;
     animation: bubble 15s infinite;
     &:nth-child(1) {
@@ -62,7 +64,7 @@
       left: 40%;
       width: 60px;
       height: 60px;
-      background-color: rgba(#fff, 0.3);
+      background-color: rgba(#fff, 0.9);
       animation-duration: 8s;
     }
     &:nth-child(5) {
@@ -72,7 +74,7 @@
       left: 80%;
       width: 120px;
       height: 120px;
-      background-color: rgba(#fff, 0.2);
+      background-color: rgba(#fff, 0.9);
       animation-delay: 3s;
     }
     &:nth-child(7) {
@@ -93,7 +95,7 @@
       left: 25%;
       width: 40px;
       height: 40px;
-      background-color: rgba(#fff, 0.3);
+      background-color: rgba(#fff, 0.9);
       font-size: 12px;
       animation-duration: 12s;
       animation-delay: 2s;

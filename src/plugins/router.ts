@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 21:20:05
+ * @Last Modified time: 2019-11-29 21:59:22
  */
 
 import Vue from "vue";
@@ -13,6 +13,7 @@ import UserInfo from "@/views/User/Info.vue";
 import UserWorkOrder from "@/views/User/WorkOrder.vue";
 import UserCollegeAdmin from "@/views/User/CollegeAdmin.vue";
 import RootIndex from "@/views/Root/index.vue";
+import OfficeAdminIndex from "@/views/OfficeAdmin/index.vue";
 import Page404 from "@/views/404.vue";
 
 Vue.use(Router);
@@ -32,7 +33,7 @@ const router = new Router({
         if (permission === "0" || permission === "1") {
           return "/user";
         } else if (permission === "2") {
-          return "/officeAdmin";
+          return "/office_admin";
         } else if (permission === "3") {
           return "/root";
         } else {
@@ -103,6 +104,34 @@ const router = new Router({
       path: "/root",
       name: "root",
       component: RootIndex,
+      redirect: { name: "rootHome" },
+      children: [
+        {
+          path: "home",
+          name: "rootHome",
+          component: () => import("@/components/Root/Main/Index/index.vue")
+        },
+        {
+          path: "type_manager",
+          name: "rootTypeManager",
+          component: () => import("@/components/Root/Main/TypeManager/index.vue")
+        },
+        {
+          path: "user_manager",
+          name: "rootUserManager",
+          component: () => import("@/components/Root/Main/UserManager/index.vue")
+        },
+        {
+          path: "about",
+          name: "rootAbout",
+          component: () => import("@/components/Etc/UploadFile.vue")
+        }
+      ]
+    },
+    {
+      path: "/office_admin",
+      name: "officeAdmin",
+      component: OfficeAdminIndex,
       redirect: { name: "rootHome" },
       children: [
         {

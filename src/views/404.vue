@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-25 12:36:40 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-25 13:40:42
+ * @Last Modified time: 2019-11-29 21:52:10
  */
 
 <template>
@@ -13,13 +13,18 @@
       返回来源页
       <span class="el-icon-right content"></span>
     </a>
+    <background-ani></background-ani>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
 
 export default Vue.extend({
+  components: {
+    BackgroundAni
+  },
   data() {
     return {
       fromLink: ""
@@ -27,7 +32,9 @@ export default Vue.extend({
   },
   methods: {
     back() {
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.replace({ name: "index" });
     }
   }
 });
