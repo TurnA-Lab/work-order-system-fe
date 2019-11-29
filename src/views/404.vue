@@ -25,11 +25,6 @@ export default Vue.extend({
   components: {
     BackgroundAni
   },
-  data() {
-    return {
-      fromLink: ""
-    };
-  },
   methods: {
     back() {
       window.history.length > 1
@@ -45,6 +40,11 @@ export default Vue.extend({
   position: fixed;
   top: 20%;
   left: 30%;
+
+  h1 {
+    font-size: 5rem;
+    margin-block-end: 0.4em;
+  }
 }
 
 .head {

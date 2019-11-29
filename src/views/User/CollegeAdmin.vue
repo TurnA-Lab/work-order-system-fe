@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-26 21:10:26 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-26 21:41:18
+ * @Last Modified time: 2019-11-30 01:52:36
  */
 
 <template>
@@ -32,7 +32,7 @@ export default Vue.extend({
   },
   computed: {
     btnIsDisabled() {
-      if (this.$route.name === "userCollegeAdminMemberManager") {
+      if (this.$route.name === "collegeAdminMemberManager") {
         return true;
       } else {
         return false;
@@ -44,10 +44,10 @@ export default Vue.extend({
       this.$router.push({ name: "index" });
     },
     loadMemberManager() {
-      this.$router.push({ name: "userCollegeAdminMemberManager" });
+      this.$router.push({ name: "collegeAdminMemberManager" });
     },
     loadSheetExport() {
-      this.$router.push({ name: "userCollegeAdminSheetExport" });
+      this.$router.push({ name: "collegeAdminSheetExport" });
     }
   }
 });

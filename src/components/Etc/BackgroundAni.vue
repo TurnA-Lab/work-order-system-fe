@@ -43,7 +43,7 @@ export default Vue.extend({});
     border-radius: 10px;
     width: 50px;
     height: 50px;
-    background-color: rgba(#fff, 0.9);
+    background-color: #fff;
     color: #dfdfdf;
     animation: bubble 15s infinite;
     &:nth-child(1) {
@@ -64,7 +64,7 @@ export default Vue.extend({});
       left: 40%;
       width: 60px;
       height: 60px;
-      background-color: rgba(#fff, 0.9);
+      background-color: #fff;
       animation-duration: 8s;
     }
     &:nth-child(5) {
@@ -74,7 +74,7 @@ export default Vue.extend({});
       left: 80%;
       width: 120px;
       height: 120px;
-      background-color: rgba(#fff, 0.9);
+      background-color: #fff;
       animation-delay: 3s;
     }
     &:nth-child(7) {
@@ -95,7 +95,7 @@ export default Vue.extend({});
       left: 25%;
       width: 40px;
       height: 40px;
-      background-color: rgba(#fff, 0.9);
+      background-color: #fff;
       font-size: 12px;
       animation-duration: 12s;
       animation-delay: 2s;

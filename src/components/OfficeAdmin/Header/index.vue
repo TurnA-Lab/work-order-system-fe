@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:00 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-12 20:34:36
+ * @Last Modified time: 2019-11-30 01:43:52
  */
 
 <template>
@@ -12,7 +12,7 @@
         <el-button :icon="btnIcon" @click="clickFun" circle></el-button>
       </el-tooltip>
       <vertical-divider isTransparent="true"></vertical-divider>
-      <span class="title">管理后台</span>
+      <span class="title">科室管理员 · 管理后台</span>
     </div>
     <div class="after-part">
       <el-tooltip content="全屏模式" placement="bottom">

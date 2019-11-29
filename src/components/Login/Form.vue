@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:23 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-29 22:07:23
+ * @Last Modified time: 2019-11-30 01:48:03
  */
 
 <template>
@@ -77,11 +77,10 @@ export default Vue.extend({
             .post("/api/outline/login", this.form)
             .then((res: AxiosResponse) => {
               if (res.data.code === 0) {
-                // 关闭浏览器后即删除
-
+                // 登录逻辑
                 const permission = res.data.data.permission;
                 if (this.form.permission === "0") {
-                  sessionStorage.setItem("wo_permission", this.form.permission);
+                  sessionStorage.setItem("wo_permission", "0");
                 } else if (this.form.permission === "1") {
                   if (permission > 0) {
                     sessionStorage.setItem("wo_permission", permission);

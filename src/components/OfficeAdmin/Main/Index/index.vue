@@ -14,33 +14,13 @@
       </h1>
       <h6>欢迎您回到江苏科技大学工单系统后台。</h6>
     </div>
-    <div class="main-body">
-      <status-card
-        title="信息录入入口"
-        icon="pen-alt"
-        fetch-api="/api/online/user/getEntrancePermission"
-        amend-api="/api/online/root/manageUserEntrance"
-      ></status-card>
-      <status-card
-        title="下属管理员获取入口"
-        icon="clipboard-list"
-        fetch-api="/api/online/collegeAdmin/getAdminEnterPermission"
-        amend-api="/api/online/root/manageAdminEntrance"
-      ></status-card>
-    </div>
   </main>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import "vue-awesome/icons/pen-alt";
-import "vue-awesome/icons/clipboard-list";
-import StatusCard from "./StatusCard.vue";
 
 export default Vue.extend({
-  components: {
-    StatusCard
-  },
   data() {
     const userInfo = this.$store.state.userInfo;
     return {

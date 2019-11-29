@@ -2,18 +2,12 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-29 21:59:22
+ * @Last Modified time: 2019-11-30 01:40:05
  */
 
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "@/views/Login.vue";
-import UserIndex from "@/views/User/index.vue";
-import UserInfo from "@/views/User/Info.vue";
-import UserWorkOrder from "@/views/User/WorkOrder.vue";
-import UserCollegeAdmin from "@/views/User/CollegeAdmin.vue";
-import RootIndex from "@/views/Root/index.vue";
-import OfficeAdminIndex from "@/views/OfficeAdmin/index.vue";
 import Page404 from "@/views/404.vue";
 
 Vue.use(Router);
@@ -44,12 +38,12 @@ const router = new Router({
     {
       path: "/user",
       name: "user",
-      component: UserIndex,
+      component: () => import("@/views/User/index.vue"),
     },
     {
       path: "/user/info",
       name: "userInfo",
-      component: UserInfo,
+      component: () => import("@/views/User/Info.vue"),
       redirect: { name: "userInfoProfile" },
       children: [
         {
@@ -67,7 +61,7 @@ const router = new Router({
     {
       path: "/user/work_order",
       name: "userWorkOrder",
-      component: UserWorkOrder,
+      component: () => import("@/views/User/WorkOrder.vue"),
       redirect: { name: "userOrders" },
       children: [
         {
@@ -84,18 +78,18 @@ const router = new Router({
     },
     {
       path: "/college_admin",
-      name: "userCollegeAdmin",
-      component: UserCollegeAdmin,
-      redirect: { name: "userCollegeAdminMemberManager" },
+      name: "collegeAdmin",
+      component: () => import("@/views/User/CollegeAdmin.vue"),
+      redirect: { name: "collegeAdminMemberManager" },
       children: [
         {
           path: "member_manager",
-          name: "userCollegeAdminMemberManager",
+          name: "collegeAdminMemberManager",
           component: () => import("@/components/User/CollegeAdmin/MemberManager/index.vue")
         },
         {
           path: "sheet_export",
-          name: "userCollegeAdminSheetExport",
+          name: "collegeAdminSheetExport",
           component: () => import("@/components/User/CollegeAdmin/SheetExport.vue")
         }
       ]
@@ -103,7 +97,7 @@ const router = new Router({
     {
       path: "/root",
       name: "root",
-      component: RootIndex,
+      component: () => import("@/views/Root/index.vue"),
       redirect: { name: "rootHome" },
       children: [
         {
@@ -131,29 +125,14 @@ const router = new Router({
     {
       path: "/office_admin",
       name: "officeAdmin",
-      component: OfficeAdminIndex,
-      redirect: { name: "rootHome" },
+      component: () => import("@/views/OfficeAdmin/index.vue"),
+      redirect: { name: "officeAdminHome" },
       children: [
         {
           path: "home",
-          name: "rootHome",
-          component: () => import("@/components/Root/Main/Index/index.vue")
+          name: "officeAdminHome",
+          component: () => import("@/components/OfficeAdmin/Main/Index/index.vue")
         },
-        {
-          path: "type_manager",
-          name: "rootTypeManager",
-          component: () => import("@/components/Root/Main/TypeManager/index.vue")
-        },
-        {
-          path: "user_manager",
-          name: "rootUserManager",
-          component: () => import("@/components/Root/Main/UserManager/index.vue")
-        },
-        {
-          path: "about",
-          name: "rootAbout",
-          component: () => import("@/components/Etc/UploadFile.vue")
-        }
       ]
     },
     {
@@ -166,20 +145,32 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  const permission = sessionStorage.getItem("wo_permission");
+
   if (to.name === "login") {
-    if (sessionStorage.getItem("wo_permission")) {
+    if (typeof permission === "string") {
       next({ name: "index" });
     } else {
       next();
     }
   } else {
-    if (!sessionStorage.getItem("wo_permission")) {
-      next({ name: "login" });
+    if (typeof permission === "string") {
+      const toName = to.name as string;
+
+      if ((/^collegeAdmin{1}/.test(toName) && permission !== "1") ||
+        (/^officeAdmin{1}/.test(toName) && permission !== "2") ||
+        (/^root{1}/.test(toName) && permission !== "3")
+      ) {
+        next({ name: "index" });
+      } else {
+        next();
+      }
     }
-    next();
   }
+
 });
 
+// 修复路由重复点击同一个报错的问题
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location: string) {
   return (originalPush.call(this, location) as any).catch((err: string) => err);

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:47 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 22:22:32
+ * @Last Modified time: 2019-11-30 01:50:05
  */
 
 <template>
@@ -25,7 +25,7 @@
 
     <user-menu-card class="item">
       <div v-if="isCollegeAdmin">
-        <router-link :to="{name: 'userCollegeAdmin'}">学院管理入口</router-link>
+        <router-link :to="{name: 'collegeAdmin'}">学院管理入口</router-link>
       </div>
       <div v-else class="user-about">
         <span>
@@ -87,6 +87,22 @@ export default Vue.extend({
   computed: {
     isCollegeAdmin() {
       return this.$store.state.userInfo.permission === 1;
+    }
+  },
+  created() {
+    if (
+      sessionStorage.getItem("wo_permission") === "1" &&
+      !localStorage.getItem("collageAdminAlertCount")
+    ) {
+      this.$notify({
+        title: "注意",
+        dangerouslyUseHTMLString: true,
+        message:
+          "基于功能考虑，学院管理员被合并到用户页面，当前版本可通过<span style='color: #f39c12'>第三张卡片</span>进行访问。",
+        type: "warning",
+        duration: 6000
+      });
+      localStorage.setItem("collageAdminAlertCount", "1");
     }
   }
 });
