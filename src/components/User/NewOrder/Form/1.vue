@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-19 12:16:17
+ * @Last Modified time: 2019-12-01 00:17:23
  */
 
 <template>
@@ -53,11 +53,12 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="立项年度" prop="startTime" required>
-      <el-date-picker v-model="form.startTime" type="year" placeholder="请选择立项年度"></el-date-picker>
+      <el-date-picker align="center" v-model="form.startTime" type="year" placeholder="请选择立项年度"></el-date-picker>
     </el-form-item>
 
     <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime" required>
       <el-date-picker
+        align="center"
         v-model="form.beginToEndTime"
         type="daterange"
         range-separator="至"
@@ -72,7 +73,7 @@
 
     <el-form-item class="form-item" label="项目类型" prop="sort" required>
       <el-cascader
-        v-model="form.sort"
+        v-model="sort"
         placeholder="请选择，或输入以查找"
         :options="options.sort"
         :props="{ expandTrigger: 'hover' }"
@@ -95,6 +96,7 @@
     <el-form-item class="form-item" label="佐证材料" prop="uploadField">
       <upload-btn></upload-btn>
     </el-form-item>
+
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
       <submit-btn @click="nextActive"></submit-btn>
@@ -107,6 +109,12 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 import SubmitBtn from "../Etc/SubmitFormBtn.vue";
 import UploadBtn from "../Etc/UploadBtn.vue";
+
+interface Type {
+  label: string;
+  value: string | number;
+  children: Type[];
+}
 
 export default Vue.extend({
   components: {
@@ -165,6 +173,7 @@ export default Vue.extend({
     };
 
     return {
+      sort: [],
       form: {
         department: "",
         project: "",
@@ -175,7 +184,9 @@ export default Vue.extend({
         sponsor: "",
         sort: "",
         level: "",
-        testimonial: ""
+        testimonial: "",
+        class2: "",
+        class3: ""
       },
       options: {
         department: [],
@@ -234,11 +245,29 @@ export default Vue.extend({
     nextActive() {
       (this as any).$refs.form.validate((valid: boolean) => {
         if (valid) {
+          for (const key in this.options.sort) {
+            if (this.options.sort.hasOwnProperty(key)) {
+              const object = this.options.sort[key] as Type;
+
+              if (object.value === this.sort[0]) {
+                this.form.class2 = object.label;
+
+                for (const key in object.children) {
+                  if (object.children.hasOwnProperty(key)) {
+                    const element = object.children[key];
+
+                    if (element.value === this.sort[1]) {
+                      this.form.class3 = object.label;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
           this.$store.commit(
             "orderForm",
             Object.assign({}, this.form, {
-              class2: this.form.sort[0],
-              class3: this.form.sort[1],
               teammate: this.form.teammate.toString()
             })
           );

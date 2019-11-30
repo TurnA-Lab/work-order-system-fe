@@ -31,7 +31,7 @@
       <div slot="title">导出</div>
 
       <div style="text-align: center;">
-        <el-date-picker v-model="selectYear" type="year" placeholder="选择导出年度"></el-date-picker>
+        <el-date-picker align="center" v-model="selectYear" type="year" placeholder="选择导出年度"></el-date-picker>
       </div>
 
       <div slot="footer" class="dialog-btn-line">

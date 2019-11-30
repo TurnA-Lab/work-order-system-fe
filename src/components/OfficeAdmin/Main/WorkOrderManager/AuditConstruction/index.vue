@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 22:10:48
+ * @Last Modified time: 2019-11-30 23:23:00
  */
 
 <template>
@@ -36,7 +36,7 @@ interface Data {
   class2: string;
   class3: string;
   startTime: string;
-  beginToEndTime: string;
+  beginToEndTime: string[];
   level: string;
   sponsor: string;
   testimonial: string;
@@ -68,20 +68,20 @@ export default Vue.extend({
         {
           prop: "project",
           label: "项目名称",
-          width: 180
+          width: 160
         },
         {
           prop: "name",
-          label: "负责人"
+          label: "项目负责人"
         },
         {
           prop: "class3",
           label: "类别",
-          width: 200
+          width: 160
         },
         {
           prop: "isEnd",
-          label: "是否结束"
+          label: "是否已结束"
         },
         {
           prop: "status",
@@ -169,14 +169,12 @@ export default Vue.extend({
           this.options.loading = false;
         });
     },
-    toggleAudit(isVisible: boolean, data: Data) {
+    toggleAudit(isVisible: boolean) {
       if (typeof isVisible === "undefined") {
         this.auditIsVisible = !this.auditIsVisible;
       } else {
         this.auditIsVisible = isVisible;
       }
-
-      this.$data.form[this.$data.index] = data;
     }
   }
 });

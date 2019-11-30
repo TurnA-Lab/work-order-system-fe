@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 20:11:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 22:11:05
+ * @Last Modified time: 2019-12-01 00:31:53
  */
 
 <template>
@@ -13,7 +13,10 @@
     @close="close"
     append-to-body
   >
-    <div slot="title">工单审核</div>
+    <div slot="title">
+      工单审核
+      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+    </div>
     <div>
       <el-form
         :class="{'is-disable': isDisable}"
@@ -24,38 +27,17 @@
         label-position="left"
         label-width="auto"
       >
-        <el-form-item class="form-item" label="姓名">
-          <el-input v-model="form.name" :disabled="EditIsDisable"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="工号">
-          <el-input v-model="form.worknum" :disabled="EditIsDisable"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="权限">
-          <el-select v-model="form.permission" placeholder="请选择">
-            <el-option
-              :key="item.value"
-              v-for="item in options.permission"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="性别">
-          <el-select v-model="form.gender" placeholder="请选择">
-            <el-option
-              :key="item.value"
-              v-for="item in options.gender"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+        <el-form-item class="form-item" label="项目名称">
+          <el-input v-model="form.project" :disabled="editIsDIsable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="院部" prop="department">
-          <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
+          <el-select
+            v-model="form.department"
+            placeholder="请选择，或输入以查找"
+            filterable
+            :disabled="editIsDIsable"
+          >
             <el-option
               :key="item.value"
               v-for="item in options.department"
@@ -65,65 +47,77 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="联系电话">
-          <el-input v-model="form.phone"></el-input>
+        <el-form-item class="form-item" label="项目负责人">
+          <el-input v-model="form.name" :disabled="editIsDIsable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="出生年月">
-          <el-date-picker v-model="form.birthday" type="date" placeholder="选择日期"></el-date-picker>
+        <el-form-item class="form-item" label="课题组成员">
+          <el-input v-model="form.teammate" :disabled="editIsDIsable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="入校时间">
-          <el-date-picker v-model="form.enterTime" type="date" placeholder="选择日期"></el-date-picker>
+        <el-form-item class="form-item" label="立项年度" prop="startTime">
+          <el-date-picker
+            align="center"
+            v-model="form.startTime"
+            type="year"
+            placeholder="请选择立项年度"
+            :disabled="editIsDIsable"
+          ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.techTitle"></el-input>
+        <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime">
+          <el-date-picker
+            align="center"
+            v-model="form.beginToEndTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :disabled="editIsDIsable"
+          ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="最高学历">
-          <el-input v-model="form.eduBgd"></el-input>
+        <el-form-item class="form-item" label="主办单位" prop="sponsor">
+          <el-input v-model="form.sponsor" placeholder="请输入主办单位" :disabled="editIsDIsable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="最高学位">
-          <el-input v-model="form.degree"></el-input>
+        <el-form-item class="form-item" label="项目类型" prop="sort">
+          <el-cascader
+            v-model="sort"
+            placeholder="请选择，或输入以查找"
+            :options="options.sort"
+            :props="{ expandTrigger: 'hover' }"
+            :show-all-levels="false"
+            filterable
+            :disabled="editIsDIsable"
+          ></el-cascader>
         </el-form-item>
 
-        <el-form-item class="form-item" label="授学位单位名称">
-          <el-input v-model="form.school"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="获最高学位的专业名称">
-          <el-input v-model="form.major"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="是否双师型">
-          <el-select v-model="form.doubleTeacher" placeholder="请选择">
+        <el-form-item class="form-item" label="项目级别" prop="level">
+          <el-select
+            v-model="form.level"
+            placeholder="请选择，或输入以查找"
+            filterable
+            :disabled="editIsDIsable"
+          >
             <el-option
+              v-for="item in options.level"
               :key="item.value"
-              v-for="item in options.doubleTeacher"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="是否具有行业背景">
-          <el-select v-model="form.background" placeholder="请选择">
-            <el-option
-              :key="item.value"
-              v-for="item in options.background"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+        <el-form-item class="form-item" label="佐证材料" prop="uploadField">
+          <upload-btn></upload-btn>
         </el-form-item>
 
-        <el-form-item class="form-item" label="是否博士生导师">
-          <el-select v-model="form.tutor" placeholder="请选择">
+        <el-form-item class="form-item" label="是否已结束">
+          <el-select v-model="form.isEnd" placeholder="请选择" :disabled="editIsDIsable">
             <el-option
               :key="item.value"
-              v-for="item in options.tutor"
+              v-for="item in options.isEnd"
               :label="item.label"
               :value="item.value"
             ></el-option>
@@ -133,7 +127,7 @@
     </div>
 
     <div slot="footer" class="dialog-btn-line">
-      <div v-if="EditIsDisable">
+      <div v-if="editIsDIsable">
         <el-button @click="toggleEdit" type="primary" :disabled="isDisable">进行编辑</el-button>
       </div>
       <div v-else>
@@ -147,7 +141,7 @@
           当前为 “{{form.status}}”。
         </p>
         <div style="text-align: center;">
-          <el-button type="primary" size="mini" @click="toggleStatus('通过')">通过</el-button>
+          <el-button type="primary" size="mini" @click="toggleStatus('已通过')">通过</el-button>
           <el-button type="primary" size="mini" @click="toggleStatus('不通过')">不通过</el-button>
         </div>
         <el-button slot="reference" type="primary" :disabled="isDisable">标记状态</el-button>
@@ -172,7 +166,7 @@ interface Data {
   class2: string;
   class3: string;
   startTime: string;
-  beginToEndTime: string;
+  beginToEndTime: string[];
   level: string;
   sponsor: string;
   testimonial: string;
@@ -189,81 +183,48 @@ interface Data {
   lastTime: string;
 }
 
-const permissionText = ["普通用户", "学院管理员", " root 管理员"];
+interface Type {
+  label: string;
+  value: string | number;
+  children: Type[];
+}
+
+const isEndText = ["未结束", "已结束"];
+const statusText = ["未通过", "审核中", "已通过"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
   data() {
     return {
       statusIsVisible: false,
-      EditIsDisable: true,
+      editIsDIsable: true,
       isDisable: false,
+      sort: [],
       form: {},
       options: {
         department: [],
-        gender: [
+        isEnd: [
           {
-            label: "男",
+            label: "未结束",
             value: "0"
           },
           {
-            label: "女",
+            label: "已结束",
             value: "1"
           }
         ],
-        tutor: [
-          {
-            label: "否",
-            value: "0"
-          },
-          {
-            label: "是",
-            value: "1"
-          }
-        ],
-        background: [
-          {
-            label: "否",
-            value: "0"
-          },
-          {
-            label: "是",
-            value: "1"
-          }
-        ],
-        doubleTeacher: [
-          {
-            label: "否",
-            value: "0"
-          },
-          {
-            label: "是",
-            value: "1"
-          }
-        ],
-        permission: [
-          {
-            label: "普通用户",
-            value: "0"
-          },
-          {
-            label: "学院管理员",
-            value: "1"
-          },
-          {
-            label: " root 管理员",
-            value: "2"
-          }
-        ]
+        level: [],
+        sort: []
       }
     };
   },
   methods: {
     close() {
-      this.$emit("toggle-is-visible", false, this.form);
+      this.$emit("toggle-is-visible", false);
+      this.editIsDIsable = true;
     },
     toggleEdit() {
-      this.EditIsDisable = !this.EditIsDisable;
+      this.editIsDIsable = !this.editIsDIsable;
     },
     toggleStatus(text: string) {
       this.statusIsVisible = false;
@@ -271,11 +232,28 @@ export default Vue.extend({
       this.updateInfo(false);
     },
     updateInfo(isEdit: boolean = true) {
-      const isEndText = ["未结束", "已结束"];
-      const statusText = ["未通过", "审核中", "已通过"];
-
       this.isDisable = true;
-      this.EditIsDisable = true;
+      this.editIsDIsable = true;
+
+      for (const key in this.options.sort) {
+        if (this.options.sort.hasOwnProperty(key)) {
+          const object = this.options.sort[key] as Type;
+
+          if (object.value === this.sort[0]) {
+            (this.form as Data).class2 = object.label;
+
+            for (const key in object.children) {
+              if (object.children.hasOwnProperty(key)) {
+                const element = object.children[key];
+
+                if (element.value === this.sort[1]) {
+                  (this.form as Data).class3 = object.label;
+                }
+              }
+            }
+          }
+        }
+      }
 
       const temForm = Object.assign({}, this.form, {
         status: statusText.indexOf((this.form as Data).status as string) - 1,
@@ -321,6 +299,26 @@ export default Vue.extend({
   },
   watch: {
     data(newValue: Data, oldValue: Data) {
+      for (const key in this.options.sort) {
+        if (this.options.sort.hasOwnProperty(key)) {
+          const object = this.options.sort[key] as Type;
+
+          if (object.label === newValue.class2) {
+            (this.sort as any[])[0] = object.value;
+
+            for (const key in object.children) {
+              if (object.children.hasOwnProperty(key)) {
+                const element = object.children[key];
+
+                if (element.label === newValue.class3) {
+                  (this.sort as any[])[1] = element.value;
+                }
+              }
+            }
+          }
+        }
+      }
+
       this.form = newValue;
     }
   },
@@ -354,6 +352,64 @@ export default Vue.extend({
           type: "warning"
         });
       });
+
+    // 请求项目类型列表
+    this.$http
+      .post(
+        "/api/online/getTypeList",
+        {
+          class1: "建设类"
+        },
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.sort = res.data.data;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取项目类型列表",
+          type: "warning"
+        });
+      });
+
+    // 请求项目级别列表
+    this.$http
+      .post(
+        "/api/online/getLevelSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.level = res.data.data;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取项目级别列表",
+          type: "warning"
+        });
+      });
   }
 });
 </script>
@@ -367,16 +423,10 @@ export default Vue.extend({
   filter: blur(10px);
   cursor: not-allowed;
 }
-</style>
 
-<style lang="scss">
-.edit-dialog {
-  width: 60vw;
-  border-radius: 1rem;
-
-  min-width: 450px;
-  max-height: 80vh;
-  margin: 0px !important;
+.last-time {
+  color: #dddddd;
+  font-size: 8px;
 }
 
 .form-part {
@@ -393,5 +443,16 @@ export default Vue.extend({
   div {
     margin-block-end: 10px;
   }
+}
+</style>
+
+<style lang="scss">
+.edit-dialog {
+  width: 60vw;
+  border-radius: 1rem;
+
+  min-width: 450px;
+  max-height: 80vh;
+  margin: 0px !important;
 }
 </style>

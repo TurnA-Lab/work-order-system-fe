@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-30 19:13:19 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 19:50:28
+ * @Last Modified time: 2019-12-01 00:59:21
  */
 
 <template>
@@ -14,7 +14,12 @@
             <audit-construction></audit-construction>
           </el-tab-pane>
           <el-tab-pane label="导出"></el-tab-pane>
-          <el-tab-pane label="录入"></el-tab-pane>
+          <el-tab-pane label="录入">
+            <digitize-sheet
+              @click="downloadConstruction"
+              api="/online/officeAdmin/excelImportConstruction"
+            ></digitize-sheet>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-tab-pane>
@@ -25,7 +30,12 @@
             <audit-construction></audit-construction>
           </el-tab-pane>
           <el-tab-pane label="导出"></el-tab-pane>
-          <el-tab-pane label="录入"></el-tab-pane>
+          <el-tab-pane label="录入">
+            <digitize-sheet
+              @click="downloadAchievement"
+              api="/api/online/officeAdmin/excelImportPerformance"
+            ></digitize-sheet>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-tab-pane>
@@ -36,7 +46,9 @@
             <audit-construction></audit-construction>
           </el-tab-pane>
           <el-tab-pane label="导出"></el-tab-pane>
-          <el-tab-pane label="录入"></el-tab-pane>
+          <el-tab-pane label="录入">
+            <digitize-sheet @click="downloadAward" api="/api/online/officeAdmin/excelImportAward"></digitize-sheet>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-tab-pane>
@@ -46,10 +58,68 @@
 <script lang="ts">
 import Vue from "vue";
 import AuditConstruction from "./AuditConstruction/index.vue";
+import DigitizeSheet from "./DigitizeSheet/index.vue";
 
 export default Vue.extend({
   components: {
-    AuditConstruction
+    AuditConstruction,
+    DigitizeSheet
+  },
+  methods: {
+    downloadConstruction() {
+      this.$http
+        .post(
+          "/api/online/officeAdmin/getConstructionTemplate",
+          {},
+          {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          }
+        )
+        .catch(() => {
+          this.$message({
+            message: "由于未知因素，无法获取文件",
+            type: "warning"
+          });
+        });
+    },
+    downloadAchievement() {
+      this.$http
+        .post(
+          "/api/online/officeAdmin/getAchievementTemplate",
+          {},
+          {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          }
+        )
+        .catch(() => {
+          this.$message({
+            message: "由于未知因素，无法获取文件",
+            type: "warning"
+          });
+        });
+    },
+    downloadAward() {
+      this.$http
+        .post(
+          "/api/online/officeAdmin/getAwardTemplate",
+          {},
+          {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          }
+        )
+        .catch(() => {
+          this.$message({
+            message: "由于未知因素，无法获取文件",
+            type: "warning"
+          });
+        });
+    }
   }
 });
 </script>

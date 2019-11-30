@@ -51,11 +51,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="出生年月" prop="birthday">
-          <el-date-picker v-model="form.birthday" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker align="center" v-model="form.birthday" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="入校时间" prop="enterTime">
-          <el-date-picker v-model="form.enterTime" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker align="center" v-model="form.enterTime" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="职称" prop="techTitle">

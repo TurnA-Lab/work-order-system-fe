@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:28 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-18 21:33:13
+ * @Last Modified time: 2019-11-30 23:33:42
  */
 
 <template>
@@ -90,7 +90,7 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="获奖时间" prop="awardTime" required>
-      <el-date-picker v-model="form.awardTime" type="date" placeholder="获奖时间"></el-date-picker>
+      <el-date-picker align="center" v-model="form.awardTime" type="date" placeholder="获奖时间"></el-date-picker>
     </el-form-item>
 
     <el-form-item class="form-item" label="证书" prop="uploadField">
@@ -109,6 +109,12 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 import SubmitBtn from "../Etc/SubmitFormBtn.vue";
 import UploadBtn from "../Etc/UploadBtn.vue";
+
+interface Type {
+  label: string;
+  value: string | number;
+  children: Type[];
+}
 
 export default Vue.extend({
   components: {
@@ -157,6 +163,7 @@ export default Vue.extend({
     };
 
     return {
+      sort:[],
       form: {
         department: "",
         content: "",
@@ -166,7 +173,8 @@ export default Vue.extend({
         awardTime: "",
         prize: "",
         level: "",
-        sort: ""
+                        class2: "",
+        class3: ""
       },
       options: {
         department: [],
@@ -225,11 +233,28 @@ export default Vue.extend({
     nextActive() {
       (this as any).$refs.form.validate((valid: boolean) => {
         if (valid) {
+          for (const key in this.options.sort) {
+            if (this.options.sort.hasOwnProperty(key)) {
+              const object = this.options.sort[key] as Type;
+
+              if (object.value === this.sort[0]) {
+                this.form.class2 = object.label;
+
+                for (const key in object.children) {
+                  if (object.children.hasOwnProperty(key)) {
+                    const element = object.children[key];
+
+                    if (element.value === this.sort[1]) {
+                      this.form.class3 = object.label;
+                    }
+                  }
+                }
+              }
+            }
+          }
           this.$store.commit(
             "orderForm",
             Object.assign(this.form, {
-              class2: this.form.sort[0],
-              class3: this.form.sort[1],
               teammate: this.form.teammate.toString()
             })
           );
