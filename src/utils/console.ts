@@ -28,7 +28,7 @@ export default class Console {
   public static getAppInfo(infoStyle: InfoStyleConfig = this.defaultStyle): void {
 
     console.log(
-      `\n%c ${this.phraseToUpperCase(config.name)} | @${config.author} | v.${config.version} | ${config.license} \n%c Repository: ${config.repository.url} \n`,
+      `\n%c ${this.phraseToUpperCase(config.name)} | @${config.author} | v${config.version} | ${config.license} \n%c Repository: ${config.repository.url} \n`,
       `color: ${infoStyle.color}; background-color: ${infoStyle.backgroundColor}; padding: 2px 0px;`,
       `color: ${infoStyle.backgroundColor}; background-color: ${infoStyle.color}; padding: 2px 0px;`
     );

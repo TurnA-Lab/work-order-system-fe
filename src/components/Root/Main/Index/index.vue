@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-30 20:30:04 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-01 20:10:19
+ * @Last Modified time: 2019-11-30 16:56:59
  */
 
 <template>
@@ -52,10 +52,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 main {
-  // display: grid;
   .user-info {
     width: 100%;
-    height: 10vh;
 
     h1 {
       margin: unset;

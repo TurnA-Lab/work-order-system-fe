@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 20:11:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 17:05:08
+ * @Last Modified time: 2019-11-30 22:11:05
  */
 
 <template>
@@ -13,7 +13,7 @@
     @close="close"
     append-to-body
   >
-    <div slot="title">编辑用户信息</div>
+    <div slot="title">工单审核</div>
     <div>
       <el-form
         :class="{'is-disable': isDisable}"
@@ -25,11 +25,11 @@
         label-width="auto"
       >
         <el-form-item class="form-item" label="姓名">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="form.name" :disabled="EditIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="工号">
-          <el-input v-model="form.worknum"></el-input>
+          <el-input v-model="form.worknum" :disabled="EditIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="权限">
@@ -55,7 +55,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="院部" prop="department">
-          <el-select v-model="form.dptname" placeholder="请选择，或输入以查找" filterable>
+          <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
             <el-option
               :key="item.value"
               v-for="item in options.department"
@@ -133,8 +133,25 @@
     </div>
 
     <div slot="footer" class="dialog-btn-line">
-      <el-button @click="close" type="primary" plain>取消编辑</el-button>
-      <el-button :loading="isDisable" @click="updateUserInfo" type="primary">{{saveBtnText}}</el-button>
+      <div v-if="EditIsDisable">
+        <el-button @click="toggleEdit" type="primary" :disabled="isDisable">进行编辑</el-button>
+      </div>
+      <div v-else>
+        <el-button @click="toggleEdit" :disabled="isDisable">取消编辑</el-button>
+        <el-button :loading="isDisable" @click="updateInfo" :disabled="isDisable">{{saveBtnText}}</el-button>
+      </div>
+      <el-popover placement="top" width="160" v-model="statusIsVisible">
+        <p>
+          标记审核状态
+          <br />
+          当前为 “{{form.status}}”。
+        </p>
+        <div style="text-align: center;">
+          <el-button type="primary" size="mini" @click="toggleStatus('通过')">通过</el-button>
+          <el-button type="primary" size="mini" @click="toggleStatus('不通过')">不通过</el-button>
+        </div>
+        <el-button slot="reference" type="primary" :disabled="isDisable">标记状态</el-button>
+      </el-popover>
     </div>
   </el-dialog>
 </template>
@@ -143,32 +160,43 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 
-interface UserData {
-  dtpId: number;
-  dptname: string;
-  name: string;
+interface Data {
+  cid: number;
+  department: string;
+  projectNum: string;
+  project: string;
   worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  techTitle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number | string;
-  background: number | string;
-  tutor: number | string;
-  permission: number | string;
+  name: string;
+  teammate: string;
+  class1: string;
+  class2: string;
+  class3: string;
+  startTime: string;
+  beginToEndTime: string;
+  level: string;
+  sponsor: string;
+  testimonial: string;
+  expenditure: number;
+  point: number;
+  computeYear: string;
+  bonus: number;
+  fileNumber: number;
+  isEnd: number | string;
+  schoolyear: string;
+  year: string;
+  status: number | string;
+  reason: string;
+  lastTime: string;
 }
 
 const permissionText = ["普通用户", "学院管理员", " root 管理员"];
 
 export default Vue.extend({
-  props: ["userData", "isVisible"],
+  props: ["data", "isVisible"],
   data() {
     return {
+      statusIsVisible: false,
+      EditIsDisable: true,
       isDisable: false,
       form: {},
       options: {
@@ -232,12 +260,30 @@ export default Vue.extend({
   },
   methods: {
     close() {
-      this.$emit("toggle-is-visible", false);
+      this.$emit("toggle-is-visible", false, this.form);
     },
-    updateUserInfo() {
+    toggleEdit() {
+      this.EditIsDisable = !this.EditIsDisable;
+    },
+    toggleStatus(text: string) {
+      this.statusIsVisible = false;
+      (this.form as Data).status = text;
+      this.updateInfo(false);
+    },
+    updateInfo(isEdit: boolean = true) {
+      const isEndText = ["未结束", "已结束"];
+      const statusText = ["未通过", "审核中", "已通过"];
+
       this.isDisable = true;
+      this.EditIsDisable = true;
+
+      const temForm = Object.assign({}, this.form, {
+        status: statusText.indexOf((this.form as Data).status as string) - 1,
+        isEnd: isEndText.indexOf((this.form as Data).isEnd as string)
+      });
+
       this.$http
-        .post("/api/online/root/updateUserInfo", this.form, {
+        .post("/api/online/officeAdmin/constructionSupplement", temForm, {
           headers: {
             token: this.$store.state.userInfo.token
           }
@@ -245,14 +291,16 @@ export default Vue.extend({
         .then((res: AxiosResponse) => {
           this.isDisable = false;
           if (res.data.code === 0) {
-            this.close();
-            this.$message({
-              message: res.data.msg || "用户信息保存成功",
-              type: "success"
-            });
+            if (isEdit) {
+              this.close();
+              this.$message({
+                message: res.data.msg || "保存成功",
+                type: "success"
+              });
+            }
           } else {
             this.$message({
-              message: res.data.msg || "用户信息保存失败",
+              message: res.data.msg || "保存失败",
               type: "warning"
             });
           }
@@ -272,11 +320,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    userData(newValue: UserData, oldValue: UserData) {
-      newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
-      newValue.background = newValue.background === 0 ? "否" : "是";
-      newValue.tutor = newValue.tutor === 0 ? "否" : "是";
-      newValue.permission = permissionText[newValue.permission as number];
+    data(newValue: Data, oldValue: Data) {
       this.form = newValue;
     }
   },
@@ -345,5 +389,9 @@ export default Vue.extend({
   position: fixed;
   bottom: 20vh;
   right: 25vw;
+
+  div {
+    margin-block-end: 10px;
+  }
 }
 </style>

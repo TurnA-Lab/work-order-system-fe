@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-19 13:14:02
+ * @Last Modified time: 2019-11-30 17:53:02
  */
 
 <template>
@@ -51,7 +51,7 @@ export default Vue.extend({
           document.title = title;
         }
       } else {
-        document.title = "不要忘了我啊！";
+        document.title = "等待操作中...";
       }
     });
   }
@@ -159,6 +159,10 @@ export default Vue.extend({
   align-items: center;
 
   overflow: hidden;
+}
+
+.el-dialog__header {
+  color: #95a5a6;
 }
 
 .wo-dialog {

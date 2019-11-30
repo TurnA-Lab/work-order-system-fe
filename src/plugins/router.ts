@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 01:40:05
+ * @Last Modified time: 2019-11-30 19:21:52
  */
 
 import Vue from "vue";
@@ -115,11 +115,6 @@ const router = new Router({
           name: "rootUserManager",
           component: () => import("@/components/Root/Main/UserManager/index.vue")
         },
-        {
-          path: "about",
-          name: "rootAbout",
-          component: () => import("@/components/Etc/UploadFile.vue")
-        }
       ]
     },
     {
@@ -133,6 +128,16 @@ const router = new Router({
           name: "officeAdminHome",
           component: () => import("@/components/OfficeAdmin/Main/Index/index.vue")
         },
+        {
+          path: "work_order_manager",
+          name: "officeAdminWorkOrderManager",
+          component: () => import("@/components/OfficeAdmin/Main/WorkOrderManager/index.vue")
+        },
+        {
+          path: "digitize_sheet",
+          name: "officeAdminDigitizeSheet",
+          component: () => import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue")
+        }
       ]
     },
     {

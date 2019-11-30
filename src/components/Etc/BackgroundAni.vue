@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:16 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-29 21:53:28
+ * @Last Modified time: 2019-11-30 16:26:56
  */
 
 <template>
@@ -34,6 +34,9 @@ export default Vue.extend({});
   left: 0%;
   width: 100vw;
   height: 100vh;
+  margin: 0%;
+  padding: 0%;
+
   li {
     display: flex;
     position: absolute;

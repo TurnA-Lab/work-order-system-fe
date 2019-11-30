@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:49:07 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 01:38:44
+ * @Last Modified time: 2019-11-30 19:22:26
  */
 
 <template>
@@ -15,34 +15,20 @@
     :router="true"
   >
     <header>{{headerText}}</header>
+
     <el-menu-item index="1" :route="{name: 'rootHome'}">
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
 
-    <el-menu-item index="2" :route="{name: 'officeAdminAuditConstruction'}">
+    <el-menu-item index="2" :route="{name: 'officeAdminWorkOrderManager'}">
       <i class="el-icon-menu"></i>
-      <span slot="title">建设类工单核审</span>
+      <span slot="title">工单管理</span>
     </el-menu-item>
 
-    <el-menu-item index="3" :route="{name: 'officeAdminAuditAchievement'}">
+    <el-menu-item index="3" :route="{name: 'officeAdminDigitizeSheet'}">
       <i class="el-icon-menu"></i>
-      <span slot="title">成果类工单核审</span>
-    </el-menu-item>
-
-    <el-menu-item index="4" :route="{name: 'officeAdminAuditAward'}">
-      <i class="el-icon-menu"></i>
-      <span slot="title">获奖类工单核审</span>
-    </el-menu-item>
-
-    <el-menu-item index="5" :route="{name: 'rootTypeManager'}">
-      <i class="el-icon-menu"></i>
-      <span slot="title">奖金表格录入</span>
-    </el-menu-item>
-
-    <el-menu-item index="6" :route="{name: 'rootAbout'}">
-      <i class="el-icon-setting"></i>
-      <span slot="title">业绩表格录入</span>
+      <span slot="title">奖金 / 业绩表格录入</span>
     </el-menu-item>
   </el-menu>
 </template>

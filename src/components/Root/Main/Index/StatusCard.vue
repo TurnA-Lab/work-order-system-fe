@@ -1,12 +1,12 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:18:28 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-11-08 10:18:28 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-11-30 17:13:00
  */
 
 <template>
-  <el-card class="status-card" :class="{disable: isDisable}" @click="showIsDisable">
+  <div class="status-card" :class="{disable: isDisable}" @click="showIsDisable">
     <el-tooltip class="item" effect="dark" content="点击切换状态" placement="top">
       <figure class="status-icon" :class="{off: isOff}" v-loading="isLoading" @click="toggleStatus">
         <div class="status-info">{{isOff ?"关闭中" : "开启中"}}</div>
@@ -14,7 +14,7 @@
       </figure>
     </el-tooltip>
     <div class="status-title">{{title}}</div>
-  </el-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -132,11 +132,20 @@ export default Vue.extend({
 
 .status-card {
   width: 16vw;
+  height: 16vw;
+
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: 1vw;
-  margin-block-end: 0.5vh;
+  align-items: center;
+
+  margin-block-end: 1vh;
+  margin-block-start: 1vh;
   margin-inline-end: 0.5vw;
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
+  border-radius: 1rem;
 
   .status-title {
     text-align: center;
@@ -167,7 +176,7 @@ export default Vue.extend({
     }
 
     &:hover {
-      transform: scale(1.08);
+      transform: scale(1.12);
 
       & > svg {
         transform: scale(0);
@@ -177,6 +186,18 @@ export default Vue.extend({
         transform: scale(1);
         opacity: 1;
       }
+    }
+  }
+}
+
+@include screen($larger) {
+  .status-card {
+    width: $static-card-width * 0.7;
+    height: $static-card-width * 0.7;
+
+    .status-icon {
+      width: $static-card-width * 0.35;
+      height: $static-card-width * 0.35;
     }
   }
 }
