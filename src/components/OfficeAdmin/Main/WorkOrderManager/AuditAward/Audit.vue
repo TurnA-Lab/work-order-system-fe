@@ -1,9 +1,10 @@
 /*
  * @Author: Skye Young 
- * @Date: 2019-11-17 20:11:55 
+ * @Date: 2019-12-01 17:02:39 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 20:20:23
+ * @Last Modified time: 2019-12-01 20:20:01
  */
+
 
 <template>
   <el-dialog
@@ -28,8 +29,8 @@
         label-position="left"
         label-width="auto"
       >
-        <el-form-item class="form-item" label="项目名称">
-          <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
+        <el-form-item class="form-item" label="获奖名称">
+          <el-input v-model="form.content" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="院部">
@@ -48,43 +49,31 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="项目负责人">
+        <el-form-item class="form-item" label="获奖教师（第一）">
           <el-input v-model="form.name" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="课题组成员">
+        <el-form-item class="form-item" label="获奖成员">
           <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="立项年度">
-          <el-date-picker
-            align="center"
-            v-model="form.startTime"
-            type="year"
-            placeholder="请选择立项年度"
+        <el-form-item class="form-item" label="奖项">
+          <el-select
+            v-model="form.prize"
+            placeholder="请选择，或输入以查找"
+            filterable
             :disabled="editIsDisable"
-          ></el-date-picker>
+          >
+            <el-option
+              v-for="item in options.prize"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label"
+            ></el-option>
+          </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="项目起止年月">
-          <el-date-picker
-            align="center"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
-            v-model="form.beginToEndTime"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :disabled="editIsDisable"
-          ></el-date-picker>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="主办单位">
-          <el-input v-model="form.sponsor" placeholder="请输入主办单位" :disabled="editIsDisable"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="项目类型">
+        <el-form-item class="form-item" label="获奖类型">
           <el-cascader
             v-model="sort"
             placeholder="请选择，或输入以查找"
@@ -96,7 +85,7 @@
           ></el-cascader>
         </el-form-item>
 
-        <el-form-item class="form-item" label="项目级别">
+        <el-form-item class="form-item" label="级别">
           <el-select
             v-model="form.level"
             placeholder="请选择，或输入以查找"
@@ -112,27 +101,24 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="佐证材料">
+        <el-form-item class="form-item" label="颁奖部门">
+          <el-input v-model="form.awardUnit" placeholder="请输入颁奖部门" :disabled="editIsDisable"></el-input>
+        </el-form-item>
+
+        <el-form-item class="form-item" label="获奖时间" :disabled="editIsDisable">
+          <el-date-picker
+            align="center"
+            v-model="form.awardTime"
+            type="date"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+            placeholder="获奖时间"
+            :disabled="editIsDisable"
+          ></el-date-picker>
+        </el-form-item>
+
+        <el-form-item class="form-item" label="证书">
           <!-- <upload-btn></upload-btn> -->
-        </el-form-item>
-
-        <el-form-item class="form-item" label="是否已结束">
-          <el-select v-model="form.isEnd" placeholder="请选择" :disabled="editIsDisable">
-            <el-option
-              :key="item.value"
-              v-for="item in options.isEnd"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="建设经费">
-          <el-input v-model="form.expenditure" placeholder="请输入建设经费" :disabled="editIsDisable"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="业绩分">
-          <el-input v-model="form.point" placeholder="请输入业绩分" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="年度">
@@ -180,29 +166,25 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import yearRange from "@/utils/returnYearRange";
 
 interface Data {
-  cid: number;
+  aid: number;
   department: string;
-  projectNum: string;
-  project: string;
   worknum: string;
   name: string;
   teammate: string;
+  awardUnit: string;
+  content: string;
   class1: string;
   class2: string;
   class3: string;
-  startTime: string;
-  beginToEndTime: string[];
   level: string;
-  sponsor: string;
-  testimonial: string;
-  expenditure: number;
-  point: number;
-  computeYear: string;
+  prize: string;
   bonus: number;
-  fileNumber: number;
-  isEnd: number | string;
+  awardYear: string;
+  certificate: string;
+  awardTime: string;
   schoolYear: string;
   year: string;
   status: number | string;
@@ -216,9 +198,7 @@ interface Type {
   children: Type[];
 }
 
-const isEndText = ["未结束", "已结束"];
 const statusText = ["未通过", "审核中", "已通过"];
-import yearRange from "@/utils/returnYearRange";
 
 export default Vue.extend({
   props: ["data", "isVisible"],
@@ -234,16 +214,7 @@ export default Vue.extend({
       form: {},
       options: {
         department: [],
-        isEnd: [
-          {
-            label: "未结束",
-            value: "0"
-          },
-          {
-            label: "已结束",
-            value: "1"
-          }
-        ],
+        prize: [],
         level: [],
         sort: []
       }
@@ -304,8 +275,7 @@ export default Vue.extend({
 
       // 处理审核状态和是否结束
       const temForm = Object.assign({}, this.form, {
-        status: statusText.indexOf((this.form as Data).status as string) - 1,
-        isEnd: isEndText.indexOf((this.form as Data).isEnd as string)
+        status: statusText.indexOf((this.form as Data).status as string) - 1
       });
 
       this.$http
@@ -392,6 +362,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.department = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取院部列表",
@@ -411,7 +382,7 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "建设类"
+          class1: "获奖类"
         },
         {
           headers: {
@@ -422,16 +393,46 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
+            message: res.data.msg || "由于未知因素，无法获取获奖类型列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取项目类型列表",
+          message: "由于未知因素，无法获取获奖类型列表",
+          type: "warning"
+        });
+      });
+
+    // 请求奖项列表
+    this.$http
+      .post(
+        "/api/online/getPrizeList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.prize = res.data.data;
+          this.dataStatus += 1;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取奖项列表",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取奖项列表",
           type: "warning"
         });
       });
@@ -450,6 +451,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.level = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目级别列表",

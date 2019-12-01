@@ -1,9 +1,10 @@
 /*
  * @Author: Skye Young 
- * @Date: 2019-11-12 21:48:02 
+ * @Date: 2019-12-01 17:02:51 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 17:22:04
+ * @Last Modified time: 2019-12-01 19:16:45
  */
+
 
 <template>
   <div>
@@ -25,27 +26,20 @@ import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
 
 interface Data {
-  cid: number;
+  aid: number;
   department: string;
-  projectNum: string;
-  project: string;
   worknum: string;
   name: string;
   teammate: string;
+  production: string;
   class1: string;
   class2: string;
   class3: string;
-  startTime: string;
-  beginToEndTime: string[];
   level: string;
-  sponsor: string;
-  testimonial: string;
-  expenditure: number;
-  point: number;
-  computeYear: string;
-  bonus: number;
-  fileNumber: number;
-  isEnd: number;
+  unit: string;
+  publishTime: string;
+  patent: number;
+  certificate: string;
   schoolYear: string;
   year: string;
   status: number;
@@ -53,7 +47,6 @@ interface Data {
   lastTime: string;
 }
 
-const isEndText = ["未结束", "已结束"];
 const statusText = ["未通过", "审核中", "已通过"];
 
 export default Vue.extend({
@@ -69,22 +62,18 @@ export default Vue.extend({
       tableData: [],
       columns: [
         {
-          prop: "project",
-          label: "项目名称",
+          prop: "production",
+          label: "成果名称",
           width: 160
         },
         {
           prop: "name",
-          label: "项目负责人"
+          label: "第一作者"
         },
         {
           prop: "class3",
           label: "类别",
           width: 160
-        },
-        {
-          prop: "isEnd",
-          label: "是否已结束"
         },
         {
           prop: "status",
@@ -132,8 +121,8 @@ export default Vue.extend({
 
       this.$http
         .post(
-          // /api/online/officeAdmin/getUserConstruction
-          "/api/constructionManager",
+          // /api/online/officeAdmin/getUserAchievement
+          "/api/achievementManager",
           {
             pageIndex: this.pagination.pageIndex,
             pageSize: this.pagination.pageSize
@@ -149,7 +138,6 @@ export default Vue.extend({
             const { list, total } = res.data.data;
 
             list.forEach((value: Data, index: number) => {
-              list[index].isEnd = isEndText[value.isEnd];
               list[index].status = statusText[value.status + 1];
             });
 

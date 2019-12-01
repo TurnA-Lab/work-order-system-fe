@@ -2,17 +2,11 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 20:11:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-20 21:38:55
+ * @Last Modified time: 2019-12-01 13:58:17
  */
 
 <template>
-  <el-dialog
-    custom-class="wo-dialog"
-    :visible="isVisible"
-    :close-on-click-modal="false"
-    @close="close"
-    append-to-body
-  >
+  <el-dialog :visible="isVisible" :close-on-click-modal="false" @close="close" append-to-body>
     <div slot="title">编辑用户信息</div>
     <div>
       <el-form
@@ -326,7 +320,7 @@ export default Vue.extend({
 </style>
 
 <style lang="scss">
-.wo-dialog {
+.el-dialog {
   width: 60vw;
 }
 

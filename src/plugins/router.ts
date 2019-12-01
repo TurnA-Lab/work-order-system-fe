@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 19:21:52
+ * @Last Modified time: 2019-12-01 15:50:25
  */
 
 import Vue from "vue";
@@ -88,9 +88,9 @@ const router = new Router({
           component: () => import("@/components/User/CollegeAdmin/MemberManager/index.vue")
         },
         {
-          path: "sheet_export",
-          name: "collegeAdminSheetExport",
-          component: () => import("@/components/User/CollegeAdmin/SheetExport.vue")
+          path: "export_sheet",
+          name: "collegeAdminExportSheet",
+          component: () => import("@/components/User/CollegeAdmin/ExportSheet.vue")
         }
       ]
     },

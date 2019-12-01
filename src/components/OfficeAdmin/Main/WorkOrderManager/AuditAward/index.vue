@@ -1,9 +1,10 @@
 /*
  * @Author: Skye Young 
- * @Date: 2019-11-12 21:48:02 
+ * @Date: 2019-12-01 17:02:46 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 17:22:04
+ * @Last Modified time: 2019-12-01 19:32:26
  */
+
 
 <template>
   <div>
@@ -25,36 +26,28 @@ import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
 
 interface Data {
-  cid: number;
+  aid: number;
   department: string;
-  projectNum: string;
-  project: string;
   worknum: string;
   name: string;
   teammate: string;
+  awardUnit: string;
+  content: string;
   class1: string;
   class2: string;
   class3: string;
-  startTime: string;
-  beginToEndTime: string[];
   level: string;
-  sponsor: string;
-  testimonial: string;
-  expenditure: number;
-  point: number;
-  computeYear: string;
+  prize: string;
   bonus: number;
-  fileNumber: number;
-  isEnd: number;
+  awardYear: string;
+  certificate: string;
+  awardTime: string;
   schoolYear: string;
   year: string;
   status: number;
   reason: string;
   lastTime: string;
 }
-
-const isEndText = ["未结束", "已结束"];
-const statusText = ["未通过", "审核中", "已通过"];
 
 export default Vue.extend({
   components: {
@@ -69,13 +62,13 @@ export default Vue.extend({
       tableData: [],
       columns: [
         {
-          prop: "project",
-          label: "项目名称",
+          prop: "content",
+          label: "获奖名称",
           width: 160
         },
         {
           prop: "name",
-          label: "项目负责人"
+          label: "获奖教师（第一）"
         },
         {
           prop: "class3",
@@ -83,8 +76,12 @@ export default Vue.extend({
           width: 160
         },
         {
-          prop: "isEnd",
-          label: "是否已结束"
+          prop: "prize",
+          label: "奖项"
+        },
+        {
+          prop: "level",
+          label: "级别"
         },
         {
           prop: "status",
@@ -132,8 +129,8 @@ export default Vue.extend({
 
       this.$http
         .post(
-          // /api/online/officeAdmin/getUserConstruction
-          "/api/constructionManager",
+          // /api/online/officeAdmin/getUserAward
+          "/api/awardManager",
           {
             pageIndex: this.pagination.pageIndex,
             pageSize: this.pagination.pageSize
@@ -147,9 +144,9 @@ export default Vue.extend({
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
+            const statusText = ["未通过", "审核中", "已通过"];
 
             list.forEach((value: Data, index: number) => {
-              list[index].isEnd = isEndText[value.isEnd];
               list[index].status = statusText[value.status + 1];
             });
 

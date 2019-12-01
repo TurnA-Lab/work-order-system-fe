@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 21:48:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-20 20:10:12
+ * @Last Modified time: 2019-12-01 19:01:00
  */
 
 <template>
@@ -218,3 +218,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+div >>> .el-table__body-wrapper {
+  max-height: 62vh !important;
+}
+</style>

@@ -1,3 +1,10 @@
+/*
+ * @Author: Skye Young
+ * @Date: 2019-12-01 16:27:15
+ * @Last Modified by:   Skye Young
+ * @Last Modified time: 2019-12-01 16:27:15
+ */
+
 import * as config from "../../package.json";
 
 interface InfoStyleConfig {

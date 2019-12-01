@@ -8,13 +8,7 @@
 <template>
   <span class="submit-btn">
     <el-button type="primary" plain @click="nextActive">确认提交</el-button>
-    <el-dialog
-      custom-class="wo-dialog"
-      title="确认提交"
-      :visible.sync="isVisible"
-      :close-on-click-modal="false"
-      append-to-body
-    >
+    <el-dialog title="确认提交" :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
       <main>
         <el-alert title="注意事项" type="warning" :closable="false"></el-alert>
         <ul>
@@ -134,14 +128,6 @@ export default Vue.extend({
 });
 </script>
 
-
-<style>
-.wo-dialog {
-  border-radius: 1rem;
-  width: 430px;
-}
-</style>
-
 <style lang="scss" scoped>
 span.submit-btn {
   margin-inline-start: 10px;
@@ -166,5 +152,13 @@ footer {
       margin-block-start: 10px;
     }
   }
+}
+</style>
+
+
+<style>
+.el-dialog {
+  border-radius: 1rem;
+  width: 430px;
 }
 </style>

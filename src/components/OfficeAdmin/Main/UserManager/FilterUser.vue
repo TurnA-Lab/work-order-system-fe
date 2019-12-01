@@ -7,7 +7,7 @@
 
 <template>
   <div>
-    <el-form :inline="true" :model="filterForm" class="demo-form-inline">
+    <el-form :inline="true" :model="filterForm">
       <el-form-item label="姓名">
         <el-input v-model="filterForm.name"></el-input>
       </el-form-item>

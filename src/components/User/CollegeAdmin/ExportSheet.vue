@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-26 21:13:44 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 20:43:04
+ * @Last Modified time: 2019-12-01 13:53:33
  */
 
 <template>
@@ -22,19 +22,14 @@
         </el-button>
       </div>
     </main>
-    <el-dialog
-      custom-class="wo-dialog"
-      :visible.sync="isVisible"
-      :close-on-click-modal="false"
-      append-to-body
-    >
+    <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
       <div slot="title">导出</div>
 
       <div style="text-align: center;">
         <el-date-picker align="center" v-model="selectYear" type="year" placeholder="选择导出年度"></el-date-picker>
       </div>
 
-      <div slot="footer" class="dialog-btn-line">
+      <div slot="footer">
         <el-button @click="close" type="primary" plain>取消导出</el-button>
         <el-button :loading="isDisable" @click="exportSheets" type="primary">{{btnText}}</el-button>
       </div>
@@ -161,5 +156,11 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+</style>
+
+<style lang="scss">
+.el-dialog {
+  width: 36vw;
 }
 </style>

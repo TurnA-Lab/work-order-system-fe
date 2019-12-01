@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
- * @Date: 2019-11-17 20:11:55 
+ * @Date: 2019-12-01 17:02:31 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 20:20:23
+ * @Last Modified time: 2019-12-01 20:14:35
  */
 
 <template>
@@ -11,8 +11,8 @@
     :visible="isVisible"
     :close-on-click-modal="false"
     @close="close"
-    v-loading="isLoading"
     append-to-body
+    v-loading="isLoading"
   >
     <div slot="title">
       工单审核
@@ -28,8 +28,8 @@
         label-position="left"
         label-width="auto"
       >
-        <el-form-item class="form-item" label="项目名称">
-          <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
+        <el-form-item class="form-item" label="成果名称">
+          <el-input v-model="form.production" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="院部">
@@ -48,7 +48,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="项目负责人">
+        <el-form-item class="form-item" label="第一作者">
           <el-input v-model="form.name" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
@@ -56,32 +56,20 @@
           <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="立项年度">
-          <el-date-picker
-            align="center"
-            v-model="form.startTime"
-            type="year"
-            placeholder="请选择立项年度"
-            :disabled="editIsDisable"
-          ></el-date-picker>
+        <el-form-item class="form-item" label="发表刊物/出版社/授权单位">
+          <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="项目起止年月">
+        <el-form-item class="form-item" label="发表/出版/授权时间">
           <el-date-picker
             align="center"
+            v-model="form.publishTime"
+            type="month"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
-            v-model="form.beginToEndTime"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            placeholder="发表/出版/授权时间"
             :disabled="editIsDisable"
           ></el-date-picker>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="主办单位">
-          <el-input v-model="form.sponsor" placeholder="请输入主办单位" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="项目类型">
@@ -96,15 +84,10 @@
           ></el-cascader>
         </el-form-item>
 
-        <el-form-item class="form-item" label="项目级别">
-          <el-select
-            v-model="form.level"
-            placeholder="请选择，或输入以查找"
-            filterable
-            :disabled="editIsDisable"
-          >
+        <el-form-item class="form-item" label="是否被转让（仅限专利）">
+          <el-select v-model="form.patent" placeholder="请选择" :disabled="editIsDisable">
             <el-option
-              v-for="item in options.level"
+              v-for="item in options.patent"
               :key="item.value"
               :label="item.label"
               :value="item.label"
@@ -114,25 +97,6 @@
 
         <el-form-item class="form-item" label="佐证材料">
           <!-- <upload-btn></upload-btn> -->
-        </el-form-item>
-
-        <el-form-item class="form-item" label="是否已结束">
-          <el-select v-model="form.isEnd" placeholder="请选择" :disabled="editIsDisable">
-            <el-option
-              :key="item.value"
-              v-for="item in options.isEnd"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="建设经费">
-          <el-input v-model="form.expenditure" placeholder="请输入建设经费" :disabled="editIsDisable"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="业绩分">
-          <el-input v-model="form.point" placeholder="请输入业绩分" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="年度">
@@ -180,29 +144,23 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import yearRange from "@/utils/returnYearRange";
 
 interface Data {
-  cid: number;
+  aid: number;
   department: string;
-  projectNum: string;
-  project: string;
   worknum: string;
   name: string;
   teammate: string;
+  production: string;
   class1: string;
   class2: string;
   class3: string;
-  startTime: string;
-  beginToEndTime: string[];
   level: string;
-  sponsor: string;
-  testimonial: string;
-  expenditure: number;
-  point: number;
-  computeYear: string;
-  bonus: number;
-  fileNumber: number;
-  isEnd: number | string;
+  unit: string;
+  publishTime: string;
+  patent: number | string;
+  certificate: string;
   schoolYear: string;
   year: string;
   status: number | string;
@@ -216,9 +174,8 @@ interface Type {
   children: Type[];
 }
 
-const isEndText = ["未结束", "已结束"];
 const statusText = ["未通过", "审核中", "已通过"];
-import yearRange from "@/utils/returnYearRange";
+const patent = ["空", "是", "否"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
@@ -234,14 +191,18 @@ export default Vue.extend({
       form: {},
       options: {
         department: [],
-        isEnd: [
+        patent: [
           {
-            label: "未结束",
-            value: "0"
+            label: "空",
+            value: 0
           },
           {
-            label: "已结束",
-            value: "1"
+            label: "是",
+            value: 1
+          },
+          {
+            label: "否",
+            value: 2
           }
         ],
         level: [],
@@ -302,14 +263,13 @@ export default Vue.extend({
         }
       }
 
-      // 处理审核状态和是否结束
+      // 处理审核状态
       const temForm = Object.assign({}, this.form, {
-        status: statusText.indexOf((this.form as Data).status as string) - 1,
-        isEnd: isEndText.indexOf((this.form as Data).isEnd as string)
+        status: statusText.indexOf((this.form as Data).status as string) - 1
       });
 
       this.$http
-        .post("/api/online/officeAdmin/constructionSupplement", temForm, {
+        .post("/api/online/officeAdmin/achievementSupplement", temForm, {
           headers: {
             token: this.$store.state.userInfo.token
           }
@@ -347,6 +307,10 @@ export default Vue.extend({
   },
   watch: {
     data(newValue: Data, oldValue: Data) {
+      // 处理是否被转让
+      newValue.patent = patent[newValue.patent as number];
+
+      // 处理类型
       for (const key in this.options.sort) {
         if (this.options.sort.hasOwnProperty(key)) {
           const object = this.options.sort[key] as Type;
@@ -370,7 +334,7 @@ export default Vue.extend({
       this.form = newValue;
     },
     dataStatus(newValue: number, oldValue: number) {
-      if (newValue === 4) {
+      if (newValue === 2) {
         this.$data.isLoading = false;
       }
     }
@@ -392,6 +356,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.department = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取院部列表",
@@ -406,12 +371,12 @@ export default Vue.extend({
         });
       });
 
-    // 请求项目类型列表
+    // 请求成果类型列表
     this.$http
       .post(
         "/api/online/getTypeList",
         {
-          class1: "建设类"
+          class1: "成果类"
         },
         {
           headers: {
@@ -422,44 +387,17 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
+            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取项目类型列表",
-          type: "warning"
-        });
-      });
-
-    // 请求项目级别列表
-    this.$http
-      .post(
-        "/api/online/getLevelSet",
-        {},
-        {
-          headers: {
-            token: stateToken
-          }
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.level = res.data.data;
-        } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
-            type: "warning"
-          });
-        }
-      })
-      .catch(() => {
-        this.$message({
-          message: "由于未知因素，无法获取项目级别列表",
+          message: "由于未知因素，无法获取成果类型列表",
           type: "warning"
         });
       });

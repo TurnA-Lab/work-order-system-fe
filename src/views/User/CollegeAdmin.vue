@@ -12,7 +12,7 @@
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-button type="text" @click="loadMemberManager" :disabled="btnIsDisabled">部门成员管理</el-button>
       <vertical-divider></vertical-divider>
-      <el-button type="text" @click="loadSheetExport" :disabled="!btnIsDisabled">确认表导出</el-button>
+      <el-button type="text" @click="loadExportSheet" :disabled="!btnIsDisabled">确认表导出</el-button>
     </template>
     <router-view></router-view>
   </main-card>
@@ -47,7 +47,7 @@ export default Vue.extend({
       this.$router.push({ name: "collegeAdminMemberManager" });
     },
     loadSheetExport() {
-      this.$router.push({ name: "collegeAdminSheetExport" });
+      this.$router.push({ name: "collegeAdminExportSheet" });
     }
   }
 });

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-30 19:13:19 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 00:59:21
+ * @Last Modified time: 2019-12-01 17:19:16
  */
 
 <template>
@@ -13,7 +13,9 @@
           <el-tab-pane label="核审">
             <audit-construction></audit-construction>
           </el-tab-pane>
-          <el-tab-pane label="导出"></el-tab-pane>
+          <el-tab-pane label="导出">
+            <export-sheet api="/api/online/officeAdmin/getConstructionExcel"></export-sheet>
+          </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
               @click="downloadConstruction"
@@ -23,13 +25,16 @@
         </el-tabs>
       </div>
     </el-tab-pane>
+
     <el-tab-pane label="成果类">
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="核审">
-            <audit-construction></audit-construction>
+            <audit-achievement></audit-achievement>
           </el-tab-pane>
-          <el-tab-pane label="导出"></el-tab-pane>
+          <el-tab-pane label="导出">
+            <export-sheet api=".api/online/officeAdmin/getAchievementExcel"></export-sheet>
+          </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
               @click="downloadAchievement"
@@ -39,13 +44,16 @@
         </el-tabs>
       </div>
     </el-tab-pane>
+
     <el-tab-pane label="获奖类">
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="核审">
-            <audit-construction></audit-construction>
+            <audit-award></audit-award>
           </el-tab-pane>
-          <el-tab-pane label="导出"></el-tab-pane>
+          <el-tab-pane label="导出">
+            <export-sheet api="/api/online/officeAdmin/getAwardExcel"></export-sheet>
+          </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet @click="downloadAward" api="/api/online/officeAdmin/excelImportAward"></digitize-sheet>
           </el-tab-pane>
@@ -58,12 +66,18 @@
 <script lang="ts">
 import Vue from "vue";
 import AuditConstruction from "./AuditConstruction/index.vue";
+import AuditAchievement from "./AuditAchievement/index.vue";
+import AuditAward from "./AuditAward/index.vue";
 import DigitizeSheet from "./DigitizeSheet/index.vue";
+import ExportSheet from "./ExportSheet.vue";
 
 export default Vue.extend({
   components: {
     AuditConstruction,
-    DigitizeSheet
+    AuditAchievement,
+    AuditAward,
+    DigitizeSheet,
+    ExportSheet
   },
   methods: {
     downloadConstruction() {

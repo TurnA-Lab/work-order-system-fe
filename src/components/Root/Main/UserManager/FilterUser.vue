@@ -2,12 +2,12 @@
  * @Author: Skye Young 
  * @Date: 2019-11-20 20:10:47 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-20 21:32:00
+ * @Last Modified time: 2019-12-01 19:01:22
  */
 
 <template>
   <div>
-    <el-form :inline="true" :model="filterForm" class="demo-form-inline">
+    <el-form :inline="true" :model="filterForm">
       <el-form-item label="姓名">
         <el-input v-model="filterForm.name"></el-input>
       </el-form-item>
@@ -252,12 +252,8 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-div >>> .el-table {
-  max-height: 60vh !important;
-}
-
 div >>> .el-table__body-wrapper,
 div >>> .el-table__fixed-body-wrapper {
-  height: 53vh !important;
+  height: 52vh !important;
 }
 </style>

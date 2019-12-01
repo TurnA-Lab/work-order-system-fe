@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:47 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 01:50:05
+ * @Last Modified time: 2019-12-01 13:45:11
  */
 
 <template>
@@ -100,7 +100,7 @@ export default Vue.extend({
         message:
           "基于功能考虑，学院管理员被合并到用户页面，当前版本可通过<span style='color: #f39c12'>第三张卡片</span>进行访问。",
         type: "warning",
-        duration: 6000
+        duration: 0
       });
       localStorage.setItem("collageAdminAlertCount", "1");
     }

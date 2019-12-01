@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:18:07 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-08 12:05:40
+ * @Last Modified time: 2019-12-01 14:14:10
  */
 
 <template>
@@ -18,7 +18,6 @@
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <el-button
           v-if="!typeData&&data.value===1"
-          @focus.stop.prevent
           @click.stop="appendLevel(node, data)"
           class="level-btn"
           type="primary"
@@ -456,10 +455,9 @@ export default Vue.extend({
 }
 
 .level-btn {
-  // margin-inline-start: 25px;
-  position: absolute;
-  bottom: 0%;
-  right: 0%;
+  position: fixed;
+  top: 30vh;
+  right: 2vw;
   z-index: 1;
 }
 

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 17:53:02
+ * @Last Modified time: 2019-12-01 13:52:08
  */
 
 <template>
@@ -153,6 +153,16 @@ export default Vue.extend({
 }
 
 // Dialog
+.el-dialog {
+  border-radius: 1rem;
+
+  min-width: 450px;
+  max-height: 80vh;
+  margin: 0px !important;
+
+  overflow: hidden;
+}
+
 .el-dialog__wrapper {
   display: flex;
   justify-content: center;
@@ -163,15 +173,5 @@ export default Vue.extend({
 
 .el-dialog__header {
   color: #95a5a6;
-}
-
-.wo-dialog {
-  border-radius: 1rem;
-
-  min-width: 450px;
-  max-height: 80vh;
-  margin: 0px !important;
-
-  overflow: hidden;
 }
 </style>

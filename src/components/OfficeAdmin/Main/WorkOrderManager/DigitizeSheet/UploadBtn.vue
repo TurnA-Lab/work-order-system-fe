@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-30 18:19:10 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 18:46:23
+ * @Last Modified time: 2019-12-01 13:57:48
  */
 
 
@@ -11,12 +11,7 @@
     <el-button type="primary" @click="showUploadDialog">
       <slot></slot>
     </el-button>
-    <el-dialog
-      custom-class="wo-dialog"
-      :visible.sync="isVisible"
-      :close-on-click-modal="false"
-      append-to-body
-    >
+    <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
       <div slot="title">上传文件</div>
       <div class="upload-field">
         <upload-file ref="uploadField"></upload-file>
@@ -110,12 +105,12 @@ export default Vue.extend({
 </style>
 
 <style lang="scss">
-.upload-btn {
-  margin-inline-start: 15px;
+.el-dialog {
+  width: 30vw;
 }
 
-.wo-dialog {
-  width: 30vw;
+.upload-btn {
+  margin-inline-start: 15px;
 }
 
 .upload-field {

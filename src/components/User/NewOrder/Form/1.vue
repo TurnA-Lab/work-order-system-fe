@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 00:17:23
+ * @Last Modified time: 2019-12-01 16:36:20
  */
 
 <template>
@@ -61,6 +61,8 @@
         align="center"
         v-model="form.beginToEndTime"
         type="daterange"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
