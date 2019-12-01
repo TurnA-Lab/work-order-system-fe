@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:17:34 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-25 13:18:00
+ * @Last Modified time: 2019-12-01 21:44:00
  */
 
 /* 
@@ -56,6 +56,11 @@ interface AxiosError extends Error {
   response: AxiosResponse;
 }
 
+interface FileInfo {
+  name: string;
+  uuid: string;
+}
+
 // 蓝眼网盘 url
 // http://10.3.4.18:8998
 const panUrl = "http://test.iskye.cn";
@@ -75,7 +80,7 @@ export default Vue.extend({
     const stateToken = this.$store.state.userInfo.token;
 
     return {
-      filesUuid: [],
+      files: [],
       acceptTypes: [
         "image/*",
         "text/*",
@@ -153,9 +158,10 @@ export default Vue.extend({
                           // if (res.data.code === 0) {
                           if (res.statusText === "OK") {
                             // 存入
-                            (this.$data.filesUuid as string[]).push(
-                              res.data.uuid
-                            );
+                            (this.$data.files as FileInfo[]).push({
+                              name: file.name,
+                              uuid: res.data.uuid
+                            });
                             load(res.data.uuid);
                           } else {
                             this.$message({
@@ -217,7 +223,7 @@ export default Vue.extend({
   },
   methods: {
     handleFilePondInit() {
-      console.log("FilePond has initialized");
+      // console.log("FilePond has initialized");
     }
   }
 });

@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 15:50:25
+ * @Last Modified time: 2019-12-01 21:05:01
  */
 
 import Vue from "vue";
@@ -17,7 +17,10 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
+      meta: {
+        title: "登录"
+      }
     },
     {
       path: "/",
@@ -39,6 +42,9 @@ const router = new Router({
       path: "/user",
       name: "user",
       component: () => import("@/views/User/index.vue"),
+      meta: {
+        title: "首页"
+      }
     },
     {
       path: "/user/info",
@@ -49,12 +55,18 @@ const router = new Router({
         {
           path: "profile",
           name: "userInfoProfile",
-          component: () => import("@/components/User/Info/Profile.vue")
+          component: () => import("@/components/User/Info/Profile.vue"),
+          meta: {
+            title: "个人资料"
+          }
         },
         {
           path: "password",
           name: "userInfoPassword",
-          component: () => import("@/components/User/Info/Password.vue")
+          component: () => import("@/components/User/Info/Password.vue"),
+          meta: {
+            title: "修改密码"
+          }
         }
       ]
     },
@@ -67,12 +79,18 @@ const router = new Router({
         {
           path: "orders",
           name: "userOrders",
-          component: () => import("@/components/User/Orders/index.vue")
+          component: () => import("@/components/User/Orders/index.vue"),
+          meta: {
+            title: "我的工单"
+          }
         },
         {
           path: "new_order",
           name: "userNewOrder",
-          component: () => import("@/components/User/NewOrder/index.vue")
+          component: () => import("@/components/User/NewOrder/index.vue"),
+          meta: {
+            title: "创建工单"
+          }
         }
       ]
     },
@@ -85,12 +103,18 @@ const router = new Router({
         {
           path: "member_manager",
           name: "collegeAdminMemberManager",
-          component: () => import("@/components/User/CollegeAdmin/MemberManager/index.vue")
+          component: () => import("@/components/User/CollegeAdmin/MemberManager/index.vue"),
+          meta: {
+            title: "部门成员管理"
+          }
         },
         {
           path: "export_sheet",
           name: "collegeAdminExportSheet",
-          component: () => import("@/components/User/CollegeAdmin/ExportSheet.vue")
+          component: () => import("@/components/User/CollegeAdmin/ExportSheet.vue"),
+          meta: {
+            title: "确认表导出"
+          }
         }
       ]
     },
@@ -103,17 +127,26 @@ const router = new Router({
         {
           path: "home",
           name: "rootHome",
-          component: () => import("@/components/Root/Main/Index/index.vue")
+          component: () => import("@/components/Root/Main/Index/index.vue"),
+          meta: {
+            title: "首页"
+          }
         },
         {
           path: "type_manager",
           name: "rootTypeManager",
-          component: () => import("@/components/Root/Main/TypeManager/index.vue")
+          component: () => import("@/components/Root/Main/TypeManager/index.vue"),
+          meta: {
+            title: "类型 / 级别管理"
+          }
         },
         {
           path: "user_manager",
           name: "rootUserManager",
-          component: () => import("@/components/Root/Main/UserManager/index.vue")
+          component: () => import("@/components/Root/Main/UserManager/index.vue"),
+          meta: {
+            title: "用户管理"
+          }
         },
       ]
     },
@@ -126,24 +159,36 @@ const router = new Router({
         {
           path: "home",
           name: "officeAdminHome",
-          component: () => import("@/components/OfficeAdmin/Main/Index/index.vue")
+          component: () => import("@/components/OfficeAdmin/Main/Index/index.vue"),
+          meta: {
+            title: "首页"
+          }
         },
         {
           path: "work_order_manager",
           name: "officeAdminWorkOrderManager",
-          component: () => import("@/components/OfficeAdmin/Main/WorkOrderManager/index.vue")
+          component: () => import("@/components/OfficeAdmin/Main/WorkOrderManager/index.vue"),
+          meta: {
+            title: "工单管理"
+          }
         },
         {
           path: "digitize_sheet",
           name: "officeAdminDigitizeSheet",
-          component: () => import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue")
+          component: () => import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue"),
+          meta: {
+            title: "奖金 / 业绩表格录入"
+          }
         }
       ]
     },
     {
       path: "*",
       name: "page404",
-      component: Page404
+      component: Page404,
+      meta: {
+        title: "404"
+      }
     }
   ],
 
@@ -151,6 +196,8 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const permission = sessionStorage.getItem("wo_permission");
+
+  document.title = to.meta.title ? to.meta.title : "JUST WO";
 
   if (to.name === "login") {
     if (typeof permission === "string") {

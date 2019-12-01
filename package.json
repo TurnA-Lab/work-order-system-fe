@@ -13,6 +13,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/mime": "^2.0.1",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.4.5",
@@ -21,6 +22,7 @@
     "filepond-plugin-file-validate-type": "^1.2.4",
     "filepond-plugin-image-crop": "^2.0.3",
     "filepond-plugin-image-preview": "^4.5.0",
+    "mime": "^2.4.4",
     "vue": "^2.6.10",
     "vue-awesome": "^3.5.4",
     "vue-axios": "^2.1.5",

@@ -9,7 +9,7 @@
   <div class="flex-box" v-loading="isLoading">
     <header>
       <h2>
-        提交工单
+        创建工单
         <el-popover
           placement="bottom-start"
           width="400"

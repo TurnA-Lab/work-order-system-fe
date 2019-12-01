@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 13:52:08
+ * @Last Modified time: 2019-12-01 22:05:23
  */
 
 <template>
@@ -35,6 +35,7 @@ export default Vue.extend({
     }
   },
   mounted() {
+    // 离线与否
     window.addEventListener("offline", () => {
       this.offline = true;
     });
@@ -44,14 +45,28 @@ export default Vue.extend({
       this.offline = false;
     });
 
+    // 动态标题
     const title = document.title;
+    let timer: number,
+      count = 0,
+      dot = ["", ".", "..", "..."];
+
     document.addEventListener("visibilitychange", () => {
+      if (timer !== null || timer !== undefined) {
+        clearInterval(timer);
+      }
+
       if (document.visibilityState === "visible") {
         if (title !== document.title) {
           document.title = title;
         }
       } else {
-        document.title = "等待操作中...";
+        timer = setInterval(() => {
+          document.title = "等待操作中" + dot[count++];
+          if (count === 4) {
+            count = 0;
+          }
+        }, 100);
       }
     });
   }

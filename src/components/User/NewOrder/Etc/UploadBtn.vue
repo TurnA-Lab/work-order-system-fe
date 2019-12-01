@@ -40,7 +40,7 @@ export default Vue.extend({
     finishUpload() {
       this.isVisible = false;
       this.$store.commit("orderForm", {
-        certificate: (this.$refs.uploadField as any).filesUuid
+        certificate: (this.$refs.uploadField as any).files
       });
     }
   }

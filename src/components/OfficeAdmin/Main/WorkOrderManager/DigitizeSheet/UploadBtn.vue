@@ -63,7 +63,7 @@ export default Vue.extend({
         .post(
           this.api,
           {
-            file: (this.$refs.uploadField as any).filesUuid
+            file: (this.$refs.uploadField as any).files
           },
           {
             headers: {

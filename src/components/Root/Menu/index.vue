@@ -44,7 +44,7 @@
       <span slot="title">类型 / 级别管理</span>
     </el-menu-item>
 
-    <el-menu-item index="5" :route="{name: 'rootAbout'}">
+    <el-menu-item index="5" :route="{name: ''}">
       <i class="el-icon-setting"></i>
       <span slot="title">奖金 / 业绩管理</span>
     </el-menu-item>
