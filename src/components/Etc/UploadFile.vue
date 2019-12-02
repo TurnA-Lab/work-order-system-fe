@@ -59,6 +59,7 @@ interface AxiosError extends Error {
 interface FileInfo {
   name: string;
   uuid: string;
+  type: string;
 }
 
 // 蓝眼网盘 url
@@ -160,7 +161,8 @@ export default Vue.extend({
                             // 存入
                             (this.$data.files as FileInfo[]).push({
                               name: file.name,
-                              uuid: res.data.uuid
+                              uuid: res.data.uuid,
+                              type: file.type
                             });
                             load(res.data.uuid);
                           } else {

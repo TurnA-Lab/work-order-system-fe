@@ -32,7 +32,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/plugins/vue-easytable.d.ts", "src/plugins/vue-filepond.d.ts"
+    "tests/**/*.tsx", "src/plugins/vue-easytable.d.ts", "src/plugins/vue-filepond.d.ts", "src/plugins/vue-picture-swipe.d.ts"
   ],
   "exclude": [
     "node_modules"

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:28 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 23:33:42
+ * @Last Modified time: 2019-12-02 19:53:13
  */
 
 <template>
@@ -163,7 +163,7 @@ export default Vue.extend({
     };
 
     return {
-      sort:[],
+      sort: [],
       form: {
         department: "",
         content: "",
@@ -173,7 +173,7 @@ export default Vue.extend({
         awardTime: "",
         prize: "",
         level: "",
-                        class2: "",
+        class2: "",
         class3: ""
       },
       options: {
@@ -240,9 +240,9 @@ export default Vue.extend({
               if (object.value === this.sort[0]) {
                 this.form.class2 = object.label;
 
-                for (const key in object.children) {
-                  if (object.children.hasOwnProperty(key)) {
-                    const element = object.children[key];
+                for (const key2 in object.children) {
+                  if (object.children.hasOwnProperty(key2)) {
+                    const element = object.children[key2];
 
                     if (element.value === this.sort[1]) {
                       this.form.class3 = object.label;

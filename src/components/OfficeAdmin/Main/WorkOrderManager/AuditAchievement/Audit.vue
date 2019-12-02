@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-12-01 17:02:31 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 20:14:35
+ * @Last Modified time: 2019-12-02 19:50:24
  */
 
 <template>
@@ -111,7 +111,7 @@
 
         <el-form-item label="学年">
           <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
-            <el-option v-for="item in yearRange" :key="item" :label="item" :value="item"></el-option>
+            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -183,7 +183,7 @@ export default Vue.extend({
     return {
       isLoading: true,
       dataStatus: 0,
-      yearRange: yearRange,
+      schoolYears: yearRange,
       statusIsVisible: false,
       editIsDisable: true,
       isDisable: false,
@@ -226,13 +226,11 @@ export default Vue.extend({
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           inputType: "textarea"
-        })
-          .then(({ value }: any) => {
-            form.status = text;
-            form.reason = value;
-            this.updateInfo(false);
-          })
-          .catch(() => {});
+        }).then(({ value }: any) => {
+          form.status = text;
+          form.reason = value;
+          this.updateInfo(false);
+        });
       } else {
         form.status = text;
         this.updateInfo(false);
@@ -250,9 +248,9 @@ export default Vue.extend({
           if (object.value === this.sort[0]) {
             (this.form as Data).class2 = object.label;
 
-            for (const key in object.children) {
-              if (object.children.hasOwnProperty(key)) {
-                const element = object.children[key];
+            for (const key2 in object.children) {
+              if (object.children.hasOwnProperty(key2)) {
+                const element = object.children[key2];
 
                 if (element.value === this.sort[1]) {
                   (this.form as Data).class3 = object.label;
@@ -318,9 +316,9 @@ export default Vue.extend({
           if (object.label === newValue.class2) {
             (this.sort as any[])[0] = object.value;
 
-            for (const key in object.children) {
-              if (object.children.hasOwnProperty(key)) {
-                const element = object.children[key];
+            for (const key2 in object.children) {
+              if (object.children.hasOwnProperty(key2)) {
+                const element = object.children[key2];
 
                 if (element.label === newValue.class3) {
                   (this.sort as any[])[1] = element.value;

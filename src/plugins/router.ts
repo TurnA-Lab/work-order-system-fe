@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 21:05:01
+ * @Last Modified time: 2019-12-02 19:08:21
  */
 
 import Vue from "vue";
@@ -179,6 +179,11 @@ const router = new Router({
           meta: {
             title: "奖金 / 业绩表格录入"
           }
+        },
+        {
+          path: "test",
+          name: "test",
+          component: () => import("@/components/OfficeAdmin/test.vue")
         }
       ]
     },
@@ -217,6 +222,8 @@ router.beforeEach((to, from, next) => {
       } else {
         next();
       }
+    } else {
+      next({ name: "login" });
     }
   }
 

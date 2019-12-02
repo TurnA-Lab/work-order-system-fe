@@ -254,9 +254,9 @@ export default Vue.extend({
               if (object.value === this.sort[0]) {
                 this.form.class2 = object.label;
 
-                for (const key in object.children) {
-                  if (object.children.hasOwnProperty(key)) {
-                    const element = object.children[key];
+                for (const key2 in object.children) {
+                  if (object.children.hasOwnProperty(key2)) {
+                    const element = object.children[key2];
 
                     if (element.value === this.sort[1]) {
                       this.form.class3 = object.label;

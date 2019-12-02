@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-12-01 13:39:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 16:35:11
+ * @Last Modified time: 2019-12-02 19:48:59
  */
 
 <template>
@@ -14,7 +14,7 @@
 
       <el-form-item label="学年">
         <el-select v-model="form.schoolYear" placeholder="请选择">
-          <el-option v-for="item in yearRange" :key="item" :label="item" :value="item"></el-option>
+          <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </el-form-item>
 
@@ -34,7 +34,7 @@ export default Vue.extend({
   props: ["api"],
   data() {
     return {
-      yearRange: yearRange,
+      schoolYears: yearRange,
       form: {
         year: "",
         schoolYear: ""

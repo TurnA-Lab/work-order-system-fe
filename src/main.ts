@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:18
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-13 21:35:07
+ * @Last Modified time: 2019-12-02 20:08:08
  */
 
 import Console from "./utils/console";
@@ -11,10 +11,8 @@ import router from "@/plugins/router";
 import store from '@/plugins/store';
 import "@/plugins/axios";
 import "@/plugins/element";
+import "@/plugins/vue-awesome";
 import App from "./App.vue";
-
-// 引入 vue-awesome
-Vue.component('v-icon', () => import("vue-awesome/components/Icon.vue"));
 
 // productionTip 设置
 Vue.config.productionTip = false;

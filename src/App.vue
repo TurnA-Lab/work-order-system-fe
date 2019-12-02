@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 22:05:23
+ * @Last Modified time: 2019-12-02 19:51:56
  */
 
 <template>
@@ -47,9 +47,9 @@ export default Vue.extend({
 
     // 动态标题
     const title = document.title;
-    let timer: number,
-      count = 0,
-      dot = ["", ".", "..", "..."];
+    let timer: number;
+    let count = 0;
+    const dot = ["", ".", "..", "..."];
 
     document.addEventListener("visibilitychange", () => {
       if (timer !== null || timer !== undefined) {
@@ -165,28 +165,5 @@ export default Vue.extend({
     max-width: 100%;
     max-height: 100%;
   }
-}
-
-// Dialog
-.el-dialog {
-  border-radius: 1rem;
-
-  min-width: 450px;
-  max-height: 80vh;
-  margin: 0px !important;
-
-  overflow: hidden;
-}
-
-.el-dialog__wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  overflow: hidden;
-}
-
-.el-dialog__header {
-  color: #95a5a6;
 }
 </style>
