@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-30 18:19:10 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 13:56:27
+ * @Last Modified time: 2019-12-03 19:18:52
  */
 
 
@@ -98,11 +98,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.sightless {
-  opacity: 0;
-  pointer-events: none;
-}
-
 .upload-field {
   width: 100%;
   display: flex;

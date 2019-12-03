@@ -2,11 +2,11 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 21:41:50 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 13:58:51
+ * @Last Modified time: 2019-12-03 18:22:40
  */
 
 <template>
-  <span class="upload-btn">
+  <span>
     <el-button type="primary" plain @click="showUploadDialog">点击上传</el-button>
     <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
       <div slot="title">上传文件</div>

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-12-01 13:39:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:48:59
+ * @Last Modified time: 2019-12-03 22:14:04
  */
 
 <template>
@@ -21,28 +21,51 @@
       <el-form-item>
         <el-button type="primary" @click="downloadTable()">导出表格</el-button>
       </el-form-item>
+
+      <el-form-item>
+        <download-as-zip :files="filesNeedZip" :zip-name="form.schoolYear+'学年'">导出文件</download-as-zip>
+      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import DownloadAsZip from "@/components/Etc/DownloadAsZip.vue";
 import { AxiosResponse } from "axios/";
 import yearRange from "@/utils/returnYearRange";
 
 export default Vue.extend({
-  props: ["api"],
+  props: ["api", "fileApi"],
+  components: {
+    DownloadAsZip
+  },
   data() {
     return {
       schoolYears: yearRange,
       form: {
         year: "",
         schoolYear: ""
-      }
+      },
+      filesNeedZip: []
     };
   },
   methods: {
     downloadTable() {
+      this.$http
+        .post(this.api, this.form, {
+          headers: {
+            token: this.$store.state.userInfo.token
+          }
+        })
+        .catch(() => {
+          this.$message({
+            message: "未知错误，导出失败",
+            type: "warning"
+          });
+        });
+    },
+    downloadZipedFile() {
       this.$http
         .post(this.api, this.form, {
           headers: {

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 20:11:55 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:56:23
+ * @Last Modified time: 2019-12-03 15:48:04
  */
 
 <template>
@@ -114,6 +114,7 @@
 
         <el-form-item class="form-item" label="佐证材料">
           <!-- <upload-btn></upload-btn> -->
+          <file-previewer-btn>点击查看</file-previewer-btn>
         </el-form-item>
 
         <el-form-item class="form-item" label="是否已结束">
@@ -180,6 +181,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
 
 interface Data {
   cid: number;
@@ -222,6 +224,9 @@ import yearRange from "@/utils/returnYearRange";
 
 export default Vue.extend({
   props: ["data", "isVisible"],
+  components: {
+    FilePreviewerBtn
+  },
   data() {
     return {
       isLoading: true,

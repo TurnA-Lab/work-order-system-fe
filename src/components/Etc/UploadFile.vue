@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-08 10:17:34 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 21:44:00
+ * @Last Modified time: 2019-12-03 14:25:48
  */
 
 /* 
@@ -48,6 +48,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { AxiosResponse, AxiosRequestConfig } from "axios";
+import { panUrl } from "@/config";
 
 interface AxiosError extends Error {
   config: AxiosRequestConfig;
@@ -61,10 +62,6 @@ interface FileInfo {
   uuid: string;
   type: string;
 }
-
-// 蓝眼网盘 url
-// http://10.3.4.18:8998
-const panUrl = "http://test.iskye.cn";
 
 const FilePond = vueFilePond(
   FilePondPluginImagePreview,
