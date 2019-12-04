@@ -47,7 +47,7 @@ export default Vue.extend({
 
     // 动态标题
     const title = document.title;
-    let timer: number;
+    let timer: NodeJS.Timeout;
     let count = 0;
     const dot = ["", ".", "..", "..."];
 

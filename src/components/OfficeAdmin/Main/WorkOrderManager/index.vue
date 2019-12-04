@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-30 19:13:19 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 17:19:16
+ * @Last Modified time: 2019-12-04 11:54:40
  */
 
 <template>
@@ -14,11 +14,11 @@
             <audit-construction></audit-construction>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getConstructionExcel"></export-sheet>
+            <export-sheet api="/api/online/officeAdmin/getConstructionExcel" fileApi="/api/Files"></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadConstruction"
+              @click="downloadTemplate('/api/online/officeAdmin/getConstructionTemplate')"
               api="/online/officeAdmin/excelImportConstruction"
             ></digitize-sheet>
           </el-tab-pane>
@@ -33,11 +33,11 @@
             <audit-achievement></audit-achievement>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api=".api/online/officeAdmin/getAchievementExcel"></export-sheet>
+            <export-sheet api="/api/online/officeAdmin/getAchievementExcel"></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadAchievement"
+              @click="downloadTemplate('/api/online/officeAdmin/getAchievementTemplate')"
               api="/api/online/officeAdmin/excelImportPerformance"
             ></digitize-sheet>
           </el-tab-pane>
@@ -55,7 +55,10 @@
             <export-sheet api="/api/online/officeAdmin/getAwardExcel"></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
-            <digitize-sheet @click="downloadAward" api="/api/online/officeAdmin/excelImportAward"></digitize-sheet>
+            <digitize-sheet
+              @click="downloadTemplate('/api/online/officeAdmin/getAwardTemplate')"
+              api="/api/online/officeAdmin/excelImportAward"
+            ></digitize-sheet>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -80,46 +83,10 @@ export default Vue.extend({
     ExportSheet
   },
   methods: {
-    downloadConstruction() {
+    downloadTemplate(api: string) {
       this.$http
         .post(
-          "/api/online/officeAdmin/getConstructionTemplate",
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
-          }
-        )
-        .catch(() => {
-          this.$message({
-            message: "由于未知因素，无法获取文件",
-            type: "warning"
-          });
-        });
-    },
-    downloadAchievement() {
-      this.$http
-        .post(
-          "/api/online/officeAdmin/getAchievementTemplate",
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
-          }
-        )
-        .catch(() => {
-          this.$message({
-            message: "由于未知因素，无法获取文件",
-            type: "warning"
-          });
-        });
-    },
-    downloadAward() {
-      this.$http
-        .post(
-          "/api/online/officeAdmin/getAwardTemplate",
+          api,
           {},
           {
             headers: {

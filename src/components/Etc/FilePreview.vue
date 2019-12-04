@@ -77,7 +77,6 @@ export default Vue.extend({
     } else {
       // 用于判断图片大小
       const img = new Image();
-      
       // 处理输入
       let files: FileInfo[];
       if (typeof this.files === "string") {

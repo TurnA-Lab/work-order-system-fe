@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-12-01 13:39:02 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-03 22:14:04
+ * @Last Modified time: 2019-12-04 12:38:55
  */
 
 <template>
@@ -19,11 +19,15 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="downloadTable()">导出表格</el-button>
+        <el-button type="primary" @click="downloadExcel">导出表格</el-button>
       </el-form-item>
 
       <el-form-item>
-        <download-as-zip :files="filesNeedZip" :zip-name="form.schoolYear+'学年'">导出文件</download-as-zip>
+        <download-as-zip
+          :files="filesNeedZip"
+          :zip-name="form.schoolYear+'学年'"
+          @before-download="downloadFile"
+        >导出文件</download-as-zip>
       </el-form-item>
     </el-form>
   </div>
@@ -51,33 +55,57 @@ export default Vue.extend({
     };
   },
   methods: {
-    downloadTable() {
-      this.$http
-        .post(this.api, this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        })
-        .catch(() => {
-          this.$message({
-            message: "未知错误，导出失败",
-            type: "warning"
-          });
+    downloadExcel() {
+      if (this.form.year === "" || this.form.schoolYear === "") {
+        this.$message({
+          message: "请先选择导出年度、学年",
+          type: "warning"
         });
+      } else {
+        this.$http
+          .post(this.api, this.form, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          })
+          .catch(() => {
+            this.$message({
+              message: "未知错误，导出失败",
+              type: "warning"
+            });
+          });
+      }
     },
-    downloadZipedFile() {
-      this.$http
-        .post(this.api, this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        })
-        .catch(() => {
-          this.$message({
-            message: "未知错误，导出失败",
-            type: "warning"
-          });
+    downloadFile(canDownload: Function) {
+      if (this.form.year === "" || this.form.schoolYear === "") {
+        this.$message({
+          message: "请先选择导出年度、学年",
+          type: "warning"
         });
+      } else {
+        this.$http
+          .post(this.fileApi, this.form, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          })
+          .then((res: AxiosResponse) => {
+            if (res.data.code === 0) {
+              canDownload(true, res.data.data);
+            } else {
+              this.$message({
+                message: res.data.msg || "由于未知因素，导出失败",
+                type: "warning"
+              });
+            }
+          })
+          .catch(() => {
+            this.$message({
+              message: "未知错误，导出失败",
+              type: "warning"
+            });
+          });
+      }
     }
   }
 });

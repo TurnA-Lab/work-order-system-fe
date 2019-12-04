@@ -1,7 +1,7 @@
 <template>
   <div>
     <file-preview :files="files"></file-preview>
-    <download-as-zip :files="filesNeedZip" :zip-name="schoolYear+'年度'">测试下载</download-as-zip>
+    <download-as-zip :files="filesNeedZip" :zip-name="schoolYear+'年度'" :can-download="true">测试下载</download-as-zip>
   </div>
 </template>
 
