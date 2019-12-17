@@ -179,11 +179,6 @@ const router = new Router({
           meta: {
             title: "奖金 / 业绩表格录入"
           }
-        },
-        {
-          path: "test",
-          name: "test",
-          component: () => import("@/components/OfficeAdmin/test.vue")
         }
       ]
     },

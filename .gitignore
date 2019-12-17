@@ -19,6 +19,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-
-# User define
-test.vue
