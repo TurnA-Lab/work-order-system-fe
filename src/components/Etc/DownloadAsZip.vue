@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-12-03 19:22:51 
+ * @Author: Skye Young
+ * @Date: 2019-12-03 19:22:51
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-04 12:43:31
  */
@@ -17,7 +17,6 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { panUrl } from "@/config";
 import { AxiosResponse } from "axios/";
-import { resolve } from "dns";
 
 interface FileInfo {
   name: string;
@@ -31,7 +30,7 @@ interface FileNeedZip {
 }
 
 export default Vue.extend({
-  props: ["files", "zipName"],
+  props: ["zipName"],
   data() {
     return {
       isDownLoading: false
@@ -42,9 +41,14 @@ export default Vue.extend({
       // 在下载前执行的函数
       this.$emit(
         "before-download",
-        (canDownload: boolean, fileNeedZip: FileNeedZip[]) => {
-          if (canDownload) {
+        (fileNeedZip: FileNeedZip[]) => {
+          if (fileNeedZip.length > 0) {
             this.downloadAction(fileNeedZip);
+          }else{
+              this.$message({
+                  message: "没有文件可供下载",
+                  type: "warning"
+              });
           }
         }
       );
@@ -68,9 +72,7 @@ export default Vue.extend({
 
           fileNeedZip.forEach(
             (
-              folder: FileNeedZip,
-              index: number,
-              fileNeedZip: FileNeedZip[]
+              folder: FileNeedZip
             ) => {
               const directory = zip.folder(folder.name);
               folder.files.forEach((file: FileInfo) => {

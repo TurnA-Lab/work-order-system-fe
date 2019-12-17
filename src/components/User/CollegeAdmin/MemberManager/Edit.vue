@@ -1,12 +1,12 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-17 20:11:55 
+ * @Author: Skye Young
+ * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 13:58:17
  */
 
 <template>
-  <el-dialog :visible="isVisible" :close-on-click-modal="false" @close="close" append-to-body>
+  <el-dialog custom-class="dialog" :visible="isVisible" :close-on-click-modal="false" @close="close" append-to-body>
     <div slot="title">编辑用户信息</div>
     <div>
       <el-form
@@ -24,17 +24,6 @@
 
         <el-form-item class="form-item" label="工号">
           <el-input v-model="form.worknum"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="权限">
-          <el-select v-model="form.permission" placeholder="请选择">
-            <el-option
-              :key="item.value"
-              v-for="item in options.permission"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
         </el-form-item>
 
         <el-form-item class="form-item" label="性别">
@@ -72,7 +61,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.techTitle"></el-input>
+          <el-input v-model="form.techTittle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -146,7 +135,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  techTitle: string;
+  techTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -154,10 +143,7 @@ interface UserData {
   doubleTeacher: number | string;
   background: number | string;
   tutor: number | string;
-  permission: number | string;
 }
-
-const permissionText = ["普通用户", "学院管理员", " root 管理员"];
 
 export default Vue.extend({
   props: ["userData", "isVisible"],
@@ -205,20 +191,6 @@ export default Vue.extend({
           {
             label: "是",
             value: "1"
-          }
-        ],
-        permission: [
-          {
-            label: "普通用户",
-            value: "0"
-          },
-          {
-            label: "学院管理员",
-            value: "1"
-          },
-          {
-            label: " root 管理员",
-            value: "2"
           }
         ]
       }
@@ -270,7 +242,6 @@ export default Vue.extend({
       newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
       newValue.background = newValue.background === 0 ? "否" : "是";
       newValue.tutor = newValue.tutor === 0 ? "否" : "是";
-      newValue.permission = permissionText[newValue.permission as number];
       this.form = newValue;
     }
   },
@@ -320,7 +291,7 @@ export default Vue.extend({
 </style>
 
 <style lang="scss">
-.el-dialog {
+.dialog {
   width: 60vw;
 }
 

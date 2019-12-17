@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:49:23 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:49:23
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 01:48:03
  */
@@ -93,7 +93,8 @@ export default Vue.extend({
                 }
 
                 const woUser = Object.assign({}, res.data.data, {
-                  worknum: this.form.worknum
+                  worknum: this.form.worknum,
+                  permission: parseInt(sessionStorage.getItem("wo_permission") as string)
                 });
                 sessionStorage.setItem("wo_user", JSON.stringify(woUser));
                 this.$store.commit("updateUserInfo", woUser);

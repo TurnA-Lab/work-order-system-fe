@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-12-01 17:02:31 
+ * @Author: Skye Young
+ * @Date: 2019-12-01 17:02:31
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-02 19:50:24
  */
@@ -65,8 +65,8 @@
             align="center"
             v-model="form.publishTime"
             type="month"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
+            format="yyyy 年 MM 月"
+            value-format="yyyy-MM"
             placeholder="发表/出版/授权时间"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -96,7 +96,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="佐证材料">
-          <!-- <upload-btn></upload-btn> -->
+          <file-previewer-btn>点击查看</file-previewer-btn>
         </el-form-item>
 
         <el-form-item class="form-item" label="年度">
@@ -135,7 +135,7 @@
           <el-button type="primary" size="mini" @click="toggleStatus('已通过',form)">通过</el-button>
           <el-button type="primary" size="mini" @click="toggleStatus('未通过',form)">不通过</el-button>
         </div>
-        <el-button slot="reference" type="primary" :disabled="isDisable">标记状态</el-button>
+        <el-button slot="reference" type="primary" :disabled="isDisable">审批</el-button>
       </el-popover>
     </div>
   </el-dialog>
@@ -145,6 +145,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
+import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
 
 interface Data {
   aid: number;
@@ -179,6 +180,9 @@ const patent = ["空", "是", "否"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
+    components: {
+        FilePreviewerBtn
+    },
   data() {
     return {
       isLoading: true,

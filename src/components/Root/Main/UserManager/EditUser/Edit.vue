@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-17 20:11:55 
+ * @Author: Skye Young
+ * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 17:05:08
  */
@@ -78,7 +78,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.techTitle"></el-input>
+          <el-input v-model="form.techTittle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -152,7 +152,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  techTitle: string;
+  techTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -163,7 +163,7 @@ interface UserData {
   permission: number | string;
 }
 
-const permissionText = ["普通用户", "学院管理员", " root 管理员"];
+const permissionText = ["普通用户","学院管理员", "科室管理员"];
 
 export default Vue.extend({
   props: ["userData", "isVisible"],
@@ -223,7 +223,7 @@ export default Vue.extend({
             value: "1"
           },
           {
-            label: " root 管理员",
+            label: " 科室管理员",
             value: "2"
           }
         ]
@@ -236,8 +236,16 @@ export default Vue.extend({
     },
     updateUserInfo() {
       this.isDisable = true;
+
+
+
       this.$http
-        .post("/api/online/root/updateUserInfo", this.form, {
+        .post("/api/online/root/updateUserInfo", Object.assign({}, this.form,{
+            doubleTeacher : (this.form as UserData).doubleTeacher === "否"  ? 0 : 1,
+            background : (this.form as UserData).background === "否" ? 0 : 1,
+            tutor : (this.form as UserData).tutor === "否" ? 0 : 1,
+            permission : permissionText.indexOf((this.form as UserData).permission as string)
+        }), {
           headers: {
             token: this.$store.state.userInfo.token
           }

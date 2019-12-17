@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-08 10:18:14 
+ * @Author: Skye Young
+ * @Date: 2019-11-08 10:18:14
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-14 20:19:42
  */
@@ -49,12 +49,13 @@
           <el-tab-pane label="奖项">
             <type-tree
               type="奖项"
-              type-api="/api/online/getPrizeList"
-              remove-api="/api/online/root/deleteLevel"
-              remove-type="level"
-              append-api="/api/online/root/addLevel"
+              type-api="/api/online/getPrizeSet"
+              remove-api="/api/online/root/deletePrize"
+              remove-type="prize"
+              append-api="/api/online/root/addPrize"
             ></type-tree>
           </el-tab-pane>
+
           <el-tab-pane label="获奖级别">
             <type-tree
               type="获奖级别"

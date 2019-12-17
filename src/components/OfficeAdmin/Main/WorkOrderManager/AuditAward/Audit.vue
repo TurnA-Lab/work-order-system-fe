@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-12-01 17:02:39 
+ * @Author: Skye Young
+ * @Date: 2019-12-01 17:02:39
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 20:20:01
  */
@@ -44,7 +44,7 @@
               :key="item.value"
               v-for="item in options.department"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -110,15 +110,15 @@
             align="center"
             v-model="form.awardTime"
             type="date"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
+            format="yyyy 年 MM 月"
+            value-format="yyyy-MM"
             placeholder="获奖时间"
             :disabled="editIsDisable"
           ></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="证书">
-          <!-- <upload-btn></upload-btn> -->
+          <file-previewer-btn>点击查看</file-previewer-btn>
         </el-form-item>
 
         <el-form-item class="form-item" label="年度">
@@ -157,7 +157,7 @@
           <el-button type="primary" size="mini" @click="toggleStatus('已通过',form)">通过</el-button>
           <el-button type="primary" size="mini" @click="toggleStatus('未通过',form)">不通过</el-button>
         </div>
-        <el-button slot="reference" type="primary" :disabled="isDisable">标记状态</el-button>
+        <el-button slot="reference" type="primary" :disabled="isDisable">审批</el-button>
       </el-popover>
     </div>
   </el-dialog>
@@ -167,6 +167,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
+import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
 
 interface Data {
   aid: number;
@@ -202,7 +203,10 @@ const statusText = ["未通过", "审核中", "已通过"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
-  data() {
+    components: {
+        FilePreviewerBtn
+    },
+    data() {
     return {
       isLoading: true,
       dataStatus: 0,
@@ -409,7 +413,7 @@ export default Vue.extend({
     // 请求奖项列表
     this.$http
       .post(
-        "/api/online/getPrizeList",
+        "/api/online/getPrizeSet",
         {},
         {
           headers: {

@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:44:41 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:44:41
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-01 20:22:59
  */
@@ -38,7 +38,7 @@ interface UserInfo {
   gender: string;
   birthday: string;
   enterTime: string;
-  techTitle: string;
+  techTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -72,6 +72,7 @@ export default Vue.extend({
         this.isLoading = false;
         if (res.data.code === 0) {
           userInfo = res.data.data;
+
           (this.table1 as Array<{ key: string; value: string }>) = [
             {
               key: "姓名",
@@ -105,7 +106,7 @@ export default Vue.extend({
           (this.table2 as Array<{ key: string; value: string }>) = [
             {
               key: "专业技术职称",
-              value: userInfo.techTitle
+              value: userInfo.techTittle
             },
             {
               key: "最高学历",

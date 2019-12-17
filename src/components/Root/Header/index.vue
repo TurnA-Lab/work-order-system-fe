@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:49:00 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:49:00
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 01:44:20
  */
@@ -20,7 +20,10 @@
       </el-tooltip>
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-tooltip content="进入用户界面" placement="bottom">
-        <el-button @click="turnToUserPage" icon="el-icon-s-flag" type="text" circle plain></el-button>
+        <el-button @click="turnToOtherPage('用户')" icon="el-icon-s-flag" type="text" circle plain></el-button>
+      </el-tooltip>
+      <el-tooltip content="进入科室管理员界面" placement="bottom">
+        <el-button @click="turnToOtherPage('科室管理员')" icon="el-icon-s-platform" type="text" circle plain></el-button>
       </el-tooltip>
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-dropdown trigger="click" @command="menuCommand">
@@ -54,9 +57,9 @@ export default Vue.extend({
         document.documentElement.requestFullscreen();
       }
     },
-    turnToUserPage() {
+    turnToOtherPage(role: string) {
       this.$confirm(
-        "切换到用户界面后，回到管理页面将要求再次登录, 是否继续?",
+        `切换到${role}页面后，回到 ROOT 管理页面将要求再次登录, 是否继续?`,
         "注意",
         {
           confirmButtonText: "确定",
@@ -64,7 +67,11 @@ export default Vue.extend({
           type: "warning"
         }
       ).then(() => {
-        sessionStorage.setItem("wo_permission", "0");
+           if(role === "科室管理员"){
+               sessionStorage.setItem("wo_permission", "2");
+           }else{
+               sessionStorage.setItem("wo_permission", "0");
+           }
         this.$router.replace({ name: "index" });
         this.$message({
           type: "success",

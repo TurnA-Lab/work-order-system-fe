@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:45:05 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:45:05
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-10-29 12:57:45
  */
@@ -170,7 +170,7 @@ export default Vue.extend({
             this.isConfirming = true;
             this.$http
               .post(
-                "/api/online/password",
+                "/api/online/user/check",
                 {
                   password: this.form.oldPassword
                 },
@@ -218,7 +218,7 @@ export default Vue.extend({
         if (valid) {
           this.$http
             .post(
-              "/api/online/newPassword",
+              "/api/online/user/updatePassword",
               {
                 password: this.form.oldPassword,
                 newPassword: this.form.newPassword

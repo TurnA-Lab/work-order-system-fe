@@ -31,8 +31,8 @@ export default Vue.extend({
       schoolYear: "2017-2018",
       files: [
         {
-          name: "3.pdf",
-          uuid: "dca99dd0-1119-41ef-6c95-51e94a5c4e4e",
+          name: "固态盘发票.pdf",
+          uuid: "ac49716d-382d-4df5-47e5-6d04b9ed3eae",
           type: "application/pdf"
         },
         {

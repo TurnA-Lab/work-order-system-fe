@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-12-01 17:02:51 
+ * @Author: Skye Young
+ * @Date: 2019-12-01 17:02:51
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 19:16:45
  */
@@ -121,8 +121,7 @@ export default Vue.extend({
 
       this.$http
         .post(
-          // /api/online/officeAdmin/getUserAchievement
-          "/api/achievementManager",
+          "/api/online/officeAdmin/getUserAchievement",
           {
             pageIndex: this.pagination.pageIndex,
             pageSize: this.pagination.pageSize

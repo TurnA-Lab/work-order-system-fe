@@ -1,11 +1,11 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-08 10:17:34 
+ * @Author: Skye Young
+ * @Date: 2019-11-08 10:17:34
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-03 14:25:48
  */
 
-/* 
+/*
  * 须配合蓝眼云盘食用
  * https://tank-doc.eyeblue.cn/
  */
@@ -71,6 +71,7 @@ const FilePond = vueFilePond(
 );
 
 export default Vue.extend({
+  props: ["customApi"],
   components: {
     FilePond
   },
@@ -84,6 +85,7 @@ export default Vue.extend({
         "text/*",
         "application/msword",
         "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/pdf"
       ],
       myFiles: [],
@@ -102,113 +104,141 @@ export default Vue.extend({
           transfer: any,
           options: any
         ) => {
+
           const cancelToken = this.$http.CancelToken;
           const source = cancelToken.source();
 
-          // 请求上传 token
-          // /api/online/getPanToken
-          this.$http
-            .post(
-              "/local/getUploadToken",
-              {
-                name: file.name,
-                size: file.size
-              },
-              {
-                headers: {
-                  token: stateToken
-                },
-                cancelToken: source.token,
-                timeout: 2500
-              }
-            )
-            .then((res: AxiosResponse) => {
-              // if (res.data.code === 0) {
-              if (res.statusText === "OK") {
-                // 上传文件
-                const uploadData = new FormData();
-                uploadData.append("uploadTokenUuid", res.data.uuid);
-                uploadData.append("file", file);
-
-                this.$http
-                  .post(`${panUrl}/api/alien/upload`, uploadData, {
-                    cancelToken: source.token
-                  })
-                  .then((response: AxiosResponse) => {
-                    if (response.data.code === "OK") {
-                      // 验证上传
-                      // /api/online/confirmUploaded
-                      this.$http
-                        .post(
-                          `/local/confirmUploaded`,
-                          {
-                            name: file.name,
-                            uuid: response.data.data.uuid
-                          },
-                          {
-                            headers: {
+          if(this.customApi){
+              const uploadData = new FormData();
+              uploadData.append("file", file);
+              this.$http
+                  .post(
+                      this.customApi,
+                      uploadData,
+                      {
+                          headers: {
                               token: stateToken
-                            },
-                            cancelToken: source.token
-                          }
-                        )
-                        .then((confirmRes: AxiosResponse) => {
-                          // if (res.data.code === 0) {
-                          if (res.statusText === "OK") {
-                            // 存入
-                            (this.$data.files as FileInfo[]).push({
-                              name: file.name,
-                              uuid: res.data.uuid,
-                              type: file.type
-                            });
-                            load(res.data.uuid);
-                          } else {
-                            this.$message({
-                              message: "由于未知因素，暂时无法上传",
-                              type: "warning"
-                            });
-                            error("暂时无法上传");
-                          }
-                        })
-                        .catch((err: AxiosError) => {
-                          if (!this.$http.isCancel(err)) {
-                            this.$message({
-                              message: "由于未知因素，暂时无法上传",
-                              type: "warning"
-                            });
-                            error("暂时无法上传");
-                          }
-                        });
-                    } else {
-                      this.$message({
-                        message: "由于未知因素，暂时无法上传",
-                        type: "warning"
-                      });
+                          },
+                          cancelToken: source.token,
+                          timeout: 2500
+                      }
+                  )
+                  .then((res: AxiosResponse)=>{
+                      if(res.data.code === 0){
+                          load();
+                      }else{
+                          error("暂时无法上传");
+                      }
+                  })
+                  .catch(()=>{
                       error("暂时无法上传");
-                    }
+                  })
+          }else {
+              // 请求上传 token
+              // /api/online/getPanToken
+              this.$http
+                  .post(
+                      "/api/online/getPanToken",
+                      {
+                          filename: file.name,
+                          size: file.size
+                      },
+                      {
+                          headers: {
+                              token: stateToken
+                          },
+                          cancelToken: source.token,
+                          timeout: 2500
+                      }
+                  )
+                  .then((res: AxiosResponse) => {
+                      if (res.data.code === 0) {
+                          // if (res.statusText === "OK") {
+                          // 上传文件
+                          const uploadData = new FormData();
+                          uploadData.append("uploadTokenUuid", JSON.parse(res.data.data.body).data.uuid);
+                          uploadData.append("file", file);
+
+                          this.$http
+                              .post(`${panUrl}/api/alien/upload`, uploadData, {
+                                  cancelToken: source.token
+                              })
+                              .then((response: AxiosResponse) => {
+                                  if (response.data.code === "OK") {
+                                      // 验证上传
+                                      // /api/online/confirmUploaded
+                                      this.$http
+                                          .post(
+                                              `/api/online/confirmUploaded`,
+                                              {
+                                                  name: file.name,
+                                                  uuid: response.data.data.uuid
+                                              },
+                                              {
+                                                  headers: {
+                                                      token: stateToken
+                                                  },
+                                                  cancelToken: source.token
+                                              }
+                                          )
+                                          .then((confirmRes: AxiosResponse) => {
+                                              if (confirmRes.data.code === 0) {
+                                                  // if (res.statusText === "OK") {
+                                                  // 存入
+                                                  (this.$data.files as FileInfo[]).push({
+                                                      name: file.name,
+                                                      uuid: response.data.data.uuid,
+                                                      type: file.type
+                                                  });
+                                                  load(response.data.data.uuid);
+                                              } else {
+                                                  this.$message({
+                                                      message: "由于未知因素，暂时无法上传",
+                                                      type: "warning"
+                                                  });
+                                                  error("暂时无法上传");
+                                              }
+                                          })
+                                          .catch((err: AxiosError) => {
+                                              if (!this.$http.isCancel(err)) {
+                                                  this.$message({
+                                                      message: "由于未知因素，暂时无法上传",
+                                                      type: "warning"
+                                                  });
+                                                  error("暂时无法上传");
+                                              }
+                                          });
+                                  } else {
+                                      this.$message({
+                                          message: "由于未知因素，暂时无法上传",
+                                          type: "warning"
+                                      });
+                                      error("暂时无法上传");
+                                  }
+                              })
+                              .catch((err: AxiosError) => {
+                                  if (!this.$http.isCancel(err)) {
+                                      this.$message({
+                                          message: err.response.data.msg,
+                                          type: "warning"
+                                      });
+                                      error("暂时无法上传");
+                                  }
+                              });
+                      } else {
+                          error("暂时无法上传");
+                      }
                   })
                   .catch((err: AxiosError) => {
-                    if (!this.$http.isCancel(err)) {
-                      this.$message({
-                        message: err.response.data.msg,
-                        type: "warning"
-                      });
-                      error("暂时无法上传");
-                    }
+                      if (!this.$http.isCancel(err)) {
+                          this.$message({
+                              message: "由于未知因素，暂时无法上传",
+                              type: "warning"
+                          });
+                          error("暂时无法上传");
+                      }
                   });
-              } else {
-                error("暂时无法上传");
-              }
-            })
-            .catch((err: AxiosError) => {
-              if (!this.$http.isCancel(err)) {
-                this.$message({
-                  message: "由于未知因素，暂时无法上传",
-                  type: "warning"
-                });
-                error("暂时无法上传");
-              }
-            });
+          }
 
           return {
             abort: () => {

@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:47:59 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:47:59
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-29 21:51:27
  */
@@ -49,4 +49,5 @@ export default Vue.extend({
 .fade-enter-active {
   transition: opacity 0.8s;
 }
+
 </style>

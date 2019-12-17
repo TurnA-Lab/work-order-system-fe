@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-26 21:13:44 
+ * @Author: Skye Young
+ * @Date: 2019-11-26 21:13:44
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 21:00:57
  */
@@ -22,11 +22,11 @@
         </el-button>
       </div>
     </main>
-    <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
+    <el-dialog custom-class="custom-dialog" :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
       <div slot="title">导出</div>
 
       <div style="text-align: center;">
-        <el-date-picker align="center" v-model="selectYear" type="year" placeholder="选择导出年度"></el-date-picker>
+        <el-date-picker align="center" v-model="selectYear" type="year" value-format="yyyy" placeholder="选择导出年度"></el-date-picker>
       </div>
 
       <div slot="footer">
@@ -39,8 +39,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { MessageBoxData } from "element-ui/types/message-box";
 import { AxiosResponse } from "axios/";
+import { saveAs } from "file-saver";
+
 export default Vue.extend({
   data() {
     return {
@@ -49,7 +50,8 @@ export default Vue.extend({
       sheetApi: "",
       selectYear: "",
       isVisible: false,
-      isDisable: false
+      isDisable: false,
+      fileName: ""
     };
   },
   created() {
@@ -85,42 +87,48 @@ export default Vue.extend({
     downloadPerformanceTable() {
       this.sheetApi = "/api/online/collegeAdmin/getConfirmPerformanceExcel";
       this.isVisible = true;
+      this.fileName = "业绩表";
     },
     downloadBonusTable() {
       this.sheetApi = "/api/online/collegeAdmin/getConfirmBonusExcel";
       this.isVisible = true;
+      this.fileName = "奖金表";
     },
     exportSheets() {
       this.isDisable = true;
 
       if (this.selectYear) {
+
         this.$http
           .post(
-            this.sheetApi,
-            {
-              year: this.selectYear
-            },
+            `${this.sheetApi}?year=${this.selectYear}`,
+            {},
             {
               headers: {
                 token: this.$store.state.userInfo.token
-              }
+              },
+              responseType: "blob"
             }
           )
-          .then((res: AxiosResponse) => {
+          .then((res: any) => {
             this.isVisible = false;
             this.isDisable = false;
-            if (res.statusText !== "OK") {
-              this.$message({
-                message: res.data.msg || "由于未知因素，无法下载用户表",
-                type: "warning"
-              });
+            if (res.statusText == "OK"){
+
+              return Promise.resolve(res.data);
+
+            }else {
+              return Promise.reject(res.data.msg);
             }
           })
-          .catch(() => {
+          .then((data: Blob)=>{
+            saveAs(data, `${this.selectYear}-${this.fileName}.xlsx`);
+          })
+          .catch((err: string) => {
             this.isDisable = true;
             this.isVisible = false;
             this.$message({
-              message: "由于未知因素，无法下载用户表",
+              message: err || "由于未知因素，无法下载用户表",
               type: "warning"
             });
           });
@@ -160,7 +168,7 @@ main {
 </style>
 
 <style lang="scss">
-.el-dialog {
+.custom-dialog {
   width: 36vw;
 }
 </style>

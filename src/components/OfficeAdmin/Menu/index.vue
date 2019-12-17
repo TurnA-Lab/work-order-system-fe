@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:49:07 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:49:07
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 19:22:26
  */
@@ -21,7 +21,7 @@
       <span slot="title">首页</span>
     </el-menu-item>
 
-    <el-menu-item index="2" :route="{name: 'officeAdminWorkOrderManager'}">
+    <el-menu-item v-if="this.$store.state.userInfo.department === '质量建设与评估办公室'" index="2" :route="{name: 'officeAdminWorkOrderManager'}">
       <i class="el-icon-menu"></i>
       <span slot="title">工单管理</span>
     </el-menu-item>

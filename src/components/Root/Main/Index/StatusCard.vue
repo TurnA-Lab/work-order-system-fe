@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-08 10:18:28 
+ * @Author: Skye Young
+ * @Date: 2019-11-08 10:18:28
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 17:13:00
  */
@@ -45,8 +45,9 @@ export default Vue.extend({
             this.$data.isDisable = false;
             this.$data.isLoading = false;
             if (res.data.code === 0) {
-              this.$data.isOff = false;
-              this.$data.status = res.data.data;
+                // console.log(res.data.data[Object.keys(res.data.data)[0]])
+                this.$data.isOff = !res.data.data[Object.keys(res.data.data)[0]]
+                this.$data.status = res.data.data;
             } else {
               this.$data.isOff = true;
             }
