@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-30 19:13:19 
+ * @Author: Skye Young
+ * @Date: 2019-11-30 19:13:19
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-04 11:54:40
  */
@@ -14,12 +14,12 @@
             <audit-construction></audit-construction>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getConstructionExcel" fileApi="/api/Files"></export-sheet>
+            <export-sheet api="/api/online/officeAdmin/getConstructionExcel" fileApi="/api/online/officeAdmin/getConstructionFileKey"></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadTemplate('/api/online/officeAdmin/getConstructionTemplate')"
-              api="/online/officeAdmin/excelImportConstruction"
+              @click="downloadTemplate('建设类模板', '/api/online/officeAdmin/getConstructionTemplate')"
+              api="/api/online/officeAdmin/excelImportConstruction"
             ></digitize-sheet>
           </el-tab-pane>
         </el-tabs>
@@ -33,12 +33,12 @@
             <audit-achievement></audit-achievement>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getAchievementExcel"></export-sheet>
+            <export-sheet api="/api/online/officeAdmin/getAchievementExcel" fileApi="/api/online/officeAdmin/getAchievementFileKey"></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadTemplate('/api/online/officeAdmin/getAchievementTemplate')"
-              api="/api/online/officeAdmin/excelImportPerformance"
+              @click="downloadTemplate('成果类模板', '/api/online/officeAdmin/getAchievementTemplate')"
+              api="/api/online/officeAdmin/excelImportAchievement"
             ></digitize-sheet>
           </el-tab-pane>
         </el-tabs>
@@ -52,11 +52,11 @@
             <audit-award></audit-award>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getAwardExcel"></export-sheet>
+            <export-sheet api="/api/online/officeAdmin/getAwardExcel" fileApi="/api/online/officeAdmin/getAwardFileKey"></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadTemplate('/api/online/officeAdmin/getAwardTemplate')"
+              @click="downloadTemplate('获奖类模板', '/api/online/officeAdmin/getAwardTemplate')"
               api="/api/online/officeAdmin/excelImportAward"
             ></digitize-sheet>
           </el-tab-pane>
@@ -73,6 +73,8 @@ import AuditAchievement from "./AuditAchievement/index.vue";
 import AuditAward from "./AuditAward/index.vue";
 import DigitizeSheet from "./DigitizeSheet/index.vue";
 import ExportSheet from "./ExportSheet.vue";
+import { saveAs } from "file-saver";
+import { AxiosResponse } from "axios/";
 
 export default Vue.extend({
   components: {
@@ -83,7 +85,7 @@ export default Vue.extend({
     ExportSheet
   },
   methods: {
-    downloadTemplate(api: string) {
+    downloadTemplate(fileName: string, api: string) {
       this.$http
         .post(
           api,
@@ -91,15 +93,28 @@ export default Vue.extend({
           {
             headers: {
               token: this.$store.state.userInfo.token
-            }
+            },
+              responseType: "blob"
           }
         )
-        .catch(() => {
-          this.$message({
-            message: "由于未知因素，无法获取文件",
-            type: "warning"
+          .then((res: AxiosResponse) => {
+              if (res.statusText === "OK"){
+
+                  return Promise.resolve(res.data);
+
+              }else {
+                  return Promise.reject(res.data.msg);
+              }
+          })
+          .then((data: Blob)=>{
+              saveAs(data, `${fileName}.xlsx`);
+          })
+          .catch((err: string) => {
+              this.$message({
+                  message: err || "由于未知因素，无法下载用户表",
+                  type: "warning"
+              });
           });
-        });
     }
   }
 });

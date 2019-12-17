@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:48:49 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:48:49
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-08 11:05:01
  */
@@ -15,7 +15,7 @@ module.exports = {
 		proxy: {
 			//配置跨域
 			"^/api": {
-				target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e",
+				target: "http://localhost:8082",
 				ws: true,
 				changOrigin: true,
 			},

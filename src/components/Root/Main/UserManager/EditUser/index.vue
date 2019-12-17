@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-12 21:48:02 
+ * @Author: Skye Young
+ * @Date: 2019-11-12 21:48:02
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 19:01:00
  */
@@ -37,15 +37,15 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  techTitle: string;
+  techTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
   major: string;
   doubleTeacher: number;
-  background: number;
-  tutor: number;
-  permission: number;
+    background: number;
+    tutor: number;
+    permission: number;
 }
 
 export default Vue.extend({
@@ -78,7 +78,7 @@ export default Vue.extend({
           label: "联系电话"
         },
         {
-          prop: "techTitle",
+          prop: "techTittle",
           label: "职称"
         },
         {
@@ -176,7 +176,7 @@ export default Vue.extend({
 
       this.$http
         .post(
-          "/api/userTableData",
+          "/api/online/root/getUserList",
           {
             pageIndex: this.pagination.pageIndex,
             pageSize: this.pagination.pageSize

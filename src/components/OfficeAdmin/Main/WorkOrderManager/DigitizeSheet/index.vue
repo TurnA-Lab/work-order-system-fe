@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-12-01 00:44:00 
+ * @Author: Skye Young
+ * @Date: 2019-12-01 00:44:00
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 00:52:26
  */
@@ -8,7 +8,7 @@
 <template>
   <div>
     <el-button type="primary" @click="$emit('click')">下载模板</el-button>
-    <upload-btn api="api">上传表格</upload-btn>
+    <upload-btn :api="api">上传表格</upload-btn>
   </div>
 </template>
 

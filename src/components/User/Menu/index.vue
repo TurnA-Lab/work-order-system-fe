@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:45:47 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:45:47
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 13:45:11
  */
@@ -86,7 +86,7 @@ export default Vue.extend({
   },
   computed: {
     isCollegeAdmin() {
-      return this.$store.state.userInfo.permission === 1;
+      return this.$store.state.userInfo.permission === "1" || this.$store.state.userInfo.permission === 1;
     }
   },
   created() {

@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-26 21:10:26 
+ * @Author: Skye Young
+ * @Date: 2019-11-26 21:10:26
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 01:52:36
  */
@@ -12,7 +12,7 @@
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-button type="text" @click="loadMemberManager" :disabled="btnIsDisabled">部门成员管理</el-button>
       <vertical-divider></vertical-divider>
-      <el-button type="text" @click="loadExportSheet" :disabled="!btnIsDisabled">确认表导出</el-button>
+      <el-button type="text" @click="loadSheetExport" :disabled="!btnIsDisabled">确认表导出</el-button>
     </template>
     <router-view></router-view>
   </main-card>

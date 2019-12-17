@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:46:28 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:46:28
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-02 19:53:13
  */
@@ -90,7 +90,13 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="获奖时间" prop="awardTime" required>
-      <el-date-picker align="center" v-model="form.awardTime" type="date" placeholder="获奖时间"></el-date-picker>
+      <el-date-picker
+              align="center"
+              v-model="form.awardTime"
+              type="month"
+              format="yyyy 年 MM 月"
+              value-format="yyyy-MM"
+              placeholder="获奖时间"></el-date-picker>
     </el-form-item>
 
     <el-form-item class="form-item" label="证书" prop="uploadField">
@@ -99,7 +105,7 @@
 
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
-      <submit-btn @click="nextActive"></submit-btn>
+      <submit-btn @next="nextActive"></submit-btn>
     </el-form-item>
   </el-form>
 </template>

@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-30 18:19:10 
+ * @Author: Skye Young
+ * @Date: 2019-11-30 18:19:10
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 13:57:48
  */
@@ -14,16 +14,8 @@
     <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
       <div slot="title">上传文件</div>
       <div class="upload-field">
-        <upload-file ref="uploadField"></upload-file>
+        <upload-file ref="uploadField" :custom-api="api"></upload-file>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="finishUpload"
-          :loading="isDisable"
-          :disabled="isDisable"
-        >文件上传结束</el-button>
-      </span>
     </el-dialog>
   </span>
 </template>
@@ -56,42 +48,6 @@ export default Vue.extend({
   methods: {
     showUploadDialog() {
       this.isVisible = !this.isVisible;
-    },
-    finishUpload() {
-      this.isDisable = true;
-      this.$http
-        .post(
-          this.api,
-          {
-            file: (this.$refs.uploadField as any).files
-          },
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
-          }
-        )
-        .then((res: AxiosResponse) => {
-          if (res.data.code === 0) {
-            this.isVisible = false;
-            this.isDisable = false;
-          } else {
-            this.isVisible = false;
-            this.isDisable = false;
-            this.$message({
-              message: res.data.msg || "由于未知因素，无法上传文件",
-              type: "warning"
-            });
-          }
-        })
-        .catch(() => {
-          this.isVisible = false;
-          this.isDisable = false;
-          this.$message({
-            message: "由于未知因素，无法上传文件",
-            type: "warning"
-          });
-        });
     }
   }
 });

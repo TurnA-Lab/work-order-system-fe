@@ -1,8 +1,8 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-20 20:10:57 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-11-20 20:10:57 
+ * @Author: Skye Young
+ * @Date: 2019-11-20 20:10:57
+ * @Last Modified by:   Skye Young
+ * @Last Modified time: 2019-11-20 20:10:57
  */
 
 <template>
@@ -30,7 +30,7 @@
               :key="item.value"
               v-for="item in options.gender"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -41,7 +41,7 @@
               :key="item.value"
               v-for="item in options.department"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -58,8 +58,8 @@
           <el-date-picker align="center" v-model="form.enterTime" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="职称" prop="techTitle">
-          <el-input v-model="form.techTitle" placeholder="请输入职称"></el-input>
+        <el-form-item class="form-item" label="职称" prop="techTittle">
+          <el-input v-model="form.techTittle" placeholder="请输入职称"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历" prop="eduBgd">
@@ -133,7 +133,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  techTitle: string;
+  techTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -157,7 +157,7 @@ export default Vue.extend({
         birthday: "",
         enterTime: "",
         phone: "",
-        techTitle: "",
+        techTittle: "",
         eduBgd: "",
         degree: "",
         school: "",
@@ -246,6 +246,37 @@ export default Vue.extend({
           });
         });
     }
+  },
+  created(){
+      const stateToken = this.$store.state.userInfo.token;
+
+      // 请求院部列表
+      this.$http
+          .post(
+              "/api/online/getDepartmentList",
+              {},
+              {
+                  headers: {
+                      token: stateToken
+                  }
+              }
+          )
+          .then((res: AxiosResponse) => {
+              if (res.data.code === 0) {
+                  this.options.department = res.data.data;
+              } else {
+                  this.$message({
+                      message: res.data.msg || "由于未知因素，无法获取院部列表",
+                      type: "warning"
+                  });
+              }
+          })
+          .catch(() => {
+              this.$message({
+                  message: "由于未知因素，无法获取院部列表",
+                  type: "warning"
+              });
+          });
   },
   computed: {
     saveBtnText() {

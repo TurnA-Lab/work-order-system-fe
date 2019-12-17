@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-30 20:30:04 
+ * @Author: Skye Young
+ * @Date: 2019-10-30 20:30:04
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-30 16:56:59
  */
@@ -16,13 +16,13 @@
     </div>
     <div class="main-body">
       <status-card
-        title="信息录入入口"
+        title="用户信息录入入口"
         icon="pen-alt"
         fetch-api="/api/online/user/getEntrancePermission"
         amend-api="/api/online/root/manageUserEntrance"
       ></status-card>
       <status-card
-        title="下属管理员获取入口"
+        title="管理员获取入口"
         icon="clipboard-list"
         fetch-api="/api/online/collegeAdmin/getAdminEnterPermission"
         amend-api="/api/online/root/manageAdminEntrance"

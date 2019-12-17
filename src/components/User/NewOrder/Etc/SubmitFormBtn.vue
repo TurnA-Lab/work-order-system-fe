@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:45:55 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:45:55
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-12 20:29:10
  */
@@ -51,7 +51,7 @@ export default Vue.extend({
   methods: {
     nextActive() {
       this.isVisible = !this.isVisible;
-      this.$emit("click");
+      this.$emit("next");
     },
     submit() {
       const state = this.$store.state;
@@ -71,13 +71,11 @@ export default Vue.extend({
         )
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
-            // 根据对应接口提交表单
+
             this.$http
               .post(
                 `/api/online/user/${formApi[state.order.class - 1]}`,
-                {
-                  form: state.order.form
-                },
+                state.order.form,
                 {
                   headers: {
                     token: state.userInfo.token

@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-17 20:11:55 
+ * @Author: Skye Young
+ * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-03 15:48:04
  */
@@ -43,7 +43,7 @@
               :key="item.value"
               v-for="item in options.department"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -69,8 +69,8 @@
         <el-form-item class="form-item" label="项目起止年月">
           <el-date-picker
             align="center"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
+            format="yyyy 年 MM 月"
+            value-format="yyyy-MM"
             v-model="form.beginToEndTime"
             type="daterange"
             range-separator="至"
@@ -113,7 +113,6 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="佐证材料">
-          <!-- <upload-btn></upload-btn> -->
           <file-previewer-btn>点击查看</file-previewer-btn>
         </el-form-item>
 
@@ -123,7 +122,7 @@
               :key="item.value"
               v-for="item in options.isEnd"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -172,7 +171,7 @@
           <el-button type="primary" size="mini" @click="toggleStatus('已通过',form)">通过</el-button>
           <el-button type="primary" size="mini" @click="toggleStatus('未通过',form)">不通过</el-button>
         </div>
-        <el-button slot="reference" type="primary" :disabled="isDisable">标记状态</el-button>
+        <el-button slot="reference" type="primary" :disabled="isDisable">审批</el-button>
       </el-popover>
     </div>
   </el-dialog>
@@ -181,6 +180,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import yearRange from "@/utils/returnYearRange";
 import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
 
 interface Data {
@@ -195,7 +195,7 @@ interface Data {
   class2: string;
   class3: string;
   startTime: string;
-  beginToEndTime: string[];
+  beginToEndTime: string | string[];
   level: string;
   sponsor: string;
   testimonial: string;
@@ -220,7 +220,7 @@ interface Type {
 
 const isEndText = ["未结束", "已结束"];
 const statusText = ["未通过", "审核中", "已通过"];
-import yearRange from "@/utils/returnYearRange";
+
 
 export default Vue.extend({
   props: ["data", "isVisible"],
@@ -305,6 +305,8 @@ export default Vue.extend({
         }
       }
 
+        (this.form as Data).beginToEndTime = (this.form as Data).beginToEndTime.toString();
+
       // 处理审核状态和是否结束
       const temForm = Object.assign({}, this.form, {
         status: statusText.indexOf((this.form as Data).status as string) - 1,
@@ -369,6 +371,8 @@ export default Vue.extend({
           }
         }
       }
+
+      newValue.beginToEndTime = (newValue.beginToEndTime as string).split(",");
 
       this.form = newValue;
     },

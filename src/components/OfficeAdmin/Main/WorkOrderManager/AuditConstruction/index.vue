@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-11-12 21:48:02 
+ * @Author: Skye Young
+ * @Date: 2019-11-12 21:48:02
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 17:22:04
  */
@@ -132,8 +132,8 @@ export default Vue.extend({
 
       this.$http
         .post(
-          // /api/online/officeAdmin/getUserConstruction
-          "/api/constructionManager",
+          "/api/online/officeAdmin/getUserConstruction",
+          // "/api/constructionManager",
           {
             pageIndex: this.pagination.pageIndex,
             pageSize: this.pagination.pageSize

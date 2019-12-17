@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:46:06 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:46:06
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-01 16:36:20
  */
@@ -15,22 +15,22 @@
     label-position="left"
     label-width="auto"
   >
-    <el-form-item class="form-item" label="院部" prop="department" required>
+    <el-form-item class="form-item" label="院部" prop="department">
       <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
         <el-option
           :key="item.value"
           v-for="item in options.department"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目名称" prop="project" required>
+    <el-form-item class="form-item" label="项目名称" prop="project" >
       <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目负责人" prop="name" required>
+    <el-form-item class="form-item" label="项目负责人" prop="name">
       <el-input v-model="form.name" placeholder="请输入项目负责人"></el-input>
     </el-form-item>
 
@@ -52,28 +52,36 @@
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
     </el-form-item>
 
-    <el-form-item class="form-item" label="立项年度" prop="startTime" required>
-      <el-date-picker align="center" v-model="form.startTime" type="year" placeholder="请选择立项年度"></el-date-picker>
+    <el-form-item class="form-item" label="立项年月" prop="startTime">
+      <el-date-picker
+              align="center"
+              v-model="form.startTime"
+              type="month"
+              format="yyyy 年 MM 月"
+              value-format="yyyy-MM"
+              placeholder="请选择立项年月">
+
+      </el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime" required>
+    <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime">
       <el-date-picker
         align="center"
         v-model="form.beginToEndTime"
         type="daterange"
-        format="yyyy 年 MM 月 dd 日"
-        value-format="yyyy-MM-dd"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
       ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="主办单位" prop="sponsor" required>
+    <el-form-item class="form-item" label="主办单位" prop="sponsor">
       <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目类型" prop="sort" required>
+    <el-form-item class="form-item" label="项目类型" prop="sort">
       <el-cascader
         v-model="sort"
         placeholder="请选择，或输入以查找"
@@ -84,7 +92,7 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目级别" prop="level" required>
+    <el-form-item class="form-item" label="项目级别" prop="level">
       <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
           v-for="item in options.level"
@@ -101,7 +109,7 @@
 
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
-      <submit-btn @click="nextActive"></submit-btn>
+      <submit-btn @next="nextActive"></submit-btn>
     </el-form-item>
   </el-form>
 </template>
@@ -245,8 +253,10 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      (this as any).$refs.form.validate((valid: boolean) => {
-        if (valid) {
+      // (this as any).$refs.form.validate((valid: boolean) => {
+      //   if (valid) {
+      //     console.log(this.sort);
+
           for (const key in this.options.sort) {
             if (this.options.sort.hasOwnProperty(key)) {
               const object = this.options.sort[key] as Type;
@@ -259,7 +269,7 @@ export default Vue.extend({
                     const element = object.children[key2];
 
                     if (element.value === this.sort[1]) {
-                      this.form.class3 = object.label;
+                      this.form.class3 = element.label;
                     }
                   }
                 }
@@ -270,12 +280,14 @@ export default Vue.extend({
           this.$store.commit(
             "orderForm",
             Object.assign({}, this.form, {
-              teammate: this.form.teammate.toString()
+              teammate: this.form.teammate.toString(),
+              beginToEndTime:this.form.beginToEndTime.toString(),
+              testimonial:JSON.stringify(this.$store.state.order.form.certificate),
             })
           );
         }
-      });
-    }
+      // });
+    // }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -324,6 +336,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
+          console.log(this.options.sort);
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目类型列表",

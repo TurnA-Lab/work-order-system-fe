@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:46:18 
+ * @Author: Skye Young
+ * @Date: 2019-10-28 19:46:18
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-11-18 21:32:15
  */
@@ -15,22 +15,22 @@
     label-position="left"
     label-width="auto"
   >
-    <el-form-item class="form-item" label="院部" prop="department" required>
+    <el-form-item class="form-item" label="院部" prop="department" >
       <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
         <el-option
           :key="item.value"
           v-for="item in options.department"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         ></el-option>
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果名称" prop="production" required>
+    <el-form-item class="form-item" label="成果名称" prop="production" >
       <el-input v-model="form.production" placeholder="请输入成果名称"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="第一作者" required>
+    <el-form-item class="form-item" label="第一作者" >
       <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
     </el-form-item>
 
@@ -52,7 +52,7 @@
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新组员</el-button>
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果类别" prop="sort" required>
+    <el-form-item class="form-item" label="成果类别" prop="sort">
       <el-cascader
         v-model="form.sort"
         placeholder="请选择，或输入以查找"
@@ -63,11 +63,11 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit" required>
+    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit" >
       <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent" required>
+    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent" >
       <el-select v-model="form.patent" placeholder="请选择">
         <el-option
           v-for="item in options.patent"
@@ -78,11 +78,13 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime" required>
+    <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime" >
       <el-date-picker
         align="center"
         v-model="form.publishTime"
         type="month"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
         placeholder="发表/出版/授权时间"
       ></el-date-picker>
     </el-form-item>
@@ -93,7 +95,7 @@
 
     <el-form-item class="form-item btn-line">
       <el-button plain @click="repealActive">上一步</el-button>
-      <submit-btn @click="nextActive"></submit-btn>
+      <submit-btn @next="nextActive"></submit-btn>
     </el-form-item>
   </el-form>
 </template>
@@ -247,13 +249,15 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      (this as any).$refs.form.validate((valid: boolean) => {
-        if (valid) {
+      // (this as any).$refs.form.validate((valid: boolean) => {
+      //   if (valid) {
+          console.log(11)
           for (const key in this.options.sort) {
             if (this.options.sort.hasOwnProperty(key)) {
               const object = this.options.sort[key] as Type;
-
+              // console.log(object.label +" "+object.value);
               if (object.value === this.sort[0]) {
+                // console.log(object.label +" "+object.value);
                 this.form.class2 = object.label;
 
                 for (const key2 in object.children) {
@@ -261,22 +265,23 @@ export default Vue.extend({
                     const element = object.children[key2];
 
                     if (element.value === this.sort[1]) {
-                      this.form.class3 = object.label;
+                      this.form.class3 = element.label;
                     }
                   }
                 }
               }
             }
           }
-          this.$store.commit(
-            "orderForm",
-            Object.assign({}, this.form, {
-              teammate: this.form.teammate.toString()
-            })
-          );
+
+            this.$store.commit(
+              "orderForm",
+              Object.assign({}, this.form, {
+                teammate: this.form.teammate.toString(),
+              })
+      );
         }
-      });
-    }
+    //   });
+    // }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
