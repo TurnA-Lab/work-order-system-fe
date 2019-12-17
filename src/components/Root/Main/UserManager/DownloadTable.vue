@@ -27,13 +27,13 @@ export default Vue.extend({
           }
         )
         .then((res: AxiosResponse) => {
-          if (res.statusText === "OK"){
+          if (res.statusText === "OK") {
             return Promise.resolve(res.data);
-          }else {
+          } else {
             return Promise.reject(res.data.msg);
           }
         })
-        .then((data: Blob)=>{
+        .then((data: Blob) => {
           saveAs(data, "用户表.xlsx");
         })
         .catch((err: string) => {

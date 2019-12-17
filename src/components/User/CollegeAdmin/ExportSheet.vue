@@ -22,11 +22,22 @@
         </el-button>
       </div>
     </main>
-    <el-dialog custom-class="custom-dialog" :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
+    <el-dialog
+      custom-class="custom-dialog"
+      :visible.sync="isVisible"
+      :close-on-click-modal="false"
+      append-to-body
+    >
       <div slot="title">导出</div>
 
       <div style="text-align: center;">
-        <el-date-picker align="center" v-model="selectYear" type="year" value-format="yyyy" placeholder="选择导出年度"></el-date-picker>
+        <el-date-picker
+          align="center"
+          v-model="selectYear"
+          type="year"
+          value-format="yyyy"
+          placeholder="选择导出年度"
+        ></el-date-picker>
       </div>
 
       <div slot="footer">
@@ -98,7 +109,6 @@ export default Vue.extend({
       this.isDisable = true;
 
       if (this.selectYear) {
-
         this.$http
           .post(
             `${this.sheetApi}?year=${this.selectYear}`,
@@ -113,15 +123,13 @@ export default Vue.extend({
           .then((res: any) => {
             this.isVisible = false;
             this.isDisable = false;
-            if (res.statusText == "OK"){
-
+            if (res.statusText === "OK") {
               return Promise.resolve(res.data);
-
-            }else {
+            } else {
               return Promise.reject(res.data.msg);
             }
           })
-          .then((data: Blob)=>{
+          .then((data: Blob) => {
             saveAs(data, `${this.selectYear}-${this.fileName}.xlsx`);
           })
           .catch((err: string) => {

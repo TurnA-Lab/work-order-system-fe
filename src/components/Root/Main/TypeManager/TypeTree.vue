@@ -27,16 +27,28 @@
         </el-button>
         <span>{{ node.label }}</span>
         <span>
-          <el-button v-if="!node.isLeaf || (typeData && !node.parent.parent)" type="text" @click.stop="append(node, data)">
+          <el-button
+            v-if="!node.isLeaf || (typeData && !node.parent.parent)"
+            type="text"
+            @click.stop="append(node, data)"
+          >
             <span class="el-icon-plus hover-action"></span>
           </el-button>
-          <el-button v-if="typeData ? node.isLeaf && node.parent.parent : node.isLeaf" type="text" @click.stop="edit(node, data)">
+          <el-button
+            v-if="typeData ? node.isLeaf && node.parent.parent : node.isLeaf"
+            type="text"
+            @click.stop="edit(node, data)"
+          >
             <span class="el-icon-edit hover-action"></span>
           </el-button>
-          <el-button v-if="typeData ? node.isLeaf && node.parent.parent : node.isLeaf" class="red" type="text" @click.stop="remove(node, data)">
+          <el-button
+            v-if="typeData ? node.isLeaf && node.parent.parent : node.isLeaf"
+            class="red"
+            type="text"
+            @click.stop="remove(node, data)"
+          >
             <span class="el-icon-delete hover-action"></span>
           </el-button>
-
         </span>
       </span>
     </el-tree>
@@ -161,35 +173,35 @@ export default Vue.extend({
                     type: "warning"
                   });
                 });
-            }else{
-                this.$http
-                    .post(
-                        `${this.appendApi}?${this.removeType}=${value}`,
-                        {},
-                        {
-                            headers: {
-                                token: this.$store.state.userInfo.token
-                            }
-                        }
-                    )
-                    .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                            newChild.label = value;
-                            data.children.push(newChild);
-                        } else {
-                            this.$message({
-                                message:
-                                    res.data.msg || `由于未知因素，无法添加${value}}`,
-                                type: "warning"
-                            });
-                        }
-                    })
-                    .catch(() => {
-                        this.$message({
-                            message: `由于未知因素，无法添加${value}}`,
-                            type: "warning"
-                        });
+            } else {
+              this.$http
+                .post(
+                  `${this.appendApi}?${this.removeType}=${value}`,
+                  {},
+                  {
+                    headers: {
+                      token: this.$store.state.userInfo.token
+                    }
+                  }
+                )
+                .then((res: AxiosResponse) => {
+                  if (res.data.code === 0) {
+                    newChild.label = value;
+                    data.children.push(newChild);
+                  } else {
+                    this.$message({
+                      message:
+                        res.data.msg || `由于未知因素，无法添加${value}}`,
+                      type: "warning"
                     });
+                  }
+                })
+                .catch(() => {
+                  this.$message({
+                    message: `由于未知因素，无法添加${value}}`,
+                    type: "warning"
+                  });
+                });
             }
           }
         })
@@ -271,67 +283,67 @@ export default Vue.extend({
         type: "warning"
       })
         .then(() => {
-            if (this.typeData) {
-                this.$http
-                    .post(
-                        this.removeApi,
-                        {
-                            class1: this.type,
-                            class2: parent.label,
-                            class3: data.label
-                        },
-                        {
-                            headers: {
-                                token: this.$store.state.userInfo.token
-                            }
-                        }
-                    )
-                    .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                            children.splice(index, 1);
-                        } else {
-                            this.$message({
-                                message:
-                                    res.data.msg || `由于未知因素，无法删除${data.label}`,
-                                type: "warning"
-                            });
-                        }
-                    })
-                    .catch(() => {
-                        this.$message({
-                            message: `由于未知因素，无法删除${data.label}`,
-                            type: "warning"
-                        });
-                    });
-            }else{
-                this.$http
-                    .post(
-                        `${this.removeApi}?${this.removeType}=${data.label}`,
-                        {},
-                        {
-                            headers: {
-                                token: this.$store.state.userInfo.token
-                            }
-                        }
-                    )
-                    .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                            children.splice(index, 1);
-                        } else {
-                            this.$message({
-                                message:
-                                    res.data.msg || `由于未知因素，无法删除${data.label}`,
-                                type: "warning"
-                            });
-                        }
-                    })
-                    .catch(() => {
-                        this.$message({
-                            message: `由于未知因素，无法删除${data.label}`,
-                            type: "warning"
-                        });
-                    });
-            }
+          if (this.typeData) {
+            this.$http
+              .post(
+                this.removeApi,
+                {
+                  class1: this.type,
+                  class2: parent.label,
+                  class3: data.label
+                },
+                {
+                  headers: {
+                    token: this.$store.state.userInfo.token
+                  }
+                }
+              )
+              .then((res: AxiosResponse) => {
+                if (res.data.code === 0) {
+                  children.splice(index, 1);
+                } else {
+                  this.$message({
+                    message:
+                      res.data.msg || `由于未知因素，无法删除${data.label}`,
+                    type: "warning"
+                  });
+                }
+              })
+              .catch(() => {
+                this.$message({
+                  message: `由于未知因素，无法删除${data.label}`,
+                  type: "warning"
+                });
+              });
+          } else {
+            this.$http
+              .post(
+                `${this.removeApi}?${this.removeType}=${data.label}`,
+                {},
+                {
+                  headers: {
+                    token: this.$store.state.userInfo.token
+                  }
+                }
+              )
+              .then((res: AxiosResponse) => {
+                if (res.data.code === 0) {
+                  children.splice(index, 1);
+                } else {
+                  this.$message({
+                    message:
+                      res.data.msg || `由于未知因素，无法删除${data.label}`,
+                    type: "warning"
+                  });
+                }
+              })
+              .catch(() => {
+                this.$message({
+                  message: `由于未知因素，无法删除${data.label}`,
+                  type: "warning"
+                });
+              });
+          }
         })
         .catch(() => {
           this.$message({
@@ -366,11 +378,11 @@ export default Vue.extend({
             this.$http
               .post(
                 `${this.removeApi}`,
-                  {
-                      class1: this.type,
-                      class2: parent.label,
-                      class3: data.label
-                  },
+                {
+                  class1: this.type,
+                  class2: parent.label,
+                  class3: data.label
+                },
                 {
                   headers: {
                     token: stateToken

@@ -23,7 +23,13 @@
         <el-button @click="turnToOtherPage('用户')" icon="el-icon-s-flag" type="text" circle plain></el-button>
       </el-tooltip>
       <el-tooltip content="进入科室管理员界面" placement="bottom">
-        <el-button @click="turnToOtherPage('科室管理员')" icon="el-icon-s-platform" type="text" circle plain></el-button>
+        <el-button
+          @click="turnToOtherPage('科室管理员')"
+          icon="el-icon-s-platform"
+          type="text"
+          circle
+          plain
+        ></el-button>
       </el-tooltip>
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-dropdown trigger="click" @command="menuCommand">
@@ -67,11 +73,11 @@ export default Vue.extend({
           type: "warning"
         }
       ).then(() => {
-           if(role === "科室管理员"){
-               sessionStorage.setItem("wo_permission", "2");
-           }else{
-               sessionStorage.setItem("wo_permission", "0");
-           }
+        if (role === "科室管理员") {
+          sessionStorage.setItem("wo_permission", "2");
+        } else {
+          sessionStorage.setItem("wo_permission", "0");
+        }
         this.$router.replace({ name: "index" });
         this.$message({
           type: "success",

@@ -26,7 +26,7 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目名称" prop="project" >
+    <el-form-item class="form-item" label="项目名称" prop="project">
       <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
     </el-form-item>
 
@@ -54,14 +54,13 @@
 
     <el-form-item class="form-item" label="立项年月" prop="startTime">
       <el-date-picker
-              align="center"
-              v-model="form.startTime"
-              type="month"
-              format="yyyy 年 MM 月"
-              value-format="yyyy-MM"
-              placeholder="请选择立项年月">
-
-      </el-date-picker>
+        align="center"
+        v-model="form.startTime"
+        type="month"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+        placeholder="请选择立项年月"
+      ></el-date-picker>
     </el-form-item>
 
     <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime">
@@ -257,36 +256,36 @@ export default Vue.extend({
       //   if (valid) {
       //     console.log(this.sort);
 
-          for (const key in this.options.sort) {
-            if (this.options.sort.hasOwnProperty(key)) {
-              const object = this.options.sort[key] as Type;
+      for (const key in this.options.sort) {
+        if (this.options.sort.hasOwnProperty(key)) {
+          const object = this.options.sort[key] as Type;
 
-              if (object.value === this.sort[0]) {
-                this.form.class2 = object.label;
+          if (object.value === this.sort[0]) {
+            this.form.class2 = object.label;
 
-                for (const key2 in object.children) {
-                  if (object.children.hasOwnProperty(key2)) {
-                    const element = object.children[key2];
+            for (const key2 in object.children) {
+              if (object.children.hasOwnProperty(key2)) {
+                const element = object.children[key2];
 
-                    if (element.value === this.sort[1]) {
-                      this.form.class3 = element.label;
-                    }
-                  }
+                if (element.value === this.sort[1]) {
+                  this.form.class3 = element.label;
                 }
               }
             }
           }
-
-          this.$store.commit(
-            "orderForm",
-            Object.assign({}, this.form, {
-              teammate: this.form.teammate.toString(),
-              beginToEndTime:this.form.beginToEndTime.toString(),
-              testimonial:JSON.stringify(this.$store.state.order.form.certificate),
-            })
-          );
         }
-      // });
+      }
+
+      this.$store.commit(
+        "orderForm",
+        Object.assign({}, this.form, {
+          teammate: this.form.teammate.toString(),
+          beginToEndTime: this.form.beginToEndTime.toString(),
+          testimonial: JSON.stringify(this.$store.state.order.form.certificate)
+        })
+      );
+    }
+    // });
     // }
   },
   created() {

@@ -163,7 +163,7 @@ interface UserData {
   permission: number | string;
 }
 
-const permissionText = ["普通用户","学院管理员", "科室管理员"];
+const permissionText = ["普通用户", "学院管理员", "科室管理员"];
 
 export default Vue.extend({
   props: ["userData", "isVisible"],
@@ -237,19 +237,23 @@ export default Vue.extend({
     updateUserInfo() {
       this.isDisable = true;
 
-
-
       this.$http
-        .post("/api/online/root/updateUserInfo", Object.assign({}, this.form,{
-            doubleTeacher : (this.form as UserData).doubleTeacher === "否"  ? 0 : 1,
-            background : (this.form as UserData).background === "否" ? 0 : 1,
-            tutor : (this.form as UserData).tutor === "否" ? 0 : 1,
-            permission : permissionText.indexOf((this.form as UserData).permission as string)
-        }), {
-          headers: {
-            token: this.$store.state.userInfo.token
+        .post(
+          "/api/online/root/updateUserInfo",
+          Object.assign({}, this.form, {
+            doubleTeacher:
+              (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
+            background: (this.form as UserData).background === "否" ? 0 : 1,
+            tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
+            permission: permissionText.indexOf((this.form as UserData)
+              .permission as string)
+          }),
+          {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
           }
-        })
+        )
         .then((res: AxiosResponse) => {
           this.isDisable = false;
           if (res.data.code === 0) {

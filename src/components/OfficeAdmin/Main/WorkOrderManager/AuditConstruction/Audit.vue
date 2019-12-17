@@ -221,7 +221,6 @@ interface Type {
 const isEndText = ["未结束", "已结束"];
 const statusText = ["未通过", "审核中", "已通过"];
 
-
 export default Vue.extend({
   props: ["data", "isVisible"],
   components: {
@@ -305,7 +304,8 @@ export default Vue.extend({
         }
       }
 
-        (this.form as Data).beginToEndTime = (this.form as Data).beginToEndTime.toString();
+      (this.form as Data).beginToEndTime = (this
+        .form as Data).beginToEndTime.toString();
 
       // 处理审核状态和是否结束
       const temForm = Object.assign({}, this.form, {

@@ -9,7 +9,13 @@
   <div class="export-sheet">
     <el-form :inline="true" :model="form">
       <el-form-item class="form-item" label="年度" prop="startTime">
-        <el-date-picker align="center" v-model="form.year" type="year" value-format="yyyy" placeholder="请选择立项年度"></el-date-picker>
+        <el-date-picker
+          align="center"
+          v-model="form.year"
+          type="year"
+          value-format="yyyy"
+          placeholder="请选择立项年度"
+        ></el-date-picker>
       </el-form-item>
 
       <el-form-item label="学年">
@@ -23,10 +29,7 @@
       </el-form-item>
 
       <el-form-item>
-        <download-as-zip
-          :zip-name="form.schoolYear+'学年'"
-          @before-download="downloadFile"
-        >导出文件</download-as-zip>
+        <download-as-zip :zip-name="form.schoolYear+'学年'" @before-download="downloadFile">导出文件</download-as-zip>
       </el-form-item>
     </el-form>
   </div>
@@ -66,30 +69,27 @@ export default Vue.extend({
             headers: {
               token: this.$store.state.userInfo.token
             },
-                  responseType: "blob"
-              }
-          )
-            .then((res: AxiosResponse) => {
-                if (res.statusText === "OK"){
-
-                    return Promise.resolve(res.data);
-
-                }else {
-                    return Promise.reject(res.data.msg);
-                }
-            })
-            .then((data: Blob)=>{
-                saveAs(data, `${this.form.schoolYear}学年工单.xlsx`);
-            })
-            .catch((err: string) => {
-                this.$message({
-                    message: err || "由于未知因素，无法下载用户表",
-                    type: "warning"
-                });
+            responseType: "blob"
+          })
+          .then((res: AxiosResponse) => {
+            if (res.statusText === "OK") {
+              return Promise.resolve(res.data);
+            } else {
+              return Promise.reject(res.data.msg);
+            }
+          })
+          .then((data: Blob) => {
+            saveAs(data, `${this.form.schoolYear}学年工单.xlsx`);
+          })
+          .catch((err: string) => {
+            this.$message({
+              message: err || "由于未知因素，无法下载用户表",
+              type: "warning"
             });
+          });
       }
     },
-    downloadFile(canDownload: Function) {
+    downloadFile(canDownload: (data: any) => void) {
       if (this.form.year === "" || this.form.schoolYear === "") {
         this.$message({
           message: "请先选择导出年度、学年",

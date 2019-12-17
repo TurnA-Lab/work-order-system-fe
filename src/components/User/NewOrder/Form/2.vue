@@ -15,7 +15,7 @@
     label-position="left"
     label-width="auto"
   >
-    <el-form-item class="form-item" label="院部" prop="department" >
+    <el-form-item class="form-item" label="院部" prop="department">
       <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
         <el-option
           :key="item.value"
@@ -26,11 +26,11 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果名称" prop="production" >
+    <el-form-item class="form-item" label="成果名称" prop="production">
       <el-input v-model="form.production" placeholder="请输入成果名称"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="第一作者" >
+    <el-form-item class="form-item" label="第一作者">
       <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
     </el-form-item>
 
@@ -63,11 +63,11 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit" >
+    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit">
       <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent" >
+    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent">
       <el-select v-model="form.patent" placeholder="请选择">
         <el-option
           v-for="item in options.patent"
@@ -78,7 +78,7 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime" >
+    <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime">
       <el-date-picker
         align="center"
         v-model="form.publishTime"
@@ -251,35 +251,34 @@ export default Vue.extend({
     nextActive() {
       // (this as any).$refs.form.validate((valid: boolean) => {
       //   if (valid) {
-          console.log(11)
-          for (const key in this.options.sort) {
-            if (this.options.sort.hasOwnProperty(key)) {
-              const object = this.options.sort[key] as Type;
-              // console.log(object.label +" "+object.value);
-              if (object.value === this.sort[0]) {
-                // console.log(object.label +" "+object.value);
-                this.form.class2 = object.label;
+      for (const key in this.options.sort) {
+        if (this.options.sort.hasOwnProperty(key)) {
+          const object = this.options.sort[key] as Type;
+          // console.log(object.label +" "+object.value);
+          if (object.value === this.sort[0]) {
+            // console.log(object.label +" "+object.value);
+            this.form.class2 = object.label;
 
-                for (const key2 in object.children) {
-                  if (object.children.hasOwnProperty(key2)) {
-                    const element = object.children[key2];
+            for (const key2 in object.children) {
+              if (object.children.hasOwnProperty(key2)) {
+                const element = object.children[key2];
 
-                    if (element.value === this.sort[1]) {
-                      this.form.class3 = element.label;
-                    }
-                  }
+                if (element.value === this.sort[1]) {
+                  this.form.class3 = element.label;
                 }
               }
             }
           }
-
-            this.$store.commit(
-              "orderForm",
-              Object.assign({}, this.form, {
-                teammate: this.form.teammate.toString(),
-              })
-      );
         }
+      }
+
+      this.$store.commit(
+        "orderForm",
+        Object.assign({}, this.form, {
+          teammate: this.form.teammate.toString()
+        })
+      );
+    }
     //   });
     // }
   },

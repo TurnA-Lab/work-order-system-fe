@@ -247,36 +247,36 @@ export default Vue.extend({
         });
     }
   },
-  created(){
-      const stateToken = this.$store.state.userInfo.token;
+  created() {
+    const stateToken = this.$store.state.userInfo.token;
 
-      // 请求院部列表
-      this.$http
-          .post(
-              "/api/online/getDepartmentList",
-              {},
-              {
-                  headers: {
-                      token: stateToken
-                  }
-              }
-          )
-          .then((res: AxiosResponse) => {
-              if (res.data.code === 0) {
-                  this.options.department = res.data.data;
-              } else {
-                  this.$message({
-                      message: res.data.msg || "由于未知因素，无法获取院部列表",
-                      type: "warning"
-                  });
-              }
-          })
-          .catch(() => {
-              this.$message({
-                  message: "由于未知因素，无法获取院部列表",
-                  type: "warning"
-              });
+    // 请求院部列表
+    this.$http
+      .post(
+        "/api/online/getDepartmentList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.department = res.data.data;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取院部列表",
+            type: "warning"
           });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取院部列表",
+          type: "warning"
+        });
+      });
   },
   computed: {
     saveBtnText() {
