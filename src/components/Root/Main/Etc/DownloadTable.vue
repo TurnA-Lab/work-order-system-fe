@@ -2,12 +2,21 @@
  * @Author: Skye Young 
  * @Date: 2019-12-18 19:25:12 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:05:59
+ * @Last Modified time: 2019-12-18 20:12:26
  */
+
+// TODO: 是否不加参数输出所有？
 
 <template>
   <div class="download-page">
-    <el-button type="primary" @click="downloadTable">
+    <el-date-picker
+      align="center"
+      v-model="form.year"
+      type="year"
+      value-format="yyyy"
+      placeholder="请选择立项年度"
+    ></el-date-picker>
+    <el-button style="margin-inline-start: 15px" type="primary" @click="downloadTable">
       <i class="el-icon-download"></i>
       下载{{fileName}}
     </el-button>
@@ -21,19 +30,22 @@ import { saveAs } from "file-saver";
 
 export default Vue.extend({
   props: ["fileName", "api"],
+  data() {
+    return {
+      form: {
+        year: ""
+      }
+    };
+  },
   methods: {
     downloadTable() {
       this.$http
-        .post(
-          this.api,
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            },
-            responseType: "blob"
-          }
-        )
+        .post(this.api, this.form, {
+          headers: {
+            token: this.$store.state.userInfo.token
+          },
+          responseType: "blob"
+        })
         .then((res: AxiosResponse) => {
           if (res.statusText === "OK") {
             return Promise.resolve(res.data);

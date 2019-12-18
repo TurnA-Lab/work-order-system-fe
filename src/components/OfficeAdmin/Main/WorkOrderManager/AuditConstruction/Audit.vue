@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-03 15:48:04
+ * @Last Modified time: 2019-12-18 15:30:51
  */
 
 <template>
@@ -61,6 +61,7 @@
             align="center"
             v-model="form.startTime"
             type="year"
+            value-format="yyyy"
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -140,6 +141,7 @@
             align="center"
             v-model="form.year"
             type="year"
+            
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>

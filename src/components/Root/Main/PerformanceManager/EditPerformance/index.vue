@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-12 21:48:02
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 19:01:00
+ * @Last Modified time: 2019-12-18 20:27:09
  */
 
 <template>
@@ -14,72 +14,57 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit-user
-      :user-data="userData"
-      :is-visible="editUserIsVisible"
-      @toggle-is-visible="toggleEditUser"
-    ></edit-user>
+    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"></edit>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import EditUser from "./Edit.vue";
+import Edit from "./Edit.vue";
 import { AxiosResponse } from "axios";
 
-interface UserData {
-  dtpId: number;
-  dptname: string;
-  name: string;
-  worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  techTittle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number;
-  background: number;
-  tutor: number;
-  permission: number;
+interface Data {
+  id: number;
+  department: string;
+  computeoffice: string;
+  type: string;
+  year: string;
+  project: string;
+  master: string;
+  bonus: number;
+  status: number | string;
+  lastTime: string;
 }
 
 export default Vue.extend({
   components: {
     WhatTable,
-    EditUser
+    Edit
   },
   data() {
     return {
-      editUserIsVisible: false,
-      userData: {},
+      editIsVisible: false,
+      data: {},
       tableData: [],
       columns: [
         {
-          prop: "name",
-          label: "姓名",
-          width: 120
+          prop: "project",
+          label: "项目名称",
+          width: 160
         },
         {
-          prop: "gender",
-          label: "性别",
-          width: 60
+          prop: "master",
+          label: "负责人"
         },
         {
-          prop: "worknum",
-          label: "工号"
+          prop: "type",
+          label: "类别",
+          width: 160
         },
         {
-          prop: "phone",
-          label: "联系电话"
-        },
-        {
-          prop: "techTittle",
-          label: "职称"
+          prop: "points",
+          label: "业绩分"
         },
         {
           button: true,
@@ -92,10 +77,10 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (data: Data, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.userData = userData;
-                this.$data.editUserIsVisible = true;
+                this.$data.data = data;
+                this.$data.editIsVisible = true;
               }
             },
             {
@@ -103,9 +88,9 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (data: Data, index: number) => {
                 // 这种写法的 this 代表 group 里的对象
-                this.$confirm("删除用户后将不能直接恢复, 是否继续?", "注意", {
+                this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
                   type: "warning"
@@ -113,9 +98,9 @@ export default Vue.extend({
                   .then(() => {
                     this.$http
                       .post(
-                        "/api/online/root/deleteUser",
+                        "/api/online/root/deletePerformance",
                         {
-                          worknum: userData.worknum
+                          worknum: data.id
                         },
                         {
                           headers: {
@@ -127,12 +112,12 @@ export default Vue.extend({
                         if (res.data.code === 0) {
                           this.$data.tableData.splice(index, 1);
                           this.$message({
-                            message: res.data.msg || "用户信息删除成功",
+                            message: res.data.msg || "信息删除成功",
                             type: "success"
                           });
                         } else {
                           this.$message({
-                            message: res.data.msg || "用户信息删除失败",
+                            message: res.data.msg || "信息删除失败",
                             type: "warning"
                           });
                         }
@@ -176,7 +161,7 @@ export default Vue.extend({
 
       this.$http
         .post(
-          "/api/online/root/getUserList",
+          "/api/online/root/getPerformanceInfo",
           {
             pageIndex: this.pagination.pageIndex,
             pageSize: this.pagination.pageSize
@@ -208,11 +193,11 @@ export default Vue.extend({
           this.options.loading = false;
         });
     },
-    toggleEditUser(isVisible: boolean) {
+    toggleEdit(isVisible: boolean) {
       if (typeof isVisible === "undefined") {
-        this.editUserIsVisible = !this.editUserIsVisible;
+        this.editIsVisible = !this.editIsVisible;
       } else {
-        this.editUserIsVisible = isVisible;
+        this.editIsVisible = isVisible;
       }
     }
   }

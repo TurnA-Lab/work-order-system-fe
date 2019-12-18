@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-01 17:02:31
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:50:24
+ * @Last Modified time: 2019-12-18 15:01:35
  */
 
 <template>
@@ -104,6 +104,7 @@
             align="center"
             v-model="form.year"
             type="year"
+            value-format="yyyy"
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -180,9 +181,9 @@ const patent = ["空", "是", "否"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
-    components: {
-        FilePreviewerBtn
-    },
+  components: {
+    FilePreviewerBtn
+  },
   data() {
     return {
       isLoading: true,

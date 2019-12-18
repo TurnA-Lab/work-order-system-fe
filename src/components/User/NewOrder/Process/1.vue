@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:46:37 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:46:37 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-12-18 20:37:50
  */
 
 <template>
@@ -60,6 +60,13 @@ export default Vue.extend({});
   .card {
     height: $card-width * 1.414;
     width: $card-width;
+  }
+
+  @include screen($larger) {
+    .card {
+      height: $static-card-width * 1.414;
+      width: $static-card-width;
+    }
   }
 }
 </style>
