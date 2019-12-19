@@ -44,7 +44,7 @@ interface Data {
   awardTime: string;
   schoolYear: string;
   year: string;
-  status: number;
+  status: number | string;
   reason: string;
   lastTime: string;
 }
@@ -146,8 +146,8 @@ export default Vue.extend({
             const { list, total } = res.data.data;
             const statusText = ["未通过", "审核中", "已通过"];
 
-            list.forEach((value: Data, index: number) => {
-              list[index].status = statusText[value.status + 1];
+            list.forEach((item: Data) => {
+              item.status = statusText[(item.status as number) + 1];
             });
 
             this.tableData = list;

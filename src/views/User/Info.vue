@@ -2,17 +2,25 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:39 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-26 21:39:47
+ * @Last Modified time: 2019-12-19 17:27:53
  */
 
 <template>
   <main-card>
     <template v-slot:header>
-      <back-link @click="goBack"></back-link>
+      <back-link @click="$router.push({ name: 'index'})"></back-link>
       <vertical-divider isTransparent="true"></vertical-divider>
-      <el-button type="text" @click="loadProfile" :disabled="btnIsDisabled">个人资料</el-button>
+      <el-button
+        type="text"
+        @click="$router.push({ name: 'userInfoProfile'})"
+        :disabled="btnIsDisabled"
+      >个人资料</el-button>
       <vertical-divider></vertical-divider>
-      <el-button type="text" @click="loadPassword" :disabled="!btnIsDisabled">修改密码</el-button>
+      <el-button
+        type="text"
+        @click="$router.push({ name: 'userInfoPassword'})"
+        :disabled="!btnIsDisabled"
+      >修改密码</el-button>
     </template>
     <router-view></router-view>
   </main-card>
@@ -37,17 +45,6 @@ export default Vue.extend({
       } else {
         return false;
       }
-    }
-  },
-  methods: {
-    goBack() {
-      this.$router.push({ name: "index" });
-    },
-    loadProfile() {
-      this.$router.push({ name: "userInfoProfile" });
-    },
-    loadPassword() {
-      this.$router.push({ name: "userInfoPassword" });
     }
   }
 });

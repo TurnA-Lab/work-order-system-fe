@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 16:41:10 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 21:44:27
+ * @Last Modified time: 2019-12-19 12:41:06
  */
 
 /*
@@ -133,7 +133,9 @@ export default {
       this.options
     );
 
-    this.options.initTable && this.fetch();
+    if (this.options.initTable) {
+      this.fetch();
+    }
   },
   methods: {
     handleSizeChange(size) {

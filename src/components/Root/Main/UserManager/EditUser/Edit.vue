@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 17:05:08
+ * @Last Modified time: 2019-12-19 18:43:47
  */
 
 <template>
@@ -13,7 +13,10 @@
     @close="close"
     append-to-body
   >
-    <div slot="title">编辑用户信息</div>
+    <div slot="title">
+      编辑用户信息
+      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+    </div>
     <div>
       <el-form
         :class="{'is-disable': isDisable}"
@@ -351,6 +354,11 @@ export default Vue.extend({
   width: inherit;
   height: 60vh;
   overflow: auto;
+}
+
+.last-time {
+  color: #dddddd;
+  font-size: 8px;
 }
 
 .dialog-btn-line {

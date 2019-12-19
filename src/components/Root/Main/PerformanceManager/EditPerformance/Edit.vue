@@ -13,7 +13,10 @@
     @close="close"
     append-to-body
   >
-    <div slot="title">编辑奖金信息</div>
+    <div slot="title">
+      编辑奖金信息
+      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+    </div>
     <div>
       <el-form
         :class="{'is-disable': isDisable}"
@@ -214,6 +217,11 @@ export default Vue.extend({
   width: inherit;
   height: 60vh;
   overflow: auto;
+}
+
+.last-time {
+  color: #dddddd;
+  font-size: 8px;
 }
 
 .dialog-btn-line {

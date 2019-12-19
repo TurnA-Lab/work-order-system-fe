@@ -168,7 +168,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
-import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
   aid: number;

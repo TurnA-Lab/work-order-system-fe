@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 15:30:51
+ * @Last Modified time: 2019-12-19 19:06:59
  */
 
 <template>
@@ -141,7 +141,6 @@
             align="center"
             v-model="form.year"
             type="year"
-            
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -183,7 +182,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
-import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
   cid: number;
@@ -379,7 +378,7 @@ export default Vue.extend({
       this.form = newValue;
     },
     dataStatus(newValue: number, oldValue: number) {
-      if (newValue === 4) {
+      if (newValue === 3) {
         this.$data.isLoading = false;
       }
     }
@@ -401,6 +400,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.department = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取院部列表",
@@ -431,6 +431,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目类型列表",
@@ -459,6 +460,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.level = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目级别列表",

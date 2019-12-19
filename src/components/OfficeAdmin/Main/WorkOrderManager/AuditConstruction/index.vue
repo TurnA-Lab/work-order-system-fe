@@ -48,7 +48,7 @@ interface Data {
   isEnd: number;
   schoolYear: string;
   year: string;
-  status: number;
+  status: number | string;
   reason: string;
   lastTime: string;
 }
@@ -148,9 +148,8 @@ export default Vue.extend({
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
 
-            list.forEach((value: Data, index: number) => {
-              list[index].isEnd = isEndText[value.isEnd];
-              list[index].status = statusText[value.status + 1];
+            list.forEach((item: Data) => {
+              item.status = statusText[(item.status as number) + 1];
             });
 
             this.tableData = list;

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:47:05 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-28 20:43:37
+ * @Last Modified time: 2019-12-19 17:34:00
  */
 
 <template>
@@ -69,11 +69,7 @@ export default Vue.extend({
           )
           .then((res: AxiosResponse) => {
             this.$data.isLoading = false;
-            if (res.data.code === 0) {
-              this.$data.isOff = false;
-            } else {
-              this.$data.isOff = true;
-            }
+            this.$data.isOff = !(res.data.code === 0);
           })
           .catch(() => {
             this.$data.isOff = true;
@@ -154,11 +150,13 @@ export default Vue.extend({
       position: absolute;
       opacity: 0;
       text-align: center;
-      line-height: 70vh;
-      font-size: 2.4vw;
       width: 86vw;
       z-index: 999;
       pointer-events: none;
+
+      line-height: 70vh;
+      font-size: 2.4vw;
+      font-family: "FZCuJinLJW";
     }
 
     & > aside {

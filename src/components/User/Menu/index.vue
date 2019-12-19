@@ -2,30 +2,26 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:45:47
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 13:45:11
+ * @Last Modified time: 2019-12-19 18:22:22
  */
 
 <template>
   <main>
     <user-menu-card class="item">
-      <template v-slot:header>
-        <el-button type="text">
-          <router-link :to="{name: 'userInfoProfile'}">账户信息</router-link>
-        </el-button>
-      </template>
+      <div class="menu-link" @click="$router.push({ name: 'userInfo'})">
+        <span>账户信息</span>
+      </div>
     </user-menu-card>
 
     <user-menu-card class="item">
-      <template v-slot:header>
-        <el-button type="text">
-          <router-link :to="{name: 'userWorkOrder'}">工单系统</router-link>
-        </el-button>
-      </template>
+      <div class="menu-link" @click="$router.push({ name: 'userWorkOrder'})">
+        <span>工单系统</span>
+      </div>
     </user-menu-card>
 
     <user-menu-card class="item">
-      <div v-if="isCollegeAdmin">
-        <router-link :to="{name: 'collegeAdmin'}">学院管理入口</router-link>
+      <div v-if="isCollegeAdmin" class="menu-link" @click="$router.push({ name: 'collegeAdmin'})">
+        <span>学院管理入口</span>
       </div>
       <div v-else class="user-about">
         <span>
@@ -35,7 +31,7 @@
       </div>
     </user-menu-card>
 
-    <user-menu-card class="item flex-box">
+    <user-menu-card class="item">
       <div class="grid">
         <el-tooltip content="夜间模式" placement="top">
           <el-button class="btn" @click="logout" circle disabled plain></el-button>
@@ -86,7 +82,10 @@ export default Vue.extend({
   },
   computed: {
     isCollegeAdmin() {
-      return this.$store.state.userInfo.permission === "1" || this.$store.state.userInfo.permission === 1;
+      return (
+        this.$store.state.userInfo.permission === "1" ||
+        this.$store.state.userInfo.permission === 1
+      );
     }
   },
   created() {
@@ -118,6 +117,10 @@ main {
 
   .item {
     transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
     @for $i from 1 to 4 {
       &:nth-of-type(#{$i + 1}) {
@@ -137,12 +140,39 @@ main {
     &:not(:first-of-type) {
       margin-left: -$card-width * 0.45;
     }
+
+    &:hover .menu-link > span {
+      color: #2c3e50;
+    }
   }
 
-  .flex-box {
+  .menu-link {
+    font-family: "FZCuJinLJW";
+    writing-mode: vertical-rl;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+
+    width: $card-width;
+
+    span {
+      color: #95a5a6;
+      font-size: 1.2rem;
+      transition: color 1s;
+    }
+  }
+
+  .user-about {
+    height: $static-card-width * 1.414;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: initial;
+
+    span {
+      color: #d3dbe2;
+      text-align: center;
+    }
   }
 
   .grid {
@@ -158,18 +188,6 @@ main {
 
   .btn {
     margin-left: 0px;
-  }
-
-  .user-about {
-    height: $static-card-width * 1.414;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      color: #d3dbe2;
-      text-align: center;
-    }
   }
 }
 
@@ -187,6 +205,10 @@ main {
       &:not(:first-of-type) {
         margin-left: -$static-card-width * 0.45;
       }
+    }
+
+    .menu-link {
+      width: $static-card-width;
     }
 
     .grid {

@@ -1,8 +1,8 @@
 /*
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:13 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:45:13 
+ * @Last Modified by: Skye Young
+ * @Last Modified time: 2019-12-19 18:25:37
  */
 
 <template>
@@ -77,30 +77,43 @@ export default Vue.extend({
 
 h1,
 h2 {
-  color: #ffffff;
+  color: #fff;
   font-weight: 800;
 }
 
 h1 {
   margin: 0%;
-  font-size: 2.2vw;
+  font-size: 2rem;
 }
 
 h2 {
   margin-block-start: 0%;
-  font-size: 1.8vw;
+  font-size: 1.4rem;
 }
 
 h5 {
   margin: 0%;
-  line-height: 1.2vw;
   font-weight: 100;
-  font-size: 0.96vw;
-  color: #ffffff;
+  line-height: 1rem;
+  font-size: 0.76rem;
+  color: #fff;
 
   span {
     color: #ecf0f1;
   }
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h5 {
+  line-height: 1rem;
+  font-size: 0.76rem;
 }
 
 .slide-enter {
@@ -134,19 +147,6 @@ h5 {
   .box {
     height: $static-card-width * 1.414;
     width: $static-card-width;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
-
-  h2 {
-    font-size: 1.6rem;
-  }
-
-  h5 {
-    line-height: 1rem;
-    font-size: 0.76rem;
   }
 }
 </style>

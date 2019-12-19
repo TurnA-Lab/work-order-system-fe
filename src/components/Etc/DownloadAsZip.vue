@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-03 19:22:51
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-04 12:43:31
+ * @Last Modified time: 2019-12-19 13:05:50
  */
 
 <template>
@@ -81,14 +81,14 @@ export default Vue.extend({
                     return Promise.reject(res.data.msg);
                   }
                 })
+                .then((data: ArrayBuffer) => {
+                  directory.file(file.name, data, { binary: true });
+                })
                 .catch((msg: string) => {
                   this.$message({
                     message: msg || "由于未知因素，无法获得文件",
                     type: "warning"
                   });
-                })
-                .then((data: ArrayBuffer) => {
-                  directory.file(file.name, data, { binary: true });
                 });
               promises.push(promise);
             });

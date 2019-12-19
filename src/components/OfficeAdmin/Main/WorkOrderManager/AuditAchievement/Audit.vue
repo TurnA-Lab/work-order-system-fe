@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-01 17:02:31
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 15:01:35
+ * @Last Modified time: 2019-12-19 19:37:21
  */
 
 <template>
@@ -146,7 +146,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
-import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
   aid: number;
