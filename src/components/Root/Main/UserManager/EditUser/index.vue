@@ -43,9 +43,9 @@ interface UserData {
   school: string;
   major: string;
   doubleTeacher: number;
-    background: number;
-    tutor: number;
-    permission: number;
+  background: number;
+  tutor: number;
+  permission: number;
 }
 
 export default Vue.extend({
@@ -127,12 +127,12 @@ export default Vue.extend({
                         if (res.data.code === 0) {
                           this.$data.tableData.splice(index, 1);
                           this.$message({
-                            message: res.data.msg || "用户信息保存成功",
+                            message: res.data.msg || "用户信息删除成功",
                             type: "success"
                           });
                         } else {
                           this.$message({
-                            message: res.data.msg || "用户信息保存失败",
+                            message: res.data.msg || "用户信息删除失败",
                             type: "warning"
                           });
                         }

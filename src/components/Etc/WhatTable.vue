@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-17 16:41:10 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-20 21:03:13
+ * @Last Modified time: 2019-12-19 12:41:06
  */
 
 /*
@@ -127,13 +127,15 @@ export default {
       {
         maxHeight: 500,
         stripe: true, // 是否为斑马纹
-        border: true
+        border: true,
+        initTable: true
       },
       this.options
     );
 
-    /* this.options.initTable &&  */
-    this.fetch();
+    if (this.options.initTable) {
+      this.fetch();
+    }
   },
   methods: {
     handleSizeChange(size) {

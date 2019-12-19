@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-01 17:02:31
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:50:24
+ * @Last Modified time: 2019-12-19 19:37:21
  */
 
 <template>
@@ -104,6 +104,7 @@
             align="center"
             v-model="form.year"
             type="year"
+            value-format="yyyy"
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -145,7 +146,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
-import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
   aid: number;
@@ -180,9 +181,9 @@ const patent = ["空", "是", "否"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
-    components: {
-        FilePreviewerBtn
-    },
+  components: {
+    FilePreviewerBtn
+  },
   data() {
     return {
       isLoading: true,

@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-03 19:22:51
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-04 12:43:31
+ * @Last Modified time: 2019-12-19 13:05:50
  */
 
 <template>
@@ -39,19 +39,16 @@ export default Vue.extend({
   methods: {
     downloadSteps() {
       // 在下载前执行的函数
-      this.$emit(
-        "before-download",
-        (fileNeedZip: FileNeedZip[]) => {
-          if (fileNeedZip.length > 0) {
-            this.downloadAction(fileNeedZip);
-          }else{
-              this.$message({
-                  message: "没有文件可供下载",
-                  type: "warning"
-              });
-          }
+      this.$emit("before-download", (fileNeedZip: FileNeedZip[]) => {
+        if (fileNeedZip.length > 0) {
+          this.downloadAction(fileNeedZip);
+        } else {
+          this.$message({
+            message: "没有文件可供下载",
+            type: "warning"
+          });
         }
-      );
+      });
     },
     downloadAction(fileNeedZip: FileNeedZip[]) {
       this.isDownLoading = true;
@@ -66,43 +63,36 @@ export default Vue.extend({
           }
         }
       })
-        .then((fileNeedZip: FileNeedZip[]) => {
+        .then(() => {
           const zip = new JSZip();
           const promises: any = [];
 
-          fileNeedZip.forEach(
-            (
-              folder: FileNeedZip
-            ) => {
-              const directory = zip.folder(folder.name);
-              folder.files.forEach((file: FileInfo) => {
-                const promise = this.$http
-                  .get(
-                    `${panUrl}/api/alien/preview/${file.uuid}/${file.name}`,
-                    {
-                      responseType: "arraybuffer"
-                    }
-                  )
-                  .then((res: AxiosResponse) => {
-                    if (res.statusText === "OK") {
-                      return Promise.resolve(res.data);
-                    } else {
-                      return Promise.reject(res.data.msg);
-                    }
-                  })
-                  .catch((msg: string) => {
-                    this.$message({
-                      message: msg || "由于未知因素，无法获得文件",
-                      type: "warning"
-                    });
-                  })
-                  .then((data: ArrayBuffer) => {
-                    directory.file(file.name, data, { binary: true });
+          fileNeedZip.forEach((folder: FileNeedZip) => {
+            const directory = zip.folder(folder.name);
+            folder.files.forEach((file: FileInfo) => {
+              const promise = this.$http
+                .get(`${panUrl}/api/alien/preview/${file.uuid}/${file.name}`, {
+                  responseType: "arraybuffer"
+                })
+                .then((res: AxiosResponse) => {
+                  if (res.statusText === "OK") {
+                    return Promise.resolve(res.data);
+                  } else {
+                    return Promise.reject(res.data.msg);
+                  }
+                })
+                .then((data: ArrayBuffer) => {
+                  directory.file(file.name, data, { binary: true });
+                })
+                .catch((msg: string) => {
+                  this.$message({
+                    message: msg || "由于未知因素，无法获得文件",
+                    type: "warning"
                   });
-                promises.push(promise);
-              });
-            }
-          );
+                });
+              promises.push(promise);
+            });
+          });
 
           Promise.all(promises).then(() => {
             zip.generateAsync({ type: "blob" }).then((content: Blob) => {

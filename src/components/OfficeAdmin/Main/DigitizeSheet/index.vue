@@ -42,27 +42,25 @@ export default Vue.extend({
             headers: {
               token: this.$store.state.userInfo.token
             },
-              responseType: "blob"
+            responseType: "blob"
           }
         )
-          .then((res: AxiosResponse) => {
-              if (res.statusText === "OK"){
-
-                  return Promise.resolve(res.data);
-
-              }else {
-                  return Promise.reject(res.data.msg);
-              }
-          })
-          .then((data: Blob)=>{
-              saveAs(data, `奖金模板.xlsx`);
-          })
-          .catch((err: string) => {
-              this.$message({
-                  message: err || "由于未知因素，无法下载用户表",
-                  type: "warning"
-              });
+        .then((res: AxiosResponse) => {
+          if (res.statusText === "OK") {
+            return Promise.resolve(res.data);
+          } else {
+            return Promise.reject(res.data.msg);
+          }
+        })
+        .then((data: Blob) => {
+          saveAs(data, `奖金模板.xlsx`);
+        })
+        .catch((err: string) => {
+          this.$message({
+            message: err || "由于未知因素，无法下载用户表",
+            type: "warning"
           });
+        });
     },
     downloadPerformanceTemplate() {
       this.$http
@@ -73,27 +71,25 @@ export default Vue.extend({
             headers: {
               token: this.$store.state.userInfo.token
             },
-              responseType: "blob"
+            responseType: "blob"
           }
         )
-          .then((res: AxiosResponse) => {
-              if (res.statusText === "OK"){
-
-                  return Promise.resolve(res.data);
-
-              }else {
-                  return Promise.reject(res.data.msg);
-              }
-          })
-          .then((data: Blob)=>{
-              saveAs(data, `业绩模板.xlsx`);
-          })
-          .catch((err: string) => {
-              this.$message({
-                  message: err || "由于未知因素，无法下载用户表",
-                  type: "warning"
-              });
+        .then((res: AxiosResponse) => {
+          if (res.statusText === "OK") {
+            return Promise.resolve(res.data);
+          } else {
+            return Promise.reject(res.data.msg);
+          }
+        })
+        .then((data: Blob) => {
+          saveAs(data, `业绩模板.xlsx`);
+        })
+        .catch((err: string) => {
+          this.$message({
+            message: err || "由于未知因素，无法下载用户表",
+            type: "warning"
           });
+        });
     }
   }
 });

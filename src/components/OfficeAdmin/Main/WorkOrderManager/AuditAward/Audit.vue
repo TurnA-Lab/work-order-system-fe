@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-01 17:02:39
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 20:20:01
+ * @Last Modified time: 2019-12-18 18:35:00
  */
 
 
@@ -126,6 +126,7 @@
             align="center"
             v-model="form.year"
             type="year"
+            value-format="yyyy"
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -167,7 +168,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
-import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
   aid: number;
@@ -203,10 +204,10 @@ const statusText = ["未通过", "审核中", "已通过"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
-    components: {
-        FilePreviewerBtn
-    },
-    data() {
+  components: {
+    FilePreviewerBtn
+  },
+  data() {
     return {
       isLoading: true,
       dataStatus: 0,

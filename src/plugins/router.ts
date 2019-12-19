@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-10-28 19:48:30
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:08:21
+ * @Last Modified time: 2019-12-18 11:32:40
  */
 
 import Vue from "vue";
@@ -141,6 +141,22 @@ const router = new Router({
           }
         },
         {
+          path: "bonus_manager",
+          name: "rootBonusManager",
+          component: () => import("@/components/Root/Main/BonusManager/index.vue"),
+          meta: {
+            title: "奖金管理"
+          }
+        },
+        {
+          path: "performance_manager",
+          name: "rootPerformanceManager",
+          component: () => import("@/components/Root/Main/PerformanceManager/index.vue"),
+          meta: {
+            title: "业绩管理"
+          }
+        },
+        {
           path: "user_manager",
           name: "rootUserManager",
           component: () => import("@/components/Root/Main/UserManager/index.vue"),
@@ -179,11 +195,6 @@ const router = new Router({
           meta: {
             title: "奖金 / 业绩表格录入"
           }
-        },
-        {
-          path: "test",
-          name: "test",
-          component: () => import("@/components/OfficeAdmin/test.vue")
         }
       ]
     },

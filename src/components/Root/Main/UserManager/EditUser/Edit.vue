@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 17:05:08
+ * @Last Modified time: 2019-12-19 18:43:47
  */
 
 <template>
@@ -13,7 +13,10 @@
     @close="close"
     append-to-body
   >
-    <div slot="title">编辑用户信息</div>
+    <div slot="title">
+      编辑用户信息
+      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+    </div>
     <div>
       <el-form
         :class="{'is-disable': isDisable}"
@@ -163,7 +166,7 @@ interface UserData {
   permission: number | string;
 }
 
-const permissionText = ["普通用户","学院管理员", "科室管理员"];
+const permissionText = ["普通用户", "学院管理员", "科室管理员"];
 
 export default Vue.extend({
   props: ["userData", "isVisible"],
@@ -237,19 +240,23 @@ export default Vue.extend({
     updateUserInfo() {
       this.isDisable = true;
 
-
-
       this.$http
-        .post("/api/online/root/updateUserInfo", Object.assign({}, this.form,{
-            doubleTeacher : (this.form as UserData).doubleTeacher === "否"  ? 0 : 1,
-            background : (this.form as UserData).background === "否" ? 0 : 1,
-            tutor : (this.form as UserData).tutor === "否" ? 0 : 1,
-            permission : permissionText.indexOf((this.form as UserData).permission as string)
-        }), {
-          headers: {
-            token: this.$store.state.userInfo.token
+        .post(
+          "/api/online/root/updateUserInfo",
+          Object.assign({}, this.form, {
+            doubleTeacher:
+              (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
+            background: (this.form as UserData).background === "否" ? 0 : 1,
+            tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
+            permission: permissionText.indexOf((this.form as UserData)
+              .permission as string)
+          }),
+          {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
           }
-        })
+        )
         .then((res: AxiosResponse) => {
           this.isDisable = false;
           if (res.data.code === 0) {
@@ -347,6 +354,11 @@ export default Vue.extend({
   width: inherit;
   height: 60vh;
   overflow: auto;
+}
+
+.last-time {
+  color: #dddddd;
+  font-size: 8px;
 }
 
 .dialog-btn-line {

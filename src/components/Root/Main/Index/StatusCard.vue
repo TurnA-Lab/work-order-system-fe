@@ -45,9 +45,9 @@ export default Vue.extend({
             this.$data.isDisable = false;
             this.$data.isLoading = false;
             if (res.data.code === 0) {
-                // console.log(res.data.data[Object.keys(res.data.data)[0]])
-                this.$data.isOff = !res.data.data[Object.keys(res.data.data)[0]]
-                this.$data.status = res.data.data;
+              // console.log(res.data.data[Object.keys(res.data.data)[0]])
+              this.$data.isOff = !res.data.data[Object.keys(res.data.data)[0]];
+              this.$data.status = res.data.data;
             } else {
               this.$data.isOff = true;
             }

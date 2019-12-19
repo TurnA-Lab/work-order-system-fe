@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-17 20:11:55
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-03 15:48:04
+ * @Last Modified time: 2019-12-19 19:06:59
  */
 
 <template>
@@ -61,6 +61,7 @@
             align="center"
             v-model="form.startTime"
             type="year"
+            value-format="yyyy"
             placeholder="请选择立项年度"
             :disabled="editIsDisable"
           ></el-date-picker>
@@ -181,7 +182,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
-import FilePreviewerBtn from "../Etc/FileViewerBtn.vue";
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
   cid: number;
@@ -220,7 +221,6 @@ interface Type {
 
 const isEndText = ["未结束", "已结束"];
 const statusText = ["未通过", "审核中", "已通过"];
-
 
 export default Vue.extend({
   props: ["data", "isVisible"],
@@ -305,7 +305,8 @@ export default Vue.extend({
         }
       }
 
-        (this.form as Data).beginToEndTime = (this.form as Data).beginToEndTime.toString();
+      (this.form as Data).beginToEndTime = (this
+        .form as Data).beginToEndTime.toString();
 
       // 处理审核状态和是否结束
       const temForm = Object.assign({}, this.form, {
@@ -377,7 +378,7 @@ export default Vue.extend({
       this.form = newValue;
     },
     dataStatus(newValue: number, oldValue: number) {
-      if (newValue === 4) {
+      if (newValue === 3) {
         this.$data.isLoading = false;
       }
     }
@@ -399,6 +400,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.department = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取院部列表",
@@ -429,6 +431,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目类型列表",
@@ -457,6 +460,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.level = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目级别列表",

@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:48:06 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:51:56
+ * @Last Modified time: 2019-12-19 17:06:28
  */
 
 <template>
@@ -75,6 +75,19 @@ export default Vue.extend({
 
 <style lang="scss">
 @import "@/stylesheet/default.scss";
+
+@font-face {
+  font-family: "FZCuJinLJW";
+  src: url("assets/fonts/FZCuJinLJW.eot");
+  src: url("assets/fonts/FZCuJinLJW.eot?#font-spider")
+      format("embedded-opentype"),
+    url("assets/fonts/FZCuJinLJW.woff2") format("woff2"),
+    url("assets/fonts/FZCuJinLJW.woff") format("woff"),
+    url("assets/fonts/FZCuJinLJW.TTF") format("truetype"),
+    url("assets/fonts/FZCuJinLJW.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
 
 .offline {
   pointer-events: none;

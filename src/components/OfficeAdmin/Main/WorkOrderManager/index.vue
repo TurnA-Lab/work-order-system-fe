@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-30 19:13:19
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-04 11:54:40
+ * @Last Modified time: 2019-12-19 19:35:59
  */
 
 <template>
@@ -14,7 +14,10 @@
             <audit-construction></audit-construction>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getConstructionExcel" fileApi="/api/online/officeAdmin/getConstructionFileKey"></export-sheet>
+            <export-sheet
+              api="/api/online/officeAdmin/getConstructionExcel"
+              fileApi="/api/online/officeAdmin/getConstructionFileKey"
+            ></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
@@ -33,7 +36,10 @@
             <audit-achievement></audit-achievement>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getAchievementExcel" fileApi="/api/online/officeAdmin/getAchievementFileKey"></export-sheet>
+            <export-sheet
+              api="/api/online/officeAdmin/getAchievementExcel"
+              fileApi="/api/online/officeAdmin/getAchievementFileKey"
+            ></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
@@ -52,7 +58,10 @@
             <audit-award></audit-award>
           </el-tab-pane>
           <el-tab-pane label="导出">
-            <export-sheet api="/api/online/officeAdmin/getAwardExcel" fileApi="/api/online/officeAdmin/getAwardFileKey"></export-sheet>
+            <export-sheet
+              api="/api/online/officeAdmin/getAwardExcel"
+              fileApi="/api/online/officeAdmin/getAwardFileKey"
+            ></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
@@ -94,27 +103,25 @@ export default Vue.extend({
             headers: {
               token: this.$store.state.userInfo.token
             },
-              responseType: "blob"
+            responseType: "blob"
           }
         )
-          .then((res: AxiosResponse) => {
-              if (res.statusText === "OK"){
-
-                  return Promise.resolve(res.data);
-
-              }else {
-                  return Promise.reject(res.data.msg);
-              }
-          })
-          .then((data: Blob)=>{
-              saveAs(data, `${fileName}.xlsx`);
-          })
-          .catch((err: string) => {
-              this.$message({
-                  message: err || "由于未知因素，无法下载用户表",
-                  type: "warning"
-              });
+        .then((res: AxiosResponse) => {
+          if (res.statusText === "OK") {
+            return Promise.resolve(res.data);
+          } else {
+            return Promise.reject(res.data.msg);
+          }
+        })
+        .then((data: Blob) => {
+          saveAs(data, `${fileName}.xlsx`);
+        })
+        .catch((err: string) => {
+          this.$message({
+            message: err || "由于未知因素，无法下载用户表",
+            type: "warning"
           });
+        });
     }
   }
 });

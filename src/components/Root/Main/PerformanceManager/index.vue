@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-11-12 20:18:38 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:06:28
+ * @Last Modified time: 2019-12-18 20:08:24
  */
 
 <template>
@@ -11,20 +11,20 @@
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="编辑">
-            <edit-user></edit-user>
+            <edit></edit>
           </el-tab-pane>
           <el-tab-pane label="筛选">
-            <filter-user></filter-user>
+            <filter-info></filter-info>
           </el-tab-pane>
           <el-tab-pane label="新增">
-            <add-user></add-user>
+            <add></add>
           </el-tab-pane>
         </el-tabs>
       </div>
     </el-tab-pane>
     <el-tab-pane label="导出">
       <div class="tabs-body">
-        <download-table file-name="用户表" api="/api/online/root/getUserExcel"></download-table>
+        <download-table file-name="奖金表" api="/api/online/root/getPerformanceExcel"></download-table>
       </div>
     </el-tab-pane>
   </el-tabs>
@@ -32,17 +32,22 @@
 
 <script lang="ts">
 import Vue from "vue";
-import EditUser from "./EditUser/index.vue";
-import FilterUser from "./FilterUser.vue";
-import AddUser from "./AddUser.vue";
-import DownloadTable from "./DownloadTable.vue";
+import Edit from "./EditPerformance/index.vue";
+import FilterInfo from "./FilterPerformance.vue";
+import Add from "./AddPerformance.vue";
+import DownloadTable from "../Etc/DownloadTable.vue";
 
 export default Vue.extend({
   components: {
-    EditUser,
-    FilterUser,
-    AddUser,
+    Edit,
+    FilterInfo,
+    Add,
     DownloadTable
+  },
+  data() {
+    return {
+      form: { year: "" }
+    };
   }
 });
 </script>

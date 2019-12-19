@@ -2,12 +2,12 @@
  * @Author: Skye Young 
  * @Date: 2019-10-28 19:45:37 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-26 21:38:46
+ * @Last Modified time: 2019-12-19 16:59:33
  */
 
 <template>
   <transition appear appear-active-class="slide" @appear="lockCard" @after-appear="unlockCard">
-    <el-card class="box">
+    <div class="box">
       <header>
         <slot name="header"></slot>
       </header>
@@ -17,7 +17,7 @@
       <footer>
         <slot name="footer"></slot>
       </footer>
-    </el-card>
+    </div>
   </transition>
 </template>
 
@@ -45,6 +45,8 @@ export default Vue.extend({
   width: $card-width;
   border-radius: 1rem;
   text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 18px 0 rgba(0, 0, 0, 0.1);
 
   box-sizing: border-box;
 

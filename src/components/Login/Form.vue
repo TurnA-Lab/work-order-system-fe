@@ -94,7 +94,10 @@ export default Vue.extend({
 
                 const woUser = Object.assign({}, res.data.data, {
                   worknum: this.form.worknum,
-                  permission: parseInt(sessionStorage.getItem("wo_permission") as string)
+                  permission: parseInt(
+                    sessionStorage.getItem("wo_permission") as string,
+                    10
+                  )
                 });
                 sessionStorage.setItem("wo_user", JSON.stringify(woUser));
                 this.$store.commit("updateUserInfo", woUser);

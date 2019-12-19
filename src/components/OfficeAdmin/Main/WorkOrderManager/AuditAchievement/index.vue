@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-12-01 17:02:51
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 19:16:45
+ * @Last Modified time: 2019-12-19 18:36:45
  */
 
 
@@ -42,7 +42,7 @@ interface Data {
   certificate: string;
   schoolYear: string;
   year: string;
-  status: number;
+  status: number | string;
   reason: string;
   lastTime: string;
 }
@@ -136,8 +136,8 @@ export default Vue.extend({
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
 
-            list.forEach((value: Data, index: number) => {
-              list[index].status = statusText[value.status + 1];
+            list.forEach((item: Data) => {
+              item.status = statusText[(item.status as number) + 1];
             });
 
             this.tableData = list;

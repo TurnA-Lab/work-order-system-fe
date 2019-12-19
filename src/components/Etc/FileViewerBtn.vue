@@ -2,7 +2,7 @@
  * @Author: Skye Young 
  * @Date: 2019-12-03 15:32:47 
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-03 18:22:56
+ * @Last Modified time: 2019-12-19 19:37:35
  */
 
 <template>
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import FilePreview from "@/components/Etc/FilePreview.vue";
+import FilePreview from "./FilePreview.vue";
 
 export default Vue.extend({
   props: ["files"],
