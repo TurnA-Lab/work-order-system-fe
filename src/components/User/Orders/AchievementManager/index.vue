@@ -1,11 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-01 17:02:51
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 18:36:45
- */
-
-
 <template>
   <div>
     <what-table
@@ -15,86 +7,63 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <audit :data="data" :is-visible="auditIsVisible" @toggle-is-visible="toggleAudit"></audit>
+    <manager :data="data" :is-visible="managerIsVisible" @toggle-is-visible="toggleManager"></manager>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { AxiosResponse } from "axios/";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import Audit from "./Audit.vue";
-import { AxiosResponse } from "axios";
-
-interface Data {
-  aid: number;
-  department: string;
-  worknum: string;
-  name: string;
-  teammate: string;
-  production: string;
-  class1: string;
-  class2: string;
-  class3: string;
-  level: string;
-  unit: string;
-  publishTime: string;
-  patent: number;
-  certificate: string;
-  schoolYear: string;
-  year: string;
-  status: number | string;
-  reason: string;
-  lastTime: string;
-}
-
-const statusText = ["未通过", "审核中", "已通过"];
+import Manager from "./Manager.vue";
 
 export default Vue.extend({
   components: {
     WhatTable,
-    Audit
+    Manager
   },
   data() {
     return {
-      auditIsVisible: false,
+      managerIsVisible: false,
       data: {},
-      index: -1,
       tableData: [],
       columns: [
         {
           prop: "production",
-          label: "成果名称",
-          width: 160
+          label: "成果名称"
         },
         {
-          prop: "name",
-          label: "第一作者"
+          prop: "class2",
+          label: "二级类别"
         },
         {
           prop: "class3",
-          label: "类别",
-          width: 160
+          label: "三级类别"
+        },
+        {
+          prop: "level",
+          label: "级别"
         },
         {
           prop: "status",
-          label: "审核状态"
+          label: "状态"
         },
         {
           button: true,
           label: "操作",
-          width: 160,
+          width: 200,
           group: [
             {
               // you can props => type size icon disabled plain
-              name: "审核",
+              name: "管理",
               type: "warning",
-              icon: "el-icon-edit",
+              icon: "el-icon-s-grid",
               plain: true,
-              onClick: (data: Data, index: number) => {
+              onClick: (data: any, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
+                console.log(data, index);
                 this.$data.data = data;
-                this.$data.index = index;
-                this.$data.auditIsVisible = true;
+                this.$data.managerIsVisible = true;
               }
             }
           ]
@@ -105,8 +74,7 @@ export default Vue.extend({
         mutiSelectFixed: false,
         index: true, // 显示序号
         indexFixed: false,
-        loading: false, // 表格动画
-        initTable: true // 是否一挂载就加载数据
+        loading: true // 表格动画
       },
       pagination: {
         total: 0,
@@ -117,11 +85,9 @@ export default Vue.extend({
   },
   methods: {
     fetchData() {
-      this.options.loading = true;
-
       this.$http
         .post(
-          "/api/online/officeAdmin/getUserAchievement",
+          "/api/online/user/getMyAchievements",
           {},
           {
             params: {
@@ -136,42 +102,38 @@ export default Vue.extend({
         .then((res: AxiosResponse) => {
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
+            const statusArr = ["未通过", "审核中", "已通过"];
 
-            list.forEach((item: Data) => {
-              item.status = statusText[(item.status as number) + 1];
+            list.forEach((item: { status: number | string }) => {
+              item.status = statusArr[(item.status as number) + 1];
             });
 
+            this.options.loading = false;
             this.tableData = list;
             this.pagination.total = total;
           } else {
-            this.$message({
-              message: res.data.msg || "由于未知因素，无法获取表格",
-              type: "warning"
-            });
+            return Promise.reject(res.data.msg);
           }
-          this.options.loading = false;
         })
-        .catch(() => {
+        .catch((err: string) => {
           this.$message({
-            message: "由于未知因素，无法获取表格",
+            message: err || "由于未知因素，无法获取表格",
             type: "warning"
           });
           this.options.loading = false;
         });
     },
-    toggleAudit(isVisible: boolean) {
+    toggleManager(isVisible: boolean) {
       if (typeof isVisible === "undefined") {
-        this.auditIsVisible = !this.auditIsVisible;
+        this.managerIsVisible = !this.managerIsVisible;
       } else {
-        this.auditIsVisible = isVisible;
+        this.managerIsVisible = isVisible;
       }
     }
-  }
+  },
+  created() {}
 });
 </script>
 
-<style scoped>
-div >>> .el-table__body-wrapper {
-  max-height: 62vh !important;
-}
+<style lang="scss" scoped>
 </style>

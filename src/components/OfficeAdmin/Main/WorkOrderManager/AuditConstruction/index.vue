@@ -45,7 +45,7 @@ interface Data {
   computeYear: string;
   bonus: number;
   fileNumber: number;
-  isEnd: number;
+  isEnd: number | string;
   schoolYear: string;
   year: string;
   status: number | string;
@@ -133,12 +133,12 @@ export default Vue.extend({
       this.$http
         .post(
           "/api/online/officeAdmin/getUserConstruction",
-          // "/api/constructionManager",
+          {},
           {
-            pageIndex: this.pagination.pageIndex,
-            pageSize: this.pagination.pageSize
-          },
-          {
+            params: {
+              page: this.pagination.pageIndex,
+              size: this.pagination.pageSize
+            },
             headers: {
               token: this.$store.state.userInfo.token
             }
@@ -149,6 +149,7 @@ export default Vue.extend({
             const { list, total } = res.data.data;
 
             list.forEach((item: Data) => {
+              item.isEnd = isEndText[item.isEnd as number];
               item.status = statusText[(item.status as number) + 1];
             });
 

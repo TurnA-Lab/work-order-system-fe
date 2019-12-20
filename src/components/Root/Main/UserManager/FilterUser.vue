@@ -198,15 +198,12 @@ export default Vue.extend({
           .post(
             "/api/online/root/getUserList",
 
-            Object.assign(
-              {},
-              {
-                pageIndex: this.pagination.pageIndex,
-                pageSize: this.pagination.pageSize
-              },
-              this.filterForm
-            ),
+            Object.assign({}, this.filterForm),
             {
+              params: {
+                page: this.pagination.pageIndex,
+                size: this.pagination.pageSize
+              },
               headers: {
                 token: this.$store.state.userInfo.token
               }

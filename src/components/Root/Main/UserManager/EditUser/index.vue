@@ -177,11 +177,12 @@ export default Vue.extend({
       this.$http
         .post(
           "/api/online/root/getUserList",
+          {},
           {
-            pageIndex: this.pagination.pageIndex,
-            pageSize: this.pagination.pageSize
-          },
-          {
+            params: {
+              page: this.pagination.pageIndex,
+              size: this.pagination.pageSize
+            },
             headers: {
               token: this.$store.state.userInfo.token
             }

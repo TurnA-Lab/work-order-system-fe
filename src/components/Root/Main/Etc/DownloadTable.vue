@@ -1,6 +1,6 @@
 /*
- * @Author: Skye Young 
- * @Date: 2019-12-18 19:25:12 
+ * @Author: Skye Young
+ * @Date: 2019-12-18 19:25:12
  * @Last Modified by: Skye Young
  * @Last Modified time: 2019-12-18 20:12:26
  */
@@ -11,7 +11,7 @@
   <div class="download-page">
     <el-date-picker
       align="center"
-      v-model="form.year"
+      v-model="year"
       type="year"
       value-format="yyyy"
       placeholder="请选择立项年度"
@@ -32,20 +32,25 @@ export default Vue.extend({
   props: ["fileName", "api"],
   data() {
     return {
-      form: {
-        year: ""
-      }
+      year: ""
     };
   },
   methods: {
     downloadTable() {
       this.$http
-        .post(this.api, this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          },
-          responseType: "blob"
-        })
+        .post(
+          this.api,
+          {},
+          {
+            params: {
+              year: this.year
+            },
+            headers: {
+              token: this.$store.state.userInfo.token
+            },
+            responseType: "blob"
+          }
+        )
         .then((res: AxiosResponse) => {
           if (res.statusText === "OK") {
             return Promise.resolve(res.data);

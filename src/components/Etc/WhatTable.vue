@@ -133,7 +133,7 @@ export default {
       this.options
     );
 
-    if (this.options.initTable) {
+    if (this.$parent.options.initTable) {
       this.fetch();
     }
   },

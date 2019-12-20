@@ -119,7 +119,7 @@ export default Vue.extend({
       this.isDisable = true;
 
       this.$http
-        .post("/api/online/root/updateBonusInfo", this.form, {
+        .post("/api/online/root/updateBonus", this.form, {
           headers: {
             token: this.$store.state.userInfo.token
           }

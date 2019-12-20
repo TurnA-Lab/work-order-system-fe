@@ -15,8 +15,8 @@ module.exports = {
 		proxy: {
 			//配置跨域
 			"^/api": {
-				// target: "http://localhost:8082",
-				target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e/",
+				target: "http://localhost:8082",
+				// target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e/",
 				ws: true,
 				changOrigin: true,
 			},

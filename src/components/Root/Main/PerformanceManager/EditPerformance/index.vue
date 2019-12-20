@@ -100,7 +100,7 @@ export default Vue.extend({
                       .post(
                         "/api/online/root/deletePerformance",
                         {
-                          worknum: data.id
+                          id: data.id
                         },
                         {
                           headers: {
@@ -161,12 +161,13 @@ export default Vue.extend({
 
       this.$http
         .post(
-          "/api/online/root/getPerformanceInfo",
+          `/api/online/root/getPerformanceInfo`,
+          {},
           {
-            pageIndex: this.pagination.pageIndex,
-            pageSize: this.pagination.pageSize
-          },
-          {
+            params: {
+              page: this.pagination.pageIndex,
+              size: this.pagination.pageSize
+            },
             headers: {
               token: this.$store.state.userInfo.token
             }
