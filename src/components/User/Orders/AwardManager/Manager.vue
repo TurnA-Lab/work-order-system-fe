@@ -307,10 +307,10 @@ export default Vue.extend({
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
     },
     isDisable: {
-      get: function() {
+      get() {
         return this.$data.disable;
       },
-      set: function(value: boolean) {
+      set(value: boolean) {
         if (this.$data.canEdit) {
           this.$data.disable = value;
         } else {

@@ -130,8 +130,7 @@ export default Vue.extend({
         this.managerIsVisible = isVisible;
       }
     }
-  },
-  created() {}
+  }
 });
 </script>
 
