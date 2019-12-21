@@ -18,6 +18,8 @@
             align="center"
             v-model="filterForm.year"
             type="year"
+            format="yyyy 年"
+            value-format="yyyy"
             placeholder="请选择立项年度"
           ></el-date-picker>
         </el-form-item>
@@ -35,7 +37,9 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit :data="data" @toggle-is-visible="toggleEdit"></edit>
+    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"
+      @refresh="fetchData"
+    ></edit>
   </div>
 </template>
 
@@ -196,13 +200,14 @@ export default Vue.extend({
 
             Object.assign(
               {},
-              {
-                pageIndex: this.pagination.pageIndex,
-                pageSize: this.pagination.pageSize
-              },
+
               this.filterForm
             ),
             {
+              params: {
+                page: this.pagination.pageIndex,
+                size: this.pagination.pageSize
+              },
               headers: {
                 token: this.$store.state.userInfo.token
               }
@@ -245,38 +250,6 @@ export default Vue.extend({
       }
     }
   }
-  // ,
-  // created() {
-  //   // const stateToken = this.$store.state.userInfo.token;
-
-  //   // 请求院部列表
-  //   this.$http
-  //     .post(
-  //       "/api/online/getDepartmentList",
-  //       {},
-  //       {
-  //         headers: {
-  //           token: this.$store.state.userInfo.token
-  //         }
-  //       }
-  //     )
-  //     .then((res: AxiosResponse) => {
-  //       if (res.data.code === 0) {
-  //         this.department = res.data.data;
-  //       } else {
-  //         this.$message({
-  //           message: res.data.msg || "由于未知因素，无法获取院部列表",
-  //           type: "warning"
-  //         });
-  //       }
-  //     })
-  //     .catch(() => {
-  //       this.$message({
-  //         message: "由于未知因素，无法获取院部列表",
-  //         type: "warning"
-  //       });
-  //     });
-  // }
 });
 </script>
 

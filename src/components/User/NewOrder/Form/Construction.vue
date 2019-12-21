@@ -1,21 +1,20 @@
 /*
  * @Author: Skye Young
- * @Date: 2019-10-28 19:46:28
+ * @Date: 2019-10-28 19:46:06
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:53:13
+ * @Last Modified time: 2019-12-01 16:36:20
  */
 
 <template>
   <el-form
     class="form-part"
     :model="form"
-    :rules="rules"
     ref="form"
     size="medium"
     label-position="left"
     label-width="auto"
   >
-    <el-form-item class="form-item" label="院部" prop="department" required>
+    <el-form-item class="form-item" label="院部" prop="department">
       <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
         <el-option
           :key="item.value"
@@ -26,15 +25,15 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖名称" prop="content" required>
-      <el-input v-model="form.content" placeholder="请输入获奖名称"></el-input>
+    <el-form-item class="form-item" label="项目名称" prop="project">
+      <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖教师（第一）" required>
-      <el-input v-model="form.name" placeholder="请输入获奖教师（第一）"></el-input>
+    <el-form-item class="form-item" label="项目负责人" prop="name">
+      <el-input v-model="form.name" placeholder="请输入项目负责人"></el-input>
     </el-form-item>
 
-    <el-form-item label="获奖成员">
+    <el-form-item class="form-item" label="课题组成员">
       <el-tag
         :key="name"
         v-for="name in form.teammate"
@@ -52,20 +51,37 @@
       <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
     </el-form-item>
 
-    <el-form-item class="form-item" label="奖项" prop="prize" required>
-      <el-select v-model="form.prize" placeholder="请选择，或输入以查找" filterable>
-        <el-option
-          v-for="item in options.prize"
-          :key="item.value"
-          :label="item.label"
-          :value="item.label"
-        ></el-option>
-      </el-select>
+    <el-form-item class="form-item" label="立项年月" prop="startTime">
+      <el-date-picker
+        align="center"
+        v-model="form.startTime"
+        type="month"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+        placeholder="请选择立项年月"
+      ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖类型" prop="sort" required>
+    <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime">
+      <el-date-picker
+        align="center"
+        v-model="form.beginToEndTime"
+        type="daterange"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+      ></el-date-picker>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="主办单位" prop="sponsor">
+      <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="项目类型" prop="sort">
       <el-cascader
-        v-model="form.sort"
+        v-model="sort"
         placeholder="请选择，或输入以查找"
         :options="options.sort"
         :props="{ expandTrigger: 'hover' }"
@@ -74,7 +90,7 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="级别" prop="level" required>
+    <el-form-item class="form-item" label="项目级别" prop="level">
       <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
           v-for="item in options.level"
@@ -85,22 +101,8 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="颁奖部门" prop="awardUnit" required>
-      <el-input v-model="form.awardUnit" placeholder="请输入颁奖部门"></el-input>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="获奖时间" prop="awardTime" required>
-      <el-date-picker
-              align="center"
-              v-model="form.awardTime"
-              type="month"
-              format="yyyy 年 MM 月"
-              value-format="yyyy-MM"
-              placeholder="获奖时间"></el-date-picker>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="证书" prop="uploadField">
-      <upload-btn></upload-btn>
+    <el-form-item class="form-item" label="佐证材料" prop="uploadField">
+      <upload-btn files="testimonial"></upload-btn>
     </el-form-item>
 
     <el-form-item class="form-item btn-line">
@@ -115,6 +117,7 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 import SubmitBtn from "../Etc/SubmitFormBtn.vue";
 import UploadBtn from "../Etc/UploadBtn.vue";
+import validate from "@/utils/validate";
 
 interface Type {
   label: string;
@@ -128,71 +131,24 @@ export default Vue.extend({
     UploadBtn
   },
   data() {
-    const validateProjectName = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("获奖名称不能为空"));
-      }
-    };
-
-    const validatePrincipalNames = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("获奖教师不能为空"));
-      }
-    };
-
-    const validateSponsor = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("颁奖部门不能为空"));
-      }
-    };
-
-    const validateHonorDate = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("获奖时间不能为空"));
-      }
-    };
-
     return {
       sort: [],
       form: {
         department: "",
-        content: "",
+        project: "",
         name: "",
         teammate: [],
-        awardUnit: "",
-        awardTime: "",
-        prize: "",
+        startTime: "",
+        beginToEndTime: "",
+        sponsor: "",
         level: "",
         class2: "",
         class3: ""
       },
       options: {
         department: [],
-        prize: [],
-        level: [],
-        sort: []
-      },
-      rules: {
-        content: [{ validator: validateProjectName, trigger: "blur" }],
-        name: [{ validaor: validatePrincipalNames, trigger: "blur" }],
-        awardUnit: [{ validator: validateSponsor, trigger: "blur" }],
-        awardTime: [{ validator: validateHonorDate, trigger: "blur" }]
+        sort: [],
+        level: []
       },
       etc: {
         name: {
@@ -237,35 +193,33 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      (this as any).$refs.form.validate((valid: boolean) => {
-        if (valid) {
-          for (const key in this.options.sort) {
-            if (this.options.sort.hasOwnProperty(key)) {
-              const object = this.options.sort[key] as Type;
+      for (const key in this.sort) {
+        if (this.options.sort.hasOwnProperty(key)) {
+          const object = this.options.sort[key] as Type;
 
-              if (object.value === this.sort[0]) {
-                this.form.class2 = object.label;
+          if (object.value === this.sort[0]) {
+            this.form.class2 = object.label;
 
-                for (const key2 in object.children) {
-                  if (object.children.hasOwnProperty(key2)) {
-                    const element = object.children[key2];
+            for (const key2 in object.children) {
+              if (object.children.hasOwnProperty(key2)) {
+                const element = object.children[key2];
 
-                    if (element.value === this.sort[1]) {
-                      this.form.class3 = object.label;
-                    }
-                  }
+                if (element.value === this.sort[1]) {
+                  this.form.class3 = element.label;
                 }
               }
             }
           }
-          this.$store.commit(
-            "orderForm",
-            Object.assign(this.form, {
-              teammate: this.form.teammate.toString()
-            })
-          );
         }
-      });
+      }
+
+      this.$store.commit(
+        "orderForm",
+        Object.assign({}, this.form, {
+          teammate: this.form.teammate.toString(),
+          beginToEndTime: this.form.beginToEndTime.toString()
+        })
+      );
     }
   },
   created() {
@@ -299,11 +253,13 @@ export default Vue.extend({
         });
       });
 
-    // 请求奖项列表
+    // 请求项目类型列表
     this.$http
       .post(
-        "/api/online/getPrizeList",
-        {},
+        "/api/online/getTypeList",
+        {
+          class1: "建设类"
+        },
         {
           headers: {
             token: stateToken
@@ -312,22 +268,23 @@ export default Vue.extend({
       )
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
-          this.options.prize = res.data.data;
+          this.options.sort = res.data.data;
+          console.log(this.options.sort);
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取奖项列表",
+            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取奖项列表",
+          message: "由于未知因素，无法获取项目类型列表",
           type: "warning"
         });
       });
 
-    // 请求级别列表
+    // 请求项目级别列表
     this.$http
       .post(
         "/api/online/getLevelSet",
@@ -343,44 +300,14 @@ export default Vue.extend({
           this.options.level = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
+            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取获奖级别列表",
-          type: "warning"
-        });
-      });
-
-    // 请求获奖类型列表
-    this.$http
-      .post(
-        "/api/online/getTypeList",
-        {
-          class1: "获奖类"
-        },
-        {
-          headers: {
-            token: stateToken
-          }
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.sort = res.data.data;
-        } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖类型列表",
-            type: "warning"
-          });
-        }
-      })
-      .catch(() => {
-        this.$message({
-          message: "由于未知因素，无法获取获奖类型列表",
+          message: "由于未知因素，无法获取项目级别列表",
           type: "warning"
         });
       });

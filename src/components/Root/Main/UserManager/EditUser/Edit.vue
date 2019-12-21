@@ -145,6 +145,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import validate from "@/utils/validate";
 
 interface UserData {
   dtpId: number;
@@ -238,47 +239,55 @@ export default Vue.extend({
       this.$emit("toggle-is-visible", false);
     },
     updateUserInfo() {
-      this.isDisable = true;
+      if (validate(this.form)) {
+        this.isDisable = true;
 
-      this.$http
-        .post(
-          "/api/online/root/updateUserInfo",
-          Object.assign({}, this.form, {
-            doubleTeacher:
-              (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
-            background: (this.form as UserData).background === "否" ? 0 : 1,
-            tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
-            permission: permissionText.indexOf((this.form as UserData)
-              .permission as string)
-          }),
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
+        this.$http
+          .post(
+            "/api/online/root/updateUserInfo",
+            Object.assign({}, this.form, {
+              doubleTeacher:
+                (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
+              background: (this.form as UserData).background === "否" ? 0 : 1,
+              tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
+              permission: permissionText.indexOf((this.form as UserData)
+                .permission as string)
+            }),
+            {
+              headers: {
+                token: this.$store.state.userInfo.token
+              }
             }
-          }
-        )
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
-            this.close();
+          )
+          .then((res: AxiosResponse) => {
+            this.isDisable = false;
+            if (res.data.code === 0) {
+              this.close();
+              this.$emit("refresh");
+              this.$message({
+                message: res.data.msg || "用户信息保存成功",
+                type: "success"
+              });
+            } else {
+              this.$message({
+                message: res.data.msg || "用户信息保存失败",
+                type: "warning"
+              });
+            }
+          })
+          .catch(() => {
+            this.isDisable = false;
             this.$message({
-              message: res.data.msg || "用户信息保存成功",
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.data.msg || "用户信息保存失败",
+              message: "未知错误",
               type: "warning"
             });
-          }
-        })
-        .catch(() => {
-          this.isDisable = false;
-          this.$message({
-            message: "未知错误",
-            type: "warning"
           });
+      } else {
+        this.$message({
+          message: "填写尚不完整，请补全后提交",
+          type: "warning"
         });
+      }
     }
   },
   computed: {

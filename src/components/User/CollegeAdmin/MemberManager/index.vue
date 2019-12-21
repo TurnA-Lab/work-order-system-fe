@@ -184,8 +184,8 @@ export default Vue.extend({
           "/api/online/collegeAdmin/getDptUserInfo",
           // "/api/userTableData",
           {
-            pageIndex: this.pagination.pageIndex,
-            pageSize: this.pagination.pageSize
+             page: this.pagination.pageIndex,
+            size: this.pagination.pageSize
           },
           {
             headers: {

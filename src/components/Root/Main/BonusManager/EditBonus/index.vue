@@ -14,7 +14,9 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"></edit>
+    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"
+      @refresh="fetchData"
+    ></edit>
   </div>
 </template>
 
@@ -100,7 +102,7 @@ export default Vue.extend({
                       .post(
                         "/api/online/root/deleteBonus",
                         {
-                          worknum: data.id
+                          id: data.id
                         },
                         {
                           headers: {
@@ -162,11 +164,12 @@ export default Vue.extend({
       this.$http
         .post(
           "/api/online/root/getBonusInfo",
+          {},
           {
-            pageIndex: this.pagination.pageIndex,
-            pageSize: this.pagination.pageSize
-          },
-          {
+            params: {
+              page: this.pagination.pageIndex,
+              size: this.pagination.pageSize
+            },
             headers: {
               token: this.$store.state.userInfo.token
             }

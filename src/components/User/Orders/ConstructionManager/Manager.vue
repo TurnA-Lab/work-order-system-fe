@@ -15,7 +15,7 @@
     append-to-body
   >
     <div slot="title">
-      工单审核
+      工单管理
       <span class="last-time">最后修改时间 {{form.lastTime}}</span>
     </div>
     <div>
@@ -28,10 +28,6 @@
         label-position="left"
         label-width="auto"
       >
-        <el-form-item class="form-item" label="项目编号">
-          <el-input v-model="form.projectNum" placeholder="请输入项目编号" :disabled="editIsDisable"></el-input>
-        </el-form-item>
-
         <el-form-item class="form-item" label="项目名称">
           <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
         </el-form-item>
@@ -117,62 +113,33 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="年度">
-          <el-date-picker
-            align="center"
-            v-model="form.year"
-            type="year"
-            placeholder="请选择年度"
-            :disabled="editIsDisable"
-          ></el-date-picker>
-        </el-form-item>
-
-        <el-form-item label="学年">
-          <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
-            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
-          </el-select>
-        </el-form-item>
-
         <el-form-item class="form-item" label="佐证材料">
           <file-previewer-btn :files="form.testimonial">点击查看</file-previewer-btn>
         </el-form-item>
 
         <el-form-item class="form-item" label="是否已结束">
-          <el-select v-model="form.isEnd" placeholder="请选择" :disabled="editIsDisable">
+          <el-select v-model="form.isEnd" placeholder="请选择" disabled>
             <el-option
               :key="item.value"
               v-for="item in options.isEnd"
               :label="item.label"
-              :value="item.label"
+              :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="文件归档编号">
-          <el-input v-model="form.fileNumber" placeholder="请输入文件归档编号" :disabled="editIsDisable"></el-input>
-        </el-form-item>
-
         <el-form-item class="form-item" label="建设经费">
-          <el-input v-model="form.expenditure" placeholder="请输入建设经费" :disabled="editIsDisable"></el-input>
+          <el-input v-model="form.expenditure" placeholder="请输入建设经费" disabled></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="业绩分">
-          <el-input v-model="form.point" placeholder="请输入业绩分" :disabled="editIsDisable"></el-input>
+        <el-form-item class="form-item" label="年度">
+          <el-date-picker align="center" v-model="form.year" type="year" placeholder="年度" disabled></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="奖金">
-          <el-input v-model="form.bonus" placeholder="请输入奖金" :disabled="editIsDisable"></el-input>
-        </el-form-item>
-
-        <el-form-item class="form-item" label="计算年度">
-          <el-date-picker
-            align="center"
-            v-model="form.computeYear"
-            type="year"
-            value-format="yyyy"
-            placeholder="请选择计算年度"
-            :disabled="editIsDisable"
-          ></el-date-picker>
+        <el-form-item label="学年">
+          <el-select v-model="form.schoolYear" placeholder="请选择" disabled>
+            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
     </div>
@@ -185,18 +152,6 @@
         <el-button @click="toggleEdit" :disabled="isDisable">取消编辑</el-button>
         <el-button :loading="isDisable" @click="updateInfo" :disabled="isDisable">{{saveBtnText}}</el-button>
       </div>
-      <el-popover placement="top" width="160" v-model="statusIsVisible">
-        <p>
-          标记审核状态
-          <br />
-          当前为 “{{form.status}}”。
-        </p>
-        <div style="text-align: center;">
-          <el-button type="primary" size="mini" @click="toggleStatus('已通过',form)">通过</el-button>
-          <el-button type="primary" size="mini" @click="toggleStatus('未通过',form)">不通过</el-button>
-        </div>
-        <el-button slot="reference" type="primary" :disabled="isDisable">审批</el-button>
-      </el-popover>
     </div>
   </el-dialog>
 </template>
@@ -206,6 +161,7 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
+import validate from "@/utils/validate";
 
 interface Data {
   cid: number;
@@ -254,6 +210,7 @@ export default Vue.extend({
     return {
       isLoading: true,
       dataStatus: 0,
+      canEdit: true,
       schoolYears: yearRange,
       statusIsVisible: false,
       editIsDisable: true,
@@ -265,11 +222,11 @@ export default Vue.extend({
         isEnd: [
           {
             label: "未结束",
-            value: "0"
+            value: 0
           },
           {
             label: "已结束",
-            value: "1"
+            value: 1
           }
         ],
         level: [],
@@ -283,91 +240,84 @@ export default Vue.extend({
       this.editIsDisable = true;
     },
     toggleEdit() {
-      this.editIsDisable = !this.editIsDisable;
-    },
-    toggleStatus(text: string, form: Data) {
-      this.statusIsVisible = false;
-
-      if (text === "未通过") {
-        this.$prompt("请输入原因", "", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          inputType: "textarea"
-        }).then(({ value }: any) => {
-          form.status = text;
-          form.reason = value;
-          this.updateInfo(false);
-        });
+      if (this.canEdit) {
+        this.editIsDisable = !this.editIsDisable;
       } else {
-        form.status = text;
-        this.updateInfo(false);
+        this.$message({
+          message: "仅在“审核中”和“未通过”时可以进行编辑",
+          type: "warning"
+        });
       }
     },
     updateInfo(isEdit: boolean = true) {
-      this.isDisable = true;
-      this.editIsDisable = true;
+      if (validate(this.form)) {
+        this.isDisable = true;
+        this.editIsDisable = true;
 
-      // 处理类别
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+        // 处理类别
+        for (const key in this.options.sort) {
+          if (this.options.sort.hasOwnProperty(key)) {
+            const object = this.options.sort[key] as Type;
 
-          if (object.value === this.sort[0]) {
-            (this.form as Data).class2 = object.label;
+            if (object.value === this.sort[0]) {
+              (this.form as Data).class2 = object.label;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+              for (const key2 in object.children) {
+                if (object.children.hasOwnProperty(key2)) {
+                  const element = object.children[key2];
 
-                if (element.value === this.sort[1]) {
-                  (this.form as Data).class3 = element.label;
+                  if (element.value === this.sort[1]) {
+                    (this.form as Data).class3 = element.label;
+                  }
                 }
               }
             }
           }
         }
-      }
 
-      (this.form as Data).beginToEndTime = (this
-        .form as Data).beginToEndTime.toString();
+        // 处理
+        const temForm = Object.assign({}, this.form, {
+          beginToEndTime: (this.form as Data).beginToEndTime.toString(),
+          isEnd: isEndText.indexOf((this.form as Data).isEnd as string),
+          status: 0
+        });
 
-      // 处理审核状态和是否结束
-      const temForm = Object.assign({}, this.form, {
-        status: statusText.indexOf((this.form as Data).status as string) - 1,
-        isEnd: isEndText.indexOf((this.form as Data).isEnd as string)
-      });
+        console.log((this.form as Data).isEnd);
 
-      this.$http
-        .post("/api/online/officeAdmin/constructionSupplement", temForm, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        })
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
-            if (isEdit) {
-              this.close();
-              this.$emit("refresh");
-              this.$message({
-                message: res.data.msg || "保存成功",
-                type: "success"
-              });
+        this.$http
+          .post("/api/online/user/updateUserConstruction", temForm, {
+            headers: {
+              token: this.$store.state.userInfo.token
             }
-          } else {
+          })
+          .then((res: AxiosResponse) => {
+            this.isDisable = false;
+            if (res.data.code === 0) {
+              if (isEdit) {
+                this.close();
+                this.$emit("refresh");
+                this.$message({
+                  message: res.data.msg || "保存成功",
+                  type: "success"
+                });
+              }
+            } else {
+              return Promise.reject(res.data.msg);
+            }
+          })
+          .catch((err: string) => {
+            this.isDisable = false;
             this.$message({
-              message: res.data.msg || "保存失败",
+              message: err || "未知错误",
               type: "warning"
             });
-          }
-        })
-        .catch(() => {
-          this.isDisable = false;
-          this.$message({
-            message: "未知错误",
-            type: "warning"
           });
+      } else {
+        this.$message({
+          message: "填写尚不完整，请补全后提交",
+          type: "warning"
         });
+      }
     }
   },
   computed: {
@@ -398,6 +348,10 @@ export default Vue.extend({
       }
 
       newValue.beginToEndTime = (newValue.beginToEndTime as string).split(",");
+
+      this.canEdit = !(newValue.status === "已通过");
+
+      newValue.isEnd = isEndText[newValue.isEnd as number];
 
       this.form = newValue;
     },

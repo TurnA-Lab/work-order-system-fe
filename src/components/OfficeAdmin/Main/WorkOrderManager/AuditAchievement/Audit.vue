@@ -95,17 +95,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="佐证材料">
-          <file-previewer-btn>点击查看</file-previewer-btn>
-        </el-form-item>
-
         <el-form-item class="form-item" label="年度">
           <el-date-picker
             align="center"
             v-model="form.year"
             type="year"
             value-format="yyyy"
-            placeholder="请选择立项年度"
+            placeholder="请选择年度"
             :disabled="editIsDisable"
           ></el-date-picker>
         </el-form-item>
@@ -114,6 +110,10 @@
           <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
             <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
           </el-select>
+        </el-form-item>
+
+        <el-form-item class="form-item" label="佐证材料">
+          <file-previewer-btn :files="form.certificate">点击查看</file-previewer-btn>
         </el-form-item>
       </el-form>
     </div>
@@ -177,7 +177,7 @@ interface Type {
 }
 
 const statusText = ["未通过", "审核中", "已通过"];
-const patent = ["空", "是", "否"];
+const patentText = ["空", "是", "否"];
 
 export default Vue.extend({
   props: ["data", "isVisible"],
@@ -258,7 +258,7 @@ export default Vue.extend({
                 const element = object.children[key2];
 
                 if (element.value === this.sort[1]) {
-                  (this.form as Data).class3 = object.label;
+                  (this.form as Data).class3 = element.label;
                 }
               }
             }
@@ -268,7 +268,8 @@ export default Vue.extend({
 
       // 处理审核状态
       const temForm = Object.assign({}, this.form, {
-        status: statusText.indexOf((this.form as Data).status as string) - 1
+        status: statusText.indexOf((this.form as Data).status as string) - 1,
+        patent: patentText.indexOf((this.form as Data).patent as string)
       });
 
       this.$http
@@ -282,6 +283,7 @@ export default Vue.extend({
           if (res.data.code === 0) {
             if (isEdit) {
               this.close();
+              this.$emit("refresh");
               this.$message({
                 message: res.data.msg || "保存成功",
                 type: "success"
@@ -311,7 +313,7 @@ export default Vue.extend({
   watch: {
     data(newValue: Data, oldValue: Data) {
       // 处理是否被转让
-      newValue.patent = patent[newValue.patent as number];
+      newValue.patent = patentText[newValue.patent as number];
 
       // 处理类型
       for (const key in this.options.sort) {

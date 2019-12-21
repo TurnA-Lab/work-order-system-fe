@@ -37,6 +37,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import validate from "@/utils/validate";
 
 const formApi = ["addConstruction", "addAchievement", "addAward"];
 
@@ -50,28 +51,44 @@ export default Vue.extend({
   },
   methods: {
     nextActive() {
-      this.isVisible = !this.isVisible;
-      this.$emit("next");
+      new Promise((resolve, reject) => {
+        resolve(this.$emit("next"));
+      }).then(() => {
+        if (validate(this.$store.state.order.form)) {
+          this.isVisible = !this.isVisible;
+        } else {
+          this.$message({
+            message: "工单填写尚不完整，请补全后提交",
+            type: "warning"
+          });
+        }
+      });
     },
     submit() {
       const state = this.$store.state;
 
       this.isConfirming = true;
-      this.$http
-        .post(
-          "/api/online/validate",
-          {
-            worknum: this.input
-          },
-          {
-            headers: {
-              token: state.userInfo.token
+      new Promise((resolve, reject) => {
+        this.$http
+          .post(
+            "/api/online/validate",
+            {
+              worknum: this.input
+            },
+            {
+              headers: {
+                token: state.userInfo.token
+              }
             }
-          }
-        )
-        .then((res: AxiosResponse) => {
-          if (res.data.code === 0) {
-
+          )
+          .then((res: AxiosResponse) => {
+            if (res.data.code === 0) {
+              return res.data.data;
+            } else {
+              reject(res.data.msg || "项目负责人必须与当前登录用户相同");
+            }
+          })
+          .then(() => {
             this.$http
               .post(
                 `/api/online/user/${formApi[state.order.class - 1]}`,
@@ -88,31 +105,17 @@ export default Vue.extend({
                   this.$store.commit("nextActive");
                   this.isVisible = false;
                 } else {
-                  this.isConfirming = true;
+                  reject(response.data.msg || "由于未知因素，暂时无法提交表单");
                 }
-              })
-              .catch(() => {
-                this.isConfirming = false;
-                this.$message({
-                  message: "由于未知因素，暂时无法提交表单",
-                  type: "warning"
-                });
               });
-          } else {
-            this.$message({
-              message: res.data.msg || "项目负责人必须与当前登录用户相同",
-              type: "warning"
-            });
-            this.isConfirming = false;
-          }
-        })
-        .catch(() => {
-          this.isConfirming = false;
-          this.$message({
-            message: "由于未知因素，暂时无法验证身份",
-            type: "warning"
           });
+      }).catch((err: string) => {
+        this.isConfirming = false;
+        this.$message({
+          message: err || "由于未知因素，暂时无法验证身份",
+          type: "warning"
         });
+      });
     }
   },
   computed: {

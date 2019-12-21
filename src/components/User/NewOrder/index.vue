@@ -55,34 +55,62 @@ export default Vue.extend({
   data() {
     return {
       isOff: true,
-      isLoading: true,
-      getStatus: () => {
-        this.$http
-          .post(
-            "/api/online/user/getEntrancePermission",
-            {},
-            {
-              headers: {
-                token: this.$store.state.userInfo.token
-              }
-            }
-          )
-          .then((res: AxiosResponse) => {
-            this.$data.isLoading = false;
-            this.$data.isOff = !(res.data.code === 0);
-          })
-          .catch(() => {
-            this.$data.isOff = true;
-            this.$data.isLoading = false;
-            setTimeout(() => {
-              this.$message({
-                message: `由于未知因素，无法获取工单提交入口状态`,
-                type: "warning"
-              });
-            }, Math.random());
-          });
-      }
+      isLoading: true
+      // getStatus: () => {
+      //   this.$http
+      //     .post(
+      //       "/api/online/user/getEntrancePermission",
+      //       {},
+      //       {
+      //         headers: {
+      //           token: this.$store.state.userInfo.token
+      //         }
+      //       }
+      //     )
+      //     .then((res: AxiosResponse) => {
+      //       this.$data.isLoading = false;
+      //       this.$data.isOff = !(res.data.code === 0);
+      //     })
+      //     .catch(() => {
+      //       this.$data.isOff = true;
+      //       this.$data.isLoading = false;
+      //       setTimeout(() => {
+      //         this.$message({
+      //           message: `由于未知因素，无法获取工单提交入口状态`,
+      //           type: "warning"
+      //         });
+      //       }, Math.random());
+      //     });
+      // }
     };
+  },
+  methods: {
+    getStatus() {
+      this.$http
+        .post(
+          "/api/online/user/getEntrancePermission",
+          {},
+          {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          }
+        )
+        .then((res: AxiosResponse) => {
+          this.$data.isLoading = false;
+          this.$data.isOff = !res.data.data[Object.keys(res.data.data)[0]];
+        })
+        .catch(() => {
+          this.$data.isOff = true;
+          this.$data.isLoading = false;
+          setTimeout(() => {
+            this.$message({
+              message: `由于未知因素，无法获取工单提交入口状态`,
+              type: "warning"
+            });
+          }, Math.random());
+        });
+    }
   },
   computed: {
     process() {

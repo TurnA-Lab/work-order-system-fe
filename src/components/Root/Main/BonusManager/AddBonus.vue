@@ -16,19 +16,19 @@
         label-position="right"
         label-width="160px"
       >
-        <el-form-item class="form-item" label="项目名称">
+        <el-form-item class="form-item" label="项目名称" prop="project">
           <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="负责人">
+        <el-form-item class="form-item" label="负责人" prop="master">
           <el-input v-model="form.master" placeholder="请输入负责人"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="类别">
+        <el-form-item class="form-item" label="类别" prop="type">
           <el-input v-model="form.type" placeholder="请输入类别"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="院部">
+        <el-form-item class="form-item" label="院部" prop="department">
           <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
             <el-option
               :key="item.value"
@@ -39,13 +39,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="奖金计算科室">
+        <el-form-item label="奖金计算科室" prop="computeoffice">
           <el-select v-model="form.computeoffice" placeholder="请选择">
             <el-option v-for="item in computeOfficeList" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="立项年度">
+        <el-form-item class="form-item" label="立项年度" prop="year">
           <el-date-picker
             align="center"
             v-model="form.year"
@@ -55,7 +55,7 @@
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="奖金">
+        <el-form-item class="form-item" label="奖金" prop="bonus">
           <el-input v-model.number="form.bonus" placeholder="请输入奖金"></el-input>
         </el-form-item>
       </el-form>
@@ -173,7 +173,7 @@ export default Vue.extend({
   },
   computed: {
     saveBtnText() {
-      return this.$data.isDisable ? "正在保存..." : "添加用户";
+      return this.$data.isDisable ? "正在保存..." : "添加";
     }
   }
 });

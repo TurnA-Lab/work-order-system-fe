@@ -81,15 +81,12 @@ export default Vue.extend({
           this.performance = res.data.data.performance;
           this.bonus = res.data.data.bonus;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法输出表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法输出表",
+          message: err || "由于未知因素，无法输出表",
           type: "warning"
         });
       });
