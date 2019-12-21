@@ -18,6 +18,7 @@
       :user-data="userData"
       :is-visible="editUserIsVisible"
       @toggle-is-visible="toggleEditUser"
+      @refresh="fetchData"
     ></edit-user>
   </div>
 </template>

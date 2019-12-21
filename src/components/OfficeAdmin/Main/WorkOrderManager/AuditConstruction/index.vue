@@ -14,7 +14,12 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <audit :data="data" :is-visible="auditIsVisible" @toggle-is-visible="toggleAudit"></audit>
+    <audit
+      :data="data"
+      :is-visible="auditIsVisible"
+      @toggle-is-visible="toggleAudit"
+      @refresh="fetchData"
+    ></audit>
   </div>
 </template>
 

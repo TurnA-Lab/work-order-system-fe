@@ -74,6 +74,25 @@
               </template>
             </template>
 
+            <!-- render tool-tip -->
+            <template v-if="column.toolTip">
+              <template v-if="scope.row[column.show] === column.showRule">
+                <el-popover
+                  placement="bottom-start"
+                  trigger="hover"
+                  :content="scope.row[column.content] || '无'"
+                >
+                  <el-button
+                    class="tooltipBtn"
+                    slot="reference"
+                    icon="el-icon-question"
+                    type="text"
+                    circle
+                  ></el-button>
+                </el-popover>
+              </template>
+            </template>
+
             <!-- slot 你可以其他常用项 -->
           </template>
         </el-table-column>
@@ -128,7 +147,9 @@ export default {
         maxHeight: 500,
         stripe: true, // 是否为斑马纹
         border: true,
-        initTable: true
+        initTable: true,
+        button: false,
+        toolTip: false
       },
       this.options
     );
@@ -172,5 +193,9 @@ export default {
 .el-table__body-wrapper,
 .el-table__fixed-body-wrapper {
   max-height: 60vh !important;
+}
+
+.tooltipBtn {
+  padding: 5px;
 }
 </style>

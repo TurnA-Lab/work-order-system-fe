@@ -91,8 +91,8 @@ export default Vue.extend({
         this.$data.isDisable = true;
         callback(new Error("原密码不能为空"));
       } else {
-        if (value.length < 5 || value.length > 32) {
-          callback(new Error("密码位数应大于 5 位，小于 32 位"));
+        if (value.length < 6 || value.length > 32) {
+          callback(new Error("密码位数应大于 6 位，小于 32 位"));
         } else {
           callback();
         }

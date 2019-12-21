@@ -7,7 +7,12 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <manager :data="data" :is-visible="managerIsVisible" @toggle-is-visible="toggleManager"></manager>
+    <manager
+      :data="data"
+      :is-visible="managerIsVisible"
+      @toggle-is-visible="toggleManager"
+      @refresh="fetchData"
+    ></manager>
   </div>
 </template>
 
@@ -41,8 +46,12 @@ export default Vue.extend({
           label: "项目级别"
         },
         {
+          toolTip: true,
           prop: "status",
-          label: "状态"
+          label: "状态",
+          content: "reason",
+          show: "status",
+          showRule: "未通过"
         },
         {
           button: true,

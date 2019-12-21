@@ -37,7 +37,12 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"></edit>
+    <edit
+      :data="data"
+      :is-visible="editIsVisible"
+      @toggle-is-visible="toggleEdit"
+      @refresh="fetchData"
+    ></edit>
   </div>
 </template>
 
@@ -196,15 +201,12 @@ export default Vue.extend({
           .post(
             "/api/online/root/getPerformanceInfo",
 
-            Object.assign(
-              {},
-              this.filterForm
-            ),
+            Object.assign({}, this.filterForm),
             {
-                params: {
-                    page: this.pagination.pageIndex,
-                    size: this.pagination.pageSize
-                },
+              params: {
+                page: this.pagination.pageIndex,
+                size: this.pagination.pageSize
+              },
               headers: {
                 token: this.$store.state.userInfo.token
               }

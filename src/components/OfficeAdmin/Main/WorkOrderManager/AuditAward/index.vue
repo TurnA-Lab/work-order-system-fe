@@ -15,7 +15,12 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <audit :data="data" :is-visible="auditIsVisible" @toggle-is-visible="toggleAudit"></audit>
+    <audit
+      :data="data"
+      :is-visible="auditIsVisible"
+      @toggle-is-visible="toggleAudit"
+      @refresh="fetchData"
+    ></audit>
   </div>
 </template>
 
@@ -130,12 +135,12 @@ export default Vue.extend({
       this.$http
         .post(
           "/api/online/officeAdmin/getUserAward",
-            {},
+          {},
           {
-              params: {
-                  page: this.pagination.pageIndex,
-                  size: this.pagination.pageSize
-              },
+            params: {
+              page: this.pagination.pageIndex,
+              size: this.pagination.pageSize
+            },
             headers: {
               token: this.$store.state.userInfo.token
             }

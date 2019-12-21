@@ -83,6 +83,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import { computeOffice } from "@/utils/returnComputeOffice";
+import validate from "@/utils/validate";
 
 interface Data {
   id: number;
@@ -116,36 +117,44 @@ export default Vue.extend({
       this.$emit("toggle-is-visible", false);
     },
     updateInfo() {
-      this.isDisable = true;
+      if (validate(this.form)) {
+        this.isDisable = true;
 
-      this.$http
-        .post("/api/online/root/updatePerformance", this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        })
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
-            this.close();
+        this.$http
+          .post("/api/online/root/updatePerformance", this.form, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          })
+          .then((res: AxiosResponse) => {
+            this.isDisable = false;
+            if (res.data.code === 0) {
+              this.close();
+              this.$emit("refresh");
+              this.$message({
+                message: res.data.msg || "用户信息保存成功",
+                type: "success"
+              });
+            } else {
+              this.$message({
+                message: res.data.msg || "用户信息保存失败",
+                type: "warning"
+              });
+            }
+          })
+          .catch(() => {
+            this.isDisable = false;
             this.$message({
-              message: res.data.msg || "用户信息保存成功",
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.data.msg || "用户信息保存失败",
+              message: "未知错误",
               type: "warning"
             });
-          }
-        })
-        .catch(() => {
-          this.isDisable = false;
-          this.$message({
-            message: "未知错误",
-            type: "warning"
           });
+      } else {
+        this.$message({
+          message: "填写尚不完整，请补全后提交",
+          type: "warning"
         });
+      }
     }
   },
   computed: {

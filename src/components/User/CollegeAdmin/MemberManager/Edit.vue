@@ -6,7 +6,13 @@
  */
 
 <template>
-  <el-dialog custom-class="dialog" :visible="isVisible" :close-on-click-modal="false" @close="close" append-to-body>
+  <el-dialog
+    custom-class="dialog"
+    :visible="isVisible"
+    :close-on-click-modal="false"
+    @close="close"
+    append-to-body
+  >
     <div slot="title">编辑用户信息</div>
     <div>
       <el-form
@@ -125,6 +131,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import validate from "@/utils/validate";
 
 interface UserData {
   dtpId: number;
@@ -201,35 +208,40 @@ export default Vue.extend({
       this.$emit("toggle-is-visible", false);
     },
     updateUserInfo() {
-      this.isDisable = true;
-      this.$http
-        .post("/api/online/root/updateUserInfo", this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        })
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
-            this.close();
+      if (validate(this.form)) {
+        this.isDisable = true;
+
+        this.$http
+          .post("/api/online/root/updateUserInfo", this.form, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          })
+          .then((res: AxiosResponse) => {
+            this.isDisable = false;
+            if (res.data.code === 0) {
+              this.close();
+              this.$message({
+                message: res.data.msg || "用户信息保存成功",
+                type: "success"
+              });
+            } else {
+              return Promise.reject(res.data.msg);
+            }
+          })
+          .catch((err: string) => {
+            this.isDisable = false;
             this.$message({
-              message: res.data.msg || "用户信息保存成功",
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.data.msg || "用户信息保存失败",
+              message: "未知错误",
               type: "warning"
             });
-          }
-        })
-        .catch(() => {
-          this.isDisable = false;
-          this.$message({
-            message: "未知错误",
-            type: "warning"
           });
+      } else {
+        this.$message({
+          message: "填写尚不完整，请补全后提交",
+          type: "warning"
         });
+      }
     }
   },
   computed: {

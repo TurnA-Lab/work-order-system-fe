@@ -28,6 +28,10 @@
         label-position="left"
         label-width="auto"
       >
+        <el-form-item class="form-item" label="项目编号">
+          <el-input v-model="form.projectNum" placeholder="请输入项目编号" :disabled="editIsDisable"></el-input>
+        </el-form-item>
+
         <el-form-item class="form-item" label="项目名称">
           <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
         </el-form-item>
@@ -113,8 +117,24 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item class="form-item" label="年度">
+          <el-date-picker
+            align="center"
+            v-model="form.year"
+            type="year"
+            placeholder="请选择年度"
+            :disabled="editIsDisable"
+          ></el-date-picker>
+        </el-form-item>
+
+        <el-form-item label="学年">
+          <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
+            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item class="form-item" label="佐证材料">
-          <file-previewer-btn>点击查看</file-previewer-btn>
+          <file-previewer-btn :files="form.testimonial">点击查看</file-previewer-btn>
         </el-form-item>
 
         <el-form-item class="form-item" label="是否已结束">
@@ -128,6 +148,10 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item class="form-item" label="文件归档编号">
+          <el-input v-model="form.fileNumber" placeholder="请输入文件归档编号" :disabled="editIsDisable"></el-input>
+        </el-form-item>
+
         <el-form-item class="form-item" label="建设经费">
           <el-input v-model="form.expenditure" placeholder="请输入建设经费" :disabled="editIsDisable"></el-input>
         </el-form-item>
@@ -136,20 +160,19 @@
           <el-input v-model="form.point" placeholder="请输入业绩分" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="年度">
-          <el-date-picker
-            align="center"
-            v-model="form.year"
-            type="year"
-            placeholder="请选择立项年度"
-            :disabled="editIsDisable"
-          ></el-date-picker>
+        <el-form-item class="form-item" label="奖金">
+          <el-input v-model="form.bonus" placeholder="请输入奖金" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item label="学年">
-          <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
-            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
-          </el-select>
+        <el-form-item class="form-item" label="计算年度">
+          <el-date-picker
+            align="center"
+            v-model="form.computeYear"
+            type="year"
+            value-format="yyyy"
+            placeholder="请选择计算年度"
+            :disabled="editIsDisable"
+          ></el-date-picker>
         </el-form-item>
       </el-form>
     </div>
@@ -297,7 +320,7 @@ export default Vue.extend({
                 const element = object.children[key2];
 
                 if (element.value === this.sort[1]) {
-                  (this.form as Data).class3 = object.label;
+                  (this.form as Data).class3 = element.label;
                 }
               }
             }
@@ -325,6 +348,7 @@ export default Vue.extend({
           if (res.data.code === 0) {
             if (isEdit) {
               this.close();
+              this.$emit("refresh");
               this.$message({
                 message: res.data.msg || "保存成功",
                 type: "success"

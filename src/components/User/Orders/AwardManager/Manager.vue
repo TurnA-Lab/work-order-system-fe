@@ -118,7 +118,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="证书">
-          <file-previewer-btn>点击查看</file-previewer-btn>
+          <file-previewer-btn :files="form.certificate">点击查看</file-previewer-btn>
         </el-form-item>
 
         <el-form-item class="form-item" label="年度">
@@ -133,7 +133,7 @@
         </el-form-item>
 
         <el-form-item label="学年">
-          <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
+          <el-select v-model="form.schoolYear" placeholder="请选择" disabled>
             <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
@@ -157,6 +157,7 @@ import Vue from "vue";
 import { AxiosResponse } from "axios";
 import yearRange from "@/utils/returnYearRange";
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
+import validate from "@/utils/validate";
 
 interface Data {
   aid: number;
@@ -203,7 +204,7 @@ export default Vue.extend({
       schoolYears: yearRange,
       statusIsVisible: false,
       editIsDisable: true,
-      disable: false,
+      isDisable: false,
       sort: [],
       form: {},
       options: {
@@ -220,7 +221,14 @@ export default Vue.extend({
       this.editIsDisable = true;
     },
     toggleEdit() {
-      this.editIsDisable = !this.editIsDisable;
+      if (this.canEdit) {
+        this.editIsDisable = !this.editIsDisable;
+      } else {
+        this.$message({
+          message: "仅在“审核中”和“未通过”时可以进行编辑",
+          type: "warning"
+        });
+      }
     },
     toggleStatus(text: string, form: Data) {
       this.statusIsVisible = false;
@@ -241,85 +249,78 @@ export default Vue.extend({
       }
     },
     updateInfo(isEdit: boolean = true) {
-      this.isDisable = true;
-      this.editIsDisable = true;
+      if (validate(this.form)) {
+        this.isDisable = true;
+        this.editIsDisable = true;
 
-      // 处理类别
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+        // 处理类别
+        for (const key in this.options.sort) {
+          if (this.options.sort.hasOwnProperty(key)) {
+            const object = this.options.sort[key] as Type;
 
-          if (object.value === this.sort[0]) {
-            (this.form as Data).class2 = object.label;
+            if (object.value === this.sort[0]) {
+              (this.form as Data).class2 = object.label;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+              for (const key2 in object.children) {
+                if (object.children.hasOwnProperty(key2)) {
+                  const element = object.children[key2];
 
-                if (element.value === this.sort[1]) {
-                  (this.form as Data).class3 = object.label;
+                  if (element.value === this.sort[1]) {
+                    (this.form as Data).class3 = element.label;
+                  }
                 }
               }
             }
           }
         }
-      }
 
-      // 处理审核状态和是否结束
-      const temForm = Object.assign({}, this.form, {
-        status: statusText.indexOf((this.form as Data).status as string) - 1
-      });
+        // 处理
+        const temForm = Object.assign({}, this.form, {
+          status: 0
+        });
 
-      this.$http
-        .post("/online/user/updateUserAward", temForm, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        })
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
-            if (isEdit) {
-              this.close();
+        this.$http
+          .post("/api/online/user/updateUserAward", temForm, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          })
+          .then((res: AxiosResponse) => {
+            this.isDisable = false;
+            if (res.data.code === 0) {
+              if (isEdit) {
+                this.close();
+                this.$emit("refresh");
+                this.$message({
+                  message: res.data.msg || "保存成功",
+                  type: "success"
+                });
+              }
+            } else {
               this.$message({
-                message: res.data.msg || "保存成功",
-                type: "success"
+                message: res.data.msg || "保存失败",
+                type: "warning"
               });
             }
-          } else {
+          })
+          .catch(() => {
+            this.isDisable = false;
             this.$message({
-              message: res.data.msg || "保存失败",
+              message: "未知错误",
               type: "warning"
             });
-          }
-        })
-        .catch(() => {
-          this.isDisable = false;
-          this.$message({
-            message: "未知错误",
-            type: "warning"
           });
+      } else {
+        this.$message({
+          message: "填写尚不完整，请补全后提交",
+          type: "warning"
         });
+      }
     }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    },
-    isDisable: {
-      get() {
-        return this.$data.disable;
-      },
-      set(value: boolean) {
-        if (this.$data.canEdit) {
-          this.$data.disable = value;
-        } else {
-          this.$message({
-            message: "仅在 “审核中” 和 “未通过” 时可以进行编辑",
-            type: "warning"
-          });
-        }
-      }
     }
   },
   watch: {
@@ -344,7 +345,7 @@ export default Vue.extend({
         }
       }
 
-      this.canEdit = !(newValue.status === "已通过");
+      this.canEdit = !(newValue.status === 1);
       this.form = newValue;
     },
     dataStatus(newValue: number, oldValue: number) {

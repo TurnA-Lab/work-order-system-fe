@@ -37,7 +37,9 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"></edit>
+    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"
+      @refresh="fetchData"
+    ></edit>
   </div>
 </template>
 

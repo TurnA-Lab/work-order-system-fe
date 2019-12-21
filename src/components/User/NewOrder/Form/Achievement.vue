@@ -9,7 +9,6 @@
   <el-form
     class="form-part"
     :model="form"
-    :rules="rules"
     ref="form"
     size="medium"
     label-position="left"
@@ -54,13 +53,24 @@
 
     <el-form-item class="form-item" label="成果类别" prop="sort">
       <el-cascader
-        v-model="form.sort"
+        v-model="sort"
         placeholder="请选择，或输入以查找"
         :options="options.sort"
         :props="{ expandTrigger: 'hover' }"
         :show-all-levels="false"
         filterable
       ></el-cascader>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="级别" prop="level">
+      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
+        <el-option
+          v-for="item in options.level"
+          :key="item.value"
+          :label="item.label"
+          :value="item.label"
+        ></el-option>
+      </el-select>
     </el-form-item>
 
     <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit">
@@ -90,7 +100,7 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="佐证材料" prop="uploadField">
-      <upload-btn></upload-btn>
+      <upload-btn files="certificate"></upload-btn>
     </el-form-item>
 
     <el-form-item class="form-item btn-line">
@@ -112,62 +122,14 @@ interface Type {
   children: Type[];
 }
 
+const patentText = ["空", "是", "否"];
+
 export default Vue.extend({
   components: {
     SubmitBtn,
     UploadBtn
   },
   data() {
-    const validateProjectName = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("成果名称不能为空"));
-      }
-    };
-
-    const validatePrincipalNames = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("第一作者不能为空"));
-      }
-    };
-
-    const validateSponsor = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("发表刊物/出版社/授权单位不能为空"));
-      }
-    };
-
-    const validateHonor = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("成果名称不能为空"));
-      }
-    };
-
-    const validateHonorDate = (
-      rule: object,
-      value: string,
-      callback: (callback: object | void) => void
-    ) => {
-      if (!value) {
-        callback(new Error("发表/出版/授权时间不能为空"));
-      }
-    };
-
     return {
       sort: [],
       form: {
@@ -179,11 +141,13 @@ export default Vue.extend({
         unit: "",
         publishTime: "",
         class2: "",
-        class3: ""
+        class3: "",
+        level: ""
       },
       options: {
         department: [],
         sort: [],
+        level: "",
         patent: [
           {
             label: "空",
@@ -198,13 +162,6 @@ export default Vue.extend({
             value: 2
           }
         ]
-      },
-      rules: {
-        production: [{ validator: validateProjectName, trigger: "blur" }],
-        name: [{ validaor: validatePrincipalNames, trigger: "blur" }],
-        unit: [{ validator: validateSponsor, trigger: "blur" }],
-        sort: [{ validator: validateHonor, trigger: "blur" }],
-        publishTime: [{ validator: validateHonorDate, trigger: "blur" }]
       },
       etc: {
         name: {
@@ -249,14 +206,11 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      // (this as any).$refs.form.validate((valid: boolean) => {
-      //   if (valid) {
       for (const key in this.options.sort) {
         if (this.options.sort.hasOwnProperty(key)) {
           const object = this.options.sort[key] as Type;
-          // console.log(object.label +" "+object.value);
+
           if (object.value === this.sort[0]) {
-            // console.log(object.label +" "+object.value);
             this.form.class2 = object.label;
 
             for (const key2 in object.children) {
@@ -275,12 +229,11 @@ export default Vue.extend({
       this.$store.commit(
         "orderForm",
         Object.assign({}, this.form, {
-          teammate: this.form.teammate.toString()
+          teammate: this.form.teammate.toString(),
+          patent: patentText.indexOf(this.form.patent as string)
         })
       );
     }
-    //   });
-    // }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -338,6 +291,34 @@ export default Vue.extend({
       .catch(() => {
         this.$message({
           message: "由于未知因素，无法获取成果类型列表",
+          type: "warning"
+        });
+      });
+
+    // 请求级别列表
+    this.$http
+      .post(
+        "/api/online/getLevelSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.level = res.data.data;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取获奖级别列表",
           type: "warning"
         });
       });
