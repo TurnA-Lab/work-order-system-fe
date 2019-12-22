@@ -2,7 +2,7 @@
  * @Author: Skye Young
  * @Date: 2019-11-08 10:17:34
  * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 16:08:57
+ * @Last Modified time: 2019-12-22 12:01:46
  */
 
 /*
@@ -34,7 +34,7 @@
     :allow-multiple="true"
     :files="myFiles"
     :server="myServer"
-    @init="handleFilePondInit"
+    :fileRenameFunction="renameFun"
   />
 </template>
 
@@ -45,10 +45,12 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageCrop from "filepond-plugin-image-crop";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginFileRename from "filepond-plugin-file-rename";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { AxiosResponse, AxiosRequestConfig } from "axios";
 import { panUrl } from "@/config";
+import { resolve } from "dns";
 
 interface AxiosError extends Error {
   config: AxiosRequestConfig;
@@ -67,7 +69,8 @@ const FilePond = vueFilePond(
   FilePondPluginImagePreview,
   FilePondPluginImageCrop,
   FilePondPluginFileValidateSize,
-  FilePondPluginFileValidateType
+  FilePondPluginFileValidateType,
+  FilePondPluginFileRename
 );
 
 export default Vue.extend({
@@ -251,6 +254,11 @@ export default Vue.extend({
   methods: {
     handleFilePondInit() {
       // console.log("FilePond has initialized");
+    },
+    renameFun(file: File) {
+      new Promise(resolve => {
+        resolve(window.prompt("输入新文件名", file.name));
+      });
     }
   }
 });
