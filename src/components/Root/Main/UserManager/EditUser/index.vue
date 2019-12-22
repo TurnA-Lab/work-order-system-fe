@@ -85,18 +85,72 @@ export default Vue.extend({
         {
           button: true,
           label: "操作",
-          width: 200,
+          width: 300,
           group: [
             {
               // you can props => type size icon disabled plain
               name: "编辑",
-              type: "warning",
+              type: "info",
               icon: "el-icon-edit",
               plain: true,
               onClick: (userData: UserData, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
+              }
+            },
+            {
+              name: "改密",
+              type: "warning",
+              icon: "el-icon-key",
+              plain: true,
+              onClick: (userData: UserData, index: number) => {
+                this.$prompt("请输入新密码", "修改密码", {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  inputPattern: /.{6,32}/,
+                  inputErrorMessage: "密码必须大于 5 位，小于 32 位",
+                  inputType: "password"
+                }).then(({ value }: any) => {
+                  this.$confirm(`您输入的密码是 ${value}`, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消"
+                  })
+                    .then(() => {
+                      this.$http
+                        .post(
+                          "/api/online/root/updateUserPassword",
+                          {
+                            worknum: userData.worknum,
+                            password: value
+                          },
+                          {
+                            headers: {
+                              token: this.$store.state.userInfo.token
+                            }
+                          }
+                        )
+                        .then((res: AxiosResponse) => {
+                          if (res.data.code === 0) {
+                            this.$message({
+                              message: "修改成功",
+                              type: "success"
+                            });
+                          } else {
+                            return Promise.reject(res.data.msg);
+                          }
+                        })
+                        .catch((err: string) => {
+                          this.$message({
+                            message: err || "出现未知错误，暂时无法修改密码",
+                            type: "warning"
+                          });
+                        });
+                    })
+                    .catch(() => {
+                      // 占位
+                    });
+                });
               }
             },
             {

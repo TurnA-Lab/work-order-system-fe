@@ -123,7 +123,7 @@
               :key="item.value"
               v-for="item in options.isEnd"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>

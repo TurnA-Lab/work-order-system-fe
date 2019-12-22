@@ -14,8 +14,8 @@ module.exports = {
 		proxy: {
 			//配置跨域
 			"^/api": {
-				target: "http://134.175.59.87:8082",
-				// target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e/",
+				// target: "http://134.175.59.87:8082",
+				target: "http://127.0.0.1:8082",
 				ws: true,
 				changOrigin: true,
 			},

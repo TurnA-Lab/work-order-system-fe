@@ -38,7 +38,7 @@
               :key="item.value"
               v-for="item in options.gender"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -92,7 +92,7 @@
               :key="item.value"
               v-for="item in options.doubleTeacher"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -103,7 +103,7 @@
               :key="item.value"
               v-for="item in options.background"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -114,7 +114,7 @@
               :key="item.value"
               v-for="item in options.tutor"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -212,11 +212,20 @@ export default Vue.extend({
         this.isDisable = true;
 
         this.$http
-          .post("/api/online/root/updateUserInfo", this.form, {
-            headers: {
-              token: this.$store.state.userInfo.token
+          .post(
+            "/api/online/collegeAdmin/updateDptUserInfo",
+            Object.assign({}, this.form, {
+              doubleTeacher:
+                (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
+              background: (this.form as UserData).background === "否" ? 0 : 1,
+              tutor: (this.form as UserData).tutor === "否" ? 0 : 1
+            }),
+            {
+              headers: {
+                token: this.$store.state.userInfo.token
+              }
             }
-          })
+          )
           .then((res: AxiosResponse) => {
             this.isDisable = false;
             if (res.data.code === 0) {

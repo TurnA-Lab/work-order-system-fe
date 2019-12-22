@@ -102,60 +102,6 @@ export default Vue.extend({
                 this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
               }
-            },
-            {
-              name: "删除",
-              type: "danger",
-              icon: "el-icon-delete",
-              disabled: false,
-              onClick: (userData: UserData, index: number) => {
-                // 这种写法的 this 代表 group 里的对象
-                this.$confirm("删除用户后将不能直接恢复, 是否继续?", "注意", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                })
-                  .then(() => {
-                    this.$http
-                      .post(
-                        "/api/online/root/deleteUser",
-                        {
-                          worknum: userData.worknum
-                        },
-                        {
-                          headers: {
-                            token: this.$store.state.userInfo.token
-                          }
-                        }
-                      )
-                      .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                          this.$data.tableData.splice(index, 1);
-                          this.$message({
-                            message: res.data.msg || "用户信息保存成功",
-                            type: "success"
-                          });
-                        } else {
-                          this.$message({
-                            message: res.data.msg || "用户信息保存失败",
-                            type: "warning"
-                          });
-                        }
-                      })
-                      .catch(() => {
-                        this.$message({
-                          message: "由于未知因素，用户信息删除失败",
-                          type: "warning"
-                        });
-                      });
-                  })
-                  .catch(() => {
-                    this.$message({
-                      message: "已取消删除",
-                      type: "info"
-                    });
-                  });
-              }
             }
           ]
         }
@@ -184,7 +130,7 @@ export default Vue.extend({
           "/api/online/collegeAdmin/getDptUserInfo",
           // "/api/userTableData",
           {
-             page: this.pagination.pageIndex,
+            page: this.pagination.pageIndex,
             size: this.pagination.pageSize
           },
           {
