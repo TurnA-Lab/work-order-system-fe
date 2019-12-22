@@ -250,7 +250,16 @@ export default Vue.extend({
       }
     },
     updateInfo(isEdit: boolean = true) {
-      if (validate(this.form)) {
+      if (
+        validate(
+          Object.assign({}, this.form, {
+            projectNum: "validate",
+            computeYear: "validate",
+            fileNumber: "validate",
+            reason: "validate"
+          })
+        )
+      ) {
         this.isDisable = true;
         this.editIsDisable = true;
 
@@ -281,8 +290,6 @@ export default Vue.extend({
           isEnd: isEndText.indexOf((this.form as Data).isEnd as string),
           status: 0
         });
-
-        console.log((this.form as Data).isEnd);
 
         this.$http
           .post("/api/online/user/updateUserConstruction", temForm, {

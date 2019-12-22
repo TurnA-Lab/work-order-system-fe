@@ -24,4 +24,9 @@ main {
   align-items: center;
   justify-content: center;
 }
+
+h1 {
+  font-family: "FZCuJinLJW";
+  font-size: 3em;
+}
 </style>

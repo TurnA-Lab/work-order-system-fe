@@ -269,7 +269,6 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
-          console.log(this.options.sort);
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取项目类型列表",

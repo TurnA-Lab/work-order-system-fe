@@ -72,7 +72,7 @@ export default Vue.extend({
             responseType: "blob"
           })
           .then((res: AxiosResponse) => {
-            if (res.statusText === "OK") {
+            if (res.status === 200) {
               return Promise.resolve(res.data);
             } else {
               return Promise.reject(res.data.msg);

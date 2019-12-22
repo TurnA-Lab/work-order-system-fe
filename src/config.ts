@@ -9,4 +9,4 @@
  * 用于自定义的一些全局常量
  */
 
-export const panUrl = "http://10.3.4.18:8998";
+export const panUrl = "http://test.iskye.cn";

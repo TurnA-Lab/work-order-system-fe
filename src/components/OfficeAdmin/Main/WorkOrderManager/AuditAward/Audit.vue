@@ -282,7 +282,7 @@ export default Vue.extend({
       });
 
       this.$http
-        .post("/api/online/officeAdmin/constructionSupplement", temForm, {
+        .post("/api/online/officeAdmin/awardSupplement", temForm, {
           headers: {
             token: this.$store.state.userInfo.token
           }

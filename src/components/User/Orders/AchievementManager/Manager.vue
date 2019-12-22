@@ -250,7 +250,13 @@ export default Vue.extend({
       }
     },
     updateInfo(isEdit: boolean = true) {
-      if (validate(this.form)) {
+      if (
+        validate(
+          Object.assign({}, this.form, {
+            reason: "validate"
+          })
+        )
+      ) {
         this.isDisable = true;
         this.editIsDisable = true;
 
@@ -355,7 +361,7 @@ export default Vue.extend({
       this.form = newValue;
     },
     dataStatus(newValue: number, oldValue: number) {
-      if (newValue === 2) {
+      if (newValue === 3) {
         this.$data.isLoading = false;
       }
     }
@@ -437,6 +443,7 @@ export default Vue.extend({
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
           this.options.level = res.data.data;
+          this.dataStatus += 1;
         } else {
           this.$message({
             message: res.data.msg || "由于未知因素，无法获取获奖级别列表",

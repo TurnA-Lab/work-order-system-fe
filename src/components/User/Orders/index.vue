@@ -74,7 +74,6 @@ export default Vue.extend({
               plain: true,
               onClick: (data: any, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                console.log(data, index);
                 this.$data.data = data;
                 this.$data.managerIsVisible = true;
               }
@@ -116,7 +115,6 @@ export default Vue.extend({
               plain: true,
               onClick: (data: any, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                console.log(data, index);
                 this.$data.data = data;
                 this.$data.managerIsVisible = true;
               }

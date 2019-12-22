@@ -6,8 +6,7 @@
  */
 
 module.exports = {
-	publicPath: process.env.NODE_ENV === "production" ?
-		"/work-order-system-fe/" : "/",
+	publicPath: "/dist/",
 	devServer: {
 		open: true, //浏览器自动打开页面
 		host: "0.0.0.0", //如果是真机测试，就使用这个IP
@@ -15,7 +14,7 @@ module.exports = {
 		proxy: {
 			//配置跨域
 			"^/api": {
-				target: "http://localhost:8082",
+				target: "http://134.175.59.87:8082",
 				// target: "https://mock.iskye.cn/mock/5db59f1e8f24873a3f40f16e/",
 				ws: true,
 				changOrigin: true,

@@ -41,7 +41,7 @@
               :key="item.value"
               v-for="item in options.permission"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -52,7 +52,7 @@
               :key="item.value"
               v-for="item in options.gender"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -106,7 +106,7 @@
               :key="item.value"
               v-for="item in options.doubleTeacher"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -117,7 +117,7 @@
               :key="item.value"
               v-for="item in options.background"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -128,7 +128,7 @@
               :key="item.value"
               v-for="item in options.tutor"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>

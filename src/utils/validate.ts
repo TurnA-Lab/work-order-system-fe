@@ -1,9 +1,9 @@
 interface Item {
-  [key: string]: any
+  [key: string]: any;
 }
 
 export default (item: Item) => {
-  console.log(item);
+  // console.log(item);
 
   for (const key of Object.keys(item)) {
     if (item[key] === "" || item[key] === null) {
@@ -12,4 +12,4 @@ export default (item: Item) => {
   }
 
   return true;
-}
+};

@@ -249,7 +249,13 @@ export default Vue.extend({
       }
     },
     updateInfo(isEdit: boolean = true) {
-      if (validate(this.form)) {
+      if (
+        validate(
+          Object.assign({}, this.form, {
+            reason: "validate"
+          })
+        )
+      ) {
         this.isDisable = true;
         this.editIsDisable = true;
 

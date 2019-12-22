@@ -68,54 +68,55 @@ export default Vue.extend({
       const state = this.$store.state;
 
       this.isConfirming = true;
-      new Promise((resolve, reject) => {
-        this.$http
-          .post(
-            "/api/online/validate",
-            {
-              worknum: this.input
-            },
-            {
-              headers: {
-                token: state.userInfo.token
+      this.$http
+        .post(
+          "/api/online/validate",
+          {
+            worknum: this.input
+          },
+          {
+            headers: {
+              token: state.userInfo.token
+            }
+          }
+        )
+        .then((res: AxiosResponse) => {
+          if (res.data.code !== 0) {
+            return Promise.reject(
+              res.data.msg || "项目负责人必须与当前登录用户相同"
+            );
+          }
+        })
+        .then(() => {
+          return this.$http
+            .post(
+              `/api/online/user/${formApi[state.order.class - 1]}`,
+              state.order.form,
+              {
+                headers: {
+                  token: state.userInfo.token
+                }
               }
-            }
-          )
-          .then((res: AxiosResponse) => {
-            if (res.data.code === 0) {
-              return res.data.data;
-            } else {
-              reject(res.data.msg || "项目负责人必须与当前登录用户相同");
-            }
-          })
-          .then(() => {
-            this.$http
-              .post(
-                `/api/online/user/${formApi[state.order.class - 1]}`,
-                state.order.form,
-                {
-                  headers: {
-                    token: state.userInfo.token
-                  }
-                }
-              )
-              .then((response: AxiosResponse) => {
-                if (response.data.code === 0) {
-                  this.isConfirming = false;
-                  this.$store.commit("nextActive");
-                  this.isVisible = false;
-                } else {
-                  reject(response.data.msg || "由于未知因素，暂时无法提交表单");
-                }
-              });
+            )
+            .then((response: AxiosResponse) => {
+              if (response.data.code === 0) {
+                this.isConfirming = false;
+                this.$store.commit("nextActive");
+                this.isVisible = false;
+              } else {
+                return Promise.reject(
+                  response.data.msg || "由于未知因素，暂时无法提交表单"
+                );
+              }
+            });
+        })
+        .catch((err: string) => {
+          this.isConfirming = false;
+          this.$message({
+            message: err || "由于未知因素，暂时无法进行提交",
+            type: "warning"
           });
-      }).catch((err: string) => {
-        this.isConfirming = false;
-        this.$message({
-          message: err || "由于未知因素，暂时无法验证身份",
-          type: "warning"
         });
-      });
     }
   },
   computed: {

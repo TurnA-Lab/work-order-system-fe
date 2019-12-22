@@ -117,10 +117,11 @@ export default Vue.extend({
               responseType: "blob"
             }
           )
-          .then((res: any) => {
+          .then((res: AxiosResponse) => {
             this.isVisible = false;
             this.isDisable = false;
-            if (res.statusText === "OK") {
+
+            if (res.status === 200) {
               return Promise.resolve(res.data);
             } else {
               return Promise.reject(res.data.msg);
@@ -130,8 +131,6 @@ export default Vue.extend({
             saveAs(data, `${this.selectYear}-${this.fileName}.xlsx`);
           })
           .catch((err: string) => {
-            this.isDisable = true;
-            this.isVisible = false;
             this.$message({
               message: err || "由于未知因素，无法下载用户表",
               type: "warning"

@@ -6,14 +6,7 @@
  */
 
 <template>
-  <el-menu
-    default-active="1"
-    class="root-menu"
-    @open="handleOpen"
-    @close="handleClose"
-    :collapse="isCollapse"
-    :router="true"
-  >
+  <el-menu default-active="1" class="root-menu" :collapse="isCollapse" :router="true">
     <header>{{headerText}}</header>
     <el-menu-item index="1" :route="{name: 'rootHome'}">
       <i class="el-icon-s-home"></i>
@@ -50,14 +43,6 @@ export default Vue.extend({
   computed: {
     headerText() {
       return this.isCollapse ? "J." : "JUST WO";
-    }
-  },
-  methods: {
-    handleOpen(key: string[], keyPath: string[]) {
-      console.log(key, keyPath);
-    },
-    handleClose(key: string[], keyPath: string[]) {
-      console.log(key, keyPath);
     }
   }
 });
