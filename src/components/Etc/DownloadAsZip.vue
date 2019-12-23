@@ -15,7 +15,7 @@
 import Vue from "vue";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
-import { panUrl } from "@/config";
+
 import { AxiosResponse } from "axios/";
 
 interface FileInfo {
@@ -76,7 +76,7 @@ export default Vue.extend({
 
             folder.files.forEach((file: FileInfo) => {
               const promise = this.$http
-                .get(`${panUrl}/api/alien/preview/${file.uuid}/${file.name}`, {
+                .get(`/api/alien/preview/${file.uuid}/${file.name}`, {
                   responseType: "arraybuffer"
                 })
                 .then((res: AxiosResponse) => {

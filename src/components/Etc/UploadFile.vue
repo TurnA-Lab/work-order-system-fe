@@ -47,7 +47,6 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { AxiosResponse, AxiosRequestConfig } from "axios";
-import { panUrl } from "@/config";
 import { resolve } from "dns";
 
 interface AxiosError extends Error {
@@ -161,7 +160,7 @@ export default Vue.extend({
                 uploadData.append("file", file);
 
                 return this.$http
-                  .post(`${panUrl}/api/alien/upload`, uploadData, {
+                  .post("/api/alien/upload", uploadData, {
                     cancelToken: source.token
                   })
                   .then((response: AxiosResponse) => {

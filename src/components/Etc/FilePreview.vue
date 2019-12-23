@@ -30,7 +30,7 @@
 <script lang="ts">
 import Vue from "vue";
 import VuePictureSwipe from "vue-picture-swipe";
-import { panUrl } from "@/config";
+
 
 interface FileInfo {
   name: string;
@@ -87,7 +87,7 @@ export default Vue.extend({
 
       files.forEach((file: FileInfo) => {
         if (file.type.slice(0, 5) === "image") {
-          img.src = `${panUrl}/api/alien/preview/${file.uuid}/${file.name}`;
+          img.src = `/api/alien/preview/${file.uuid}/${file.name}`;
           (this.images as any).push({
             src: img.src,
             thumbnail: `${img.src}?ir=fill_100_100`,
@@ -98,7 +98,7 @@ export default Vue.extend({
         } else if (file.type.slice(-3) === "pdf") {
           (this.pdfs as any).push({
             name: file.name,
-            src: `${panUrl}/api/alien/preview/${file.uuid}/${file.name}`
+            src: `/api/alien/preview/${file.uuid}/${file.name}`
           });
         }
       });
