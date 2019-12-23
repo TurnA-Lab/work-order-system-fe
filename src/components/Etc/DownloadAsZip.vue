@@ -69,6 +69,11 @@ export default Vue.extend({
 
           fileNeedZip.forEach((folder: FileNeedZip) => {
             const directory = zip.folder(folder.name);
+
+            if (typeof folder.files === "string") {
+              folder.files = JSON.parse(folder.files);
+            }
+
             folder.files.forEach((file: FileInfo) => {
               const promise = this.$http
                 .get(`${panUrl}/api/alien/preview/${file.uuid}/${file.name}`, {

@@ -85,7 +85,12 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="级别" prop="level">
-          <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
+          <el-select
+            v-model="form.level"
+            placeholder="请选择，或输入以查找"
+            filterable
+            :disabled="editIsDisable"
+          >
             <el-option
               v-for="item in options.level"
               :key="item.value"

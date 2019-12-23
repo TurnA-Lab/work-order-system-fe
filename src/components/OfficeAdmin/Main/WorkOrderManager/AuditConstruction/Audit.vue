@@ -60,13 +60,14 @@
           <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="立项年度">
+        <el-form-item class="form-item" label="立项时间">
           <el-date-picker
             align="center"
             v-model="form.startTime"
-            type="year"
-            value-format="yyyy"
-            placeholder="请选择立项年度"
+            type="month"
+            format="yyyy 年 MM 月"
+            value-format="yyyy-MM"
+            placeholder="请选择立项时间"
             :disabled="editIsDisable"
           ></el-date-picker>
         </el-form-item>

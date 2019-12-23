@@ -127,8 +127,8 @@
             v-model="form.year"
             type="year"
             value-format="yyyy"
-            placeholder="请选择立项年度"
-            :disabled="editIsDisable"
+            placeholder="年度"
+            disabled
           ></el-date-picker>
         </el-form-item>
 
