@@ -123,6 +123,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import validate from "@/utils/validate";
 
 interface UserData {
   dtpId: number;
@@ -217,34 +218,47 @@ export default Vue.extend({
       (this.$refs[formName] as any).resetFields();
     },
     addUserInfo() {
-      this.isDisable = true;
-      this.$http
-        .post("/api/online/root/addUserInfo", this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
+      if (
+        validate({
+          name: this.form.name,
+          worknum: this.form.worknum,
+          dptname: this.form.dptname
         })
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
+      ) {
+        this.isDisable = true;
+        this.$http
+          .post("/api/online/root/addUserInfo", this.form, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            }
+          })
+          .then((res: AxiosResponse) => {
+            this.isDisable = false;
+            if (res.data.code === 0) {
+              this.$message({
+                message: res.data.msg || "用户信息添加成功",
+                type: "success"
+              });
+            } else {
+              this.$message({
+                message: res.data.msg || "用户信息添加失败",
+                type: "warning"
+              });
+            }
+          })
+          .catch(() => {
+            this.isDisable = false;
             this.$message({
-              message: res.data.msg || "用户信息添加成功",
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.data.msg || "用户信息添加失败",
+              message: "未知错误",
               type: "warning"
             });
-          }
-        })
-        .catch(() => {
-          this.isDisable = false;
-          this.$message({
-            message: "未知错误",
-            type: "warning"
           });
+      } else {
+        this.$message({
+          message: "请填写完整后提交!",
+          type: "warning"
         });
+      }
     }
   },
   created() {

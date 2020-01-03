@@ -15,7 +15,7 @@ module.exports = {
 			//配置跨域
 			"^/api": {
 				// target: "http://134.175.59.87:8082",
-				target: "http://127.0.0.1:8082",
+				target: "http://10.3.4.18",
 				ws: true,
 				changOrigin: true,
 			},

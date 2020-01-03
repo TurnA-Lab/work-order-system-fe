@@ -227,7 +227,7 @@ export default Vue.extend({
             value: "1"
           },
           {
-            label: " 科室管理员",
+            label: "科室管理员",
             value: "2"
           }
         ]
