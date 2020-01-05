@@ -62,7 +62,7 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="级别" prop="level">
+    <!-- <el-form-item class="form-item" label="级别" prop="level">
       <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
           v-for="item in options.level"
@@ -71,7 +71,7 @@
           :value="item.label"
         ></el-option>
       </el-select>
-    </el-form-item>
+    </el-form-item>-->
 
     <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit">
       <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
@@ -141,13 +141,12 @@ export default Vue.extend({
         unit: "",
         publishTime: "",
         class2: "",
-        class3: "",
-        level: ""
+        class3: ""
       },
       options: {
         department: [],
         sort: [],
-        level: "",
+        // level: "",
         patent: [
           {
             label: "空",
@@ -296,32 +295,32 @@ export default Vue.extend({
       });
 
     // 请求级别列表
-    this.$http
-      .post(
-        "/api/online/getLevelSet",
-        {},
-        {
-          headers: {
-            token: stateToken
-          }
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.level = res.data.data;
-        } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
-            type: "warning"
-          });
-        }
-      })
-      .catch(() => {
-        this.$message({
-          message: "由于未知因素，无法获取获奖级别列表",
-          type: "warning"
-        });
-      });
+    // this.$http
+    //   .post(
+    //     "/api/online/getLevelSet",
+    //     {},
+    //     {
+    //       headers: {
+    //         token: stateToken
+    //       }
+    //     }
+    //   )
+    //   .then((res: AxiosResponse) => {
+    //     if (res.data.code === 0) {
+    //       this.options.level = res.data.data;
+    //     } else {
+    //       this.$message({
+    //         message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
+    //         type: "warning"
+    //       });
+    //     }
+    //   })
+    //   .catch(() => {
+    //     this.$message({
+    //       message: "由于未知因素，无法获取获奖级别列表",
+    //       type: "warning"
+    //     });
+    //   });
   }
 });
 </script>

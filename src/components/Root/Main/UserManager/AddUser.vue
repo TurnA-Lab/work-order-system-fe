@@ -218,13 +218,7 @@ export default Vue.extend({
       (this.$refs[formName] as any).resetFields();
     },
     addUserInfo() {
-      if (
-        validate({
-          name: this.form.name,
-          worknum: this.form.worknum,
-          dptname: this.form.dptname
-        })
-      ) {
+      if (validate(this.form)) {
         this.isDisable = true;
         this.$http
           .post("/api/online/root/addUserInfo", this.form, {

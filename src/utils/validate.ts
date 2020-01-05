@@ -3,7 +3,7 @@ interface Item {
 }
 
 export default (item: Item) => {
-  // console.log(item);
+  console.log(item);
 
   for (const key of Object.keys(item)) {
     if (item[key] === "" || item[key] === null) {

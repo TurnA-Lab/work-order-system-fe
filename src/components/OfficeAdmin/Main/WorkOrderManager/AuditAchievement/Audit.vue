@@ -43,7 +43,7 @@
               :key="item.value"
               v-for="item in options.department"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             ></el-option>
           </el-select>
         </el-form-item>

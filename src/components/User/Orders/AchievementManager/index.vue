@@ -39,15 +39,15 @@ export default Vue.extend({
         },
         {
           prop: "class2",
-          label: "二级类别"
+          label: "类别"
         },
         {
           prop: "class3",
-          label: "三级类别"
+          label: "级别"
         },
         {
-          prop: "level",
-          label: "级别"
+          prop: "publishTime",
+          label: "发表时间"
         },
         {
           toolTip: true,
