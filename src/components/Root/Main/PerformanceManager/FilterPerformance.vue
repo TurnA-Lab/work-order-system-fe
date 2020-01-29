@@ -98,7 +98,7 @@ export default Vue.extend({
         },
         {
           prop: "points",
-          label: "业绩分"
+          label: "业绩分分"
         },
         {
           button: true,

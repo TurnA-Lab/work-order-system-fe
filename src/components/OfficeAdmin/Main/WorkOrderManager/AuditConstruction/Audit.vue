@@ -157,12 +157,12 @@
           <el-input v-model="form.expenditure" placeholder="请输入建设经费" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="业绩分">
-          <el-input v-model="form.point" placeholder="请输入业绩分" :disabled="editIsDisable"></el-input>
+        <el-form-item class="form-item" label="业绩分分">
+          <el-input v-model="form.point" placeholder="请输入业绩分分" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="奖金">
-          <el-input v-model="form.bonus" placeholder="请输入奖金" :disabled="editIsDisable"></el-input>
+        <el-form-item class="form-item" label="奖励">
+          <el-input v-model="form.bonus" placeholder="请输入奖励" :disabled="editIsDisable"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="计算年度">

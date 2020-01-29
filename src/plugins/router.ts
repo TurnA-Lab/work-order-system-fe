@@ -146,7 +146,7 @@ const router = new Router({
           name: "rootBonusManager",
           component: () => import("@/components/Root/Main/BonusManager/index.vue"),
           meta: {
-            title: "奖金管理"
+            title: "奖励管理"
           }
         },
         {
@@ -154,7 +154,7 @@ const router = new Router({
           name: "rootPerformanceManager",
           component: () => import("@/components/Root/Main/PerformanceManager/index.vue"),
           meta: {
-            title: "业绩管理"
+            title: "业绩分管理"
           }
         },
         {
@@ -194,7 +194,7 @@ const router = new Router({
           name: "officeAdminDigitizeSheet",
           component: () => import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue"),
           meta: {
-            title: "奖金 / 业绩表格录入"
+            title: "奖励 / 业绩分表格录入"
           }
         }
       ]

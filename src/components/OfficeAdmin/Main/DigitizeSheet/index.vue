@@ -7,16 +7,16 @@
 
 <template>
   <el-tabs tab-position="right">
-    <el-tab-pane label="奖金">
+    <el-tab-pane label="奖励">
       <div class="tabs-body">
-        <el-button type="primary" @click="downloadBonusTemplate">下载奖金模板</el-button>
-        <upload-btn api="/api/online/officeAdmin/excelImportBonus">上传奖金表格</upload-btn>
+        <el-button type="primary" @click="downloadBonusTemplate">下载奖励模板</el-button>
+        <upload-btn api="/api/online/officeAdmin/excelImportBonus">上传奖励表格</upload-btn>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="业绩">
+    <el-tab-pane label="业绩分">
       <div class="tabs-body">
-        <el-button type="primary" @click="downloadPerformanceTemplate">下载业绩模板</el-button>
-        <upload-btn api="/api/online/officeAdmin/excelImportPerformance">上传业绩表格</upload-btn>
+        <el-button type="primary" @click="downloadPerformanceTemplate">下载业绩分模板</el-button>
+        <upload-btn api="/api/online/officeAdmin/excelImportPerformance">上传业绩分表格</upload-btn>
       </div>
     </el-tab-pane>
   </el-tabs>
@@ -53,7 +53,7 @@ export default Vue.extend({
           }
         })
         .then((data: Blob) => {
-          saveAs(data, `奖金模板.xlsx`);
+          saveAs(data, `奖励模板.xlsx`);
         })
         .catch((err: string) => {
           this.$message({
@@ -82,7 +82,7 @@ export default Vue.extend({
           }
         })
         .then((data: Blob) => {
-          saveAs(data, `业绩模板.xlsx`);
+          saveAs(data, `业绩分模板.xlsx`);
         })
         .catch((err: string) => {
           this.$message({

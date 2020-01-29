@@ -24,7 +24,7 @@
     </el-tab-pane>
     <el-tab-pane label="导出">
       <div class="tabs-body">
-        <download-table file-name="奖金表" api="/api/online/root/getBonusExcel"></download-table>
+        <download-table file-name="奖励表" api="/api/online/root/getBonusExcel"></download-table>
       </div>
     </el-tab-pane>
   </el-tabs>

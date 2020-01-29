@@ -66,7 +66,7 @@ export default Vue.extend({
         },
         {
           prop: "bonus",
-          label: "奖金"
+          label: "奖励"
         },
         {
           button: true,

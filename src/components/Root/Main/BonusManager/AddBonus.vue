@@ -39,7 +39,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="奖金计算科室" prop="computeoffice">
+        <el-form-item label="奖励计算科室" prop="computeoffice">
           <el-select v-model="form.computeoffice" placeholder="请选择">
             <el-option v-for="item in computeOfficeList" :key="item" :label="item" :value="item"></el-option>
           </el-select>
@@ -55,8 +55,8 @@
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="奖金" prop="bonus">
-          <el-input v-model.number="form.bonus" placeholder="请输入奖金"></el-input>
+        <el-form-item class="form-item" label="奖励" prop="bonus">
+          <el-input v-model.number="form.bonus" placeholder="请输入奖励"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -121,12 +121,12 @@ export default Vue.extend({
           this.isDisable = false;
           if (res.data.code === 0) {
             this.$message({
-              message: res.data.msg || "奖金信息添加成功",
+              message: res.data.msg || "奖励信息添加成功",
               type: "success"
             });
           } else {
             this.$message({
-              message: res.data.msg || "奖金信息添加失败",
+              message: res.data.msg || "奖励信息添加失败",
               type: "warning"
             });
           }

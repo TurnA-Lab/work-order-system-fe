@@ -14,11 +14,11 @@
       <div>
         <el-button type="primary" @click="downloadPerformanceTable" :disabled="!performance">
           <i class="el-icon-download"></i>
-          导出业绩表
+          导出业绩分表
         </el-button>
         <el-button type="primary" @click="downloadBonusTable" :disabled="!bonus">
           <i class="el-icon-download"></i>
-          导出奖金表
+          导出奖励表
         </el-button>
       </div>
     </main>
@@ -95,12 +95,12 @@ export default Vue.extend({
     downloadPerformanceTable() {
       this.sheetApi = "/api/online/collegeAdmin/getConfirmPerformanceExcel";
       this.isVisible = true;
-      this.fileName = "业绩表";
+      this.fileName = "业绩分表";
     },
     downloadBonusTable() {
       this.sheetApi = "/api/online/collegeAdmin/getConfirmBonusExcel";
       this.isVisible = true;
-      this.fileName = "奖金表";
+      this.fileName = "奖励表";
     },
     exportSheets() {
       this.isDisable = true;
