@@ -9,38 +9,49 @@
       accordion
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
+        <!-- 添加按钮，用于只有一级树的结构 -->
         <el-button
           v-if="!typeData && data.value === 1"
           @click.stop="appendLevel(node, data)"
-          class="level-btn"
+          class="level-add-btn"
           type="primary"
           circle
         >
           <span class="el-icon-plus hover-action"></span>
         </el-button>
+        <!-- 内容 -->
         <span>{{ node.label }}</span>
+        <!-- 按钮组 -->
         <span>
+          <!-- 添加按钮 -->
           <el-button
             v-if="!node.isLeaf || (typeData && !node.parent.parent)"
+            class="hover-action"
             type="text"
             @click.stop="append(node, data)"
           >
             <span class="el-icon-plus hover-action"></span>
+            添加
           </el-button>
+          <!-- 编辑按钮 -->
           <el-button
             v-if="typeData ? node.isLeaf && node.parent.parent : node.isLeaf"
+            class="hover-action"
             type="text"
             @click.stop="edit(node, data)"
           >
-            <span class="el-icon-edit hover-action"></span>
+            <span class="el-icon-edit"></span>
+            编辑
           </el-button>
+          <!-- 删除按钮 -->
           <el-button
             v-if="typeData ? node.isLeaf && node.parent.parent : node.isLeaf"
-            class="red"
+            class="red hover-action"
             type="text"
             @click.stop="remove(node, data)"
           >
-            <span class="el-icon-delete hover-action"></span>
+            <span class="el-icon-delete"></span>
+            删除
           </el-button>
         </span>
       </span>
@@ -208,7 +219,6 @@ export default Vue.extend({
       // 展开
       node.expanded = true;
     },
-
     appendLevel(node: TreeNode<any, TreeData>, data: TreeData) {
       const newChild: TreeData = { label: "新节点", children: [] };
       const parent = node.parent;
@@ -345,7 +355,6 @@ export default Vue.extend({
           });
         });
     },
-
     edit(node: TreeNode<any, TreeData>, data: TreeData) {
       const stateToken = this.$store.state.userInfo.token;
       this.$prompt("请输入名称", "编辑", {
@@ -526,11 +535,13 @@ export default Vue.extend({
   margin-block-start: 5px;
 }
 
-.level-btn {
+.level-add-btn {
   position: fixed;
-  top: 30vh;
+  top: 40vh;
   right: 2vw;
-  z-index: 1;
+  z-index: 2;
+  transform: none;
+  transition: none;
 }
 
 .custom-tree-node {
@@ -549,7 +560,13 @@ export default Vue.extend({
   transition: transform 0.1s;
 
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
+}
+</style>
+
+<style lang="scss">
+.el-tree {
+  margin-block-end: 3vh;
 }
 </style>

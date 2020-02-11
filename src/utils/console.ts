@@ -85,7 +85,7 @@ export default class Console {
   private static phraseToUpperCase(sentence: string): string {
     return sentence
       .split("-")
-      .map(word => word.charAt(0).toUpperCase() + word.substr(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.substr(1))
       .join("-");
   }
 }

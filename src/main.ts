@@ -44,7 +44,7 @@ Vue.axios.interceptors.response.use(
     config.__retryCount += 1;
 
     // Create new promise to handle exponential backoff
-    const backoff = new Promise(resolve => {
+    const backoff = new Promise((resolve) => {
       setTimeout(() => {
         resolve();
       }, config.retryDelay || 1);
@@ -59,7 +59,7 @@ Vue.axios.interceptors.response.use(
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App)
 }).$mount("#app");
 
 Console.snapShoot();

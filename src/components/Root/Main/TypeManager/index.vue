@@ -74,13 +74,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.tabs-body {
-  background-color: #ffffff;
-  margin: 0px 1vw 1vw 1vw;
-  padding: 1vh 2vw;
-  border-radius: 1rem 2px 2px 1rem;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-</style>

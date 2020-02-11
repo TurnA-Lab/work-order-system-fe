@@ -1,7 +1,7 @@
 <template>
   <el-menu
-    default-active="1"
     class="root-menu"
+    :default-active="active[$route.name]"
     :collapse="isCollapse"
     :router="true"
   >
@@ -12,22 +12,22 @@
     </el-menu-item>
 
     <el-menu-item index="2" :route="{ name: 'rootTypeManager' }">
-      <i class="el-icon-menu"></i>
+      <i class="el-icon-cold-drink"></i>
       <span slot="title">类型 / 级别管理</span>
     </el-menu-item>
 
     <el-menu-item index="3" :route="{ name: 'rootBonusManager' }">
-      <i class="el-icon-setting"></i>
+      <i class="el-icon-lollipop"></i>
       <span slot="title">奖励管理</span>
     </el-menu-item>
 
     <el-menu-item index="4" :route="{ name: 'rootPerformanceManager' }">
-      <i class="el-icon-setting"></i>
+      <i class="el-icon-ice-cream"></i>
       <span slot="title">业绩分管理</span>
     </el-menu-item>
 
     <el-menu-item index="5" :route="{ name: 'rootUserManager' }">
-      <i class="el-icon-document"></i>
+      <i class="el-icon-notebook-1"></i>
       <span slot="title">用户管理</span>
     </el-menu-item>
   </el-menu>
@@ -38,6 +38,17 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["isCollapse"],
+  data() {
+    return {
+      active: {
+        rootHome: "1",
+        rootTypeManager: "2",
+        rootBonusManager: "3",
+        rootPerformanceManager: "4",
+        rootUserManager: "5"
+      }
+    };
+  },
   computed: {
     headerText() {
       return this.isCollapse ? "J." : "JUST WO";

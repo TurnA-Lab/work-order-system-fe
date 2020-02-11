@@ -101,7 +101,8 @@ export default Vue.extend({
 }
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans SC", "PingFang SC", miui, -apple-system, system-ui,
+    "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 

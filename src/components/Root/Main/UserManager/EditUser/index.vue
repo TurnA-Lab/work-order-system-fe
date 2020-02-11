@@ -78,7 +78,7 @@ export default Vue.extend({
         {
           button: true,
           label: "操作",
-          width: 300,
+          width: 280,
           group: [
             {
               // you can props => type size icon disabled plain

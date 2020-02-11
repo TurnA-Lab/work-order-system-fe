@@ -50,7 +50,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .download-page {
-  height: 60vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;

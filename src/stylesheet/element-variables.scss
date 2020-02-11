@@ -46,3 +46,13 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
 .el-message-box__title {
   color: #95a5a6 !important;
 }
+
+// .tabs-body
+// 控制阴影大小
+.tabs-body {
+  background-color: #ffffff;
+  margin: 0px 1vw 1vw 1vw;
+  padding: 1vh 2vw;
+  border-radius: 1rem 2px 2px 1rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}

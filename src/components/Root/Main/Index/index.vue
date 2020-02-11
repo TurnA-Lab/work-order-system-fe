@@ -66,6 +66,8 @@ main {
 
   & > .main-body {
     display: flex;
+    margin-block-start: 20px;
+    margin-inline-start: -2px;
   }
 }
 </style>

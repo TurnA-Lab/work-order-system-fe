@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    default-active="1"
+    default-active="active[$route.name]"
     class="root-menu"
     :collapse="isCollapse"
     :router="true"
@@ -33,6 +33,15 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["isCollapse"],
+  data() {
+    return {
+      active: {
+        rootHome: "1",
+        officeAdminWorkOrderManager: "2",
+        officeAdminDigitizeSheet: "3"
+      }
+    };
+  },
   computed: {
     headerText() {
       return this.isCollapse ? "J." : "JUST WO";

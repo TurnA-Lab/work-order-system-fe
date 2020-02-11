@@ -141,6 +141,8 @@ export default Vue.extend({
 .status-card {
   width: 16vw;
   height: 16vw;
+  max-width: 200px;
+  max-height: 200px;
 
   display: flex;
   flex-direction: column;
@@ -151,7 +153,7 @@ export default Vue.extend({
   margin-block-start: 1vh;
   margin-inline-end: 0.5vw;
   background-color: #ffffff;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   border-radius: 1rem;
   cursor: pointer;
@@ -165,24 +167,27 @@ export default Vue.extend({
   .status-icon {
     width: 8vw;
     height: 8vw;
+    max-width: 100px;
+    max-height: 100px;
+
     border-radius: 50%;
     background-color: rgb(53, 73, 94);
     color: $main;
-    transition: all 0.4s;
+    transition: transform 0.3s ease-out;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     & > svg {
-      transition: all 0.3s;
+      transition: transform 0.3s, opacity 0.3s;
     }
 
     & > .status-info {
       position: absolute;
       opacity: 0;
       transform: scale(0);
-      transition: all 0.2s 0.1s;
+      transition: transform 0.3s, opacity 0.3s;
     }
 
     &:hover {
@@ -190,6 +195,7 @@ export default Vue.extend({
 
       & > svg {
         transform: scale(0);
+        opacity: 0;
       }
 
       & > .status-info {
