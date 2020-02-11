@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-03 19:22:51
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 13:05:50
- */
-
 <template>
   <el-button :loading="isDownLoading" type="primary" @click="downloadSteps">
     <slot>下载文件</slot>

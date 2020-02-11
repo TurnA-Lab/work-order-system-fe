@@ -1,26 +1,21 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:47:46 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 16:53:50
- */
-
 <template>
   <main-card>
     <template v-slot:header>
-      <back-link @click="$router.push({ name: 'index'})"></back-link>
+      <back-link @click="$router.push({ name: 'index' })"></back-link>
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-button
         type="text"
         :disabled="btnIsDisabled"
-        @click="$router.push({ name: 'userOrders'})"
-      >我的工单</el-button>
+        @click="$router.push({ name: 'userOrders' })"
+        >我的工单</el-button
+      >
       <vertical-divider></vertical-divider>
       <el-button
         type="text"
         :disabled="!btnIsDisabled"
-        @click="$router.push({ name: 'userNewOrder'})"
-      >提交工单</el-button>
+        @click="$router.push({ name: 'userNewOrder' })"
+        >提交工单</el-button
+      >
     </template>
     <router-view></router-view>
   </main-card>

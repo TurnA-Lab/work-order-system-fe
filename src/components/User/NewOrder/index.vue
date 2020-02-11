@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:47:05 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 17:34:00
- */
-
 <template>
   <div class="flex-box" v-loading="isLoading">
     <header>
@@ -16,11 +9,17 @@
           trigger="hover"
           content="在成功提交工单前，所有步骤都不会被系统保存下来，所以请确保操作时网络状况良好。"
         >
-          <el-button class="tooltipBtn" slot="reference" icon="el-icon-question" type="text" circle></el-button>
+          <el-button
+            class="tooltipBtn"
+            slot="reference"
+            icon="el-icon-question"
+            type="text"
+            circle
+          ></el-button>
         </el-popover>
       </h2>
     </header>
-    <div class="body" :class="{off: isOff}">
+    <div class="body" :class="{ off: isOff }">
       <div class="off-info">当前无法提交工单</div>
       <aside>
         <el-steps direction="vertical" :active="$store.state.order.active">

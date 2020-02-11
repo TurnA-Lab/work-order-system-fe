@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-30 19:13:19
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 19:35:59
- */
-
 <template>
   <el-tabs tab-position="right">
     <el-tab-pane label="建设类">
@@ -21,7 +14,12 @@
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadTemplate('建设类模板', '/api/online/officeAdmin/getConstructionTemplate')"
+              @click="
+                downloadTemplate(
+                  '建设类模板',
+                  '/api/online/officeAdmin/getConstructionTemplate'
+                )
+              "
               api="/api/online/officeAdmin/excelImportConstruction"
             ></digitize-sheet>
           </el-tab-pane>
@@ -43,7 +41,12 @@
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadTemplate('成果类模板', '/api/online/officeAdmin/getAchievementTemplate')"
+              @click="
+                downloadTemplate(
+                  '成果类模板',
+                  '/api/online/officeAdmin/getAchievementTemplate'
+                )
+              "
               api="/api/online/officeAdmin/excelImportAchievement"
             ></digitize-sheet>
           </el-tab-pane>
@@ -65,7 +68,12 @@
           </el-tab-pane>
           <el-tab-pane label="录入">
             <digitize-sheet
-              @click="downloadTemplate('获奖类模板', '/api/online/officeAdmin/getAwardTemplate')"
+              @click="
+                downloadTemplate(
+                  '获奖类模板',
+                  '/api/online/officeAdmin/getAwardTemplate'
+                )
+              "
               api="/api/online/officeAdmin/excelImportAward"
             ></digitize-sheet>
           </el-tab-pane>

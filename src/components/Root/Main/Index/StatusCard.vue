@@ -1,19 +1,26 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-08 10:18:28
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 17:13:00
- */
-
 <template>
-  <div class="status-card" :class="{disable: isDisable}" @click="showIsDisable">
-    <el-tooltip class="item" effect="dark" content="点击切换状态" placement="top">
-      <figure class="status-icon" :class="{off: isOff}" v-loading="isLoading" @click="toggleStatus">
-        <div class="status-info">{{isOff ?"关闭中" : "开启中"}}</div>
+  <div
+    class="status-card"
+    :class="{ disable: isDisable }"
+    @click="showIsDisable"
+  >
+    <el-tooltip
+      class="item"
+      effect="dark"
+      content="点击切换状态"
+      placement="top"
+    >
+      <figure
+        class="status-icon"
+        :class="{ off: isOff }"
+        v-loading="isLoading"
+        @click="toggleStatus"
+      >
+        <div class="status-info">{{ isOff ? "关闭中" : "开启中" }}</div>
         <v-icon :name="icon" scale="2"></v-icon>
       </figure>
     </el-tooltip>
-    <div class="status-title">{{title}}</div>
+    <div class="status-title">{{ title }}</div>
   </div>
 </template>
 
@@ -147,6 +154,8 @@ export default Vue.extend({
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
   border-radius: 1rem;
+  cursor: pointer;
+  z-index: 0;
 
   .status-title {
     text-align: center;

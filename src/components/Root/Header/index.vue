@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:49:00
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 01:44:20
- */
-
 <template>
   <header>
     <div class="before-part">
@@ -16,11 +9,23 @@
     </div>
     <div class="after-part">
       <el-tooltip content="全屏模式" placement="bottom">
-        <el-button @click="toggleFullScreen" icon="el-icon-full-screen" type="text" circle plain></el-button>
+        <el-button
+          @click="toggleFullScreen"
+          icon="el-icon-full-screen"
+          type="text"
+          circle
+          plain
+        ></el-button>
       </el-tooltip>
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-tooltip content="进入用户界面" placement="bottom">
-        <el-button @click="turnToOtherPage('用户')" icon="el-icon-s-flag" type="text" circle plain></el-button>
+        <el-button
+          @click="turnToOtherPage('用户')"
+          icon="el-icon-s-flag"
+          type="text"
+          circle
+          plain
+        ></el-button>
       </el-tooltip>
       <el-tooltip content="进入科室管理员界面" placement="bottom">
         <el-button
@@ -36,7 +41,9 @@
         <el-button icon="el-icon-s-custom" circle></el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
-          <el-dropdown-item command="logout" icon="el-icon-switch-button">退出</el-dropdown-item>
+          <el-dropdown-item command="logout" icon="el-icon-switch-button"
+            >退出</el-dropdown-item
+          >
         </el-dropdown-menu>
       </el-dropdown>
     </div>

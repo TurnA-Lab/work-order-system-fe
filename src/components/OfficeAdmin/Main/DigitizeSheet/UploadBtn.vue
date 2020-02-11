@@ -1,17 +1,13 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-30 18:19:10
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-04 11:26:24
- */
-
-
 <template>
   <span class="upload-btn">
     <el-button type="primary" @click="showUploadDialog">
       <slot></slot>
     </el-button>
-    <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
+    <el-dialog
+      :visible.sync="isVisible"
+      :close-on-click-modal="false"
+      append-to-body
+    >
       <div slot="title">上传文件</div>
       <div class="upload-field">
         <upload-file ref="uploadField" :custom-api="api"></upload-file>
@@ -37,9 +33,9 @@ export default Vue.extend({
   },
 
   methods: {
-      showUploadDialog() {
-          this.isVisible = !this.isVisible;
-      }
+    showUploadDialog() {
+      this.isVisible = !this.isVisible;
+    }
   }
 });
 </script>

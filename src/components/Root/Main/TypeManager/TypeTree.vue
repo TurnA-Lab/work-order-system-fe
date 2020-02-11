@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-08 10:18:07
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 14:14:10
- */
-
 <template>
   <div>
     <el-tree
@@ -17,7 +10,7 @@
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <el-button
-          v-if="!typeData&&data.value===1"
+          v-if="!typeData && data.value === 1"
           @click.stop="appendLevel(node, data)"
           class="level-btn"
           type="primary"

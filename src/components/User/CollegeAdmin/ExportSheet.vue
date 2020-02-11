@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-26 21:13:44
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 21:00:57
- */
-
 <template>
   <div>
     <header>
@@ -12,11 +5,19 @@
     </header>
     <main>
       <div>
-        <el-button type="primary" @click="downloadPerformanceTable" :disabled="!performance">
+        <el-button
+          type="primary"
+          @click="downloadPerformanceTable"
+          :disabled="!performance"
+        >
           <i class="el-icon-download"></i>
           导出业绩分表
         </el-button>
-        <el-button type="primary" @click="downloadBonusTable" :disabled="!bonus">
+        <el-button
+          type="primary"
+          @click="downloadBonusTable"
+          :disabled="!bonus"
+        >
           <i class="el-icon-download"></i>
           导出奖励表
         </el-button>
@@ -42,7 +43,9 @@
 
       <div slot="footer">
         <el-button @click="close" type="primary" plain>取消导出</el-button>
-        <el-button :loading="isDisable" @click="exportSheets" type="primary">{{btnText}}</el-button>
+        <el-button :loading="isDisable" @click="exportSheets" type="primary">{{
+          btnText
+        }}</el-button>
       </div>
     </el-dialog>
   </div>

@@ -1,15 +1,8 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-20 20:10:57
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:25:24
- */
-
 <template>
   <div>
     <div>
       <el-form
-        :class="{'is-disable': isDisable}"
+        :class="{ 'is-disable': isDisable }"
         ref="form"
         :model="form"
         size="medium"
@@ -17,7 +10,10 @@
         label-width="160px"
       >
         <el-form-item class="form-item" label="项目名称" prop="project">
-          <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
+          <el-input
+            v-model="form.project"
+            placeholder="请输入项目名称"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="负责人" prop="master">
@@ -29,7 +25,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="院部" prop="department">
-          <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
+          <el-select
+            v-model="form.department"
+            placeholder="请选择，或输入以查找"
+            filterable
+          >
             <el-option
               :key="item.value"
               v-for="item in options.department"
@@ -41,7 +41,12 @@
 
         <el-form-item label="奖励计算科室" prop="computeoffice">
           <el-select v-model="form.computeoffice" placeholder="请选择">
-            <el-option v-for="item in computeOfficeList" :key="item" :label="item" :value="item"></el-option>
+            <el-option
+              v-for="item in computeOfficeList"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
 
@@ -56,14 +61,19 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="奖励" prop="bonus">
-          <el-input v-model.number="form.bonus" placeholder="请输入奖励"></el-input>
+          <el-input
+            v-model.number="form.bonus"
+            placeholder="请输入奖励"
+          ></el-input>
         </el-form-item>
       </el-form>
     </div>
 
     <div class="btn-line">
       <el-button @click="reset('form')" type="primary" plain>重置</el-button>
-      <el-button :loading="isDisable" @click="addInfo" type="primary">{{saveBtnText}}</el-button>
+      <el-button :loading="isDisable" @click="addInfo" type="primary">{{
+        saveBtnText
+      }}</el-button>
     </div>
   </div>
 </template>

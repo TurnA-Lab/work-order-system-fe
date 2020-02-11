@@ -1,16 +1,13 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-12-03 15:32:47 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 19:37:35
- */
-
 <template>
   <span>
     <el-button type="primary" plain @click="showDialog">
       <slot></slot>
     </el-button>
-    <el-dialog :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
+    <el-dialog
+      :visible.sync="isVisible"
+      :close-on-click-modal="false"
+      append-to-body
+    >
       <div slot="title">浏览文件</div>
       <div class="preview-field">
         <file-preview :files="files"></file-preview>

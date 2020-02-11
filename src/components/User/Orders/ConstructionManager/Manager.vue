@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-17 20:11:55
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 19:06:59
- */
-
 <template>
   <el-dialog
     custom-class="edit-dialog"
@@ -16,11 +9,11 @@
   >
     <div slot="title">
       工单管理
-      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
     </div>
     <div>
       <el-form
-        :class="{'is-disable': isDisable}"
+        :class="{ 'is-disable': isDisable }"
         class="form-part"
         ref="form"
         :model="form"
@@ -53,7 +46,10 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="课题组成员">
-          <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
+          <el-input
+            v-model="form.teammate"
+            :disabled="editIsDisable"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="立项年月">
@@ -83,7 +79,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="主办单位">
-          <el-input v-model="form.sponsor" placeholder="请输入主办单位" :disabled="editIsDisable"></el-input>
+          <el-input
+            v-model="form.sponsor"
+            placeholder="请输入主办单位"
+            :disabled="editIsDisable"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="项目类型">
@@ -115,7 +115,9 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="佐证材料">
-          <file-previewer-btn :files="form.testimonial">点击查看</file-previewer-btn>
+          <file-previewer-btn :files="form.testimonial"
+            >点击查看</file-previewer-btn
+          >
         </el-form-item>
 
         <el-form-item class="form-item" label="是否已结束">
@@ -130,16 +132,31 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="建设经费">
-          <el-input v-model="form.expenditure" placeholder="请输入建设经费" disabled></el-input>
+          <el-input
+            v-model="form.expenditure"
+            placeholder="请输入建设经费"
+            disabled
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="年度">
-          <el-date-picker align="center" v-model="form.year" type="year" placeholder="年度" disabled></el-date-picker>
+          <el-date-picker
+            align="center"
+            v-model="form.year"
+            type="year"
+            placeholder="年度"
+            disabled
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item label="学年">
           <el-select v-model="form.schoolYear" placeholder="请选择" disabled>
-            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
+            <el-option
+              v-for="item in schoolYears"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -147,11 +164,20 @@
 
     <div slot="footer" class="dialog-btn-line">
       <div v-if="editIsDisable">
-        <el-button @click="toggleEdit" type="primary" :disabled="isDisable">进行编辑</el-button>
+        <el-button @click="toggleEdit" type="primary" :disabled="isDisable"
+          >进行编辑</el-button
+        >
       </div>
       <div v-else>
-        <el-button @click="toggleEdit" :disabled="isDisable">取消编辑</el-button>
-        <el-button :loading="isDisable" @click="updateInfo" :disabled="isDisable">{{saveBtnText}}</el-button>
+        <el-button @click="toggleEdit" :disabled="isDisable"
+          >取消编辑</el-button
+        >
+        <el-button
+          :loading="isDisable"
+          @click="updateInfo"
+          :disabled="isDisable"
+          >{{ saveBtnText }}</el-button
+        >
       </div>
     </div>
   </el-dialog>

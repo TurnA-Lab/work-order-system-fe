@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-01 17:02:31
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 19:37:21
- */
-
 <template>
   <el-dialog
     custom-class="edit-dialog"
@@ -16,11 +9,11 @@
   >
     <div slot="title">
       工单审核
-      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
     </div>
     <div>
       <el-form
-        :class="{'is-disable': isDisable}"
+        :class="{ 'is-disable': isDisable }"
         class="form-part"
         ref="form"
         :model="form"
@@ -29,7 +22,10 @@
         label-width="auto"
       >
         <el-form-item class="form-item" label="成果名称">
-          <el-input v-model="form.production" :disabled="editIsDisable"></el-input>
+          <el-input
+            v-model="form.production"
+            :disabled="editIsDisable"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="院部">
@@ -53,11 +49,18 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="课题组成员">
-          <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
+          <el-input
+            v-model="form.teammate"
+            :disabled="editIsDisable"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="发表刊物/出版社/授权单位">
-          <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位" :disabled="editIsDisable"></el-input>
+          <el-input
+            v-model="form.unit"
+            placeholder="请输入发表刊物/出版社/授权单位"
+            :disabled="editIsDisable"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="发表/出版/授权时间">
@@ -85,7 +88,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="是否被转让（仅限专利）">
-          <el-select v-model="form.patent" placeholder="请选择" :disabled="editIsDisable">
+          <el-select
+            v-model="form.patent"
+            placeholder="请选择"
+            :disabled="editIsDisable"
+          >
             <el-option
               v-for="item in options.patent"
               :key="item.value"
@@ -107,36 +114,68 @@
         </el-form-item>
 
         <el-form-item label="学年">
-          <el-select v-model="form.schoolYear" placeholder="请选择" :disabled="editIsDisable">
-            <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
+          <el-select
+            v-model="form.schoolYear"
+            placeholder="请选择"
+            :disabled="editIsDisable"
+          >
+            <el-option
+              v-for="item in schoolYears"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item class="form-item" label="佐证材料">
-          <file-previewer-btn :files="form.certificate">点击查看</file-previewer-btn>
+          <file-previewer-btn :files="form.certificate"
+            >点击查看</file-previewer-btn
+          >
         </el-form-item>
       </el-form>
     </div>
 
     <div slot="footer" class="dialog-btn-line">
       <div v-if="editIsDisable">
-        <el-button @click="toggleEdit" type="primary" :disabled="isDisable">进行编辑</el-button>
+        <el-button @click="toggleEdit" type="primary" :disabled="isDisable"
+          >进行编辑</el-button
+        >
       </div>
       <div v-else>
-        <el-button @click="toggleEdit" :disabled="isDisable">取消编辑</el-button>
-        <el-button :loading="isDisable" @click="updateInfo" :disabled="isDisable">{{saveBtnText}}</el-button>
+        <el-button @click="toggleEdit" :disabled="isDisable"
+          >取消编辑</el-button
+        >
+        <el-button
+          :loading="isDisable"
+          @click="updateInfo"
+          :disabled="isDisable"
+          >{{ saveBtnText }}</el-button
+        >
       </div>
       <el-popover placement="top" width="160" v-model="statusIsVisible">
         <p>
           标记审核状态
           <br />
-          当前为 “{{form.status}}”。
+          当前为 “{{ form.status }}”。
         </p>
         <div style="text-align: center;">
-          <el-button type="primary" size="mini" @click="toggleStatus('已通过',form)">通过</el-button>
-          <el-button type="primary" size="mini" @click="toggleStatus('未通过',form)">不通过</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            @click="toggleStatus('已通过', form)"
+            >通过</el-button
+          >
+          <el-button
+            type="primary"
+            size="mini"
+            @click="toggleStatus('未通过', form)"
+            >不通过</el-button
+          >
         </div>
-        <el-button slot="reference" type="primary" :disabled="isDisable">审批</el-button>
+        <el-button slot="reference" type="primary" :disabled="isDisable"
+          >审批</el-button
+        >
       </el-popover>
     </div>
   </el-dialog>

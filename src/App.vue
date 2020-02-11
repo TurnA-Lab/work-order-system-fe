@@ -1,12 +1,5 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:48:06 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 17:06:28
- */
-
 <template>
-  <div id="app" :class="{offline: offline}">
+  <div id="app" :class="{ offline: offline }">
     <div class="offline-msg">
       <v-icon name="plane" scale="2"></v-icon>&nbsp;当前未连接到网络
     </div>

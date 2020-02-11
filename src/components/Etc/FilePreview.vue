@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-12-01 22:12:46 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-03 20:22:42
- */
-
 <template>
   <div class="box">
     <template v-if="hasNoFiles">
@@ -14,7 +7,7 @@
       <div class="pdfs">
         <div
           class="pdf-card"
-          v-for="(pdf,index) in pdfs"
+          v-for="(pdf, index) in pdfs"
           :key="index"
           @click="pdfViewer(pdf)"
           :alt="pdf.name"
@@ -22,7 +15,10 @@
           <span>PDF</span>
         </div>
       </div>
-      <vue-picture-swipe :items="images" :options="pictureSwipeOption"></vue-picture-swipe>
+      <vue-picture-swipe
+        :items="images"
+        :options="pictureSwipeOption"
+      ></vue-picture-swipe>
     </template>
   </div>
 </template>
@@ -30,7 +26,6 @@
 <script lang="ts">
 import Vue from "vue";
 import VuePictureSwipe from "vue-picture-swipe";
-
 
 interface FileInfo {
   name: string;

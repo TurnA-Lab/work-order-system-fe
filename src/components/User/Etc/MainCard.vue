@@ -1,12 +1,9 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:45:24 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-26 21:39:06
- */
-
 <template>
-  <el-card class="card slide-up" :class="{fullscreen: wheel}" @mousewheel.native="mouseWheel">
+  <el-card
+    class="card slide-up"
+    :class="{ fullscreen: wheel }"
+    @mousewheel.native="mouseWheel"
+  >
     <header>
       <slot name="header"></slot>
     </header>

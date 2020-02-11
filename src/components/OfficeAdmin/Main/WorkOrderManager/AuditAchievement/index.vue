@@ -1,11 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-01 17:02:51
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 18:36:45
- */
-
-
 <template>
   <div>
     <what-table
@@ -15,7 +7,10 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <audit :data="data" :is-visible="auditIsVisible" @toggle-is-visible="toggleAudit" 
+    <audit
+      :data="data"
+      :is-visible="auditIsVisible"
+      @toggle-is-visible="toggleAudit"
       @refresh="fetchData"
     ></audit>
   </div>

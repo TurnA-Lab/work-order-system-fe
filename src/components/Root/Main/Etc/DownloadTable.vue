@@ -1,11 +1,4 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-18 19:25:12
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:12:26
- */
-
-// TODO: 是否不加参数输出所有？
+// TODO 是否不加参数输出所有？
 
 <template>
   <div class="download-page">
@@ -16,9 +9,13 @@
       value-format="yyyy"
       placeholder="请选择立项年度"
     ></el-date-picker>
-    <el-button style="margin-inline-start: 15px" type="primary" @click="downloadTable">
+    <el-button
+      style="margin-inline-start: 15px"
+      type="primary"
+      @click="downloadTable"
+    >
       <i class="el-icon-download"></i>
-      下载{{fileName}}
+      下载{{ fileName }}
     </el-button>
   </div>
 </template>

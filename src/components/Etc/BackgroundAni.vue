@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:49:16 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 16:26:56
- */
-
 <template>
   <ul class="bubble-bgwall">
     <li></li>

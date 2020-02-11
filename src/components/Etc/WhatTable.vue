@@ -1,15 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-11-17 16:41:10 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 12:41:06
- */
-
-/*
- * @Origin: guodada
- * @Url: https://juejin.im/post/5b45e4c55188251b1a7b2301
- */
-
 <template>
   <div>
     <el-table
@@ -47,16 +35,22 @@
           :key="index"
           :prop="column.prop"
           :label="column.label"
-          :align="column.align||'center'"
+          :align="column.align || 'center'"
           :width="column.width"
           :fixed="column.fixed"
         >
           <template slot-scope="scope">
-            <template v-if="!column.render">{{scope.row[column.prop]}}</template>
+            <template v-if="!column.render">{{
+              scope.row[column.prop]
+            }}</template>
 
             <!-- render -->
             <template v-else>
-              <RenderDom :row="scope.row" :index="index" :render="column.render" />
+              <RenderDom
+                :row="scope.row"
+                :index="index"
+                :render="column.render"
+              />
             </template>
 
             <!-- render button -->
@@ -70,7 +64,8 @@
                   :disabled="btn.disabled"
                   :plain="btn.plain"
                   @click.stop="btn.onClick(scope.row, scope.$index)"
-                >{{btn.name}}</el-button>
+                  >{{ btn.name }}</el-button
+                >
               </template>
             </template>
 
@@ -113,6 +108,8 @@
 </template>
 
 <script>
+// Origin: guodada
+// Url: https://juejin.im/post/5b45e4c55188251b1a7b2301
 export default {
   components: {
     RenderDom: {

@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-12 20:18:38
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:08:24
- */
-
 <template>
   <el-tabs tab-position="right">
     <el-tab-pane label="管理">
@@ -24,7 +17,10 @@
     </el-tab-pane>
     <el-tab-pane label="导出">
       <div class="tabs-body">
-        <download-table file-name="业绩分表" api="/api/online/root/getPerformanceExcel"></download-table>
+        <download-table
+          file-name="业绩分表"
+          api="/api/online/root/getPerformanceExcel"
+        ></download-table>
       </div>
     </el-tab-pane>
   </el-tabs>

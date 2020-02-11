@@ -1,16 +1,14 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:45:05
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-10-29 12:57:45
- */
-
 <template>
   <div>
     <header>
       <h2>
         修改密码
-        <el-popover placement="bottom-start" width="200" trigger="hover" content="修改成功后，将会强制重新登录。">
+        <el-popover
+          placement="bottom-start"
+          width="200"
+          trigger="hover"
+          content="修改成功后，将会强制重新登录。"
+        >
           <el-button
             class="tooltip-btn"
             slot="reference"
@@ -23,7 +21,13 @@
     </header>
     <main>
       <div class="form">
-        <el-form :model="form" ref="form" :rules="rules" label-position="left" label-width="auto">
+        <el-form
+          :model="form"
+          ref="form"
+          :rules="rules"
+          label-position="left"
+          label-width="auto"
+        >
           <el-form-item label="原密码" prop="oldPassword">
             <el-input
               v-model="form.oldPassword"
@@ -37,7 +41,8 @@
                 @click="confirmOldPassword('form')"
                 :loading="isConfirming"
                 :disabled="!isDisable"
-              >{{confirmBtnText}}</el-button>
+                >{{ confirmBtnText }}</el-button
+              >
             </el-input>
           </el-form-item>
 
@@ -62,13 +67,16 @@
           </el-form-item>
 
           <el-form-item class="btn-line">
-            <el-button type="primary" @click="resetForm('form')" plain>重置</el-button>
+            <el-button type="primary" @click="resetForm('form')" plain
+              >重置</el-button
+            >
             <el-button
               type="primary"
               @click="submitForm('form')"
               :loading="isSaving"
               :disabled="isDisable"
-            >{{submitBtnText}}</el-button>
+              >{{ submitBtnText }}</el-button
+            >
           </el-form-item>
         </el-form>
       </div>

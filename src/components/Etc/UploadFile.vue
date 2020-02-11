@@ -1,15 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-08 10:17:34
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-22 12:01:46
- */
-
-/*
- * 须配合蓝眼云盘食用
- * https://tank-doc.eyeblue.cn/
- */
-
 <template>
   <file-pond
     class="upload-area"
@@ -38,6 +26,11 @@
 </template>
 
 <script lang="ts">
+/*
+ * 须配合蓝眼云盘食用
+ * https://tank-doc.eyeblue.cn/
+ */
+
 import Vue from "vue";
 import vueFilePond from "vue-filepond";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";

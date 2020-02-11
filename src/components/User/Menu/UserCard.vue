@@ -1,24 +1,17 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:45:13 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 18:25:37
- */
-
 <template>
   <el-card class="box" shadow="never">
     <div class="slide-enter">
       <h1>欢迎回来，</h1>
-      <h2>{{name}}</h2>
+      <h2>{{ name }}</h2>
     </div>
     <div class="slide-enter">
       <h5>
         工号
-        <span>{{worknum}}</span>
+        <span>{{ worknum }}</span>
       </h5>
       <h5>
         隶属于
-        <span>{{department}}</span>
+        <span>{{ department }}</span>
       </h5>
     </div>
   </el-card>

@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:46:28
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-02 19:53:13
- */
-
 <template>
   <el-form
     class="form-part"
@@ -15,7 +8,11 @@
     label-width="auto"
   >
     <el-form-item class="form-item" label="院部" prop="department">
-      <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
+      <el-select
+        v-model="form.department"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           :key="item.value"
           v-for="item in options.department"
@@ -30,7 +27,10 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="获奖教师（第一）">
-      <el-input v-model="form.name" placeholder="请输入获奖教师（第一）"></el-input>
+      <el-input
+        v-model="form.name"
+        placeholder="请输入获奖教师（第一）"
+      ></el-input>
     </el-form-item>
 
     <el-form-item label="获奖成员">
@@ -38,21 +38,34 @@
         :key="name"
         v-for="name in form.teammate"
         closable
-        @close="handleClose(form.teammate,name)"
-      >{{name}}</el-tag>
+        @close="handleClose(form.teammate, name)"
+        >{{ name }}</el-tag
+      >
       <el-input
         class="input-new-member"
         v-if="etc.teammate.inputVisible"
         v-model="etc.inputValue"
         ref="memberInput"
-        @keyup.enter.native="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
-        @blur="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
+        @keyup.enter.native="
+          handleInputConfirm(form.teammate, etc.teammate.inputVisible)
+        "
+        @blur="handleInputConfirm(form.teammate, etc.teammate.inputVisible)"
       ></el-input>
-      <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
+      <el-button
+        v-else
+        class="button-new-member"
+        @click="showMemberInput()"
+        plain
+        >+ 新成员</el-button
+      >
     </el-form-item>
 
     <el-form-item class="form-item" label="奖项" prop="prize">
-      <el-select v-model="form.prize" placeholder="请选择，或输入以查找" filterable>
+      <el-select
+        v-model="form.prize"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           v-for="item in options.prize"
           :key="item.value"
@@ -74,7 +87,11 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="级别" prop="level">
-      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
+      <el-select
+        v-model="form.level"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           v-for="item in options.level"
           :key="item.value"
@@ -85,7 +102,10 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="颁奖部门" prop="awardUnit">
-      <el-input v-model="form.awardUnit" placeholder="请输入颁奖部门"></el-input>
+      <el-input
+        v-model="form.awardUnit"
+        placeholder="请输入颁奖部门"
+      ></el-input>
     </el-form-item>
 
     <el-form-item class="form-item" label="获奖时间" prop="awardTime">

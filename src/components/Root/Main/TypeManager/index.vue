@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-08 10:18:14
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-14 20:19:42
- */
-
 <template>
   <el-tabs tab-position="right">
     <el-tab-pane label="类型">
@@ -14,7 +7,7 @@
             <type-tree
               type="建设类"
               type-api="/api/online/getTypeList"
-              :type-data="{'class1': '建设类'}"
+              :type-data="{ class1: '建设类' }"
               remove-api="/api/online/root/deleteType"
               remove-type="class3"
               append-api="/api/online/root/addType"
@@ -24,7 +17,7 @@
             <type-tree
               type="成果类"
               type-api="/api/online/getTypeList"
-              :type-data="{'class1': '成果类'}"
+              :type-data="{ class1: '成果类' }"
               remove-api="/api/online/root/deleteType"
               remove-type="class3"
               append-api="/api/online/root/addType"
@@ -34,7 +27,7 @@
             <type-tree
               type="获奖类"
               type-api="/api/online/getTypeList"
-              :type-data="{'class1': '获奖类'}"
+              :type-data="{ class1: '获奖类' }"
               remove-api="/api/online/root/deleteType"
               remove-type="class3"
               append-api="/api/online/root/addType"

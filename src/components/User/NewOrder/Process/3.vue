@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:46:56 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:46:56 
- */
-
 <template>
   <main>
     <h1>工单已成功提交。</h1>

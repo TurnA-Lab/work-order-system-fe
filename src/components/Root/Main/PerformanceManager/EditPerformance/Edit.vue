@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-17 20:11:55
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 18:57:31
- */
-
 <template>
   <el-dialog
     custom-class="edit-dialog"
@@ -15,11 +8,11 @@
   >
     <div slot="title">
       编辑奖励信息
-      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
     </div>
     <div>
       <el-form
-        :class="{'is-disable': isDisable}"
+        :class="{ 'is-disable': isDisable }"
         class="form-part"
         ref="form"
         :model="form"
@@ -28,7 +21,10 @@
         label-width="auto"
       >
         <el-form-item class="form-item" label="项目名称">
-          <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
+          <el-input
+            v-model="form.project"
+            placeholder="请输入项目名称"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="负责人">
@@ -40,7 +36,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="院部">
-          <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
+          <el-select
+            v-model="form.department"
+            placeholder="请选择，或输入以查找"
+            filterable
+          >
             <el-option
               :key="item.value"
               v-for="item in options.department"
@@ -52,7 +52,12 @@
 
         <el-form-item label="奖励计算科室">
           <el-select v-model="form.computeoffice" placeholder="请选择">
-            <el-option v-for="item in computeOfficeList" :key="item" :label="item" :value="item"></el-option>
+            <el-option
+              v-for="item in computeOfficeList"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
 
@@ -67,14 +72,19 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="业绩分分">
-          <el-input v-model.number="form.points" placeholder="请输入业绩分分"></el-input>
+          <el-input
+            v-model.number="form.points"
+            placeholder="请输入业绩分分"
+          ></el-input>
         </el-form-item>
       </el-form>
     </div>
 
     <div slot="footer" class="dialog-btn-line">
       <el-button @click="close" type="primary" plain>取消编辑</el-button>
-      <el-button :loading="isDisable" @click="updateInfo" type="primary">{{saveBtnText}}</el-button>
+      <el-button :loading="isDisable" @click="updateInfo" type="primary">{{
+        saveBtnText
+      }}</el-button>
     </div>
   </el-dialog>
 </template>

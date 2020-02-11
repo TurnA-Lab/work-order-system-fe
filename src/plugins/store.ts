@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:48:38
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-17 22:07:13
- */
-
 import Vue from "vue";
 import Vuex from "vuex";
 
@@ -18,7 +11,7 @@ export default new Vuex.Store({
       active: 1,
       class: 0,
       form: {}
-    },
+    }
   },
   mutations: {
     updateUserInfo(state, newUserInfo: object) {
@@ -41,14 +34,15 @@ export default new Vuex.Store({
       state.order.form = Object.assign({}, state.order.form, ...forms);
     },
     clearOrder(state) {
-      state.order = Object.assign({}, {
-        active: 1,
-        class: 0,
-        form: {}
-      });
-    },
-
+      state.order = Object.assign(
+        {},
+        {
+          active: 1,
+          class: 0,
+          form: {}
+        }
+      );
+    }
   },
-  actions: {
-  }
+  actions: {}
 });

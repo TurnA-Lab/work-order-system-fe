@@ -1,18 +1,11 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-30 20:30:04
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 16:56:59
- */
-
 <template>
   <main>
     <div class="user-info">
       <h1>
-        你好，
-        <span>{{name}}！</span>
+        您好，
+        <span>{{ name }}！</span>
       </h1>
-      <h6>欢迎您回到江苏科技大学工单系统后台。</h6>
+      <h6>欢迎回到江苏科技大学工单系统后台。</h6>
     </div>
     <div class="main-body">
       <status-card

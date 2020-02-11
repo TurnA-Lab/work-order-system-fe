@@ -1,22 +1,23 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-30 16:12:54
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 19:01:38
- */
-
 <template>
   <el-tabs tab-position="right">
     <el-tab-pane label="奖励">
       <div class="tabs-body">
-        <el-button type="primary" @click="downloadBonusTemplate">下载奖励模板</el-button>
-        <upload-btn api="/api/online/officeAdmin/excelImportBonus">上传奖励表格</upload-btn>
+        <el-button type="primary" @click="downloadBonusTemplate"
+          >下载奖励模板</el-button
+        >
+        <upload-btn api="/api/online/officeAdmin/excelImportBonus"
+          >上传奖励表格</upload-btn
+        >
       </div>
     </el-tab-pane>
     <el-tab-pane label="业绩分">
       <div class="tabs-body">
-        <el-button type="primary" @click="downloadPerformanceTemplate">下载业绩分模板</el-button>
-        <upload-btn api="/api/online/officeAdmin/excelImportPerformance">上传业绩分表格</upload-btn>
+        <el-button type="primary" @click="downloadPerformanceTemplate"
+          >下载业绩分模板</el-button
+        >
+        <upload-btn api="/api/online/officeAdmin/excelImportPerformance"
+          >上传业绩分表格</upload-btn
+        >
       </div>
     </el-tab-pane>
   </el-tabs>

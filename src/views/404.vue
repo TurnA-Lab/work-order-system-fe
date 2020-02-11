@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-11-25 12:36:40 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-29 21:52:10
- */
-
 <template>
   <div class="box">
     <h1 class="head">404</h1>

@@ -1,16 +1,13 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:49:23
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-30 01:48:03
- */
-
 <template>
-  <transition appear appear-class="slide-fade-enter" appear-active-class="slide-fade-enter-active">
+  <transition
+    appear
+    appear-class="slide-fade-enter"
+    appear-active-class="slide-fade-enter-active"
+  >
     <el-card
       class="login-card"
       shadow="hover"
-      :body-style="{'padding': '20px 40px'}"
+      :body-style="{ padding: '20px 40px' }"
       @keyup.enter.native="submitForm('form')"
     >
       <el-form ref="form" :model="form" :rules="rules">
@@ -21,7 +18,11 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="worknum">
-          <el-input v-model="form.worknum" prefix-icon="el-icon-user" placeholder="工号"></el-input>
+          <el-input
+            v-model="form.worknum"
+            prefix-icon="el-icon-user"
+            placeholder="工号"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
@@ -37,7 +38,8 @@
             type="primary"
             @click="submitForm('form')"
             :loading="isConfirming"
-          >{{submitBtnText}}</el-button>
+            >{{ submitBtnText }}</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>

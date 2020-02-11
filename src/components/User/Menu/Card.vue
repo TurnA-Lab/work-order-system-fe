@@ -1,12 +1,10 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:45:37 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 16:59:33
- */
-
 <template>
-  <transition appear appear-active-class="slide" @appear="lockCard" @after-appear="unlockCard">
+  <transition
+    appear
+    appear-active-class="slide"
+    @appear="lockCard"
+    @after-appear="unlockCard"
+  >
     <div class="box">
       <header>
         <slot name="header"></slot>

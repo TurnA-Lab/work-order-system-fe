@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:46:06
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 16:36:20
- */
-
 <template>
   <el-form
     class="form-part"
@@ -15,7 +8,11 @@
     label-width="auto"
   >
     <el-form-item class="form-item" label="院部" prop="department">
-      <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
+      <el-select
+        v-model="form.department"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           :key="item.value"
           v-for="item in options.department"
@@ -38,17 +35,26 @@
         :key="name"
         v-for="name in form.teammate"
         closable
-        @close="handleClose(form.teammate,name)"
-      >{{name}}</el-tag>
+        @close="handleClose(form.teammate, name)"
+        >{{ name }}</el-tag
+      >
       <el-input
         class="input-new-member"
         v-if="etc.teammate.inputVisible"
         v-model="etc.inputValue"
         ref="memberInput"
-        @keyup.enter.native="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
-        @blur="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
+        @keyup.enter.native="
+          handleInputConfirm(form.teammate, etc.teammate.inputVisible)
+        "
+        @blur="handleInputConfirm(form.teammate, etc.teammate.inputVisible)"
       ></el-input>
-      <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新成员</el-button>
+      <el-button
+        v-else
+        class="button-new-member"
+        @click="showMemberInput()"
+        plain
+        >+ 新成员</el-button
+      >
     </el-form-item>
 
     <el-form-item class="form-item" label="立项年月" prop="startTime">
@@ -91,7 +97,11 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="项目级别" prop="level">
-      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
+      <el-select
+        v-model="form.level"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           v-for="item in options.level"
           :key="item.value"

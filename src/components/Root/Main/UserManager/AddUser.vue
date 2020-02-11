@@ -1,15 +1,8 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-20 20:10:57
- * @Last Modified by:   Skye Young
- * @Last Modified time: 2019-11-20 20:10:57
- */
-
 <template>
   <div>
     <div>
       <el-form
-        :class="{'is-disable': isDisable}"
+        :class="{ 'is-disable': isDisable }"
         ref="form"
         :model="form"
         size="medium"
@@ -36,7 +29,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="院部" prop="department">
-          <el-select v-model="form.dptname" placeholder="请选择，或输入以查找" filterable>
+          <el-select
+            v-model="form.dptname"
+            placeholder="请选择，或输入以查找"
+            filterable
+          >
             <el-option
               :key="item.value"
               v-for="item in options.department"
@@ -47,35 +44,67 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="联系电话" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入联系电话"></el-input>
+          <el-input
+            v-model="form.phone"
+            placeholder="请输入联系电话"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="出生年月" prop="birthday">
-          <el-date-picker align="center" v-model="form.birthday" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            align="center"
+            v-model="form.birthday"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="入校时间" prop="enterTime">
-          <el-date-picker align="center" v-model="form.enterTime" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            align="center"
+            v-model="form.enterTime"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="职称" prop="techTittle">
-          <el-input v-model="form.techTittle" placeholder="请输入职称"></el-input>
+          <el-input
+            v-model="form.techTittle"
+            placeholder="请输入职称"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历" prop="eduBgd">
-          <el-input v-model="form.eduBgd" placeholder="请输入最高学历"></el-input>
+          <el-input
+            v-model="form.eduBgd"
+            placeholder="请输入最高学历"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学位" prop="degree">
-          <el-input v-model="form.degree" placeholder="请输入最高学位"></el-input>
+          <el-input
+            v-model="form.degree"
+            placeholder="请输入最高学位"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="授学位单位名称" prop="school">
-          <el-input v-model="form.school" placeholder="请输入授学位单位名称"></el-input>
+          <el-input
+            v-model="form.school"
+            placeholder="请输入授学位单位名称"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="获最高学位的专业名称" prop="major">
-          <el-input v-model="form.major" placeholder="请输入获最高学位的专业名称"></el-input>
+        <el-form-item
+          class="form-item"
+          label="获最高学位的专业名称"
+          prop="major"
+        >
+          <el-input
+            v-model="form.major"
+            placeholder="请输入获最高学位的专业名称"
+          ></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="是否双师型" prop="doubleTeacher">
@@ -89,7 +118,11 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="是否具有行业背景" prop="background">
+        <el-form-item
+          class="form-item"
+          label="是否具有行业背景"
+          prop="background"
+        >
           <el-select v-model="form.background" placeholder="请选择">
             <el-option
               :key="item.value"
@@ -100,7 +133,11 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="是否博士生导师" prop="placeholder">
+        <el-form-item
+          class="form-item"
+          label="是否博士生导师"
+          prop="placeholder"
+        >
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               :key="item.value"
@@ -115,7 +152,9 @@
 
     <div class="btn-line">
       <el-button @click="reset('form')" type="primary" plain>重置</el-button>
-      <el-button :loading="isDisable" @click="addUserInfo" type="primary">{{saveBtnText}}</el-button>
+      <el-button :loading="isDisable" @click="addUserInfo" type="primary">{{
+        saveBtnText
+      }}</el-button>
     </div>
   </div>
 </template>

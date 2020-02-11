@@ -12,11 +12,10 @@ $large: "min-width: 1200px";
 $larger: "min-width: 1920px";
 
 @mixin screen($screenSize) {
-	@media (#{$screenSize}) {
-		@content;
-	}
+  @media (#{$screenSize}) {
+    @content;
+  }
 }
-
 
 /* User-Card */
 $card-width: 20vw;

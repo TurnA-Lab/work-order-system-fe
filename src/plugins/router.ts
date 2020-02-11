@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:48:30
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 11:32:40
- */
-
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "@/views/Login.vue";
@@ -104,7 +97,8 @@ const router = new Router({
         {
           path: "member_manager",
           name: "collegeAdminMemberManager",
-          component: () => import("@/components/User/CollegeAdmin/MemberManager/index.vue"),
+          component: () =>
+            import("@/components/User/CollegeAdmin/MemberManager/index.vue"),
           meta: {
             title: "部门成员管理"
           }
@@ -112,7 +106,8 @@ const router = new Router({
         {
           path: "export_sheet",
           name: "collegeAdminExportSheet",
-          component: () => import("@/components/User/CollegeAdmin/ExportSheet.vue"),
+          component: () =>
+            import("@/components/User/CollegeAdmin/ExportSheet.vue"),
           meta: {
             title: "确认表导出"
           }
@@ -136,7 +131,8 @@ const router = new Router({
         {
           path: "type_manager",
           name: "rootTypeManager",
-          component: () => import("@/components/Root/Main/TypeManager/index.vue"),
+          component: () =>
+            import("@/components/Root/Main/TypeManager/index.vue"),
           meta: {
             title: "类型 / 级别管理"
           }
@@ -144,7 +140,8 @@ const router = new Router({
         {
           path: "bonus_manager",
           name: "rootBonusManager",
-          component: () => import("@/components/Root/Main/BonusManager/index.vue"),
+          component: () =>
+            import("@/components/Root/Main/BonusManager/index.vue"),
           meta: {
             title: "奖励管理"
           }
@@ -152,7 +149,8 @@ const router = new Router({
         {
           path: "performance_manager",
           name: "rootPerformanceManager",
-          component: () => import("@/components/Root/Main/PerformanceManager/index.vue"),
+          component: () =>
+            import("@/components/Root/Main/PerformanceManager/index.vue"),
           meta: {
             title: "业绩分管理"
           }
@@ -160,11 +158,12 @@ const router = new Router({
         {
           path: "user_manager",
           name: "rootUserManager",
-          component: () => import("@/components/Root/Main/UserManager/index.vue"),
+          component: () =>
+            import("@/components/Root/Main/UserManager/index.vue"),
           meta: {
             title: "用户管理"
           }
-        },
+        }
       ]
     },
     {
@@ -176,7 +175,8 @@ const router = new Router({
         {
           path: "home",
           name: "officeAdminHome",
-          component: () => import("@/components/OfficeAdmin/Main/Index/index.vue"),
+          component: () =>
+            import("@/components/OfficeAdmin/Main/Index/index.vue"),
           meta: {
             title: "首页"
           }
@@ -184,7 +184,8 @@ const router = new Router({
         {
           path: "work_order_manager",
           name: "officeAdminWorkOrderManager",
-          component: () => import("@/components/OfficeAdmin/Main/WorkOrderManager/index.vue"),
+          component: () =>
+            import("@/components/OfficeAdmin/Main/WorkOrderManager/index.vue"),
           meta: {
             title: "工单管理"
           }
@@ -192,7 +193,8 @@ const router = new Router({
         {
           path: "digitize_sheet",
           name: "officeAdminDigitizeSheet",
-          component: () => import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue"),
+          component: () =>
+            import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue"),
           meta: {
             title: "奖励 / 业绩分表格录入"
           }
@@ -207,8 +209,7 @@ const router = new Router({
         title: "404"
       }
     }
-  ],
-
+  ]
 });
 
 router.beforeEach((to, from, next) => {
@@ -226,7 +227,8 @@ router.beforeEach((to, from, next) => {
     if (typeof permission === "string") {
       const toName = to.name as string;
 
-      if ((/^collegeAdmin{1}/.test(toName) && permission !== "1") ||
+      if (
+        (/^collegeAdmin{1}/.test(toName) && permission !== "1") ||
         (/^officeAdmin{1}/.test(toName) && permission !== "2") ||
         (/^root{1}/.test(toName) && permission !== "3")
       ) {
@@ -238,7 +240,6 @@ router.beforeEach((to, from, next) => {
       next({ name: "login" });
     }
   }
-
 });
 
 // 修复路由重复点击同一个报错的问题

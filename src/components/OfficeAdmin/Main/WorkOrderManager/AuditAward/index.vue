@@ -1,11 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-01 17:02:46
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 19:32:26
- */
-
-
 <template>
   <div>
     <what-table

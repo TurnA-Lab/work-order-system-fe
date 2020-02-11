@@ -1,15 +1,8 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-12-18 19:25:12 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:05:59
- */
-
 <template>
   <div class="download-page">
     <el-button type="primary" @click="downloadTable">
       <i class="el-icon-download"></i>
-      下载{{fileName}}
+      下载{{ fileName }}
     </el-button>
   </div>
 </template>

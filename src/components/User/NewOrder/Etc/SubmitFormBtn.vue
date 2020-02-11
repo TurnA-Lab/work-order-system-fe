@@ -1,14 +1,12 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:45:55
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-12 20:29:10
- */
-
 <template>
   <span class="submit-btn">
     <el-button type="primary" plain @click="nextActive">确认提交</el-button>
-    <el-dialog title="确认提交" :visible.sync="isVisible" :close-on-click-modal="false" append-to-body>
+    <el-dialog
+      title="确认提交"
+      :visible.sync="isVisible"
+      :close-on-click-modal="false"
+      append-to-body
+    >
       <main>
         <el-alert title="注意事项" type="warning" :closable="false"></el-alert>
         <ul>
@@ -20,7 +18,11 @@
         <span>输入负责人工号以进行确认</span>
       </main>
       <footer>
-        <el-input class="item" v-model.trim="input" :disabled="isConfirming"></el-input>
+        <el-input
+          class="item"
+          v-model.trim="input"
+          :disabled="isConfirming"
+        ></el-input>
         <el-button
           class="item"
           type="danger"
@@ -28,7 +30,8 @@
           :disabled="submitIsDisable"
           :loading="isConfirming"
           @click="submit"
-        >{{submitBtn}}</el-button>
+          >{{ submitBtn }}</el-button
+        >
       </footer>
     </el-dialog>
   </span>
@@ -156,7 +159,6 @@ footer {
   }
 }
 </style>
-
 
 <style>
 .el-dialog {

@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:46:18
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-18 21:32:15
- */
-
 <template>
   <el-form
     class="form-part"
@@ -15,7 +8,11 @@
     label-width="auto"
   >
     <el-form-item class="form-item" label="院部" prop="department">
-      <el-select v-model="form.department" placeholder="请选择，或输入以查找" filterable>
+      <el-select
+        v-model="form.department"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           :key="item.value"
           v-for="item in options.department"
@@ -26,7 +23,10 @@
     </el-form-item>
 
     <el-form-item class="form-item" label="成果名称" prop="production">
-      <el-input v-model="form.production" placeholder="请输入成果名称"></el-input>
+      <el-input
+        v-model="form.production"
+        placeholder="请输入成果名称"
+      ></el-input>
     </el-form-item>
 
     <el-form-item class="form-item" label="第一作者">
@@ -38,17 +38,26 @@
         :key="name"
         v-for="name in form.teammate"
         closable
-        @close="handleClose(form.teammate,name)"
-      >{{name}}</el-tag>
+        @close="handleClose(form.teammate, name)"
+        >{{ name }}</el-tag
+      >
       <el-input
         class="input-new-member"
         v-if="etc.teammate.inputVisible"
         v-model="etc.inputValue"
         ref="memberInput"
-        @keyup.enter.native="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
-        @blur="handleInputConfirm(form.teammate,etc.teammate.inputVisible)"
+        @keyup.enter.native="
+          handleInputConfirm(form.teammate, etc.teammate.inputVisible)
+        "
+        @blur="handleInputConfirm(form.teammate, etc.teammate.inputVisible)"
       ></el-input>
-      <el-button v-else class="button-new-member" @click="showMemberInput()" plain>+ 新组员</el-button>
+      <el-button
+        v-else
+        class="button-new-member"
+        @click="showMemberInput()"
+        plain
+        >+ 新组员</el-button
+      >
     </el-form-item>
 
     <el-form-item class="form-item" label="成果类别" prop="sort">
@@ -73,11 +82,22 @@
       </el-select>
     </el-form-item>-->
 
-    <el-form-item class="form-item" label="发表刊物/出版社/授权单位" prop="unit">
-      <el-input v-model="form.unit" placeholder="请输入发表刊物/出版社/授权单位"></el-input>
+    <el-form-item
+      class="form-item"
+      label="发表刊物/出版社/授权单位"
+      prop="unit"
+    >
+      <el-input
+        v-model="form.unit"
+        placeholder="请输入发表刊物/出版社/授权单位"
+      ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="是否被转让（仅限专利）" prop="patent">
+    <el-form-item
+      class="form-item"
+      label="是否被转让（仅限专利）"
+      prop="patent"
+    >
       <el-select v-model="form.patent" placeholder="请选择">
         <el-option
           v-for="item in options.patent"
@@ -88,7 +108,11 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="发表/出版/授权时间" prop="publishTime">
+    <el-form-item
+      class="form-item"
+      label="发表/出版/授权时间"
+      prop="publishTime"
+    >
       <el-date-picker
         align="center"
         v-model="form.publishTime"

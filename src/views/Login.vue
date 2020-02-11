@@ -1,13 +1,10 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:47:59
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-29 21:51:27
- */
-
 <template>
   <div class="login">
-    <transition appear appear-class="fade-enter" appear-active-class="fade-enter-active">
+    <transition
+      appear
+      appear-class="fade-enter"
+      appear-active-class="fade-enter-active"
+    >
       <header>JUST WO</header>
     </transition>
     <login-form></login-form>
@@ -49,5 +46,4 @@ export default Vue.extend({
 .fade-enter-active {
   transition: opacity 0.8s;
 }
-
 </style>

@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-01 00:44:00
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-01 00:52:26
- */
-
 <template>
   <div>
     <el-button type="primary" @click="$emit('click')">下载模板</el-button>

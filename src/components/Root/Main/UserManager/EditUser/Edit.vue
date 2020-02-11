@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-17 20:11:55
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 18:43:47
- */
-
 <template>
   <el-dialog
     custom-class="edit-dialog"
@@ -15,11 +8,11 @@
   >
     <div slot="title">
       编辑用户信息
-      <span class="last-time">最后修改时间 {{form.lastTime}}</span>
+      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
     </div>
     <div>
       <el-form
-        :class="{'is-disable': isDisable}"
+        :class="{ 'is-disable': isDisable }"
         class="form-part"
         ref="form"
         :model="form"
@@ -58,7 +51,11 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="院部" prop="department">
-          <el-select v-model="form.dptname" placeholder="请选择，或输入以查找" filterable>
+          <el-select
+            v-model="form.dptname"
+            placeholder="请选择，或输入以查找"
+            filterable
+          >
             <el-option
               :key="item.value"
               v-for="item in options.department"
@@ -73,11 +70,21 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="出生年月">
-          <el-date-picker align="center" v-model="form.birthday" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            align="center"
+            v-model="form.birthday"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="入校时间">
-          <el-date-picker align="center" v-model="form.enterTime" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            align="center"
+            v-model="form.enterTime"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
@@ -137,7 +144,9 @@
 
     <div slot="footer" class="dialog-btn-line">
       <el-button @click="close" type="primary" plain>取消编辑</el-button>
-      <el-button :loading="isDisable" @click="updateUserInfo" type="primary">{{saveBtnText}}</el-button>
+      <el-button :loading="isDisable" @click="updateUserInfo" type="primary">{{
+        saveBtnText
+      }}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -250,8 +259,9 @@ export default Vue.extend({
                 (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
               background: (this.form as UserData).background === "否" ? 0 : 1,
               tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
-              permission: permissionText.indexOf((this.form as UserData)
-                .permission as string)
+              permission: permissionText.indexOf(
+                (this.form as UserData).permission as string
+              )
             }),
             {
               headers: {

@@ -1,16 +1,12 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-20 20:10:47
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-18 20:17:36
- */
-
 <template>
   <div>
     <div class="filter-part">
       <el-form :inline="true" :model="filterForm">
         <el-form-item label="负责人">
-          <el-input v-model="filterForm.master" placeholder="请输入负责人"></el-input>
+          <el-input
+            v-model="filterForm.master"
+            placeholder="请输入负责人"
+          ></el-input>
         </el-form-item>
 
         <el-form-item label="年度">
@@ -37,7 +33,10 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit :data="data" :is-visible="editIsVisible" @toggle-is-visible="toggleEdit"
+    <edit
+      :data="data"
+      :is-visible="editIsVisible"
+      @toggle-is-visible="toggleEdit"
       @refresh="fetchData"
     ></edit>
   </div>

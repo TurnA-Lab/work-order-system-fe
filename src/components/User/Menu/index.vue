@@ -1,26 +1,23 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-10-28 19:45:47
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 18:22:22
- */
-
 <template>
   <main>
     <user-menu-card class="item">
-      <div class="menu-link" @click="$router.push({ name: 'userInfo'})">
+      <div class="menu-link" @click="$router.push({ name: 'userInfo' })">
         <span>账户信息</span>
       </div>
     </user-menu-card>
 
     <user-menu-card class="item">
-      <div class="menu-link" @click="$router.push({ name: 'userWorkOrder'})">
+      <div class="menu-link" @click="$router.push({ name: 'userWorkOrder' })">
         <span>工单系统</span>
       </div>
     </user-menu-card>
 
     <user-menu-card class="item">
-      <div v-if="isCollegeAdmin" class="menu-link" @click="$router.push({ name: 'collegeAdmin'})">
+      <div
+        v-if="isCollegeAdmin"
+        class="menu-link"
+        @click="$router.push({ name: 'collegeAdmin' })"
+      >
         <span>学院管理入口</span>
       </div>
       <div v-else class="user-about">
@@ -34,20 +31,44 @@
     <user-menu-card class="item">
       <div class="grid">
         <el-tooltip content="夜间模式" placement="top">
-          <el-button class="btn" @click="logout" circle disabled plain></el-button>
+          <el-button
+            class="btn"
+            @click="logout"
+            circle
+            disabled
+            plain
+          ></el-button>
         </el-tooltip>
         <div></div>
         <div></div>
         <el-tooltip content="更换主题" placement="top">
-          <el-button class="btn" @click="logout" circle disabled plain></el-button>
+          <el-button
+            class="btn"
+            @click="logout"
+            circle
+            disabled
+            plain
+          ></el-button>
         </el-tooltip>
         <el-tooltip content="全屏模式" placement="bottom">
-          <el-button class="btn" @click="toggleFullScreen" icon="el-icon-full-screen" circle plain></el-button>
+          <el-button
+            class="btn"
+            @click="toggleFullScreen"
+            icon="el-icon-full-screen"
+            circle
+            plain
+          ></el-button>
         </el-tooltip>
         <div></div>
         <div></div>
         <el-tooltip content="退出登录" placement="bottom-start">
-          <el-button class="btn" @click="logout" icon="el-icon-switch-button" circle plain></el-button>
+          <el-button
+            class="btn"
+            @click="logout"
+            icon="el-icon-switch-button"
+            circle
+            plain
+          ></el-button>
         </el-tooltip>
       </div>
     </user-menu-card>

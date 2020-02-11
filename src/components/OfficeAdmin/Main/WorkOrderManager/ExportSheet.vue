@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-12-01 13:39:02
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-04 12:38:55
- */
-
 <template>
   <div class="export-sheet">
     <el-form :inline="true" :model="form">
@@ -20,7 +13,12 @@
 
       <el-form-item label="学年">
         <el-select v-model="form.schoolYear" placeholder="请选择">
-          <el-option v-for="item in schoolYears" :key="item" :label="item" :value="item"></el-option>
+          <el-option
+            v-for="item in schoolYears"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
         </el-select>
       </el-form-item>
 
@@ -29,7 +27,11 @@
       </el-form-item>
 
       <el-form-item>
-        <download-as-zip :zip-name="form.schoolYear+'学年'" @before-download="downloadFile">导出文件</download-as-zip>
+        <download-as-zip
+          :zip-name="form.schoolYear + '学年'"
+          @before-download="downloadFile"
+          >导出文件</download-as-zip
+        >
       </el-form-item>
     </el-form>
   </div>

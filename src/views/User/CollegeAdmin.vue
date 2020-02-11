@@ -1,10 +1,3 @@
-/*
- * @Author: Skye Young
- * @Date: 2019-11-26 21:10:26
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-12-19 16:53:48
- */
-
 <template>
   <main-card>
     <template v-slot:header>
@@ -12,15 +5,17 @@
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-button
         type="text"
-        @click="$router.push({ name: 'collegeAdminMemberManager'})"
+        @click="$router.push({ name: 'collegeAdminMemberManager' })"
         :disabled="btnIsDisabled"
-      >部门成员管理</el-button>
+        >部门成员管理</el-button
+      >
       <vertical-divider></vertical-divider>
       <el-button
         type="text"
-        @click="$router.push({ name: 'collegeAdminExportSheet'})"
+        @click="$router.push({ name: 'collegeAdminExportSheet' })"
         :disabled="!btnIsDisabled"
-      >确认表导出</el-button>
+        >确认表导出</el-button
+      >
     </template>
     <router-view></router-view>
   </main-card>
@@ -50,5 +45,4 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

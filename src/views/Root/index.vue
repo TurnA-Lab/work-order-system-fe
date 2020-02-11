@@ -1,15 +1,11 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:47:24 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:47:24 
- */
-
 <template>
   <div class="root">
     <root-menu :is-collapse="menuIsCollapse" />
     <main>
-      <root-header :is-collapse="menuIsCollapse" @click="toggleIsCollapse"></root-header>
+      <root-header
+        :is-collapse="menuIsCollapse"
+        @click="toggleIsCollapse"
+      ></root-header>
       <root-main></root-main>
     </main>
   </div>
