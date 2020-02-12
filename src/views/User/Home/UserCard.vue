@@ -36,8 +36,8 @@ export default Vue.extend({
   display: flex;
   align-items: flex-end;
 
-  height: $card-width * 1.414;
-  width: $card-width;
+  height: var(--card-height);
+  width: var(--card-width);
   background: linear-gradient(0deg, #06beb6 0%, #48b1bf 100%);
   border-radius: 1rem;
 
@@ -131,13 +131,6 @@ h5 {
   to {
     opacity: 1;
     transform: translateY(0vw);
-  }
-}
-
-@include screen($larger) {
-  .box {
-    height: $static-card-width * 1.414;
-    width: $static-card-width;
   }
 }
 </style>

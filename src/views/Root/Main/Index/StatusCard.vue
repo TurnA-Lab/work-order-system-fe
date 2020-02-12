@@ -203,16 +203,4 @@ export default Vue.extend({
     }
   }
 }
-
-@include screen($larger) {
-  .status-card {
-    width: $static-card-width * 0.7;
-    height: $static-card-width * 0.7;
-
-    .status-icon {
-      width: $static-card-width * 0.35;
-      height: $static-card-width * 0.35;
-    }
-  }
-}
 </style>

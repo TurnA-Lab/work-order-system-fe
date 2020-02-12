@@ -1,18 +1,18 @@
 <template>
   <main>
-    <user-menu-card class="item">
+    <menu-card class="item">
       <div class="menu-link" @click="$router.push({ name: 'userInfo' })">
         <span>账户信息</span>
       </div>
-    </user-menu-card>
+    </menu-card>
 
-    <user-menu-card class="item">
+    <menu-card class="item">
       <div class="menu-link" @click="$router.push({ name: 'userWorkOrder' })">
         <span>工单系统</span>
       </div>
-    </user-menu-card>
+    </menu-card>
 
-    <user-menu-card class="item">
+    <menu-card class="item">
       <div
         v-if="isCollegeAdmin"
         class="menu-link"
@@ -26,9 +26,9 @@
           <br />JUSTNC
         </span>
       </div>
-    </user-menu-card>
+    </menu-card>
 
-    <user-menu-card class="item">
+    <menu-card class="item">
       <div class="grid">
         <el-tooltip content="夜间模式" placement="top">
           <el-button
@@ -71,17 +71,17 @@
           ></el-button>
         </el-tooltip>
       </div>
-    </user-menu-card>
+    </menu-card>
   </main>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import UserMenuCard from "@/components/User/Card.vue";
+import MenuCard from "@/components/User/Card.vue";
 
 export default Vue.extend({
   components: {
-    UserMenuCard
+    MenuCard
   },
   methods: {
     logout() {
@@ -131,8 +131,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 main {
   display: flex;
-
-  height: $card-width * 1.414;
+  height: var(--card-height);
 
   .item {
     transition: all 0.3s;
@@ -152,12 +151,12 @@ main {
       transform: translateY(-1rem);
 
       & ~ .item {
-        transform: translateX($card-width * 0.45);
+        transform: translateX(calc(var(--card-width) * 0.45));
       }
     }
 
     &:not(:first-of-type) {
-      margin-left: -$card-width * 0.45;
+      margin-left: calc(var(--card-width) * -0.45);
     }
 
     &:hover .menu-link > span {
@@ -166,23 +165,25 @@ main {
   }
 
   .menu-link {
-    font-family: "FZCuJinLJW";
+    height: var(--card-height);
+    width: var(--card-width);
     writing-mode: vertical-rl;
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
-    width: $card-width;
+    font-family: "FZCuJinLJW";
 
     span {
       color: #95a5a6;
-      font-size: 1.2rem;
+      font-size: 1.2em;
       transition: color 1s;
     }
   }
 
   .user-about {
-    height: $static-card-width * 1.414;
+    height: var(--card-height);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -196,44 +197,17 @@ main {
 
   .grid {
     display: grid;
-    justify-content: center;
     grid-template-rows: repeat(4, 25%);
     grid-template-columns: 50% 50%;
+    justify-content: center;
     place-items: center;
 
-    height: $card-width * 0.8;
-    width: $card-width * 0.4;
+    height: calc(var(--card-width) * 0.8);
+    width: calc(var(--card-width) * 0.4);
   }
 
   .btn {
     margin-left: 0px;
-  }
-}
-
-@include screen($larger) {
-  main {
-    height: $static-card-width * 1.414;
-
-    .item {
-      &:not(:last-of-type):hover {
-        & ~ .item {
-          transform: translateX($static-card-width * 0.45);
-        }
-      }
-
-      &:not(:first-of-type) {
-        margin-left: -$static-card-width * 0.45;
-      }
-    }
-
-    .menu-link {
-      width: $static-card-width;
-    }
-
-    .grid {
-      height: $static-card-width * 0.8;
-      width: $static-card-width * 0.4;
-    }
   }
 }
 </style>

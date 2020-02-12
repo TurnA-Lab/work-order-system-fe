@@ -26,12 +26,6 @@ export default Vue.extend({
   justify-content: space-between;
 
   height: 90vh;
-  width: 85vw;
-}
-
-@include screen($larger) {
-  .user {
-    width: $static-card-width * 4;
-  }
+  width: calc(var(--card-width) * 4);
 }
 </style>
