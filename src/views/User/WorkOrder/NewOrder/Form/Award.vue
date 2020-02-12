@@ -257,15 +257,12 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.options.department = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取院部列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取院部列表",
+          message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
       });
@@ -285,15 +282,12 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.options.prize = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取奖项列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取奖项列表",
+          message: err || "由于未知因素，无法获取奖项列表",
           type: "warning"
         });
       });
@@ -313,15 +307,12 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.options.level = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取获奖级别列表",
+          message: err || "由于未知因素，无法获取获奖级别列表",
           type: "warning"
         });
       });
@@ -343,15 +334,12 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖类型列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取获奖类型列表",
+          message: err || "由于未知因素，无法获取获奖类型列表",
           type: "warning"
         });
       });

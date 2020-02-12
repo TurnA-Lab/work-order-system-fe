@@ -62,4 +62,5 @@ new Vue({
   render: (h) => h(App)
 }).$mount("#app");
 
+// 设置 console 信息
 Console.snapShoot();

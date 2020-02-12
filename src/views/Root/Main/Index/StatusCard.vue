@@ -123,8 +123,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/default.scss";
-
 .off {
   color: #999999 !important;
   background-color: #dddddd !important;

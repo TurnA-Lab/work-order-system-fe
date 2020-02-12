@@ -275,15 +275,12 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.options.department = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取院部列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取院部列表",
+          message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
       });
@@ -305,46 +302,15 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.options.sort = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取成果类型列表",
+          message: err || "由于未知因素，无法获取成果类型列表",
           type: "warning"
         });
       });
-
-    // 请求级别列表
-    // this.$http
-    //   .post(
-    //     "/api/online/getLevelSet",
-    //     {},
-    //     {
-    //       headers: {
-    //         token: stateToken
-    //       }
-    //     }
-    //   )
-    //   .then((res: AxiosResponse) => {
-    //     if (res.data.code === 0) {
-    //       this.options.level = res.data.data;
-    //     } else {
-    //       this.$message({
-    //         message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
-    //         type: "warning"
-    //       });
-    //     }
-    //   })
-    //   .catch(() => {
-    //     this.$message({
-    //       message: "由于未知因素，无法获取获奖级别列表",
-    //       type: "warning"
-    //     });
-    //   });
   }
 });
 </script>

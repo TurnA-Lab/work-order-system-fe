@@ -105,16 +105,13 @@ export default Vue.extend({
                 this.$store.commit("updateUserInfo", woUser);
                 this.$router.replace({ name: "index" });
               } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: "warning"
-                });
+                return Promise.reject(res.data.msg);
+                this.isConfirming = false;
               }
-              this.isConfirming = false;
             })
-            .catch(() => {
+            .catch((err: string) => {
               this.$message({
-                message: "未知错误",
+                message: err || "未知错误",
                 type: "warning"
               });
               this.isConfirming = false;

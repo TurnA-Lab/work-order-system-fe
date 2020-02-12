@@ -316,16 +316,13 @@ export default Vue.extend({
                 });
               }
             } else {
-              this.$message({
-                message: res.data.msg || "保存失败",
-                type: "warning"
-              });
+              return Promise.reject(res.data.msg || "保存失败");
             }
           })
-          .catch(() => {
+          .catch((err: string) => {
             this.isDisable = false;
             this.$message({
-              message: "未知错误",
+              message: err || "未知错误",
               type: "warning"
             });
           });
@@ -396,15 +393,12 @@ export default Vue.extend({
           this.options.department = res.data.data;
           this.dataStatus += 1;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取院部列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取院部列表",
+          message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
       });
@@ -427,15 +421,12 @@ export default Vue.extend({
           this.options.sort = res.data.data;
           this.dataStatus += 1;
         } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$message({
-          message: "由于未知因素，无法获取成果类型列表",
+          message: err || "由于未知因素，无法获取成果类型列表",
           type: "warning"
         });
       });

@@ -51,8 +51,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/default.scss";
-
 .root-menu {
   height: 100%;
   box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2);

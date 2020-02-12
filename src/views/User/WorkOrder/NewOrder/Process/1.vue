@@ -51,8 +51,6 @@ export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/default.scss";
-
 .box {
   display: flex;
   flex-direction: row;

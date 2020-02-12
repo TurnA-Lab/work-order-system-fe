@@ -141,15 +141,14 @@ export default Vue.extend({
                             type: "success"
                           });
                         } else {
-                          this.$message({
-                            message: res.data.msg || "用户信息保存失败",
-                            type: "warning"
-                          });
+                          return Promise.reject(
+                            res.data.msg || "用户信息保存失败"
+                          );
                         }
                       })
-                      .catch(() => {
+                      .catch((err: string) => {
                         this.$message({
-                          message: "由于未知因素，用户信息删除失败",
+                          message: err || "由于未知因素，用户信息删除失败",
                           type: "warning"
                         });
                       });
@@ -204,21 +203,18 @@ export default Vue.extend({
             }
           )
           .then((res: AxiosResponse) => {
+            this.options.loading = false;
             if (res.data.code === 0) {
               const { list, total } = res.data.data;
               this.tableData = list;
               this.pagination.total = total;
             } else {
-              this.$message({
-                message: res.data.msg || "由于未知因素，无法获取表格",
-                type: "warning"
-              });
+              return Promise.reject(res.data.msg || "用户信息保存失败");
             }
-            this.options.loading = false;
           })
-          .catch(() => {
+          .catch((err: string) => {
             this.$message({
-              message: "由于未知因素，无法获取表格",
+              message: err || "由于未知因素，无法获取表格",
               type: "warning"
             });
             this.options.loading = false;

@@ -27,8 +27,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/default.scss";
-
 .login {
   header {
     text-align: center;

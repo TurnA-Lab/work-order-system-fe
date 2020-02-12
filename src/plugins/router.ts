@@ -122,7 +122,7 @@ const router = new Router({
         {
           path: "home",
           name: "rootHome",
-          component: () => import("@/components/Root/Main/Index/index.vue"),
+          component: () => import("@/views/Root/Main/Index/index.vue"),
           meta: {
             title: "首页"
           }
@@ -130,8 +130,7 @@ const router = new Router({
         {
           path: "type_manager",
           name: "rootTypeManager",
-          component: () =>
-            import("@/components/Root/Main/TypeManager/index.vue"),
+          component: () => import("@/views/Root/Main/TypeManager/index.vue"),
           meta: {
             title: "类型 / 级别管理"
           }
@@ -139,8 +138,7 @@ const router = new Router({
         {
           path: "bonus_manager",
           name: "rootBonusManager",
-          component: () =>
-            import("@/components/Root/Main/BonusManager/index.vue"),
+          component: () => import("@/views/Root/Main/BonusManager/index.vue"),
           meta: {
             title: "奖励管理"
           }
@@ -149,7 +147,7 @@ const router = new Router({
           path: "performance_manager",
           name: "rootPerformanceManager",
           component: () =>
-            import("@/components/Root/Main/PerformanceManager/index.vue"),
+            import("@/views/Root/Main/PerformanceManager/index.vue"),
           meta: {
             title: "业绩分管理"
           }
@@ -157,8 +155,7 @@ const router = new Router({
         {
           path: "user_manager",
           name: "rootUserManager",
-          component: () =>
-            import("@/components/Root/Main/UserManager/index.vue"),
+          component: () => import("@/views/Root/Main/UserManager/index.vue"),
           meta: {
             title: "用户管理"
           }
@@ -174,8 +171,7 @@ const router = new Router({
         {
           path: "home",
           name: "officeAdminHome",
-          component: () =>
-            import("@/components/OfficeAdmin/Main/Index/index.vue"),
+          component: () => import("@/views/OfficeAdmin/Main/Index/index.vue"),
           meta: {
             title: "首页"
           }
@@ -184,7 +180,7 @@ const router = new Router({
           path: "work_order_manager",
           name: "officeAdminWorkOrderManager",
           component: () =>
-            import("@/components/OfficeAdmin/Main/WorkOrderManager/index.vue"),
+            import("@/views/OfficeAdmin/Main/WorkOrderManager/index.vue"),
           meta: {
             title: "工单管理"
           }
@@ -193,7 +189,7 @@ const router = new Router({
           path: "import_sheet",
           name: "officeAdminImportSheet",
           component: () =>
-            import("@/components/OfficeAdmin/Main/ImportSheet/index.vue"),
+            import("@/views/OfficeAdmin/Main/ImportSheet/index.vue"),
           meta: {
             title: "奖励 / 业绩分表格录入"
           }

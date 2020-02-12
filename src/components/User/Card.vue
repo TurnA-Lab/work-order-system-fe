@@ -36,8 +36,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/default.scss";
-
 .box {
   height: $card-width * 1.414;
   width: $card-width;

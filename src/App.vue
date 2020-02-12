@@ -67,8 +67,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "@/stylesheet/default.scss";
+@import "./stylesheet/_default.scss";
+</style>
 
+<style lang="scss">
 @font-face {
   font-family: "FZCuJinLJW";
   src: url("assets/fonts/FZCuJinLJW.eot");

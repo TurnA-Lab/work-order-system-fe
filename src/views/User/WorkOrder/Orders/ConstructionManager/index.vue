@@ -104,6 +104,7 @@ export default Vue.extend({
           }
         )
         .then((res: AxiosResponse) => {
+          this.options.loading = false;
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
             const statusArr = ["未通过", "审核中", "已通过"];
@@ -112,7 +113,6 @@ export default Vue.extend({
               item.status = statusArr[(item.status as number) + 1];
             });
 
-            this.options.loading = false;
             this.tableData = list;
             this.pagination.total = total;
           } else {
@@ -138,5 +138,4 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

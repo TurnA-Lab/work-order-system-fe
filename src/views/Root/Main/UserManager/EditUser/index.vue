@@ -103,7 +103,7 @@ export default Vue.extend({
                   cancelButtonText: "取消",
                   inputPattern: /.{6,32}/,
                   inputErrorMessage: "密码必须大于 5 位，小于 32 位",
-                  inputType: "password"
+                  inputType: "text"
                 }).then(({ value }: any) => {
                   this.$confirm(`您输入的密码是 ${value}`, "提示", {
                     confirmButtonText: "确定",
@@ -179,15 +179,12 @@ export default Vue.extend({
                             type: "success"
                           });
                         } else {
-                          this.$message({
-                            message: res.data.msg || "用户信息删除失败",
-                            type: "warning"
-                          });
+                          return Promise.reject(res.data.msg);
                         }
                       })
-                      .catch(() => {
+                      .catch((err: string) => {
                         this.$message({
-                          message: "由于未知因素，用户信息删除失败",
+                          message: err || "由于未知因素，用户信息删除失败",
                           type: "warning"
                         });
                       });
@@ -237,21 +234,18 @@ export default Vue.extend({
           }
         )
         .then((res: AxiosResponse) => {
+          this.options.loading = false;
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
             this.tableData = list;
             this.pagination.total = total;
           } else {
-            this.$message({
-              message: res.data.msg || "由于未知因素，无法获取表格",
-              type: "warning"
-            });
+            return Promise.reject(res.data.msg);
           }
-          this.options.loading = false;
         })
-        .catch(() => {
+        .catch((err: string) => {
           this.$message({
-            message: "由于未知因素，无法获取表格",
+            message: err || "由于未知因素，无法获取表格",
             type: "warning"
           });
           this.options.loading = false;

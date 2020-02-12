@@ -129,8 +129,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/default.scss";
-
 main {
   display: flex;
 

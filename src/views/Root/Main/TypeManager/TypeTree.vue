@@ -164,16 +164,12 @@ export default Vue.extend({
                     newChild.label = value;
                     data.children.push(newChild);
                   } else {
-                    this.$message({
-                      message:
-                        res.data.msg || `由于未知因素，无法添加${value}}`,
-                      type: "warning"
-                    });
+                    return Promise.reject(res.data.msg);
                   }
                 })
-                .catch(() => {
+                .catch((err: string) => {
                   this.$message({
-                    message: `由于未知因素，无法添加${value}}`,
+                    message: err || `由于未知因素，无法添加${value}}`,
                     type: "warning"
                   });
                 });
@@ -193,16 +189,12 @@ export default Vue.extend({
                     newChild.label = value;
                     data.children.push(newChild);
                   } else {
-                    this.$message({
-                      message:
-                        res.data.msg || `由于未知因素，无法添加${value}}`,
-                      type: "warning"
-                    });
+                    return Promise.reject(res.data.msg);
                   }
                 })
-                .catch(() => {
+                .catch((err: string) => {
                   this.$message({
-                    message: `由于未知因素，无法添加${value}}`,
+                    message: err || `由于未知因素，无法添加${value}}`,
                     type: "warning"
                   });
                 });
@@ -254,15 +246,12 @@ export default Vue.extend({
                   newChild.label = value;
                   (parent.data as any).push(newChild);
                 } else {
-                  this.$message({
-                    message: res.data.msg || `由于未知因素，无法添加${value}}`,
-                    type: "warning"
-                  });
+                  return Promise.reject(res.data.msg);
                 }
               })
-              .catch(() => {
+              .catch((err: string) => {
                 this.$message({
-                  message: `由于未知因素，无法添加${value}}`,
+                  message: err || `由于未知因素，无法添加${value}}`,
                   type: "warning"
                 });
               });
@@ -305,16 +294,12 @@ export default Vue.extend({
                 if (res.data.code === 0) {
                   children.splice(index, 1);
                 } else {
-                  this.$message({
-                    message:
-                      res.data.msg || `由于未知因素，无法删除${data.label}`,
-                    type: "warning"
-                  });
+                  return Promise.reject(res.data.msg);
                 }
               })
-              .catch(() => {
+              .catch((err: string) => {
                 this.$message({
-                  message: `由于未知因素，无法删除${data.label}`,
+                  message: err || `由于未知因素，无法删除${data.label}`,
                   type: "warning"
                 });
               });
@@ -333,16 +318,12 @@ export default Vue.extend({
                 if (res.data.code === 0) {
                   children.splice(index, 1);
                 } else {
-                  this.$message({
-                    message:
-                      res.data.msg || `由于未知因素，无法删除${data.label}`,
-                    type: "warning"
-                  });
+                  return Promise.reject(res.data.msg);
                 }
               })
-              .catch(() => {
+              .catch((err: string) => {
                 this.$message({
-                  message: `由于未知因素，无法删除${data.label}`,
+                  message: err || `由于未知因素，无法删除${data.label}`,
                   type: "warning"
                 });
               });
@@ -426,15 +407,13 @@ export default Vue.extend({
 
                           parent.data.children.push(newChild);
                         } else {
-                          this.$message({
-                            message: `由于未知因素，无法编辑${data.label}`,
-                            type: "warning"
-                          });
+                          return Promise.reject(res.data.msg);
                         }
                       })
-                      .catch(() => {
+                      .catch((err: string) => {
                         this.$message({
-                          message: `由于未知因素，无法编辑${data.label}}`,
+                          message:
+                            err || `由于未知因素，无法编辑${data.label}}`,
                           type: "warning"
                         });
                       });
@@ -465,29 +444,23 @@ export default Vue.extend({
 
                           (parent.data as any).push(newChild);
                         } else {
-                          this.$message({
-                            message: `由于未知因素，无法编辑${data.label}`,
-                            type: "warning"
-                          });
+                          return Promise.reject(res.data.msg);
                         }
                       })
-                      .catch(() => {
+                      .catch((err: string) => {
                         this.$message({
-                          message: `由于未知因素，无法编辑${data.label}`,
+                          message: err || `由于未知因素，无法编辑${data.label}`,
                           type: "warning"
                         });
                       });
                   }
                 } else {
-                  this.$message({
-                    message: `由于未知因素，无法编辑${data.label}`,
-                    type: "warning"
-                  });
+                  return Promise.reject(res.data.msg || "用户信息保存失败");
                 }
               })
-              .catch(() => {
+              .catch((err: string) => {
                 this.$message({
-                  message: `由于未知因素，无法编辑${data.label}`,
+                  message: err || `由于未知因素，无法编辑${data.label}`,
                   type: "warning"
                 });
               });
@@ -513,16 +486,13 @@ export default Vue.extend({
         if (res.data.code === 0) {
           this.data = res.data.data;
         } else {
-          this.$message({
-            message: res.data.msg || `由于未知因素，无法获取${this.type}列表`,
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.$data.isLoading = false;
         this.$message({
-          message: `由于未知因素，无法获取${this.type}列表`,
+          message: err || `由于未知因素，无法获取${this.type}列表`,
           type: "warning"
         });
       });

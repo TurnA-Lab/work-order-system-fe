@@ -31,7 +31,7 @@ import Vue from "vue";
 import EditUser from "./EditUser/index.vue";
 import FilterUser from "./FilterUser.vue";
 import AddUser from "./AddUser.vue";
-import DownloadTable from "@/components/Root/DownloadTable.vue";
+import DownloadTable from "./DownloadUserTable.vue";
 
 export default Vue.extend({
   components: {

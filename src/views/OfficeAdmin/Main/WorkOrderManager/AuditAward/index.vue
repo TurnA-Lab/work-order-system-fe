@@ -139,6 +139,7 @@ export default Vue.extend({
           }
         )
         .then((res: AxiosResponse) => {
+          this.options.loading = false;
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
             const statusText = ["未通过", "审核中", "已通过"];
@@ -150,16 +151,12 @@ export default Vue.extend({
             this.tableData = list;
             this.pagination.total = total;
           } else {
-            this.$message({
-              message: res.data.msg || "由于未知因素，无法获取表格",
-              type: "warning"
-            });
+            return Promise.reject(res.data.msg);
           }
-          this.options.loading = false;
         })
-        .catch(() => {
+        .catch((err: string) => {
           this.$message({
-            message: "由于未知因素，无法获取表格",
+            message: err || "由于未知因素，无法获取表格",
             type: "warning"
           });
           this.options.loading = false;

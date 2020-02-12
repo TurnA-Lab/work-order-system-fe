@@ -119,16 +119,13 @@ export default Vue.extend({
             }
           ];
         } else {
-          this.$message({
-            message: res.data.msg || "暂时无法获取个人信息",
-            type: "warning"
-          });
+          return Promise.reject(res.data.msg);
         }
       })
-      .catch(() => {
+      .catch((err: string) => {
         this.isLoading = false;
         this.$message({
-          message: "由于未知因素，暂时无法获取个人信息",
+          message: err || "由于未知因素，暂时无法获取个人信息",
           type: "warning"
         });
       });

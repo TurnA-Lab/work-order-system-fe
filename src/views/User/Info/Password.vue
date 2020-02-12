@@ -195,17 +195,14 @@ export default Vue.extend({
                   this.confirmBtnIcon = "el-icon-check";
                 } else {
                   this.isDisable = true;
-                  this.$message({
-                    message: res.data.msg || "请检查密码",
-                    type: "warning"
-                  });
+                  return Promise.reject(res.data.msg);
                 }
               })
-              .catch(() => {
+              .catch((err: string) => {
                 this.isConfirming = false;
                 this.isDisable = true;
                 this.$message({
-                  message: "由于未知因素，暂时无法验证密码",
+                  message: err || "由于未知因素，暂时无法验证密码",
                   type: "warning"
                 });
               });
@@ -250,15 +247,12 @@ export default Vue.extend({
                   this.$router.replace({ name: "login" });
                 }, 1000);
               } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: "warning"
-                });
+                return Promise.reject(res.data.msg);
               }
             })
-            .catch(() => {
+            .catch((err: string) => {
               this.$message({
-                message: "出现未知错误，暂时无法修改密码",
+                message: err || "出现未知错误，暂时无法修改密码",
                 type: "warning"
               });
             });
