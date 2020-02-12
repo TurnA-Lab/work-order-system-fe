@@ -24,6 +24,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
+import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   props: ["fileName", "api"],
@@ -50,13 +51,16 @@ export default Vue.extend({
         )
         .then((res: AxiosResponse) => {
           if (res.status === 200) {
-            return Promise.resolve(res.data);
+            return Promise.resolve([
+              decodeFilename(res, `${this.fileName}.xlsx`),
+              res.data
+            ]);
           } else {
             return Promise.reject(res.data.msg);
           }
         })
-        .then((data: Blob) => {
-          saveAs(data, `${this.fileName}.xlsx`);
+        .then(([filename, data]) => {
+          saveAs(data, filename);
         })
         .catch((err: string) => {
           this.$message({

@@ -22,18 +22,18 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果名称" prop="production">
+    <el-form-item class="form-item" label="获奖名称" prop="content">
+      <el-input v-model="form.content" placeholder="请输入获奖名称"></el-input>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="获奖教师（第一）">
       <el-input
-        v-model="form.production"
-        placeholder="请输入成果名称"
+        v-model="form.name"
+        placeholder="请输入获奖教师（第一）"
       ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="第一作者">
-      <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
-    </el-form-item>
-
-    <el-form-item label="组员">
+    <el-form-item label="获奖成员">
       <el-tag
         :key="name"
         v-for="name in form.teammate"
@@ -56,11 +56,26 @@
         class="button-new-member"
         @click="showMemberInput()"
         plain
-        >+ 新组员</el-button
+        >+ 新成员</el-button
       >
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果类别" prop="sort">
+    <el-form-item class="form-item" label="奖项" prop="prize">
+      <el-select
+        v-model="form.prize"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
+        <el-option
+          v-for="item in options.prize"
+          :key="item.value"
+          :label="item.label"
+          :value="item.label"
+        ></el-option>
+      </el-select>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="获奖类型" prop="sort">
       <el-cascader
         v-model="sort"
         placeholder="请选择，或输入以查找"
@@ -71,8 +86,12 @@
       ></el-cascader>
     </el-form-item>
 
-    <!-- <el-form-item class="form-item" label="级别" prop="level">
-      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
+    <el-form-item class="form-item" label="级别" prop="level">
+      <el-select
+        v-model="form.level"
+        placeholder="请选择，或输入以查找"
+        filterable
+      >
         <el-option
           v-for="item in options.level"
           :key="item.value"
@@ -80,50 +99,27 @@
           :value="item.label"
         ></el-option>
       </el-select>
-    </el-form-item>-->
+    </el-form-item>
 
-    <el-form-item
-      class="form-item"
-      label="发表刊物/出版社/授权单位"
-      prop="unit"
-    >
+    <el-form-item class="form-item" label="颁奖部门" prop="awardUnit">
       <el-input
-        v-model="form.unit"
-        placeholder="请输入发表刊物/出版社/授权单位"
+        v-model="form.awardUnit"
+        placeholder="请输入颁奖部门"
       ></el-input>
     </el-form-item>
 
-    <el-form-item
-      class="form-item"
-      label="是否被转让（仅限专利）"
-      prop="patent"
-    >
-      <el-select v-model="form.patent" placeholder="请选择">
-        <el-option
-          v-for="item in options.patent"
-          :key="item.value"
-          :label="item.label"
-          :value="item.label"
-        ></el-option>
-      </el-select>
-    </el-form-item>
-
-    <el-form-item
-      class="form-item"
-      label="发表/出版/授权时间"
-      prop="publishTime"
-    >
+    <el-form-item class="form-item" label="获奖时间" prop="awardTime">
       <el-date-picker
         align="center"
-        v-model="form.publishTime"
+        v-model="form.awardTime"
         type="month"
         format="yyyy 年 MM 月"
         value-format="yyyy-MM"
-        placeholder="发表/出版/授权时间"
+        placeholder="获奖时间"
       ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="佐证材料" prop="uploadField">
+    <el-form-item class="form-item" label="证书" prop="uploadField">
       <upload-btn files="certificate"></upload-btn>
     </el-form-item>
 
@@ -137,16 +133,14 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import SubmitBtn from "../Etc/SubmitFormBtn.vue";
-import UploadBtn from "../Etc/UploadBtn.vue";
+import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
+import UploadBtn from "@/components/User/UploadBtn.vue";
 
 interface Type {
   label: string;
   value: string | number;
   children: Type[];
 }
-
-const patentText = ["空", "是", "否"];
 
 export default Vue.extend({
   components: {
@@ -158,33 +152,21 @@ export default Vue.extend({
       sort: [],
       form: {
         department: "",
-        production: "",
+        content: "",
         name: "",
         teammate: [],
-        patent: "空",
-        unit: "",
-        publishTime: "",
+        awardUnit: "",
+        awardTime: "",
+        prize: "",
+        level: "",
         class2: "",
         class3: ""
       },
       options: {
         department: [],
-        sort: [],
-        // level: "",
-        patent: [
-          {
-            label: "空",
-            value: 0
-          },
-          {
-            label: "是",
-            value: 1
-          },
-          {
-            label: "否",
-            value: 2
-          }
-        ]
+        prize: [],
+        level: [],
+        sort: []
       },
       etc: {
         name: {
@@ -251,15 +233,15 @@ export default Vue.extend({
 
       this.$store.commit(
         "orderForm",
-        Object.assign({}, this.form, {
-          teammate: this.form.teammate.toString(),
-          patent: patentText.indexOf(this.form.patent as string)
+        Object.assign(this.form, {
+          teammate: this.form.teammate.toString()
         })
       );
     }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
+
     // 请求院部列表
     this.$http
       .post(
@@ -288,12 +270,68 @@ export default Vue.extend({
         });
       });
 
-    // 请求成果类型列表
+    // 请求奖项列表
+    this.$http
+      .post(
+        "/api/online/getPrizeSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.prize = res.data.data;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取奖项列表",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取奖项列表",
+          type: "warning"
+        });
+      });
+
+    // 请求级别列表
+    this.$http
+      .post(
+        "/api/online/getLevelSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.options.level = res.data.data;
+        } else {
+          this.$message({
+            message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
+            type: "warning"
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "由于未知因素，无法获取获奖级别列表",
+          type: "warning"
+        });
+      });
+
+    // 请求获奖类型列表
     this.$http
       .post(
         "/api/online/getTypeList",
         {
-          class1: "成果类"
+          class1: "获奖类"
         },
         {
           headers: {
@@ -306,45 +344,17 @@ export default Vue.extend({
           this.options.sort = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
+            message: res.data.msg || "由于未知因素，无法获取获奖类型列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取成果类型列表",
+          message: "由于未知因素，无法获取获奖类型列表",
           type: "warning"
         });
       });
-
-    // 请求级别列表
-    // this.$http
-    //   .post(
-    //     "/api/online/getLevelSet",
-    //     {},
-    //     {
-    //       headers: {
-    //         token: stateToken
-    //       }
-    //     }
-    //   )
-    //   .then((res: AxiosResponse) => {
-    //     if (res.data.code === 0) {
-    //       this.options.level = res.data.data;
-    //     } else {
-    //       this.$message({
-    //         message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
-    //         type: "warning"
-    //       });
-    //     }
-    //   })
-    //   .catch(() => {
-    //     this.$message({
-    //       message: "由于未知因素，无法获取获奖级别列表",
-    //       type: "warning"
-    //     });
-    //   });
   }
 });
 </script>

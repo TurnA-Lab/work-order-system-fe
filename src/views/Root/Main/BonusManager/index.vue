@@ -18,8 +18,8 @@
     <el-tab-pane label="导出">
       <div class="tabs-body">
         <download-table
-          file-name="业绩分表"
-          api="/api/online/root/getPerformanceExcel"
+          file-name="奖励表"
+          api="/api/online/root/getBonusExcel"
         ></download-table>
       </div>
     </el-tab-pane>
@@ -28,10 +28,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Edit from "./EditPerformance/index.vue";
-import FilterInfo from "./FilterPerformance.vue";
-import Add from "./AddPerformance.vue";
-import DownloadTable from "../Etc/DownloadTable.vue";
+import Edit from "./EditBonus/index.vue";
+import FilterInfo from "./FilterBonus.vue";
+import Add from "./AddBonus.vue";
+import DownloadTable from "@/components/Root/DownloadTable.vue";
 
 export default Vue.extend({
   components: {

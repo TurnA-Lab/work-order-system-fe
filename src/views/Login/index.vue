@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import LoginForm from "@/components/Login/Form.vue";
+import LoginForm from "./Form.vue";
 import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
 import Vue from "vue";
 

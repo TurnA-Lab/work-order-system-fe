@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "@/views/Login.vue";
+import Login from "@/views/Login/index.vue";
 import Page404 from "@/views/404.vue";
 
 Vue.use(Router);
@@ -35,7 +35,7 @@ const router = new Router({
     {
       path: "/user",
       name: "user",
-      component: () => import("@/views/User/index.vue"),
+      component: () => import("@/views/User/Home/index.vue"),
       meta: {
         title: "首页"
       }
@@ -43,13 +43,13 @@ const router = new Router({
     {
       path: "/user/info",
       name: "userInfo",
-      component: () => import("@/views/User/Info.vue"),
+      component: () => import("@/views/User/Info/index.vue"),
       redirect: { name: "userInfoProfile" },
       children: [
         {
           path: "profile",
           name: "userInfoProfile",
-          component: () => import("@/components/User/Info/Profile.vue"),
+          component: () => import("@/views/User/Info/Profile.vue"),
           meta: {
             title: "个人资料"
           }
@@ -57,7 +57,7 @@ const router = new Router({
         {
           path: "password",
           name: "userInfoPassword",
-          component: () => import("@/components/User/Info/Password.vue"),
+          component: () => import("@/views/User/Info/Password.vue"),
           meta: {
             title: "修改密码"
           }
@@ -67,13 +67,13 @@ const router = new Router({
     {
       path: "/user/work_order",
       name: "userWorkOrder",
-      component: () => import("@/views/User/WorkOrder.vue"),
+      component: () => import("@/views/User/WorkOrder/index.vue"),
       redirect: { name: "userOrders" },
       children: [
         {
           path: "orders",
           name: "userOrders",
-          component: () => import("@/components/User/Orders/index.vue"),
+          component: () => import("@/views/User/WorkOrder/Orders/index.vue"),
           meta: {
             title: "我的工单"
           }
@@ -81,7 +81,7 @@ const router = new Router({
         {
           path: "new_order",
           name: "userNewOrder",
-          component: () => import("@/components/User/NewOrder/index.vue"),
+          component: () => import("@/views/User/WorkOrder/NewOrder/index.vue"),
           meta: {
             title: "创建工单"
           }
@@ -91,14 +91,14 @@ const router = new Router({
     {
       path: "/college_admin",
       name: "collegeAdmin",
-      component: () => import("@/views/User/CollegeAdmin.vue"),
+      component: () => import("@/views/User/CollegeAdmin/index.vue"),
       redirect: { name: "collegeAdminMemberManager" },
       children: [
         {
           path: "member_manager",
           name: "collegeAdminMemberManager",
           component: () =>
-            import("@/components/User/CollegeAdmin/MemberManager/index.vue"),
+            import("@/views/User/CollegeAdmin/MemberManager/index.vue"),
           meta: {
             title: "部门成员管理"
           }
@@ -106,8 +106,7 @@ const router = new Router({
         {
           path: "export_sheet",
           name: "collegeAdminExportSheet",
-          component: () =>
-            import("@/components/User/CollegeAdmin/ExportSheet.vue"),
+          component: () => import("@/views/User/CollegeAdmin/ExportSheet.vue"),
           meta: {
             title: "确认表导出"
           }
@@ -215,7 +214,8 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const permission = sessionStorage.getItem("wo_permission");
 
-  document.title = to.meta.title ? to.meta.title : "JUST WO";
+  // 设置选项卡显示标题
+  document.title = to.meta.title ? to.meta.title + " - JUST WO" : "JUST WO";
 
   if (to.name === "login") {
     if (typeof permission === "string") {

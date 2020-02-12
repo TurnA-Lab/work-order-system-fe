@@ -41,9 +41,9 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 
-import process1 from "@/components/User/NewOrder/Process/1.vue";
-import process2 from "@/components/User/NewOrder/Process/2.vue";
-import process3 from "@/components/User/NewOrder/Process/3.vue";
+import process1 from "./Process/1.vue";
+import process2 from "./Process/2.vue";
+import process3 from "./Process/3.vue";
 
 export default Vue.extend({
   components: {

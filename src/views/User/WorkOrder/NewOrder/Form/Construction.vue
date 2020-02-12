@@ -22,18 +22,15 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖名称" prop="content">
-      <el-input v-model="form.content" placeholder="请输入获奖名称"></el-input>
+    <el-form-item class="form-item" label="项目名称" prop="project">
+      <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖教师（第一）">
-      <el-input
-        v-model="form.name"
-        placeholder="请输入获奖教师（第一）"
-      ></el-input>
+    <el-form-item class="form-item" label="项目负责人" prop="name">
+      <el-input v-model="form.name" placeholder="请输入项目负责人"></el-input>
     </el-form-item>
 
-    <el-form-item label="获奖成员">
+    <el-form-item class="form-item" label="课题组成员">
       <el-tag
         :key="name"
         v-for="name in form.teammate"
@@ -60,22 +57,35 @@
       >
     </el-form-item>
 
-    <el-form-item class="form-item" label="奖项" prop="prize">
-      <el-select
-        v-model="form.prize"
-        placeholder="请选择，或输入以查找"
-        filterable
-      >
-        <el-option
-          v-for="item in options.prize"
-          :key="item.value"
-          :label="item.label"
-          :value="item.label"
-        ></el-option>
-      </el-select>
+    <el-form-item class="form-item" label="立项年月" prop="startTime">
+      <el-date-picker
+        align="center"
+        v-model="form.startTime"
+        type="month"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+        placeholder="请选择立项年月"
+      ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖类型" prop="sort">
+    <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime">
+      <el-date-picker
+        align="center"
+        v-model="form.beginToEndTime"
+        type="daterange"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+      ></el-date-picker>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="主办单位" prop="sponsor">
+      <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
+    </el-form-item>
+
+    <el-form-item class="form-item" label="项目类型" prop="sort">
       <el-cascader
         v-model="sort"
         placeholder="请选择，或输入以查找"
@@ -86,7 +96,7 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="级别" prop="level">
+    <el-form-item class="form-item" label="项目级别" prop="level">
       <el-select
         v-model="form.level"
         placeholder="请选择，或输入以查找"
@@ -101,26 +111,8 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="颁奖部门" prop="awardUnit">
-      <el-input
-        v-model="form.awardUnit"
-        placeholder="请输入颁奖部门"
-      ></el-input>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="获奖时间" prop="awardTime">
-      <el-date-picker
-        align="center"
-        v-model="form.awardTime"
-        type="month"
-        format="yyyy 年 MM 月"
-        value-format="yyyy-MM"
-        placeholder="获奖时间"
-      ></el-date-picker>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="证书" prop="uploadField">
-      <upload-btn files="certificate"></upload-btn>
+    <el-form-item class="form-item" label="佐证材料" prop="uploadField">
+      <upload-btn files="testimonial"></upload-btn>
     </el-form-item>
 
     <el-form-item class="form-item btn-line">
@@ -133,8 +125,9 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import SubmitBtn from "../Etc/SubmitFormBtn.vue";
-import UploadBtn from "../Etc/UploadBtn.vue";
+import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
+import UploadBtn from "@/components/User/UploadBtn.vue";
+import validate from "@/utils/validate";
 
 interface Type {
   label: string;
@@ -152,21 +145,20 @@ export default Vue.extend({
       sort: [],
       form: {
         department: "",
-        content: "",
+        project: "",
         name: "",
         teammate: [],
-        awardUnit: "",
-        awardTime: "",
-        prize: "",
+        startTime: "",
+        beginToEndTime: "",
+        sponsor: "",
         level: "",
         class2: "",
         class3: ""
       },
       options: {
         department: [],
-        prize: [],
-        level: [],
-        sort: []
+        sort: [],
+        level: []
       },
       etc: {
         name: {
@@ -211,7 +203,7 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      for (const key in this.options.sort) {
+      for (const key in this.sort) {
         if (this.options.sort.hasOwnProperty(key)) {
           const object = this.options.sort[key] as Type;
 
@@ -233,8 +225,9 @@ export default Vue.extend({
 
       this.$store.commit(
         "orderForm",
-        Object.assign(this.form, {
-          teammate: this.form.teammate.toString()
+        Object.assign({}, this.form, {
+          teammate: this.form.teammate.toString(),
+          beginToEndTime: this.form.beginToEndTime.toString()
         })
       );
     }
@@ -270,11 +263,13 @@ export default Vue.extend({
         });
       });
 
-    // 请求奖项列表
+    // 请求项目类型列表
     this.$http
       .post(
-        "/api/online/getPrizeSet",
-        {},
+        "/api/online/getTypeList",
+        {
+          class1: "建设类"
+        },
         {
           headers: {
             token: stateToken
@@ -283,22 +278,22 @@ export default Vue.extend({
       )
       .then((res: AxiosResponse) => {
         if (res.data.code === 0) {
-          this.options.prize = res.data.data;
+          this.options.sort = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取奖项列表",
+            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取奖项列表",
+          message: "由于未知因素，无法获取项目类型列表",
           type: "warning"
         });
       });
 
-    // 请求级别列表
+    // 请求项目级别列表
     this.$http
       .post(
         "/api/online/getLevelSet",
@@ -314,44 +309,14 @@ export default Vue.extend({
           this.options.level = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
+            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取获奖级别列表",
-          type: "warning"
-        });
-      });
-
-    // 请求获奖类型列表
-    this.$http
-      .post(
-        "/api/online/getTypeList",
-        {
-          class1: "获奖类"
-        },
-        {
-          headers: {
-            token: stateToken
-          }
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.sort = res.data.data;
-        } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取获奖类型列表",
-            type: "warning"
-          });
-        }
-      })
-      .catch(() => {
-        this.$message({
-          message: "由于未知因素，无法获取获奖类型列表",
+          message: "由于未知因素，无法获取项目级别列表",
           type: "warning"
         });
       });

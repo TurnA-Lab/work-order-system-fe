@@ -22,15 +22,18 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目名称" prop="project">
-      <el-input v-model="form.project" placeholder="请输入项目名称"></el-input>
+    <el-form-item class="form-item" label="成果名称" prop="production">
+      <el-input
+        v-model="form.production"
+        placeholder="请输入成果名称"
+      ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目负责人" prop="name">
-      <el-input v-model="form.name" placeholder="请输入项目负责人"></el-input>
+    <el-form-item class="form-item" label="第一作者">
+      <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="课题组成员">
+    <el-form-item label="组员">
       <el-tag
         :key="name"
         v-for="name in form.teammate"
@@ -53,39 +56,11 @@
         class="button-new-member"
         @click="showMemberInput()"
         plain
-        >+ 新成员</el-button
+        >+ 新组员</el-button
       >
     </el-form-item>
 
-    <el-form-item class="form-item" label="立项年月" prop="startTime">
-      <el-date-picker
-        align="center"
-        v-model="form.startTime"
-        type="month"
-        format="yyyy 年 MM 月"
-        value-format="yyyy-MM"
-        placeholder="请选择立项年月"
-      ></el-date-picker>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="项目起止年月" prop="beginToEndTime">
-      <el-date-picker
-        align="center"
-        v-model="form.beginToEndTime"
-        type="daterange"
-        format="yyyy 年 MM 月"
-        value-format="yyyy-MM"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-      ></el-date-picker>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="主办单位" prop="sponsor">
-      <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
-    </el-form-item>
-
-    <el-form-item class="form-item" label="项目类型" prop="sort">
+    <el-form-item class="form-item" label="成果类别" prop="sort">
       <el-cascader
         v-model="sort"
         placeholder="请选择，或输入以查找"
@@ -96,12 +71,8 @@
       ></el-cascader>
     </el-form-item>
 
-    <el-form-item class="form-item" label="项目级别" prop="level">
-      <el-select
-        v-model="form.level"
-        placeholder="请选择，或输入以查找"
-        filterable
-      >
+    <!-- <el-form-item class="form-item" label="级别" prop="level">
+      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
         <el-option
           v-for="item in options.level"
           :key="item.value"
@@ -109,10 +80,51 @@
           :value="item.label"
         ></el-option>
       </el-select>
+    </el-form-item>-->
+
+    <el-form-item
+      class="form-item"
+      label="发表刊物/出版社/授权单位"
+      prop="unit"
+    >
+      <el-input
+        v-model="form.unit"
+        placeholder="请输入发表刊物/出版社/授权单位"
+      ></el-input>
+    </el-form-item>
+
+    <el-form-item
+      class="form-item"
+      label="是否被转让（仅限专利）"
+      prop="patent"
+    >
+      <el-select v-model="form.patent" placeholder="请选择">
+        <el-option
+          v-for="item in options.patent"
+          :key="item.value"
+          :label="item.label"
+          :value="item.label"
+        ></el-option>
+      </el-select>
+    </el-form-item>
+
+    <el-form-item
+      class="form-item"
+      label="发表/出版/授权时间"
+      prop="publishTime"
+    >
+      <el-date-picker
+        align="center"
+        v-model="form.publishTime"
+        type="month"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+        placeholder="发表/出版/授权时间"
+      ></el-date-picker>
     </el-form-item>
 
     <el-form-item class="form-item" label="佐证材料" prop="uploadField">
-      <upload-btn files="testimonial"></upload-btn>
+      <upload-btn files="certificate"></upload-btn>
     </el-form-item>
 
     <el-form-item class="form-item btn-line">
@@ -125,15 +137,16 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import SubmitBtn from "../Etc/SubmitFormBtn.vue";
-import UploadBtn from "../Etc/UploadBtn.vue";
-import validate from "@/utils/validate";
+import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
+import UploadBtn from "@/components/User/UploadBtn.vue";
 
 interface Type {
   label: string;
   value: string | number;
   children: Type[];
 }
+
+const patentText = ["空", "是", "否"];
 
 export default Vue.extend({
   components: {
@@ -145,20 +158,33 @@ export default Vue.extend({
       sort: [],
       form: {
         department: "",
-        project: "",
+        production: "",
         name: "",
         teammate: [],
-        startTime: "",
-        beginToEndTime: "",
-        sponsor: "",
-        level: "",
+        patent: "空",
+        unit: "",
+        publishTime: "",
         class2: "",
         class3: ""
       },
       options: {
         department: [],
         sort: [],
-        level: []
+        // level: "",
+        patent: [
+          {
+            label: "空",
+            value: 0
+          },
+          {
+            label: "是",
+            value: 1
+          },
+          {
+            label: "否",
+            value: 2
+          }
+        ]
       },
       etc: {
         name: {
@@ -203,7 +229,7 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      for (const key in this.sort) {
+      for (const key in this.options.sort) {
         if (this.options.sort.hasOwnProperty(key)) {
           const object = this.options.sort[key] as Type;
 
@@ -227,14 +253,13 @@ export default Vue.extend({
         "orderForm",
         Object.assign({}, this.form, {
           teammate: this.form.teammate.toString(),
-          beginToEndTime: this.form.beginToEndTime.toString()
+          patent: patentText.indexOf(this.form.patent as string)
         })
       );
     }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
-
     // 请求院部列表
     this.$http
       .post(
@@ -263,12 +288,12 @@ export default Vue.extend({
         });
       });
 
-    // 请求项目类型列表
+    // 请求成果类型列表
     this.$http
       .post(
         "/api/online/getTypeList",
         {
-          class1: "建设类"
+          class1: "成果类"
         },
         {
           headers: {
@@ -281,45 +306,45 @@ export default Vue.extend({
           this.options.sort = res.data.data;
         } else {
           this.$message({
-            message: res.data.msg || "由于未知因素，无法获取项目类型列表",
+            message: res.data.msg || "由于未知因素，无法获取成果类型列表",
             type: "warning"
           });
         }
       })
       .catch(() => {
         this.$message({
-          message: "由于未知因素，无法获取项目类型列表",
+          message: "由于未知因素，无法获取成果类型列表",
           type: "warning"
         });
       });
 
-    // 请求项目级别列表
-    this.$http
-      .post(
-        "/api/online/getLevelSet",
-        {},
-        {
-          headers: {
-            token: stateToken
-          }
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.level = res.data.data;
-        } else {
-          this.$message({
-            message: res.data.msg || "由于未知因素，无法获取项目级别列表",
-            type: "warning"
-          });
-        }
-      })
-      .catch(() => {
-        this.$message({
-          message: "由于未知因素，无法获取项目级别列表",
-          type: "warning"
-        });
-      });
+    // 请求级别列表
+    // this.$http
+    //   .post(
+    //     "/api/online/getLevelSet",
+    //     {},
+    //     {
+    //       headers: {
+    //         token: stateToken
+    //       }
+    //     }
+    //   )
+    //   .then((res: AxiosResponse) => {
+    //     if (res.data.code === 0) {
+    //       this.options.level = res.data.data;
+    //     } else {
+    //       this.$message({
+    //         message: res.data.msg || "由于未知因素，无法获取获奖级别列表",
+    //         type: "warning"
+    //       });
+    //     }
+    //   })
+    //   .catch(() => {
+    //     this.$message({
+    //       message: "由于未知因素，无法获取获奖级别列表",
+    //       type: "warning"
+    //     });
+    //   });
   }
 });
 </script>

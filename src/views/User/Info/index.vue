@@ -5,16 +5,16 @@
       <vertical-divider isTransparent="true"></vertical-divider>
       <el-button
         type="text"
-        @click="$router.push({ name: 'collegeAdminMemberManager' })"
+        @click="$router.push({ name: 'userInfoProfile' })"
         :disabled="btnIsDisabled"
-        >部门成员管理</el-button
+        >个人资料</el-button
       >
       <vertical-divider></vertical-divider>
       <el-button
         type="text"
-        @click="$router.push({ name: 'collegeAdminExportSheet' })"
+        @click="$router.push({ name: 'userInfoPassword' })"
         :disabled="!btnIsDisabled"
-        >确认表导出</el-button
+        >修改密码</el-button
       >
     </template>
     <router-view></router-view>
@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import MainCard from "@/components/User/Etc/MainCard.vue";
+import MainCard from "@/components/User/MainCard.vue";
 import BackLink from "@/components/Etc/BackLink.vue";
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
 
@@ -35,7 +35,7 @@ export default Vue.extend({
   },
   computed: {
     btnIsDisabled() {
-      if (this.$route.name === "collegeAdminMemberManager") {
+      if (this.$route.name === "userInfoProfile") {
         return true;
       } else {
         return false;
@@ -44,5 +44,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped></style>

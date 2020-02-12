@@ -13,9 +13,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import RootMenu from "@/components/OfficeAdmin/Menu/index.vue";
-import RootHeader from "@/components/OfficeAdmin/Header/index.vue";
-import RootMain from "@/components/OfficeAdmin/Main/index.vue";
+import RootMenu from "./Menu/index.vue";
+import RootHeader from "./Header/index.vue";
+import RootMain from "./Main/index.vue";
 
 export default Vue.extend({
   components: {

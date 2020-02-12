@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import UserCard from "@/components/User/Menu/UserCard.vue";
-import UserMenu from "@/components/User/Menu/index.vue";
+import UserCard from "./UserCard.vue";
+import UserMenu from "./menu.vue";
 
 export default Vue.extend({
   name: "userIndex",

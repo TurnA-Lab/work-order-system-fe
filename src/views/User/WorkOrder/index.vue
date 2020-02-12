@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import MainCard from "@/components/User/Etc/MainCard.vue";
+import MainCard from "@/components/User/MainCard.vue";
 import BackLink from "@/components/Etc/BackLink.vue";
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
 

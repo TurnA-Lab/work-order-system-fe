@@ -55,6 +55,7 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
+import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   data() {
@@ -125,13 +126,16 @@ export default Vue.extend({
             this.isDisable = false;
 
             if (res.status === 200) {
-              return Promise.resolve(res.data);
+              return Promise.resolve([
+                decodeFilename(res, `${this.selectYear}-${this.fileName}.xlsx`),
+                res.data
+              ]);
             } else {
               return Promise.reject(res.data.msg);
             }
           })
-          .then((data: Blob) => {
-            saveAs(data, `${this.selectYear}-${this.fileName}.xlsx`);
+          .then(([filename, data]) => {
+            saveAs(data, filename);
           })
           .catch((err: string) => {
             this.$message({

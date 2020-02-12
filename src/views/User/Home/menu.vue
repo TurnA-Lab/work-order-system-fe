@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import UserMenuCard from "./Card.vue";
+import UserMenuCard from "@/components/User/Card.vue";
 
 export default Vue.extend({
   components: {
