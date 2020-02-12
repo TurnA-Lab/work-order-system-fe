@@ -16,7 +16,7 @@
             <digitize-sheet
               @click="
                 downloadTemplate(
-                  '建设类模板',
+                  '建设类模板.xlsx',
                   '/api/online/officeAdmin/getConstructionTemplate'
                 )
               "
@@ -43,7 +43,7 @@
             <digitize-sheet
               @click="
                 downloadTemplate(
-                  '成果类模板',
+                  '成果类模板.xlsx',
                   '/api/online/officeAdmin/getAchievementTemplate'
                 )
               "
@@ -70,7 +70,7 @@
             <digitize-sheet
               @click="
                 downloadTemplate(
-                  '获奖类模板',
+                  '获奖类模板.xlsx',
                   '/api/online/officeAdmin/getAwardTemplate'
                 )
               "
@@ -92,6 +92,7 @@ import DigitizeSheet from "./DigitizeSheet/index.vue";
 import ExportSheet from "./ExportSheet.vue";
 import { saveAs } from "file-saver";
 import { AxiosResponse } from "axios/";
+import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   components: {
@@ -102,7 +103,7 @@ export default Vue.extend({
     ExportSheet
   },
   methods: {
-    downloadTemplate(fileName: string, api: string) {
+    downloadTemplate(fallbackFilename: string, api: string) {
       this.$http
         .post(
           api,
@@ -116,13 +117,16 @@ export default Vue.extend({
         )
         .then((res: AxiosResponse) => {
           if (res.status === 200) {
-            return Promise.resolve(res.data);
+            return Promise.resolve([
+              decodeFilename(res, fallbackFilename),
+              res.data
+            ]);
           } else {
             return Promise.reject(res.data.msg);
           }
         })
-        .then((data: Blob) => {
-          saveAs(data, `${fileName}.xlsx`);
+        .then(([filename, data]) => {
+          saveAs(data, filename);
         })
         .catch((err: string) => {
           this.$message({

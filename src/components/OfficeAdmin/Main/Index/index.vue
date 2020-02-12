@@ -2,10 +2,10 @@
   <main>
     <div class="user-info">
       <h1>
-        你好，
+        您好，
         <span>{{ name }}！</span>
       </h1>
-      <h6>欢迎您回到江苏科技大学工单系统后台。</h6>
+      <h6>欢迎回到江苏科技大学工单系统后台。</h6>
     </div>
   </main>
 </template>

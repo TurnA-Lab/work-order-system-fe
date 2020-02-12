@@ -191,10 +191,10 @@ const router = new Router({
           }
         },
         {
-          path: "digitize_sheet",
-          name: "officeAdminDigitizeSheet",
+          path: "import_sheet",
+          name: "officeAdminImportSheet",
           component: () =>
-            import("@/components/OfficeAdmin/Main/DigitizeSheet/index.vue"),
+            import("@/components/OfficeAdmin/Main/ImportSheet/index.vue"),
           meta: {
             title: "奖励 / 业绩分表格录入"
           }

@@ -1,13 +1,13 @@
 <template>
   <el-menu
-    default-active="active[$route.name]"
+    :default-active="active[$route.name]"
     class="root-menu"
     :collapse="isCollapse"
     :router="true"
   >
     <header>{{ headerText }}</header>
 
-    <el-menu-item index="1" :route="{ name: 'rootHome' }">
+    <el-menu-item index="1" :route="{ name: 'officeAdminHome' }">
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
@@ -21,7 +21,7 @@
       <span slot="title">工单管理</span>
     </el-menu-item>
 
-    <el-menu-item index="3" :route="{ name: 'officeAdminDigitizeSheet' }">
+    <el-menu-item index="3" :route="{ name: 'officeAdminImportSheet' }">
       <i class="el-icon-menu"></i>
       <span slot="title">奖励 / 业绩分表格录入</span>
     </el-menu-item>
@@ -36,9 +36,9 @@ export default Vue.extend({
   data() {
     return {
       active: {
-        rootHome: "1",
+        officeAdminHome: "1",
         officeAdminWorkOrderManager: "2",
-        officeAdminDigitizeSheet: "3"
+        officeAdminImportSheet: "3"
       }
     };
   },

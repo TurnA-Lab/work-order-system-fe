@@ -108,15 +108,12 @@ export default Vue.extend({
             if (res.data.code === 0) {
               canDownload(res.data.data);
             } else {
-              this.$message({
-                message: res.data.msg || "由于未知因素，导出失败",
-                type: "warning"
-              });
+              return Promise.reject(res.data.msg);
             }
           })
-          .catch(() => {
+          .catch((err: string) => {
             this.$message({
-              message: "未知错误，导出失败",
+              message: err || "未知错误，导出失败",
               type: "warning"
             });
           });
