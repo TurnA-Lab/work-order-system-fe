@@ -16,13 +16,3 @@ $larger: "min-width: 1920px";
     @content;
   }
 }
-
-:root {
-  // User Card Width
-  --card-width: 20vw;
-  --card-height: calc(var(--card-width) * 1.414);
-
-  @include screen($larger) {
-    --card-width: 301px;
-  }
-}

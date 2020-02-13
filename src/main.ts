@@ -7,10 +7,14 @@ import "@/plugins/element";
 import "@/plugins/vue-awesome";
 import App from "./App.vue";
 
-// productionTip 设置
+/**
+ * productionTip 设置
+ */
 Vue.config.productionTip = false;
 
-// axios 设置
+/**
+ * axios 设置
+ */
 declare module "axios/" {
   interface AxiosRequestConfig {
     retry?: number;
@@ -56,11 +60,16 @@ Vue.axios.interceptors.response.use(
   }
 );
 
+/**
+ * console 信息设置
+ */
+Console.snapShoot();
+
+/**
+ * vue 设置
+ */
 new Vue({
   router,
   store,
   render: (h) => h(App)
 }).$mount("#app");
-
-// 设置 console 信息
-Console.snapShoot();

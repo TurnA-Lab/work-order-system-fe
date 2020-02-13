@@ -67,17 +67,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@font-face {
-  font-family: "FZCuJinLJW";
-  src: url("assets/fonts/FZCuJinLJW.eot");
-  src: url("assets/fonts/FZCuJinLJW.eot?#font-spider")
-      format("embedded-opentype"),
-    url("assets/fonts/FZCuJinLJW.woff2") format("woff2"),
-    url("assets/fonts/FZCuJinLJW.woff") format("woff"),
-    url("assets/fonts/FZCuJinLJW.TTF") format("truetype"),
-    url("assets/fonts/FZCuJinLJW.svg") format("svg");
-  font-weight: normal;
-  font-style: normal;
+@import "assets/stylesheet/font";
+
+:root {
+  // User Card Width
+  --card-width: 20vw;
+  --card-height: calc(var(--card-width) * 1.414);
+
+  @include screen($larger) {
+    --card-width: 301px;
+  }
 }
 
 .offline {

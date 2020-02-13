@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box" shadow="never">
+  <div class="box" shadow="never">
     <div class="slide-enter">
       <h1>欢迎回来，</h1>
       <h2>{{ name }}</h2>
@@ -14,7 +14,7 @@
         <span>{{ department }}</span>
       </h5>
     </div>
-  </el-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -33,18 +33,20 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .box {
+  box-sizing: border-box;
+
   display: flex;
-  align-items: flex-end;
+  flex-flow: column;
+  justify-content: flex-end;
 
   height: var(--card-height);
   width: var(--card-width);
   background: linear-gradient(0deg, #06beb6 0%, #48b1bf 100%);
   border-radius: 1rem;
 
-  box-sizing: border-box;
-  padding-block-end: 1.2vh;
-  padding-inline-start: 1vw;
-  padding-inline-end: 1vw;
+  padding-block-end: 4vh;
+  padding-inline-start: 2vw;
+  padding-inline-end: 2vw;
 
   opacity: 0;
   animation: fade 0.6s ease-in-out forwards;
@@ -92,19 +94,6 @@ h5 {
   span {
     color: #ecf0f1;
   }
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  font-size: 1.4rem;
-}
-
-h5 {
-  line-height: 1rem;
-  font-size: 0.76rem;
 }
 
 .slide-enter {

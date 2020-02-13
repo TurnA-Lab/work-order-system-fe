@@ -5,7 +5,7 @@
     @appear="lockCard"
     @after-appear="unlockCard"
   >
-    <div class="menu-card">
+    <div class="menu-card" @click="$emit('click')">
       <slot></slot>
     </div>
   </transition>

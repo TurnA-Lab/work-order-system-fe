@@ -5,7 +5,7 @@ module.exports = {
       // 给 sass-loader 传递选项
       sass: {
         data: `
-          @import "@/stylesheet/default.scss";
+          @import "@/assets/stylesheet/base.scss";
         `
       }
     }

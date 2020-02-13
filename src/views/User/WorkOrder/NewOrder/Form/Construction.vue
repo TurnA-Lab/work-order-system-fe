@@ -316,5 +316,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheet/user-form.scss";
+@import "@/assets/stylesheet/user-form.scss";
 </style>
