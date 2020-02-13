@@ -189,7 +189,7 @@ export default Vue.extend({
     }
 
     &:hover {
-      transform: scale(1.12);
+      transform: scale(1.1);
 
       & > svg {
         transform: scale(0);

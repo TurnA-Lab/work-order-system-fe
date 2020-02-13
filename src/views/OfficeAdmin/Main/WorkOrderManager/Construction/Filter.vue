@@ -3,18 +3,17 @@
     <div class="filter-part">
       <el-form :inline="true" :model="filterForm">
         <el-form-item>
-          <el-input v-model="filterForm.master" placeholder="负责人"></el-input>
+          <el-input
+            v-model="filterForm.project"
+            placeholder="项目名称"
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-date-picker
-            align="center"
-            v-model="filterForm.year"
-            type="year"
-            format="yyyy 年"
-            value-format="yyyy"
-            placeholder="年度"
-          ></el-date-picker>
+          <el-input
+            v-model="filterForm.name"
+            placeholder="项目负责人"
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -30,48 +29,68 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit
+    <audit
       :data="data"
-      :is-visible="editIsVisible"
-      @toggle-is-visible="toggleEdit"
+      :is-visible="auditIsVisible"
+      @toggle-is-visible="toggleAudit"
       @refresh="fetchData"
-    ></edit>
+    ></audit>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import Edit from "./EditBonus/Edit.vue";
+import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
 
 interface Data {
-  id: string;
+  cid: number;
   department: string;
-  computeoffice: string;
-  type: string;
-  year: string;
+  projectNum: string;
   project: string;
-  master: string;
+  worknum: string;
+  name: string;
+  teammate: string;
+  class1: string;
+  class2: string;
+  class3: string;
+  startTime: string;
+  beginToEndTime: string[];
+  level: string;
+  sponsor: string;
+  testimonial: string;
+  expenditure: number;
+  point: number;
+  computeYear: string;
   bonus: number;
+  fileNumber: number;
+  isEnd: number | string;
+  schoolYear: string;
+  year: string;
   status: number | string;
+  reason: string;
   lastTime: string;
 }
+
+const isEndText = ["未结束", "已结束"];
+const statusText = ["未通过", "审核中", "已通过"];
 
 export default Vue.extend({
   components: {
     WhatTable,
-    Edit
+    Audit
   },
   data() {
     return {
       filterForm: {
-        year: "",
-        master: ""
+        project: "",
+        name: ""
       },
       isFilled: false,
-      editIsVisible: false,
+      auditIsVisible: false,
       data: {},
+      index: -1,
       tableData: [],
       department: [],
       columns: [
@@ -81,84 +100,38 @@ export default Vue.extend({
           width: 160
         },
         {
-          prop: "master",
-          label: "负责人"
+          prop: "name",
+          label: "项目负责人"
         },
         {
-          prop: "type",
+          prop: "class3",
           label: "类别",
           width: 160
         },
         {
-          prop: "bonus",
-          label: "奖励"
+          prop: "isEnd",
+          label: "是否已结束"
+        },
+        {
+          prop: "status",
+          label: "审核状态"
         },
         {
           button: true,
           label: "操作",
-          width: 200,
+          width: 160,
           group: [
             {
               // you can props => type size icon disabled plain
-              name: "编辑",
+              name: "审核",
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
               onClick: (data: Data, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
-                this.$data.editIsVisible = true;
-              }
-            },
-            {
-              name: "删除",
-              type: "danger",
-              icon: "el-icon-delete",
-              disabled: false,
-              onClick: (data: Data, index: number) => {
-                // 这种写法的 this 代表 group 里的对象
-                this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                })
-                  .then(() => {
-                    this.$http
-                      .post(
-                        "/api/online/root/deleteBonus",
-                        {
-                          id: data.id
-                        },
-                        {
-                          headers: {
-                            token: this.$store.state.userInfo.token
-                          }
-                        }
-                      )
-                      .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                          this.$data.tableData.splice(index, 1);
-                          this.$message({
-                            message: res.data.msg || "信息删除成功",
-                            type: "success"
-                          });
-                        } else {
-                          return Promise.reject(res.data.msg);
-                        }
-                      })
-                      .catch((err: string) => {
-                        this.$message({
-                          message: err || "由于未知因素，用户信息删除失败",
-                          type: "warning"
-                        });
-                      });
-                  })
-                  .catch(() => {
-                    this.$message({
-                      message: "已取消删除",
-                      type: "info"
-                    });
-                  });
+                this.$data.index = index;
+                this.$data.auditIsVisible = true;
               }
             }
           ]
@@ -181,21 +154,24 @@ export default Vue.extend({
   },
   methods: {
     fetchData(needAlert: boolean) {
-      this.isFilled =
-        this.filterForm.master !== "" || this.filterForm.year !== "";
+      // 只要有一个填充就设置 isFilled 为真
+      for (const key in this.filterForm) {
+        if (this.filterForm.hasOwnProperty(key)) {
+          const element = (this.filterForm as any)[key];
+          if (element !== "") {
+            this.isFilled = true;
+            break;
+          }
+        }
+      }
 
       if (this.isFilled) {
         this.options.loading = true;
 
         this.$http
           .post(
-            "/api/online/root/getBonusInfo",
-
-            Object.assign(
-              {},
-
-              this.filterForm
-            ),
+            "/api/online/officeAdmin/getUserConstruction",
+            this.filterForm,
             {
               params: {
                 page: this.pagination.pageIndex,
@@ -210,6 +186,12 @@ export default Vue.extend({
             this.options.loading = false;
             if (res.data.code === 0) {
               const { list, total } = res.data.data;
+
+              list.forEach((item: Data) => {
+                item.isEnd = isEndText[item.isEnd as number];
+                item.status = statusText[(item.status as number) + 1];
+              });
+
               this.tableData = list;
               this.pagination.total = total;
             } else {
@@ -232,11 +214,11 @@ export default Vue.extend({
         }
       }
     },
-    toggleEdit(isVisible: boolean) {
+    toggleAudit(isVisible: boolean) {
       if (typeof isVisible === "undefined") {
-        this.editIsVisible = !this.editIsVisible;
+        this.auditIsVisible = !this.auditIsVisible;
       } else {
-        this.editIsVisible = isVisible;
+        this.auditIsVisible = isVisible;
       }
     }
   }

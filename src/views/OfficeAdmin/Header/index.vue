@@ -63,7 +63,7 @@ export default Vue.extend({
     },
     turnToUserPage() {
       this.$confirm(
-        "切换到用户界面后，回到管理页面将要求再次登录, 是否继续?",
+        "切换到用户界面后，回到科室管理员管理页面将要求再次登录, 是否继续?",
         "注意",
         {
           confirmButtonText: "确定",

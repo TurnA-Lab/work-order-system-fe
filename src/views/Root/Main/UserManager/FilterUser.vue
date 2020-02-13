@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-form :inline="true" :model="filterForm">
-      <el-form-item label="姓名">
-        <el-input v-model="filterForm.name"></el-input>
+      <el-form-item>
+        <el-input v-model="filterForm.name" placeholder="姓名"></el-input>
       </el-form-item>
-      <el-form-item label="工号">
-        <el-input v-model="filterForm.worknum"></el-input>
+      <el-form-item>
+        <el-input v-model="filterForm.worknum" placeholder="工号"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData(true)">查询</el-button>

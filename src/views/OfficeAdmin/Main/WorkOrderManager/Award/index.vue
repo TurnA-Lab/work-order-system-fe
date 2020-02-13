@@ -46,6 +46,8 @@ interface Data {
   lastTime: string;
 }
 
+const statusText = ["未通过", "审核中", "已通过"];
+
 export default Vue.extend({
   components: {
     WhatTable,
@@ -142,7 +144,6 @@ export default Vue.extend({
           this.options.loading = false;
           if (res.data.code === 0) {
             const { list, total } = res.data.data;
-            const statusText = ["未通过", "审核中", "已通过"];
 
             list.forEach((item: Data) => {
               item.status = statusText[(item.status as number) + 1];

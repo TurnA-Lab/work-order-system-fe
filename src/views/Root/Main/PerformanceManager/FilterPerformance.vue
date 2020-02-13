@@ -2,21 +2,18 @@
   <div>
     <div class="filter-part">
       <el-form :inline="true" :model="filterForm">
-        <el-form-item label="负责人">
-          <el-input
-            v-model="filterForm.master"
-            placeholder="请输入负责人"
-          ></el-input>
+        <el-form-item>
+          <el-input v-model="filterForm.master" placeholder="负责人"></el-input>
         </el-form-item>
 
-        <el-form-item label="年度">
+        <el-form-item>
           <el-date-picker
             align="center"
             v-model="filterForm.year"
             type="year"
             format="yyyy 年"
             value-format="yyyy"
-            placeholder="请选择立项年度"
+            placeholder="年度"
           ></el-date-picker>
         </el-form-item>
 
