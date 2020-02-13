@@ -12,6 +12,7 @@
         v-model="form.department"
         placeholder="请选择，或输入以查找"
         filterable
+        disabled
       >
         <el-option
           :key="item.value"
@@ -240,8 +241,10 @@ export default Vue.extend({
     }
   },
   created() {
-    const stateToken = this.$store.state.userInfo.token;
+    // 默认部门为自己的部门
+    this.form.department = this.$store.state.userInfo.department;
 
+    const stateToken = this.$store.state.userInfo.token;
     // 请求院部列表
     this.$http
       .post(

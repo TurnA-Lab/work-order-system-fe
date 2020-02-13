@@ -12,6 +12,7 @@
         v-model="form.department"
         placeholder="请选择，或输入以查找"
         filterable
+        disabled
       >
         <el-option
           :key="item.value"
@@ -70,17 +71,6 @@
         filterable
       ></el-cascader>
     </el-form-item>
-
-    <!-- <el-form-item class="form-item" label="级别" prop="level">
-      <el-select v-model="form.level" placeholder="请选择，或输入以查找" filterable>
-        <el-option
-          v-for="item in options.level"
-          :key="item.value"
-          :label="item.label"
-          :value="item.label"
-        ></el-option>
-      </el-select>
-    </el-form-item>-->
 
     <el-form-item
       class="form-item"
@@ -259,6 +249,9 @@ export default Vue.extend({
     }
   },
   created() {
+    // 默认部门为自己的部门
+    this.form.department = this.$store.state.userInfo.department;
+
     const stateToken = this.$store.state.userInfo.token;
     // 请求院部列表
     this.$http

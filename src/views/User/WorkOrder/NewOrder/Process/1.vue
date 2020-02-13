@@ -82,6 +82,7 @@ export default Vue.extend({
   grid-template-columns:
     calc(var(--card-width) * 0.6)
     calc(var(--card-width) * 0.4);
+  background-color: #fdfdff;
 
   &:hover {
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1) !important;
@@ -157,6 +158,7 @@ export default Vue.extend({
     padding: 0px;
     width: 40%;
     height: 40%;
+    background-color: inherit;
   }
 }
 </style>
