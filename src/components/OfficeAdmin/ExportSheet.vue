@@ -12,7 +12,7 @@
       </el-form-item>
 
       <el-form-item label="学年">
-        <el-select v-model="form.schoolYear" placeholder="请选择">
+        <el-select v-model="form.schoolYear" placeholder="请选择学年">
           <el-option
             v-for="item in schoolYears"
             :key="item"
@@ -43,6 +43,7 @@ import DownloadAsZip from "@/components/Etc/DownloadAsZip.vue";
 import { AxiosResponse } from "axios/";
 import yearRange from "@/utils/returnYearRange";
 import { saveAs } from "file-saver";
+import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   props: ["api", "fileApi"],
@@ -60,7 +61,7 @@ export default Vue.extend({
   },
   methods: {
     downloadExcel() {
-      if (this.form.year === "" || this.form.schoolYear === "") {
+      if (this.form.year === "" && this.form.schoolYear === "") {
         this.$message({
           message: "请先选择导出年度、学年",
           type: "warning"
@@ -75,13 +76,21 @@ export default Vue.extend({
           })
           .then((res: AxiosResponse) => {
             if (res.status === 200) {
-              return Promise.resolve(res.data);
+              return Promise.resolve([
+                decodeFilename(
+                  res,
+                  `${
+                    this.form.year ? this.form.year : this.form.schoolYear
+                  }学年工单.xlsx`
+                ),
+                res.data
+              ]);
             } else {
               return Promise.reject(res.data.msg);
             }
           })
-          .then((data: Blob) => {
-            saveAs(data, `${this.form.schoolYear}学年工单.xlsx`);
+          .then(([filename, data]) => {
+            saveAs(data, filename);
           })
           .catch((err: string) => {
             this.$message({

@@ -37,31 +37,6 @@ export default Vue.extend({
       location.reload();
       this.offline = false;
     });
-
-    // 动态标题
-    const title = document.title;
-    let timer: NodeJS.Timeout;
-    let count = 0;
-    const dot = ["", ".", "..", "..."];
-
-    document.addEventListener("visibilitychange", () => {
-      if (timer !== null || timer !== undefined) {
-        clearInterval(timer);
-      }
-
-      if (document.visibilityState === "visible") {
-        if (title !== document.title) {
-          document.title = title;
-        }
-      } else {
-        timer = setInterval(() => {
-          document.title = "等待操作中" + dot[count++];
-          if (count === 4) {
-            count = 0;
-          }
-        }, 100);
-      }
-    });
   }
 });
 </script>
