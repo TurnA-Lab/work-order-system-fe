@@ -1,0 +1,43 @@
+.form-part {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  height: 70vh;
+
+  .form-item {
+    width: 430px;
+  }
+}
+
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+
+.button-new-member {
+  height: 36px;
+  line-height: 36px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  color: #bbbbbb;
+
+  .el-tag + & {
+    margin-left: 10px;
+  }
+}
+
+.input-new-member {
+  height: 36px;
+  width: 120px;
+  // vertical-align: bottom;
+
+  .el-tag + & {
+    margin-left: 10px;
+  }
+}
+
+.btn-line {
+  display: flex;
+  justify-content: flex-end;
+}

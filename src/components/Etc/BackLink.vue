@@ -1,19 +1,14 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:49:31 
- * @Last Modified by:   Skye Young 
- * @Last Modified time: 2019-10-28 19:49:31 
- */
-
 <template>
   <a class="back" @click="clickFun">
-    <span id="backIcon" class="el-icon-back"></span> 返回
+    <span class="el-icon-back"></span>
+    <slot>{{ text || "&nbsp;返回" }}</slot>
   </a>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
+  props: ["text"],
   methods: {
     clickFun() {
       this.$emit("click");
@@ -29,19 +24,12 @@ export default Vue.extend({
   cursor: pointer;
   margin-inline-start: 12px;
 
+  & > span {
+    transition: transform 0.4s;
+  }
+
   &:hover > span {
-    animation: arrow-move 0.4s;
-  }
-}
-
-@keyframes arrow-move {
-  0%,
-  100% {
-    transform: translateX(0px);
-  }
-
-  50% {
-    transform: translateX(-0.8vw);
+    transform: translateX(-0.6rem);
   }
 }
 </style>

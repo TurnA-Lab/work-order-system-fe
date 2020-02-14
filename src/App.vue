@@ -1,12 +1,5 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-10-28 19:48:06 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-19 13:14:02
- */
-
 <template>
-  <div id="app" :class="{offline: offline}">
+  <div id="app" :class="{ offline: offline }">
     <div class="offline-msg">
       <v-icon name="plane" scale="2"></v-icon>&nbsp;当前未连接到网络
     </div>
@@ -35,6 +28,7 @@ export default Vue.extend({
     }
   },
   mounted() {
+    // 离线与否
     window.addEventListener("offline", () => {
       this.offline = true;
     });
@@ -43,23 +37,22 @@ export default Vue.extend({
       location.reload();
       this.offline = false;
     });
-
-    const title = document.title;
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") {
-        if (title !== document.title) {
-          document.title = title;
-        }
-      } else {
-        document.title = "不要忘了我啊！";
-      }
-    });
   }
 });
 </script>
 
 <style lang="scss">
-@import "@/stylesheet/default.scss";
+@import "assets/stylesheet/font";
+
+:root {
+  // User Card Width
+  --card-width: 20vw;
+  --card-height: calc(var(--card-width) * 1.414);
+
+  @include screen($larger) {
+    --card-width: 301px;
+  }
+}
 
 .offline {
   pointer-events: none;
@@ -80,7 +73,8 @@ export default Vue.extend({
 }
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans SC", "PingFang SC", miui, -apple-system, system-ui,
+    "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -150,24 +144,5 @@ export default Vue.extend({
     max-width: 100%;
     max-height: 100%;
   }
-}
-
-// Dialog
-.el-dialog__wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  overflow: hidden;
-}
-
-.wo-dialog {
-  border-radius: 1rem;
-
-  min-width: 450px;
-  max-height: 80vh;
-  margin: 0px !important;
-
-  overflow: hidden;
 }
 </style>

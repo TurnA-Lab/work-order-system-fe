@@ -1,15 +1,3 @@
-/*
- * @Author: Skye Young 
- * @Date: 2019-11-17 16:41:10 
- * @Last Modified by: Skye Young
- * @Last Modified time: 2019-11-20 21:03:13
- */
-
-/*
- * @Origin: guodada
- * @Url: https://juejin.im/post/5b45e4c55188251b1a7b2301
- */
-
 <template>
   <div>
     <el-table
@@ -47,16 +35,22 @@
           :key="index"
           :prop="column.prop"
           :label="column.label"
-          :align="column.align||'center'"
+          :align="column.align || 'center'"
           :width="column.width"
           :fixed="column.fixed"
         >
           <template slot-scope="scope">
-            <template v-if="!column.render">{{scope.row[column.prop]}}</template>
+            <template v-if="!column.render">{{
+              scope.row[column.prop]
+            }}</template>
 
             <!-- render -->
             <template v-else>
-              <RenderDom :row="scope.row" :index="index" :render="column.render" />
+              <RenderDom
+                :row="scope.row"
+                :index="index"
+                :render="column.render"
+              />
             </template>
 
             <!-- render button -->
@@ -70,7 +64,27 @@
                   :disabled="btn.disabled"
                   :plain="btn.plain"
                   @click.stop="btn.onClick(scope.row, scope.$index)"
-                >{{btn.name}}</el-button>
+                  >{{ btn.name }}</el-button
+                >
+              </template>
+            </template>
+
+            <!-- render tool-tip -->
+            <template v-if="column.toolTip">
+              <template v-if="scope.row[column.show] === column.showRule">
+                <el-popover
+                  placement="bottom-start"
+                  trigger="hover"
+                  :content="scope.row[column.content] || '无'"
+                >
+                  <el-button
+                    class="tooltipBtn"
+                    slot="reference"
+                    icon="el-icon-question"
+                    type="text"
+                    circle
+                  ></el-button>
+                </el-popover>
               </template>
             </template>
 
@@ -94,6 +108,8 @@
 </template>
 
 <script>
+// Origin: guodada
+// Url: https://juejin.im/post/5b45e4c55188251b1a7b2301
 export default {
   components: {
     RenderDom: {
@@ -127,13 +143,17 @@ export default {
       {
         maxHeight: 500,
         stripe: true, // 是否为斑马纹
-        border: true
+        border: true,
+        initTable: true,
+        button: false,
+        toolTip: false
       },
       this.options
     );
 
-    /* this.options.initTable &&  */
-    this.fetch();
+    if (this.$parent.options.initTable) {
+      this.fetch();
+    }
   },
   methods: {
     handleSizeChange(size) {
@@ -170,5 +190,9 @@ export default {
 .el-table__body-wrapper,
 .el-table__fixed-body-wrapper {
   max-height: 60vh !important;
+}
+
+.tooltipBtn {
+  padding: 5px;
 }
 </style>
