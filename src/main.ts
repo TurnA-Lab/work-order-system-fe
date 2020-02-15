@@ -63,7 +63,7 @@ Vue.axios.interceptors.response.use(
 /**
  * console 信息设置
  */
-Console.snapShoot();
+Console.snapShot();
 
 /**
  * vue 设置

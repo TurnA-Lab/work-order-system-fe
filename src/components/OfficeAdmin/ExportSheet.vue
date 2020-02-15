@@ -23,7 +23,9 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="downloadExcel">导出表格</el-button>
+        <el-button type="primary" @click="downloadExcel" :loading="fetchTable"
+          >导出表格</el-button
+        >
       </el-form-item>
 
       <el-form-item>
@@ -56,7 +58,8 @@ export default Vue.extend({
       form: {
         year: "",
         schoolYear: ""
-      }
+      },
+      fetchTable: false
     };
   },
   methods: {
@@ -67,6 +70,7 @@ export default Vue.extend({
           type: "warning"
         });
       } else {
+        this.fetchTable = true;
         this.$http
           .post(this.api, this.form, {
             headers: {
@@ -91,6 +95,7 @@ export default Vue.extend({
           })
           .then(([filename, data]) => {
             saveAs(data, filename);
+            this.fetchTable = false;
           })
           .catch((err: string) => {
             this.$message({
@@ -101,7 +106,7 @@ export default Vue.extend({
       }
     },
     downloadFile(canDownload: (data: any) => void) {
-      if (this.form.year === "" || this.form.schoolYear === "") {
+      if (this.form.year === "" && this.form.schoolYear === "") {
         this.$message({
           message: "请先选择导出年度、学年",
           type: "warning"

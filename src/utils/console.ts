@@ -16,7 +16,7 @@ export default class Console {
     backgroundColor: "#333333"
   };
 
-  public static snapShoot(infoStyle?: InfoStyleConfig): void {
+  public static snapShot(infoStyle?: InfoStyleConfig): void {
     infoStyle = Object.assign({}, this.defaultStyle, infoStyle);
     this.getAppInfo(infoStyle);
     this.getLoadTime(infoStyle);

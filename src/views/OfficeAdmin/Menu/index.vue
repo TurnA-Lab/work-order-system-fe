@@ -54,9 +54,11 @@ export default Vue.extend({
 .root-menu {
   height: 100%;
   box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 
   &:not(.el-menu--collapse) {
     width: 300px;
+
     // min-height: 400px;
   }
 

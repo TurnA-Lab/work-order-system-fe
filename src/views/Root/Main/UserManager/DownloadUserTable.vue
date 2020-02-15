@@ -1,6 +1,6 @@
 <template>
   <div class="download-page">
-    <el-button type="primary" @click="downloadTable">
+    <el-button type="primary" @click="downloadTable" :loading="fetchFile">
       <i class="el-icon-download"></i>
       下载{{ fileName }}
     </el-button>
@@ -15,8 +15,14 @@ import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   props: ["fileName", "api"],
+  data() {
+    return {
+      fetchFile: false
+    };
+  },
   methods: {
     downloadTable() {
+      this.fetchFile = true;
       this.$http
         .post(
           this.api,
@@ -40,6 +46,7 @@ export default Vue.extend({
         })
         .then(([filename, data]) => {
           saveAs(data, filename);
+          this.fetchFile = false;
         })
         .catch((err: string) => {
           this.$message({
@@ -54,7 +61,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .download-page {
-  height: 80vh;
+  height: 86vh;
   display: flex;
   justify-content: center;
   align-items: center;

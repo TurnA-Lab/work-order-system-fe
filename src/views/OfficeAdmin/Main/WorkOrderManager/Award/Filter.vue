@@ -1,19 +1,94 @@
 <template>
   <div>
     <div class="filter-part">
-      <el-form :inline="true" :model="filterForm">
+      <el-form
+        class="filter-form"
+        :inline="true"
+        :model="filterForm"
+        size="mini"
+      >
         <el-form-item>
           <el-input
             v-model="filterForm.content"
             placeholder="获奖名称"
+            clearable
           ></el-input>
         </el-form-item>
 
         <el-form-item>
           <el-input
             v-model="filterForm.name"
-            placeholder="获奖教师（第一）"
+            placeholder="获奖教师"
+            clearable
           ></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-select
+            v-model="filterForm.department"
+            placeholder="院部"
+            filterable
+          >
+            <el-option
+              :key="item.value"
+              v-for="item in filter.department"
+              :label="item.label"
+              :value="item.label"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-cascader
+            v-model="filterForm.sort"
+            placeholder="类型"
+            :options="filter.sort"
+            :props="{ expandTrigger: 'hover' }"
+            :show-all-levels="false"
+            filterable
+          ></el-cascader>
+        </el-form-item>
+
+        <el-form-item>
+          <el-select v-model="filterForm.level" placeholder="级别" filterable>
+            <el-option
+              v-for="item in filter.level"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-select v-model="filterForm.prize" placeholder="奖项" filterable>
+            <el-option
+              v-for="item in filter.prize"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-date-picker
+            align="center"
+            v-model="filterForm.year"
+            type="year"
+            placeholder="年度"
+          ></el-date-picker>
+        </el-form-item>
+
+        <el-form-item>
+          <el-select v-model="filterForm.schoolYear" placeholder="学年">
+            <el-option
+              v-for="item in schoolYears"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item>
@@ -43,6 +118,7 @@ import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
+import yearRange from "@/utils/returnYearRange";
 
 interface Data {
   aid: number;
@@ -78,9 +154,22 @@ export default Vue.extend({
   data() {
     return {
       filterForm: {
-        content: "",
-        name: ""
+        project: null,
+        name: null,
+        department: null,
+        level: null,
+        sort: null,
+        year: null,
+        schoolYear: null,
+        prize: null
       },
+      filter: {
+        department: [],
+        level: [],
+        sort: [],
+        prize: []
+      },
+      schoolYears: yearRange,
       isFilled: false,
       auditIsVisible: false,
       data: {},
@@ -156,7 +245,7 @@ export default Vue.extend({
       for (const key in this.filterForm) {
         if (this.filterForm.hasOwnProperty(key)) {
           const element = (this.filterForm as any)[key];
-          if (element !== "") {
+          if (element !== null) {
             this.isFilled = true;
             break;
           }
@@ -214,6 +303,111 @@ export default Vue.extend({
         this.auditIsVisible = isVisible;
       }
     }
+  },
+  created() {
+    const stateToken = this.$store.state.userInfo.token;
+
+    // 请求院部列表
+    this.$http
+      .post(
+        "/api/online/getDepartmentList",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.filter.department = res.data.data;
+        } else {
+          return Promise.reject(res.data.msg);
+        }
+      })
+      .catch((err: string) => {
+        this.$message({
+          message: err || "由于未知因素，无法获取院部列表",
+          type: "warning"
+        });
+      });
+
+    // 请求项目类型列表
+    this.$http
+      .post(
+        "/api/online/getTypeList",
+        {
+          class1: "获奖类"
+        },
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.filter.sort = res.data.data;
+        } else {
+          return Promise.reject(res.data.msg);
+        }
+      })
+      .catch((err: string) => {
+        this.$message({
+          message: "由于未知因素，无法获取获奖类型列表",
+          type: "warning"
+        });
+      });
+
+    // 请求奖项列表
+    this.$http
+      .post(
+        "/api/online/getPrizeSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.filter.prize = res.data.data;
+        } else {
+          return Promise.reject(res.data.msg);
+        }
+      })
+      .catch((err: string) => {
+        this.$message({
+          message: err || "由于未知因素，无法获取奖项列表",
+          type: "warning"
+        });
+      });
+
+    // 请求项目级别列表
+    this.$http
+      .post(
+        "/api/online/getLevelSet",
+        {},
+        {
+          headers: {
+            token: stateToken
+          }
+        }
+      )
+      .then((res: AxiosResponse) => {
+        if (res.data.code === 0) {
+          this.filter.level = res.data.data;
+        } else {
+          return Promise.reject(res.data.msg);
+        }
+      })
+      .catch((err: string) => {
+        this.$message({
+          message: err || "由于未知因素，无法获取项目级别列表",
+          type: "warning"
+        });
+      });
   }
 });
 </script>
@@ -222,5 +416,20 @@ export default Vue.extend({
 div >>> .el-table__body-wrapper,
 div >>> .el-table__fixed-body-wrapper {
   height: 48vh !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.filter-form {
+  display: inline-flex;
+
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner {
+    width: auto;
+  }
+
+  & > {
+    width: 25%;
+  }
 }
 </style>
