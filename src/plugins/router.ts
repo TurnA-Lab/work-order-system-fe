@@ -1,7 +1,7 @@
 import Vue from "vue";
-import Router from "vue-router";
-import Login from "@/views/Login/index.vue";
+import Router, { RawLocation } from "vue-router";
 import Page404 from "@/views/404.vue";
+import { Roles } from "@/interface/login";
 
 Vue.use(Router);
 
@@ -11,37 +11,40 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: Login,
+      component: () => import("@/views/Login/index.vue"),
       meta: {
-        title: "登录"
-      }
+        title: "登录",
+      },
     },
     {
       path: "/",
       name: "index",
       redirect: () => {
         const permission = sessionStorage.getItem("wo_permission");
-        if (permission === "0" || permission === "1") {
+        if (
+          permission === Roles.user.toString() ||
+          permission === Roles.college_admin.toString()
+        ) {
           return "/user";
-        } else if (permission === "2") {
+        } else if (permission === Roles.office_admin.toString()) {
           return "/office_admin";
-        } else if (permission === "3") {
+        } else if (permission === Roles.root.toString()) {
           return "/root";
         } else {
           return "/login";
         }
-      }
+      },
     },
     {
       path: "/user",
       name: "user",
       component: () => import("@/views/User/Home/index.vue"),
       meta: {
-        title: "首页"
-      }
+        title: "首页",
+      },
     },
     {
-      path: "/user/info",
+      path: "user/info",
       name: "userInfo",
       component: () => import("@/views/User/Info/index.vue"),
       redirect: { name: "userInfoProfile" },
@@ -51,21 +54,21 @@ const router = new Router({
           name: "userInfoProfile",
           component: () => import("@/views/User/Info/Profile.vue"),
           meta: {
-            title: "个人资料"
-          }
+            title: "个人资料",
+          },
         },
         {
           path: "password",
           name: "userInfoPassword",
           component: () => import("@/views/User/Info/Password.vue"),
           meta: {
-            title: "修改密码"
-          }
-        }
-      ]
+            title: "修改密码",
+          },
+        },
+      ],
     },
     {
-      path: "/user/work_order",
+      path: "user/work_order",
       name: "userWorkOrder",
       component: () => import("@/views/User/WorkOrder/index.vue"),
       redirect: { name: "userOrders" },
@@ -75,21 +78,21 @@ const router = new Router({
           name: "userOrders",
           component: () => import("@/views/User/WorkOrder/Orders/index.vue"),
           meta: {
-            title: "我的工单"
-          }
+            title: "我的工单",
+          },
         },
         {
           path: "new_order",
           name: "userNewOrder",
           component: () => import("@/views/User/WorkOrder/NewOrder/index.vue"),
           meta: {
-            title: "创建工单"
-          }
-        }
-      ]
+            title: "创建工单",
+          },
+        },
+      ],
     },
     {
-      path: "/college_admin",
+      path: "college_admin",
       name: "collegeAdmin",
       component: () => import("@/views/User/CollegeAdmin/index.vue"),
       redirect: { name: "collegeAdminMemberManager" },
@@ -98,72 +101,23 @@ const router = new Router({
           path: "member_manager",
           name: "collegeAdminMemberManager",
           component: () =>
-            import("@/views/User/CollegeAdmin/MemberManager/index.vue"),
+            import("@/views/User/CollegeAdmin/MemberManager.vue"),
           meta: {
-            title: "部门成员管理"
-          }
+            title: "部门成员管理",
+          },
         },
         {
           path: "export_sheet",
           name: "collegeAdminExportSheet",
           component: () => import("@/views/User/CollegeAdmin/ExportSheet.vue"),
           meta: {
-            title: "确认表导出"
-          }
-        }
-      ]
+            title: "确认表导出",
+          },
+        },
+      ],
     },
     {
-      path: "/root",
-      name: "root",
-      component: () => import("@/views/Root/index.vue"),
-      redirect: { name: "rootHome" },
-      children: [
-        {
-          path: "home",
-          name: "rootHome",
-          component: () => import("@/views/Root/Main/Index/index.vue"),
-          meta: {
-            title: "首页"
-          }
-        },
-        {
-          path: "type_manager",
-          name: "rootTypeManager",
-          component: () => import("@/views/Root/Main/TypeManager/index.vue"),
-          meta: {
-            title: "类型 / 级别管理"
-          }
-        },
-        {
-          path: "bonus_manager",
-          name: "rootBonusManager",
-          component: () => import("@/views/Root/Main/BonusManager/index.vue"),
-          meta: {
-            title: "奖励管理"
-          }
-        },
-        {
-          path: "performance_manager",
-          name: "rootPerformanceManager",
-          component: () =>
-            import("@/views/Root/Main/PerformanceManager/index.vue"),
-          meta: {
-            title: "业绩分管理"
-          }
-        },
-        {
-          path: "user_manager",
-          name: "rootUserManager",
-          component: () => import("@/views/Root/Main/UserManager/index.vue"),
-          meta: {
-            title: "用户管理"
-          }
-        }
-      ]
-    },
-    {
-      path: "/office_admin",
+      path: "office_admin",
       name: "officeAdmin",
       component: () => import("@/views/OfficeAdmin/index.vue"),
       redirect: { name: "officeAdminHome" },
@@ -171,10 +125,10 @@ const router = new Router({
         {
           path: "home",
           name: "officeAdminHome",
-          component: () => import("@/views/OfficeAdmin/Main/Index/index.vue"),
+          component: () => import("@/views/OfficeAdmin/Main/Home.vue"),
           meta: {
-            title: "首页"
-          }
+            title: "主页",
+          },
         },
         {
           path: "work_order_manager",
@@ -182,55 +136,108 @@ const router = new Router({
           component: () =>
             import("@/views/OfficeAdmin/Main/WorkOrderManager/index.vue"),
           meta: {
-            title: "工单管理"
-          }
+            title: "工单管理",
+          },
         },
         {
           path: "import_sheet",
           name: "officeAdminImportSheet",
-          component: () =>
-            import("@/views/OfficeAdmin/Main/ImportSheet/index.vue"),
+          component: () => import("@/views/OfficeAdmin/Main/ImportSheet.vue"),
           meta: {
-            title: "奖励 / 业绩分表格录入"
-          }
-        }
-      ]
+            title: "奖励 / 业绩分表格录入",
+          },
+        },
+      ],
     },
+    {
+      path: "root",
+      name: "root",
+      component: () => import("@/views/Root/index.vue"),
+      redirect: { name: "rootHome" },
+      children: [
+        {
+          path: "home",
+          name: "rootHome",
+          component: () => import("@/views/Root/Main/Home.vue"),
+          meta: {
+            title: "首页",
+          },
+        },
+        {
+          path: "type_manager",
+          name: "rootTypeManager",
+          component: () => import("@/views/Root/Main/TypeManager.vue"),
+          meta: {
+            title: "类型 / 级别管理",
+          },
+        },
+        {
+          path: "bonus_manager",
+          name: "rootBonusManager",
+          component: () => import("@/views/Root/Main/BonusManager/index.vue"),
+          meta: {
+            title: "奖励管理",
+          },
+        },
+        {
+          path: "performance_manager",
+          name: "rootPerformanceManager",
+          component: () =>
+            import("@/views/Root/Main/PerformanceManager/index.vue"),
+          meta: {
+            title: "业绩分管理",
+          },
+        },
+        {
+          path: "user_manager",
+          name: "rootUserManager",
+          component: () => import("@/views/Root/Main/UserManager/index.vue"),
+          meta: {
+            title: "用户管理",
+          },
+        },
+      ],
+    },
+
     {
       path: "*",
       name: "page404",
       component: Page404,
       meta: {
-        title: "404"
-      }
-    }
-  ]
+        title: "404",
+      },
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {
-  const permission = sessionStorage.getItem("wo_permission");
-
   // 设置选项卡显示标题
-  document.title = to.meta.title ? to.meta.title + " - JUST WO" : "JUST WO";
+  document.title = (to.meta.title ? to.meta.title + " - " : "") + "JUST WO";
 
-  if (to.name === "login") {
+  // 获取权限
+  const permission = sessionStorage.getItem("wo_permission");
+  const toName = to.name as string;
+
+  if (toName === "login") {
     if (typeof permission === "string") {
       next({ name: "index" });
     } else {
       next();
     }
   } else {
+    // 如果有权限
     if (typeof permission === "string") {
-      const toName = to.name as string;
-
+      // 如果权限匹配
       if (
-        (/^collegeAdmin{1}/.test(toName) && permission !== "1") ||
-        (/^officeAdmin{1}/.test(toName) && permission !== "2") ||
-        (/^root{1}/.test(toName) && permission !== "3")
+        (toName.indexOf("collegeAdmin") !== -1 &&
+          permission === Roles.college_admin.toString()) ||
+        (toName.indexOf("officeAdmin") !== -1 &&
+          permission === Roles.office_admin.toString()) ||
+        (toName.indexOf("root") !== -1 && permission === Roles.root.toString())
       ) {
-        next({ name: "index" });
-      } else {
         next();
+      } else {
+        next({ name: "index" });
       }
     } else {
       next({ name: "login" });
@@ -240,35 +247,33 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   // 动态标题
-  const title = document.title;
-  let timer: any;
-  let count = 0;
+  const title = document.title; // 记录下当前的网页的标题
+  let timer: any; // 计时器
+  let count = 0; // 计数
   const dot = ["", ".", "..", "..."];
 
   document.addEventListener("visibilitychange", () => {
+    // 清除可能存在的计时器
     if (timer !== null || timer !== undefined) {
       clearInterval(timer);
     }
 
+    // 如果在浏览本网站
     if (document.visibilityState === "visible") {
-      if (title !== document.title) {
-        document.title = title;
-      }
+      document.title = title !== document.title ? title : document.title;
     } else {
       timer = setInterval(() => {
-        document.title = "等待操作中" + dot[count++];
-        if (count === 4) {
-          count = 0;
-        }
+        document.title = "等待操作中" + dot[count];
+        count = count === 3 ? 0 : count++;
       }, 100);
     }
   });
 });
 
-// 修复路由重复点击同一个报错的问题
-const originalPush = Router.prototype.push;
-Router.prototype.push = function push(location: string) {
-  return (originalPush.call(this, location) as any).catch((err: string) => err);
-};
+// 修复重复访问同一个路由时报错的问题
+Router.prototype.push = (location: RawLocation) =>
+  (Router.prototype.push.call(Router, location) as any).catch(
+    (err: string) => err
+  );
 
 export default router;

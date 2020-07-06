@@ -14,7 +14,7 @@
         type="text"
         :disabled="!btnIsDisabled"
         @click="$router.push({ name: 'userNewOrder' })"
-        >提交工单</el-button
+        >创建工单</el-button
       >
     </template>
     <router-view></router-view>

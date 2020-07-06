@@ -23,10 +23,12 @@ interface FileNeedZip {
 }
 
 export default Vue.extend({
-  props: ["zipName"],
+  props: {
+    zipName: String,
+  },
   data() {
     return {
-      isDownLoading: false
+      isDownLoading: false,
     };
   },
   methods: {
@@ -38,7 +40,7 @@ export default Vue.extend({
         } else {
           this.$message({
             message: "没有文件可供下载",
-            type: "warning"
+            type: "warning",
           });
         }
       });
@@ -61,7 +63,7 @@ export default Vue.extend({
           const promises: any = [];
 
           fileNeedZip.forEach((folder: FileNeedZip) => {
-            const directory = zip.folder(folder.name);
+            const directory = zip.folder(folder.name) as JSZip;
 
             if (typeof folder.files === "string") {
               folder.files = JSON.parse(folder.files);
@@ -70,7 +72,7 @@ export default Vue.extend({
             folder.files.forEach((file: FileInfo) => {
               const promise = this.$http
                 .get(`/api/alien/preview/${file.uuid}/${file.name}`, {
-                  responseType: "arraybuffer"
+                  responseType: "arraybuffer",
                 })
                 .then((res: AxiosResponse) => {
                   if (res.status === 200) {
@@ -85,7 +87,7 @@ export default Vue.extend({
                 .catch((msg: string) => {
                   this.$message({
                     message: msg || "由于未知因素，无法获得文件",
-                    type: "warning"
+                    type: "warning",
                   });
                 });
               promises.push(promise);
@@ -102,10 +104,10 @@ export default Vue.extend({
         .catch((msg: string) => {
           this.$message({
             message: msg || "由于未知因素，无法获得文件列表",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
-  }
+    },
+  },
 });
 </script>

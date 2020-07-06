@@ -27,49 +27,43 @@ import { saveAs } from "file-saver";
 import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
-  props: ["fileName", "api"],
+  props: { fileName: String, api: String },
   data() {
     return {
-      year: ""
+      year: "",
     };
   },
   methods: {
     downloadTable() {
       this.$http
-        .post(
-          this.api,
-          {},
-          {
-            params: {
-              year: this.year
-            },
-            headers: {
-              token: this.$store.state.userInfo.token
-            },
-            responseType: "blob"
-          }
-        )
-        .then((res: AxiosResponse) => {
-          if (res.status === 200) {
-            return Promise.resolve([
-              decodeFilename(res, `${this.fileName}.xlsx`),
-              res.data
-            ]);
-          } else {
-            return Promise.reject(res.data.msg);
-          }
+        .get(this.api, {
+          params: {
+            year: this.year,
+          },
+          headers: {
+            token: this.$store.state.userInfo.token,
+          },
+          responseType: "blob",
         })
+        .then((res: AxiosResponse) =>
+          res.status === 200
+            ? Promise.resolve([
+                decodeFilename(res, `${this.fileName}.xlsx`),
+                res.data,
+              ])
+            : Promise.reject(res.data.msg)
+        )
         .then(([filename, data]) => {
           saveAs(data, filename);
         })
         .catch((err: string) => {
           this.$message({
             message: err || `由于未知因素，无法下载${this.fileName}`,
-            type: "warning"
+            type: "warning",
           });
         });
-    }
-  }
+    },
+  },
 });
 </script>
 

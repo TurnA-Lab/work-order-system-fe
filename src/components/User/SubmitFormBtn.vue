@@ -40,7 +40,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import validate from "@/utils/validate";
+import { allNotNull } from "@/utils/validate";
 
 const formApi = ["addConstruction", "addAchievement", "addAward"];
 
@@ -49,7 +49,7 @@ export default Vue.extend({
     return {
       isVisible: false,
       isConfirming: false,
-      input: ""
+      input: "",
     };
   },
   methods: {
@@ -57,12 +57,12 @@ export default Vue.extend({
       new Promise((resolve, reject) => {
         resolve(this.$emit("next"));
       }).then(() => {
-        if (validate(this.$store.state.order.form)) {
+        if (allNotNull(this.$store.state.order.form)) {
           this.isVisible = !this.isVisible;
         } else {
           this.$message({
             message: "工单填写尚不完整，请补全后提交",
-            type: "warning"
+            type: "warning",
           });
         }
       });
@@ -75,12 +75,12 @@ export default Vue.extend({
         .post(
           "/api/online/validate",
           {
-            worknum: this.input
+            worknum: this.input,
           },
           {
             headers: {
-              token: state.userInfo.token
-            }
+              token: state.userInfo.token,
+            },
           }
         )
         .then((res: AxiosResponse) => {
@@ -97,8 +97,8 @@ export default Vue.extend({
               state.order.form,
               {
                 headers: {
-                  token: state.userInfo.token
-                }
+                  token: state.userInfo.token,
+                },
               }
             )
             .then((response: AxiosResponse) => {
@@ -117,10 +117,10 @@ export default Vue.extend({
           this.isConfirming = false;
           this.$message({
             message: err || "由于未知因素，暂时无法进行提交",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   computed: {
     submitIsDisable() {
@@ -128,8 +128,8 @@ export default Vue.extend({
     },
     submitBtn() {
       return this.$data.isConfirming ? "请稍后……" : "我已检查，进行提交";
-    }
-  }
+    },
+  },
 });
 </script>
 

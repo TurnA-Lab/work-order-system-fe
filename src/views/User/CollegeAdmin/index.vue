@@ -31,18 +31,12 @@ export default Vue.extend({
   components: {
     MainCard,
     BackLink,
-    VerticalDivider
+    VerticalDivider,
   },
   computed: {
     btnIsDisabled() {
-      if (this.$route.name === "collegeAdminMemberManager") {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
+      return this.$route.name === "collegeAdminMemberManager";
+    },
+  },
 });
 </script>
-
-<style lang="scss" scoped></style>

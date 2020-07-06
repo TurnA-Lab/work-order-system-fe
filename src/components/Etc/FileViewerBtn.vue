@@ -22,20 +22,20 @@ import Vue from "vue";
 import FilePreview from "./FilePreview.vue";
 
 export default Vue.extend({
-  props: ["files"],
+  props: { files: String },
   components: {
-    FilePreview
+    FilePreview,
   },
   data() {
     return {
-      isVisible: false
+      isVisible: false,
     };
   },
   methods: {
     showDialog() {
       this.isVisible = !this.isVisible;
-    }
-  }
+    },
+  },
 });
 </script>
 

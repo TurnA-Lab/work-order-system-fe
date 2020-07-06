@@ -6,19 +6,25 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: {
-    userInfo: {},
+    userInfo: {
+      token: null,
+      permission: null,
+    },
     order: {
       active: 1,
       class: 0,
-      form: {}
-    }
+      form: {},
+    },
+  },
+  getters: {
+    permission: (state) => state.userInfo.permission,
   },
   mutations: {
     updateUserInfo(state, newUserInfo: object) {
-      state.userInfo = Object.assign({}, newUserInfo);
+      state.userInfo = Object.assign(state.userInfo, newUserInfo);
     },
     clearUserInfo(state) {
-      state.userInfo = {};
+      state.userInfo = { token: null, permission: null };
     },
     nextActive(state) {
       state.order.active++;
@@ -39,10 +45,10 @@ export default new Vuex.Store({
         {
           active: 1,
           class: 0,
-          form: {}
+          form: {},
         }
       );
-    }
+    },
   },
-  actions: {}
+  actions: {},
 });

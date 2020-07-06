@@ -111,7 +111,7 @@ import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
-import yearRange from "@/utils/returnYearRange";
+import yearRange from "@/utils/yearRange";
 
 interface Data {
   cid: number;
@@ -148,7 +148,7 @@ const statusText = ["未通过", "审核中", "已通过"];
 export default Vue.extend({
   components: {
     WhatTable,
-    Audit
+    Audit,
   },
   data() {
     return {
@@ -159,12 +159,12 @@ export default Vue.extend({
         level: null,
         sort: null,
         year: null,
-        schoolYear: null
+        schoolYear: null,
       },
       filter: {
         department: [],
         level: [],
-        sort: []
+        sort: [],
       },
       schoolYears: yearRange,
       isFilled: false,
@@ -177,24 +177,24 @@ export default Vue.extend({
         {
           prop: "project",
           label: "项目名称",
-          width: 160
+          width: 160,
         },
         {
           prop: "name",
-          label: "项目负责人"
+          label: "项目负责人",
         },
         {
           prop: "class3",
           label: "类别",
-          width: 160
+          width: 160,
         },
         {
           prop: "isEnd",
-          label: "是否已结束"
+          label: "是否已结束",
         },
         {
           prop: "status",
-          label: "审核状态"
+          label: "审核状态",
         },
         {
           button: true,
@@ -212,10 +212,10 @@ export default Vue.extend({
                 this.$data.data = data;
                 this.$data.index = index;
                 this.$data.auditIsVisible = true;
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ],
       options: {
         mutiSelect: false,
@@ -223,13 +223,13 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true // 是否一挂载就加载数据
+        initTable: true, // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20
-      }
+        pageSize: 20,
+      },
     };
   },
   methods: {
@@ -256,11 +256,11 @@ export default Vue.extend({
             {
               params: {
                 page: this.pagination.pageIndex,
-                size: this.pagination.pageSize
+                size: this.pagination.pageSize,
               },
               headers: {
-                token: this.$store.state.userInfo.token
-              }
+                token: this.$store.state.userInfo.token,
+              },
             }
           )
           .then((res: AxiosResponse) => {
@@ -282,7 +282,7 @@ export default Vue.extend({
           .catch((err: string) => {
             this.$message({
               message: err || "由于未知因素，无法获取表格",
-              type: "warning"
+              type: "warning",
             });
             this.options.loading = false;
           });
@@ -290,7 +290,7 @@ export default Vue.extend({
         if (needAlert) {
           this.$message({
             message: "请至少填入一项，以进行筛选",
-            type: "warning"
+            type: "warning",
           });
         }
       }
@@ -301,7 +301,7 @@ export default Vue.extend({
       } else {
         this.auditIsVisible = isVisible;
       }
-    }
+    },
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -313,8 +313,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken
-          }
+            token: stateToken,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -327,7 +327,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning"
+          type: "warning",
         });
       });
 
@@ -336,12 +336,12 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "建设类"
+          class1: "建设类",
         },
         {
           headers: {
-            token: stateToken
-          }
+            token: stateToken,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -354,7 +354,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目类型列表",
-          type: "warning"
+          type: "warning",
         });
       });
 
@@ -365,8 +365,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken
-          }
+            token: stateToken,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -379,10 +379,10 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目级别列表",
-          type: "warning"
+          type: "warning",
         });
       });
-  }
+  },
 });
 </script>
 

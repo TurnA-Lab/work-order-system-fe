@@ -66,7 +66,7 @@ export default Vue.extend({
       selectYear: "",
       isVisible: false,
       isDisable: false,
-      fileName: ""
+      fileName: "",
     };
   },
   created() {
@@ -76,8 +76,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: this.$store.state.userInfo.token
-          }
+            token: this.$store.state.userInfo.token,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -91,7 +91,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法输出表",
-          type: "warning"
+          type: "warning",
         });
       });
   },
@@ -116,9 +116,9 @@ export default Vue.extend({
             {},
             {
               headers: {
-                token: this.$store.state.userInfo.token
+                token: this.$store.state.userInfo.token,
               },
-              responseType: "blob"
+              responseType: "blob",
             }
           )
           .then((res: AxiosResponse) => {
@@ -128,7 +128,7 @@ export default Vue.extend({
             if (res.status === 200) {
               return Promise.resolve([
                 decodeFilename(res, `${this.selectYear}-${this.fileName}.xlsx`),
-                res.data
+                res.data,
               ]);
             } else {
               return Promise.reject(res.data.msg);
@@ -140,26 +140,26 @@ export default Vue.extend({
           .catch((err: string) => {
             this.$message({
               message: err || "由于未知因素，无法下载用户表",
-              type: "warning"
+              type: "warning",
             });
           });
       } else {
         this.isDisable = false;
         this.$message({
           message: "请先选择导出年度",
-          type: "warning"
+          type: "warning",
         });
       }
     },
     close() {
       this.isVisible = false;
-    }
+    },
   },
   computed: {
     btnText() {
       return this.$data.isDisable ? "准备导出中..." : "导出";
-    }
-  }
+    },
+  },
 });
 </script>
 

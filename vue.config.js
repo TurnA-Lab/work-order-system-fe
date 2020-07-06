@@ -6,31 +6,30 @@ module.exports = {
       sass: {
         data: `
           @import "@/assets/stylesheet/base.scss";
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   devServer: {
     open: true, //浏览器自动打开页面
     host: "0.0.0.0", //如果是真机测试，就使用这个IP
-    port: 8080,
+    port: 8081,
     proxy: {
       //配置跨域
       "^/api": {
-        target: "http://134.175.59.87:8082",
-        // target: "http://10.3.4.18",
-        // target: "http://127.0.0.1:8082",
-        ws: true,
-        changOrigin: true
-      },
-      "^/local": {
-        target: "http://127.0.0.1:3000",
+        target: "http://10.132.128.216:8082",
         ws: true,
         changOrigin: true,
-        pathRewrite: {
-          "^/local": ""
-        }
-      }
-    }
-  }
+      },
+      "^/api/alien": {
+        target: "http://10.3.4.18:8998",
+        ws: true,
+        changOrigin: true,
+      },
+    },
+    https: true,
+  },
+  configureWebpack: {
+    devtool: "source-map",
+  },
 };

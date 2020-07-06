@@ -43,23 +43,23 @@
 import Vue from "vue";
 import DownloadAsZip from "@/components/Etc/DownloadAsZip.vue";
 import { AxiosResponse } from "axios/";
-import yearRange from "@/utils/returnYearRange";
+import yearRange from "@/utils/yearRange";
 import { saveAs } from "file-saver";
 import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
-  props: ["api", "fileApi"],
+  props: { api: String, fileApi: String },
   components: {
-    DownloadAsZip
+    DownloadAsZip,
   },
   data() {
     return {
       schoolYears: yearRange,
       form: {
         year: "",
-        schoolYear: ""
+        schoolYear: "",
       },
-      fetchTable: false
+      fetchTable: false,
     };
   },
   methods: {
@@ -67,16 +67,16 @@ export default Vue.extend({
       if (this.form.year === "" && this.form.schoolYear === "") {
         this.$message({
           message: "请先选择导出年度、学年",
-          type: "warning"
+          type: "warning",
         });
       } else {
         this.fetchTable = true;
         this.$http
           .post(this.api, this.form, {
             headers: {
-              token: this.$store.state.userInfo.token
+              token: this.$store.state.userInfo.token,
             },
-            responseType: "blob"
+            responseType: "blob",
           })
           .then((res: AxiosResponse) => {
             if (res.status === 200) {
@@ -87,7 +87,7 @@ export default Vue.extend({
                     this.form.year ? this.form.year : this.form.schoolYear
                   }学年工单.xlsx`
                 ),
-                res.data
+                res.data,
               ]);
             } else {
               return Promise.reject(res.data.msg);
@@ -100,7 +100,7 @@ export default Vue.extend({
           .catch((err: string) => {
             this.$message({
               message: err || "由于未知因素，无法下载用户表",
-              type: "warning"
+              type: "warning",
             });
           });
       }
@@ -109,14 +109,14 @@ export default Vue.extend({
       if (this.form.year === "" && this.form.schoolYear === "") {
         this.$message({
           message: "请先选择导出年度、学年",
-          type: "warning"
+          type: "warning",
         });
       } else {
         this.$http
           .post(this.fileApi, this.form, {
             headers: {
-              token: this.$store.state.userInfo.token
-            }
+              token: this.$store.state.userInfo.token,
+            },
           })
           .then((res: AxiosResponse) => {
             if (res.data.code === 0) {
@@ -128,12 +128,12 @@ export default Vue.extend({
           .catch((err: string) => {
             this.$message({
               message: err || "未知错误，导出失败",
-              type: "warning"
+              type: "warning",
             });
           });
       }
-    }
-  }
+    },
+  },
 });
 </script>
 

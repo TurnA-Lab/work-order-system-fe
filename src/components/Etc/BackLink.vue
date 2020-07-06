@@ -8,12 +8,14 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  props: ["text"],
+  props: {
+    text: String,
+  },
   methods: {
     clickFun() {
       this.$emit("click");
-    }
-  }
+    },
+  },
 });
 </script>
 

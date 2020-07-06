@@ -4,13 +4,13 @@
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="编辑">
-            <edit-user></edit-user>
+            <editor></editor>
           </el-tab-pane>
           <el-tab-pane label="筛选">
-            <filter-user></filter-user>
+            <filter></filter>
           </el-tab-pane>
           <el-tab-pane label="新增">
-            <add-user></add-user>
+            <addition></addition>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -28,17 +28,17 @@
 
 <script lang="ts">
 import Vue from "vue";
-import EditUser from "./EditUser/index.vue";
-import FilterUser from "./FilterUser.vue";
-import AddUser from "./AddUser.vue";
-import DownloadTable from "./DownloadUserTable.vue";
+import Editor from "./Editor.vue";
+import Filter from "./Filter.vue";
+import Addition from "./Addition.vue";
+import DownloadTable from "@/components/Root/DownloadUserTable.vue";
 
 export default Vue.extend({
   components: {
-    EditUser,
-    FilterUser,
-    AddUser,
-    DownloadTable
-  }
+    Editor,
+    Filter,
+    Addition,
+    DownloadTable,
+  },
 });
 </script>

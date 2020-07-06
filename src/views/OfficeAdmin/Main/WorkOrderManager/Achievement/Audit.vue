@@ -184,7 +184,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
-import yearRange from "@/utils/returnYearRange";
+import yearRange from "@/utils/yearRange";
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 
 interface Data {
@@ -219,9 +219,9 @@ const statusText = ["未通过", "审核中", "已通过"];
 const patentText = ["空", "是", "否"];
 
 export default Vue.extend({
-  props: ["data", "isVisible"],
+  props: { data: Object, isVisible: Boolean },
   components: {
-    FilePreviewerBtn
+    FilePreviewerBtn,
   },
   data() {
     return {
@@ -238,20 +238,20 @@ export default Vue.extend({
         patent: [
           {
             label: "空",
-            value: 0
+            value: 0,
           },
           {
             label: "是",
-            value: 1
+            value: 1,
           },
           {
             label: "否",
-            value: 2
-          }
+            value: 2,
+          },
         ],
         level: [],
-        sort: []
-      }
+        sort: [],
+      },
     };
   },
   methods: {
@@ -269,7 +269,7 @@ export default Vue.extend({
         this.$prompt("请输入原因", "", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          inputType: "textarea"
+          inputType: "textarea",
         }).then(({ value }: any) => {
           form.status = text;
           form.reason = value;
@@ -308,14 +308,14 @@ export default Vue.extend({
       // 处理审核状态
       const temForm = Object.assign({}, this.form, {
         status: statusText.indexOf((this.form as Data).status as string) - 1,
-        patent: patentText.indexOf((this.form as Data).patent as string)
+        patent: patentText.indexOf((this.form as Data).patent as string),
       });
 
       this.$http
         .post("/api/online/officeAdmin/achievementSupplement", temForm, {
           headers: {
-            token: this.$store.state.userInfo.token
-          }
+            token: this.$store.state.userInfo.token,
+          },
         })
         .then((res: AxiosResponse) => {
           this.isDisable = false;
@@ -325,7 +325,7 @@ export default Vue.extend({
               this.$emit("refresh");
               this.$message({
                 message: res.data.msg || "保存成功",
-                type: "success"
+                type: "success",
               });
             }
           } else {
@@ -336,15 +336,15 @@ export default Vue.extend({
           this.isDisable = false;
           this.$message({
             message: err || "未知错误",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    }
+    },
   },
   watch: {
     data(newValue: Data, oldValue: Data) {
@@ -378,7 +378,7 @@ export default Vue.extend({
       if (newValue === 2) {
         this.$data.isLoading = false;
       }
-    }
+    },
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -390,8 +390,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken
-          }
+            token: stateToken,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -405,7 +405,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning"
+          type: "warning",
         });
       });
 
@@ -414,12 +414,12 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "成果类"
+          class1: "成果类",
         },
         {
           headers: {
-            token: stateToken
-          }
+            token: stateToken,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -433,10 +433,10 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",
-          type: "warning"
+          type: "warning",
         });
       });
-  }
+  },
 });
 </script>
 

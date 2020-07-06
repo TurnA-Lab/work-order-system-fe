@@ -100,7 +100,7 @@ import AuditAward from "./Award/index.vue";
 import FilterConstruction from "./Construction/Filter.vue";
 import FilterAchievement from "./Achievement/Filter.vue";
 import FilterAward from "./Award/Filter.vue";
-import DigitizeSheet from "@/components/OfficeAdmin/DigitizeSheet/index.vue";
+import DigitizeSheet from "./DigitizeSheet.vue";
 import ExportSheet from "@/components/OfficeAdmin/ExportSheet.vue";
 import { saveAs } from "file-saver";
 import { AxiosResponse } from "axios/";
@@ -115,7 +115,7 @@ export default Vue.extend({
     FilterAchievement,
     FilterAward,
     DigitizeSheet,
-    ExportSheet
+    ExportSheet,
   },
   methods: {
     downloadTemplate(fallbackFilename: string, api: string) {
@@ -125,16 +125,16 @@ export default Vue.extend({
           {},
           {
             headers: {
-              token: this.$store.state.userInfo.token
+              token: this.$store.state.userInfo.token,
             },
-            responseType: "blob"
+            responseType: "blob",
           }
         )
         .then((res: AxiosResponse) => {
           if (res.status === 200) {
             return Promise.resolve([
               decodeFilename(res, fallbackFilename),
-              res.data
+              res.data,
             ]);
           } else {
             return Promise.reject(res.data.msg);
@@ -146,10 +146,10 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || "由于未知因素，无法下载用户表",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
-  }
+    },
+  },
 });
 </script>

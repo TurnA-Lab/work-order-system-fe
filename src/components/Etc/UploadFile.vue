@@ -63,9 +63,11 @@ const FilePond = vueFilePond(
 );
 
 export default Vue.extend({
-  props: ["customApi"],
+  props: {
+    customApi: String,
+  },
   components: {
-    FilePond
+    FilePond,
   },
   data() {
     const stateToken = this.$store.state.userInfo.token;
@@ -78,7 +80,7 @@ export default Vue.extend({
         "application/msword",
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/pdf"
+        "application/pdf",
       ],
       myFiles: [],
       myServer: {
@@ -105,10 +107,10 @@ export default Vue.extend({
             this.$http
               .post(this.customApi, uploadData, {
                 headers: {
-                  token: stateToken
+                  token: stateToken,
                 },
                 cancelToken: source.token,
-                timeout: 2500
+                timeout: 2500,
               })
               .then((res: AxiosResponse) => {
                 if (res.data.code === 0) {
@@ -128,14 +130,14 @@ export default Vue.extend({
                 "/api/online/getPanToken",
                 {
                   filename: file.name,
-                  size: file.size
+                  size: file.size,
                 },
                 {
                   headers: {
-                    token: stateToken
+                    token: stateToken,
                   },
                   cancelToken: source.token,
-                  timeout: 2500
+                  timeout: 2500,
                 }
               )
               .then((res: AxiosResponse) => {
@@ -154,7 +156,7 @@ export default Vue.extend({
 
                 return this.$http
                   .post("/api/alien/upload", uploadData, {
-                    cancelToken: source.token
+                    cancelToken: source.token,
                   })
                   .then((response: AxiosResponse) => {
                     if (response.data.code === "OK") {
@@ -169,13 +171,13 @@ export default Vue.extend({
                         `/api/online/confirmUploaded`,
                         {
                           name: file.name,
-                          uuid: fileUuid
+                          uuid: fileUuid,
                         },
                         {
                           headers: {
-                            token: stateToken
+                            token: stateToken,
                           },
-                          cancelToken: source.token
+                          cancelToken: source.token,
                         }
                       )
                       .then((confirmRes: AxiosResponse) => {
@@ -184,7 +186,7 @@ export default Vue.extend({
                           (this.$data.files as FileInfo[]).push({
                             name: file.name,
                             uuid: fileUuid,
-                            type: file.type
+                            type: file.type,
                           });
                           load(uuid);
                         } else {
@@ -196,7 +198,7 @@ export default Vue.extend({
                           this.$message({
                             message:
                               (err as string) || "由于未知因素，暂时无法上传",
-                            type: "warning"
+                            type: "warning",
                           });
                           error("暂时无法上传");
                         }
@@ -206,7 +208,7 @@ export default Vue.extend({
                     if (!this.$http.isCancel(err)) {
                       this.$message({
                         message: err.response.data.msg,
-                        type: "warning"
+                        type: "warning",
                       });
                       error("暂时无法上传");
                     }
@@ -216,7 +218,7 @@ export default Vue.extend({
                 if (!this.$http.isCancel(err)) {
                   this.$message({
                     message: (err as string) || "由于未知因素，暂时无法上传",
-                    type: "warning"
+                    type: "warning",
                   });
                   error("暂时无法上传");
                 }
@@ -227,17 +229,17 @@ export default Vue.extend({
             abort: () => {
               source.cancel();
               abort();
-            }
+            },
           };
-        }
-      }
+        },
+      },
     };
   },
   methods: {
     handleFilePondInit() {
       // console.log("FilePond has initialized");
-    }
-  }
+    },
+  },
 });
 </script>
 

@@ -34,9 +34,9 @@ interface FileInfo {
 }
 
 export default Vue.extend({
-  props: ["files"],
+  props: { files: String },
   components: {
-    VuePictureSwipe
+    VuePictureSwipe,
   },
   data() {
     return {
@@ -49,10 +49,10 @@ export default Vue.extend({
             id: "downloadImage",
             label: "下载图片",
             url: "{{raw_image_url}}",
-            download: true
-          }
-        ]
-      }
+            download: true,
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -62,9 +62,9 @@ export default Vue.extend({
         message: `<iframe class="content" src="${pdf.src}"></iframe>`,
         dangerouslyUseHTMLString: true,
         showConfirmButton: false,
-        customClass: "pdf-viewer"
+        customClass: "pdf-viewer",
       });
-    }
+    },
   },
   created() {
     if (typeof this.files === "undefined" || this.files === null) {
@@ -88,17 +88,17 @@ export default Vue.extend({
             thumbnail: `${img.src}?ir=fill_100_100`,
             w: img.naturalWidth,
             h: img.naturalHeight,
-            alt: img.name
+            alt: img.name,
           });
         } else if (file.type.slice(-3) === "pdf") {
           (this.pdfs as any).push({
             name: file.name,
-            src: `/api/alien/preview/${file.uuid}/${file.name}`
+            src: `/api/alien/preview/${file.uuid}/${file.name}`,
           });
         }
       });
     }
-  }
+  },
 });
 </script>
 

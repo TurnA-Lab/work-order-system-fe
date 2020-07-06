@@ -49,6 +49,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { AxiosResponse } from "axios";
+import { LoginData, Roles } from "../../interface/login";
 
 export default Vue.extend({
   data() {
@@ -57,69 +58,72 @@ export default Vue.extend({
       form: {
         permission: "0",
         worknum: "",
-        password: ""
+        password: "",
       },
       rules: {
         worknum: [{ required: true, message: "请输入工号", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
-      }
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      },
     };
   },
   computed: {
     submitBtnText() {
       return this.$data.isConfirming ? "请稍后..." : "登录";
-    }
+    },
   },
   methods: {
     submitForm(formName: string) {
-      (this as any).$refs[formName].validate((valid: boolean) => {
-        this.isConfirming = true;
-        if (valid) {
-          this.$http
-            .post("/api/outline/login", this.form)
-            .then((res: AxiosResponse) => {
-              if (res.data.code === 0) {
-                // 登录逻辑
-                const permission = res.data.data.permission;
-                if (this.form.permission === "0") {
-                  sessionStorage.setItem("wo_permission", "0");
-                } else if (this.form.permission === "1") {
-                  if (permission > 0) {
-                    sessionStorage.setItem("wo_permission", permission);
-                  } else {
-                    this.$message({
-                      message: res.data.msg,
-                      type: "warning"
-                    });
-                  }
-                }
+      // 设置验证状态
+      this.isConfirming = true;
 
-                const woUser = Object.assign({}, res.data.data, {
-                  worknum: this.form.worknum,
-                  permission: parseInt(
-                    sessionStorage.getItem("wo_permission") as string,
-                    10
-                  )
-                });
-                sessionStorage.setItem("wo_user", JSON.stringify(woUser));
-                this.$store.commit("updateUserInfo", woUser);
-                this.$router.replace({ name: "index" });
-              } else {
-                return Promise.reject(res.data.msg);
-                this.isConfirming = false;
-              }
-            })
-            .catch((err: string) => {
-              this.$message({
-                message: err || "未知错误",
-                type: "warning"
+      ((this as any).$refs[formName].validate() as Promise<boolean>)
+        .then((valid: boolean) => valid || Promise.reject("请检查工号、密码"))
+        .then(() =>
+          this.$http
+            .post("/api/login", this.form)
+            .then((res: AxiosResponse) =>
+              res.data.code === 0 ? res.data.data : Promise.reject(res.data.msg)
+            )
+            .then((data: LoginData) => {
+              // 将权限数组转化为权限数字
+              let permission: number = 0;
+              data.roles.forEach((value) => {
+                permission =
+                  permission < parseInt(Roles[value], 10)
+                    ? parseInt(Roles[value], 10)
+                    : permission;
               });
-              this.isConfirming = false;
-            });
-        }
-      });
-    }
-  }
+
+              // 合并到 woUser
+              const woUser = Object.assign(data, { permission });
+
+              // 删除 data
+              delete data.roles;
+              // 设置 sessionStorage
+              sessionStorage.setItem(
+                "wo_permission",
+                this.form.permission === "0" ? "0" : permission.toString()
+              );
+
+              sessionStorage.setItem("wo_user", JSON.stringify(woUser));
+              // 设置到 vuex
+              this.$store.commit("updateUserInfo", woUser);
+              // 切换到首页
+              this.$router.replace({ name: "index" });
+            })
+            .catch((err: string) => Promise.reject(err))
+        )
+        .catch((err: string) => {
+          this.$message({
+            message: err || "未知错误",
+            type: "warning",
+          });
+        })
+        .finally(() => {
+          this.isConfirming = false;
+        });
+    },
+  },
 });
 </script>
 

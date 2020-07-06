@@ -1,21 +1,21 @@
 <template>
   <main class="user">
-    <user-card />
-    <user-menu />
+    <user-card></user-card>
+    <user-menu></user-menu>
   </main>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import UserCard from "./UserCard.vue";
-import UserMenu from "./menu.vue";
+import UserCard from "./Card.vue";
+import UserMenu from "./Menu.vue";
 
 export default Vue.extend({
   name: "userIndex",
   components: {
     UserCard,
-    UserMenu
-  }
+    UserMenu,
+  },
 });
 </script>
 
