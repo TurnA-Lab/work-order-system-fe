@@ -4,7 +4,7 @@
       <el-tooltip :content="foldText" placement="bottom">
         <el-button :icon="btnIcon" @click="clickFun" circle></el-button>
       </el-tooltip>
-      <vertical-divider isTransparent="true"></vertical-divider>
+      <vertical-divider :isTransparent="true"></vertical-divider>
       <span class="title">科室管理员 · 管理后台</span>
     </div>
     <div class="after-part">
@@ -17,7 +17,7 @@
           plain
         ></el-button>
       </el-tooltip>
-      <vertical-divider isTransparent="true"></vertical-divider>
+      <vertical-divider :isTransparent="true"></vertical-divider>
       <el-tooltip content="进入用户界面" placement="bottom">
         <el-button
           @click="turnToUserPage"
@@ -27,7 +27,7 @@
           plain
         ></el-button>
       </el-tooltip>
-      <vertical-divider isTransparent="true"></vertical-divider>
+      <vertical-divider :isTransparent="true"></vertical-divider>
       <el-dropdown trigger="click" @command="menuCommand">
         <el-button icon="el-icon-s-custom" circle></el-button>
         <el-dropdown-menu slot="dropdown">

@@ -7,7 +7,7 @@
             <editor></editor>
           </el-tab-pane>
           <el-tab-pane label="筛选">
-            <filter></filter>
+            <filtration></filtration>
           </el-tab-pane>
           <el-tab-pane label="新增">
             <addition></addition>
@@ -19,7 +19,7 @@
       <div class="tabs-body">
         <download-table
           file-name="用户表"
-          api="/api/online/root/getUserExcel"
+          api="/api/root/user/getExcel"
         ></download-table>
       </div>
     </el-tab-pane>
@@ -29,14 +29,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "./Editor.vue";
-import Filter from "./Filter.vue";
+import Filtration from "./Filtration.vue";
 import Addition from "./Addition.vue";
 import DownloadTable from "@/components/Root/DownloadUserTable.vue";
 
 export default Vue.extend({
   components: {
     Editor,
-    Filter,
+    Filtration,
     Addition,
     DownloadTable,
   },

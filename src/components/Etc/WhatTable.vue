@@ -55,17 +55,43 @@
 
             <!-- render button -->
             <template v-if="column.button">
-              <template v-for="(btn, i) in column.group">
-                <el-button
-                  :key="i"
-                  :type="btn.type"
-                  :size="btn.size || 'mini'"
-                  :icon="btn.icon"
-                  :disabled="btn.disabled"
-                  :plain="btn.plain"
-                  @click.stop="btn.onClick(scope.row, scope.$index)"
-                  >{{ btn.name }}</el-button
-                >
+              <template v-for="(btn, index) in column.group">
+                <template v-if="btn.tooltip">
+                  <el-tooltip
+                    :effect="btn.tooltipEffect || 'dark'"
+                    :placement="btn.tooltipPlacement || 'top'"
+                  >
+                    <div slot="content">{{ btn.tooltipContent }}</div>
+                    <el-button
+                      :key="index"
+                      :type="btn.type"
+                      :size="btn.size || 'mini'"
+                      :icon="btn.icon"
+                      :disabled="btn.disabled"
+                      :plain="btn.plain"
+                      :circle="btn.circle || false"
+                      @click.stop="btn.onClick(scope.row, scope.$index)"
+                      ><template v-if="!btn.circle">{{
+                        btn.name
+                      }}</template></el-button
+                    >
+                  </el-tooltip>
+                </template>
+                <template v-else>
+                  <el-button
+                    :key="index"
+                    :type="btn.type"
+                    :size="btn.size || 'mini'"
+                    :icon="btn.icon"
+                    :disabled="btn.disabled"
+                    :plain="btn.plain"
+                    :circle="btn.circle || false"
+                    @click.stop="btn.onClick(scope.row, scope.$index)"
+                    ><template v-if="!btn.circle">{{
+                      btn.name
+                    }}</template></el-button
+                  >
+                </template>
               </template>
             </template>
 
@@ -117,7 +143,7 @@ export default {
       props: {
         row: Object,
         index: Number,
-        render: Function
+        render: Function,
       },
       /**
        * @param {Function} createElement - 原生创建dom元素的方法， 弃用，推荐使用 jsx
@@ -127,15 +153,15 @@ export default {
       render(createElement, ctx) {
         const { row, index } = ctx.props;
         return ctx.props.render(row, index);
-      }
-    }
+      },
+    },
   },
   props: {
     dataSource: Array,
     options: Object, // 表格参数控制 maxHeight、stripe 等等...
     columns: Array,
     fetch: Function, // 获取数据的函数
-    pagination: Object // 分页，不传则不显示
+    pagination: Object, // 分页，不传则不显示
   },
   created() {
     // 传入的options覆盖默认设置
@@ -146,7 +172,7 @@ export default {
         border: true,
         initTable: true,
         button: false,
-        toolTip: false
+        toolTip: false,
       },
       this.options
     );
@@ -171,8 +197,8 @@ export default {
     },
     handleRowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
-    }
-  }
+    },
+  },
 };
 </script>
 

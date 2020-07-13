@@ -2,7 +2,7 @@
   <main-card>
     <template v-slot:header>
       <back-link @click="$router.push({ name: 'index' })"></back-link>
-      <vertical-divider isTransparent="true"></vertical-divider>
+      <vertical-divider :isTransparent="true"></vertical-divider>
       <el-button
         type="text"
         :disabled="btnIsDisabled"
@@ -31,7 +31,7 @@ export default Vue.extend({
   components: {
     MainCard,
     BackLink,
-    VerticalDivider
+    VerticalDivider,
   },
   data() {
     return {};
@@ -43,7 +43,7 @@ export default Vue.extend({
       } else {
         return false;
       }
-    }
-  }
+    },
+  },
 });
 </script>

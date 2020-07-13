@@ -57,21 +57,21 @@
 <script lang="ts">
 import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import EditorDialog from "@/components/Root/PerformanceEditorDialog.vue";
+import EditorDialog from "@/components/Root/BonusEditorDialog.vue";
 import { AxiosResponse } from "axios";
-import { oneNotNull } from "@/utils/validate";
 import { fetchDepartmentList } from "@/utils/fetchList";
 import { Department } from "@/interface/list-data";
+import { oneNotNull } from "@/utils/validate";
 
 interface Data {
   id: string;
   department: string;
-  computeoffice: string;
+  computeOffice: string;
   type: string;
   year: string;
   project: string;
   master: string;
-  points: number;
+  bonus: number;
   status: number | string;
   lastTime: string;
 }
@@ -86,6 +86,7 @@ export default Vue.extend({
       filterForm: {
         year: "",
         master: "",
+        department: "",
       },
       isFilled: false,
       editIsVisible: false,
@@ -108,8 +109,8 @@ export default Vue.extend({
           width: 160,
         },
         {
-          prop: "points",
-          label: "业绩分分",
+          prop: "bonus",
+          label: "奖励",
         },
         {
           button: true,
@@ -139,44 +140,37 @@ export default Vue.extend({
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
                   type: "warning",
-                })
-                  .then(() => {
-                    this.$http
-                      .post(
-                        "/api/root/performance/delete",
-                        {
-                          id: data.id,
+                }).then(() =>
+                  this.$http
+                    .post(
+                      "/api/root/bonus/delete",
+                      {
+                        id: data.id,
+                      },
+                      {
+                        headers: {
+                          token: this.$store.state.userInfo.token,
                         },
-                        {
-                          headers: {
-                            token: this.$store.state.userInfo.token,
-                          },
-                        }
-                      )
-                      .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                          this.$data.tableData.splice(index, 1);
-                          this.$message({
-                            message: res.data.msg || "信息删除成功",
-                            type: "success",
-                          });
-                        } else {
-                          return Promise.reject(res.data.msg);
-                        }
-                      })
-                      .catch((err: string) => {
+                      }
+                    )
+                    .then((res: AxiosResponse) => {
+                      if (res.data.code === 0) {
+                        this.$data.tableData.splice(index, 1);
                         this.$message({
-                          message: err || "由于未知因素，用户信息删除失败",
-                          type: "warning",
+                          message: res.data.msg || "信息删除成功",
+                          type: "success",
                         });
+                      } else {
+                        return Promise.reject(res.data.msg);
+                      }
+                    })
+                    .catch((err: string) => {
+                      this.$message({
+                        message: err || "由于未知因素，用户信息删除失败",
+                        type: "warning",
                       });
-                  })
-                  .catch(() => {
-                    this.$message({
-                      message: "已取消删除",
-                      type: "info",
-                    });
-                  });
+                    })
+                );
               },
             },
           ],
@@ -203,7 +197,7 @@ export default Vue.extend({
         this.options.loading = true;
 
         this.$http
-          .post("/api/root/performance/getPerformances", this.filterForm, {
+          .post("/api/root/bonus/getBonuses", this.filterForm, {
             params: {
               page: this.pagination.pageIndex,
               size: this.pagination.pageSize,

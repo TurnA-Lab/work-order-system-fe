@@ -1,10 +1,11 @@
 <template>
   <div id="app" :class="{ offline: offline }">
     <div class="offline-msg">
-      <v-icon name="plane" scale="2"></v-icon>&nbsp;当前未连接到网络
+      <v-icon name="plane" scale="2"></v-icon>
+      <span>当前未连接到网络</span>
     </div>
     <main class="main">
-      <router-view />
+      <router-view></router-view>
     </main>
   </div>
 </template>
@@ -16,7 +17,7 @@ import "vue-awesome/icons/plane";
 export default Vue.extend({
   data() {
     return {
-      offline: !navigator.onLine
+      offline: !navigator.onLine,
     };
   },
   created() {
@@ -28,16 +29,18 @@ export default Vue.extend({
     }
   },
   mounted() {
-    // 离线与否
+    // 离线
     window.addEventListener("offline", () => {
       this.offline = true;
     });
 
+    // 在线
     window.addEventListener("online", () => {
+      // 重新加载一次
       location.reload();
       this.offline = false;
     });
-  }
+  },
 });
 </script>
 
@@ -89,7 +92,6 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   pointer-events: all;
-  user-select: none;
 
   &::before {
     content: "";
@@ -125,6 +127,10 @@ export default Vue.extend({
     transform: translateY(-10vh);
     opacity: 0;
     transition: opacity, transform 0.6s, 0.6s;
+
+    & > span {
+      margin-inline-start: 4px;
+    }
   }
 
   .main {

@@ -7,7 +7,7 @@
             <editor></editor>
           </el-tab-pane>
           <el-tab-pane label="筛选">
-            <filter></filter>
+            <Filtration></Filtration>
           </el-tab-pane>
           <el-tab-pane label="新增">
             <addition></addition>
@@ -29,14 +29,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "./Editor.vue";
-import Filter from "./Filter.vue";
+import Filtration from "./Filtration.vue";
 import Addition from "./Addition.vue";
 import DownloadTable from "@/components/Root/DownloadTable.vue";
 
 export default Vue.extend({
   components: {
     Editor,
-    Filter,
+    Filtration,
     Addition,
     DownloadTable,
   },

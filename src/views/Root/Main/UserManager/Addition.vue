@@ -30,7 +30,7 @@
 
         <el-form-item class="form-item" label="院部" prop="department">
           <el-select
-            v-model="form.dptname"
+            v-model="form.dptName"
             placeholder="请选择，或输入以查找"
             filterable
           >
@@ -68,9 +68,9 @@
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="职称" prop="techTittle">
+        <el-form-item class="form-item" label="职称" prop="teacherTitle">
           <el-input
-            v-model="form.techTittle"
+            v-model="form.teacherTitle"
             placeholder="请输入职称"
           ></el-input>
         </el-form-item>
@@ -163,17 +163,19 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import { allNotNull } from "@/utils/validate";
+import { fetchDepartmentList } from "@/utils/fetchList";
+import { Department } from "@/interface/list-data";
 
 interface UserData {
   dtpId: number;
-  dptname: string;
+  dptName: string;
   name: string;
   worknum: string;
   gender: string;
   birthday: string;
   enterTime: string;
   phone: string;
-  techTittle: string;
+  teacherTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -190,14 +192,14 @@ export default Vue.extend({
       isDisable: false,
       form: {
         dtpId: "",
-        dptname: "",
+        dptName: "",
         name: "",
         worknum: "",
         gender: "",
         birthday: "",
         enterTime: "",
         phone: "",
-        techTittle: "",
+        teacherTitle: "",
         eduBgd: "",
         degree: "",
         school: "",
@@ -260,29 +262,27 @@ export default Vue.extend({
       if (allNotNull(this.form)) {
         this.isDisable = true;
         this.$http
-          .post("/api/online/root/addUserInfo", this.form, {
+          .get("/api/root/user/addUser", {
+            params: this.form,
             headers: {
               token: this.$store.state.userInfo.token,
             },
           })
-          .then((res: AxiosResponse) => {
-            this.isDisable = false;
-            if (res.data.code === 0) {
-              this.$message({
-                message: res.data.msg || "用户信息添加成功",
-                type: "success",
-              });
-            } else {
-              return Promise.reject(res.data.msg || "用户信息保存失败");
-            }
-          })
-          .catch((err: string) => {
-            this.isDisable = false;
+          .then((res: AxiosResponse) =>
+            res.data.code === 0
+              ? true
+              : Promise.reject(res.data.msg || "用户信息保存失败")
+          )
+          .then(() => {
             this.$message({
-              message: err || "未知错误",
-              type: "warning",
+              message: "用户信息添加成功",
+              type: "success",
             });
-          });
+          })
+          .catch((err: string) =>
+            this.$message({ message: err || "未知错误", type: "warning" })
+          )
+          .finally(() => (this.isDisable = false));
       } else {
         this.$message({
           message: "请填写完整后提交!",
@@ -295,23 +295,8 @@ export default Vue.extend({
     const stateToken = this.$store.state.userInfo.token;
 
     // 请求院部列表
-    this.$http
-      .post(
-        "/api/online/getDepartmentList",
-        {},
-        {
-          headers: {
-            token: stateToken,
-          },
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.department = res.data.data;
-        } else {
-          return Promise.reject(res.data.msg || "用户信息保存失败");
-        }
-      })
+    fetchDepartmentList()
+      .then((data: Department[]) => ((this.options.department as any) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",

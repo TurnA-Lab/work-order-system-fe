@@ -31,13 +31,13 @@ interface UserInfo {
   gender: string;
   birthday: string;
   enterTime: string;
-  techTittle: string;
+  teacherTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
   major: string;
   phone: string;
-  dptname: string;
+  dptName: string;
   dtpId: string;
 }
 
@@ -46,7 +46,7 @@ export default Vue.extend({
     return {
       isLoading: true,
       table1: [],
-      table2: []
+      table2: [],
     };
   },
   created() {
@@ -57,8 +57,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: this.$store.state.userInfo.token
-          }
+            token: this.$store.state.userInfo.token,
+          },
         }
       )
       .then((res: AxiosResponse) => {
@@ -69,54 +69,54 @@ export default Vue.extend({
           (this.table1 as Array<{ key: string; value: string }>) = [
             {
               key: "姓名",
-              value: userInfo.name
+              value: userInfo.name,
             },
             {
               key: "工号",
-              value: userInfo.worknum
+              value: userInfo.worknum,
             },
             {
               key: "性别",
-              value: userInfo.gender
+              value: userInfo.gender,
             },
             {
               key: "联系电话",
-              value: userInfo.phone
+              value: userInfo.phone,
             },
             {
               key: "工作部门",
-              value: userInfo.dptname
+              value: userInfo.dptName,
             },
             {
               key: "出生日期",
-              value: userInfo.birthday
+              value: userInfo.birthday,
             },
             {
               key: "入校时间",
-              value: userInfo.enterTime
-            }
+              value: userInfo.enterTime,
+            },
           ];
           (this.table2 as Array<{ key: string; value: string }>) = [
             {
               key: "专业技术职称",
-              value: userInfo.techTittle
+              value: userInfo.teacherTitle,
             },
             {
               key: "最高学历",
-              value: userInfo.eduBgd
+              value: userInfo.eduBgd,
             },
             {
               key: "最高学位",
-              value: userInfo.degree
+              value: userInfo.degree,
             },
             {
               key: "授学位单位名称",
-              value: userInfo.school
+              value: userInfo.school,
             },
             {
               key: "获最高学位的专业名称",
-              value: userInfo.major
-            }
+              value: userInfo.major,
+            },
           ];
         } else {
           return Promise.reject(res.data.msg);
@@ -126,10 +126,10 @@ export default Vue.extend({
         this.isLoading = false;
         this.$message({
           message: err || "由于未知因素，暂时无法获取个人信息",
-          type: "warning"
+          type: "warning",
         });
       });
-  }
+  },
 });
 </script>
 

@@ -205,12 +205,19 @@ export default Vue.extend({
             return Promise.reject([res.data.msg, value]);
           }
         })
-        .catch(([err, value]) => {
-          this.$message({
-            message: err || `由于未知因素，无法添加${value}}`,
-            type: "warning",
-          });
-        });
+        .catch(([err, value]) =>
+          this.$message(
+            err === "cancel" || (err as string).startsWith("c")
+              ? {
+                  message: "已取消",
+                  type: "info",
+                }
+              : {
+                  message: err || `由于未知因素，无法添加${value}}`,
+                  type: "warning",
+                }
+          )
+        );
     },
     remove(node: TreeNode<any, TreeData>, data: TreeData) {
       const parent = node.parent;

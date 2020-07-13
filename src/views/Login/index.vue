@@ -5,7 +5,7 @@
       appear-class="fade-enter"
       appear-active-class="fade-enter-active"
     >
-      <header>JUST WO</header>
+      <header>{{ $store.getters.siteName }}</header>
     </transition>
     <login-form></login-form>
     <background-ani></background-ani>
@@ -21,8 +21,8 @@ export default Vue.extend({
   name: "login",
   components: {
     LoginForm,
-    BackgroundAni
-  }
+    BackgroundAni,
+  },
 });
 </script>
 

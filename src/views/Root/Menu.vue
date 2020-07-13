@@ -57,11 +57,14 @@ export default Vue.extend({
   },
   computed: {
     headerText() {
-      return this.isCollapse ? "J." : "JUST WO";
+      return this.isCollapse
+        ? (this.$store as any).getters.siteShortName
+        : (this.$store as any).getters.siteName;
     },
   },
   methods: {
     redirect2FileManager() {
+      this.$store.getters.siteName;
       this.$confirm("即将跳转至“文件管理”页面，是否继续？", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

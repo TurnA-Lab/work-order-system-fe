@@ -1,16 +1,43 @@
 <template>
   <div>
-    <el-form :inline="true" :model="filterForm">
-      <el-form-item>
-        <el-input v-model="filterForm.name" placeholder="姓名"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="filterForm.worknum" placeholder="工号"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="fetchData(true)">查询</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="filter-part">
+      <el-form :inline="true" :model="filterForm">
+        <el-form-item>
+          <el-input v-model="filterForm.master" placeholder="负责人"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-date-picker
+            align="center"
+            v-model="filterForm.year"
+            type="year"
+            format="yyyy 年"
+            value-format="yyyy"
+            placeholder="年度"
+          ></el-date-picker>
+        </el-form-item>
+
+        <el-form-item class="form-item" prop="department">
+          <el-select
+            v-model="filterForm.department"
+            placeholder="院部"
+            filterable
+          >
+            <el-option
+              v-for="item in department"
+              :key="item.id"
+              :label="item.dptName"
+              :value="item.dptName"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="fetchData(true)">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
     <what-table
       :columns="columns"
       :dataSource="tableData"
@@ -18,39 +45,35 @@
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
-    <edit-user
-      :user-data="userData"
-      :is-visible="editUserIsVisible"
-      @toggle-is-visible="toggleEditUser"
+    <editor-dialog
+      :data="data"
+      :is-visible="editIsVisible"
+      @toggle-is-visible="toggleEdit"
       @refresh="fetchData"
-    ></edit-user>
+    ></editor-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import EditorDialog from "@/components/Root/UserEditorDialog.vue";
+import EditorDialog from "@/components/Root/PerformanceEditorDialog.vue";
 import { AxiosResponse } from "axios";
+import { oneNotNull } from "@/utils/validate";
+import { fetchDepartmentList } from "@/utils/fetchList";
+import { Department } from "@/interface/list-data";
 
-interface UserData {
-  dtpId: number;
-  dptname: string;
-  name: string;
-  worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  techTittle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number;
-  background: number;
-  tutor: number;
-  permission: number;
+interface Data {
+  id: string;
+  department: string;
+  computeOffice: string;
+  type: string;
+  year: string;
+  project: string;
+  master: string;
+  points: number;
+  status: number | string;
+  lastTime: string;
 }
 
 export default Vue.extend({
@@ -61,35 +84,33 @@ export default Vue.extend({
   data() {
     return {
       filterForm: {
-        name: "",
-        worknum: "",
+        year: "",
+        master: "",
+        department: "",
       },
       isFilled: false,
-      editUserIsVisible: false,
-      userData: {},
+      editIsVisible: false,
+      data: {},
       tableData: [],
+      department: [],
       columns: [
         {
-          prop: "name",
-          label: "姓名",
-          width: 120,
+          prop: "project",
+          label: "项目名称",
+          width: 160,
         },
         {
-          prop: "gender",
-          label: "性别",
-          width: 60,
+          prop: "master",
+          label: "负责人",
         },
         {
-          prop: "worknum",
-          label: "工号",
+          prop: "type",
+          label: "类别",
+          width: 160,
         },
         {
-          prop: "phone",
-          label: "联系电话",
-        },
-        {
-          prop: "techTittle",
-          label: "职称",
+          prop: "points",
+          label: "业绩分分",
         },
         {
           button: true,
@@ -102,10 +123,10 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (data: Data, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.userData = userData;
-                this.$data.editUserIsVisible = true;
+                this.$data.data = data;
+                this.$data.editIsVisible = true;
               },
             },
             {
@@ -113,9 +134,9 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (data: Data, index: number) => {
                 // 这种写法的 this 代表 group 里的对象
-                this.$confirm("删除用户后将不能直接恢复, 是否继续?", "注意", {
+                this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
                   type: "warning",
@@ -123,9 +144,9 @@ export default Vue.extend({
                   .then(() => {
                     this.$http
                       .post(
-                        "/api/online/root/deleteUser",
+                        "/api/root/performance/delete",
                         {
-                          worknum: userData.worknum,
+                          id: data.id,
                         },
                         {
                           headers: {
@@ -137,13 +158,11 @@ export default Vue.extend({
                         if (res.data.code === 0) {
                           this.$data.tableData.splice(index, 1);
                           this.$message({
-                            message: res.data.msg || "用户信息保存成功",
+                            message: res.data.msg || "信息删除成功",
                             type: "success",
                           });
                         } else {
-                          return Promise.reject(
-                            res.data.msg || "用户信息保存失败"
-                          );
+                          return Promise.reject(res.data.msg);
                         }
                       })
                       .catch((err: string) => {
@@ -181,27 +200,19 @@ export default Vue.extend({
   },
   methods: {
     fetchData(needAlert: boolean) {
-      this.isFilled =
-        this.filterForm.name !== "" || this.filterForm.worknum !== "";
-
-      if (this.isFilled) {
+      if (oneNotNull(this.filterForm)) {
         this.options.loading = true;
 
         this.$http
-          .post(
-            "/api/online/root/getUserList",
-
-            Object.assign({}, this.filterForm),
-            {
-              params: {
-                page: this.pagination.pageIndex,
-                size: this.pagination.pageSize,
-              },
-              headers: {
-                token: this.$store.state.userInfo.token,
-              },
-            }
-          )
+          .post("/api/root/performance/getPerformances", this.filterForm, {
+            params: {
+              page: this.pagination.pageIndex,
+              size: this.pagination.pageSize,
+            },
+            headers: {
+              token: this.$store.state.userInfo.token,
+            },
+          })
           .then((res: AxiosResponse) => {
             this.options.loading = false;
             if (res.data.code === 0) {
@@ -209,7 +220,7 @@ export default Vue.extend({
               this.tableData = list;
               this.pagination.total = total;
             } else {
-              return Promise.reject(res.data.msg || "用户信息保存失败");
+              return Promise.reject(res.data.msg);
             }
           })
           .catch((err: string) => {
@@ -228,13 +239,21 @@ export default Vue.extend({
         }
       }
     },
-    toggleEditUser(isVisible: boolean) {
-      if (typeof isVisible === "undefined") {
-        this.editUserIsVisible = !this.editUserIsVisible;
-      } else {
-        this.editUserIsVisible = isVisible;
-      }
+    toggleEdit(isVisible: boolean) {
+      this.editIsVisible =
+        typeof isVisible === "undefined" ? !this.editIsVisible : isVisible;
     },
+  },
+  created() {
+    // 请求院部列表
+    fetchDepartmentList()
+      .then((data: Department[]) => (this.department = data as any))
+      .catch((err: string) => {
+        this.$message({
+          message: err || "由于未知因素，无法获取院部列表",
+          type: "warning",
+        });
+      });
   },
 });
 </script>

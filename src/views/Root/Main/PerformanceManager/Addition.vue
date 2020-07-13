@@ -39,8 +39,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="奖励计算科室" prop="computeoffice">
-          <el-select v-model="form.computeoffice" placeholder="请选择">
+        <el-form-item label="奖励计算科室" prop="computeOffice">
+          <el-select v-model="form.computeOffice" placeholder="请选择">
             <el-option
               v-for="item in computeOfficeList"
               :key="item"
@@ -88,7 +88,7 @@ import { Department } from "@/interface/list-data";
 interface Data {
   id: number;
   department: string;
-  computeoffice: string;
+  computeOffice: string;
   type: string;
   year: string;
   project: string;
@@ -105,7 +105,7 @@ export default Vue.extend({
       isDisable: false,
       form: {
         department: "",
-        computeoffice: "",
+        computeOffice: "",
         type: "",
         year: "",
         project: "",

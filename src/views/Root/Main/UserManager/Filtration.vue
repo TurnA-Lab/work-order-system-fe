@@ -1,5 +1,30 @@
 <template>
   <div>
+    <el-form :inline="true" :model="filterForm">
+      <el-form-item>
+        <el-input v-model="filterForm.name" placeholder="姓名"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="filterForm.worknum" placeholder="工号"></el-input>
+      </el-form-item>
+      <el-form-item class="form-item" prop="department">
+        <el-select
+          v-model="filterForm.department"
+          placeholder="院部"
+          filterable
+        >
+          <el-option
+            v-for="item in department"
+            :key="item.id"
+            :label="item.dptName"
+            :value="item.dptName"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="fetchData(true)">查询</el-button>
+      </el-form-item>
+    </el-form>
     <what-table
       :columns="columns"
       :dataSource="tableData"
@@ -13,31 +38,6 @@
       @toggle-is-visible="toggleEditUser"
       @refresh="fetchData"
     ></editor-dialog>
-    <el-dialog
-      title="修改权限"
-      :visible.sync="dialogVisible"
-      width="30%"
-      append-to-body
-    >
-      <el-select
-        v-model="permission"
-        placeholder="请选择，或输入以查找"
-        filterable
-      >
-        <el-option
-          :key="key"
-          v-for="key in roles"
-          :label="roles[key]"
-          :value="key"
-        ></el-option>
-      </el-select>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -46,7 +46,9 @@ import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/UserEditorDialog.vue";
 import { AxiosResponse } from "axios";
-import { rolesObject } from "../../../../interface/login";
+import { oneNotNull } from "@/utils/validate";
+import { fetchDepartmentList } from "@/utils/fetchList";
+import { Department } from "@/interface/list-data";
 
 interface UserData {
   dtpId: number;
@@ -57,7 +59,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  techTitle: string;
+  teacherTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -75,12 +77,16 @@ export default Vue.extend({
   },
   data() {
     return {
+      filterForm: {
+        name: "",
+        worknum: "",
+        department: "",
+      },
+      isFilled: false,
       editUserIsVisible: false,
-      dialogVisible: false,
-      permission: null,
-      roles: rolesObject,
       userData: {},
       tableData: [],
+      department: [],
       columns: [
         {
           prop: "name",
@@ -101,7 +107,7 @@ export default Vue.extend({
           label: "联系电话",
         },
         {
-          prop: "techTitle",
+          prop: "teacherTitle",
           label: "职称",
         },
         {
@@ -115,8 +121,6 @@ export default Vue.extend({
               icon: "el-icon-edit",
               plain: true,
               circle: true,
-              tooltip: true,
-              tooltipContent: "编辑信息",
               onClick: (userData: UserData, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
@@ -129,8 +133,6 @@ export default Vue.extend({
               icon: "el-icon-delete",
               disabled: false,
               circle: true,
-              tooltip: true,
-              tooltipContent: "删除账户",
               onClick: (userData: UserData, index: number) => {
                 // 这种写法的 this 代表 group 里的对象
                 this.$confirm("删除用户后将不能直接恢复, 是否继续?", "注意", {
@@ -171,7 +173,7 @@ export default Vue.extend({
                   })
                   .catch(() => {
                     this.$message({
-                      message: "已取消删除账户",
+                      message: "已取消删除",
                       type: "info",
                     });
                   });
@@ -183,21 +185,6 @@ export default Vue.extend({
               icon: "el-icon-coordinate",
               plain: true,
               circle: true,
-              tooltip: true,
-              tooltipContent: "修改权限",
-              onClick: (userData: UserData, index: number) => {
-                console.log(userData.permission);
-                this.$data.dialogVisible = true;
-              },
-            },
-            {
-              // name: "改密",
-              type: "warning",
-              icon: "el-icon-key",
-              plain: true,
-              circle: true,
-              tooltip: true,
-              tooltipContent: "修改密码",
               onClick: (userData: UserData, index: number) => {
                 this.$prompt("请输入新密码", "修改密码", {
                   confirmButtonText: "确定",
@@ -242,10 +229,62 @@ export default Vue.extend({
                         });
                     })
                     .catch(() => {
-                      this.$message({
-                        message: "已取消修改密码",
-                        type: "info",
-                      });
+                      // element 要求占位
+                    });
+                });
+              },
+            },
+            {
+              // name: "改密",
+              type: "warning",
+              icon: "el-icon-key",
+              plain: true,
+              circle: true,
+              onClick: (userData: UserData, index: number) => {
+                this.$prompt("请输入新密码", "修改密码", {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  inputPattern: /.{6,32}/,
+                  inputErrorMessage: "密码必须大于 5 位，小于 32 位",
+                  inputType: "text",
+                }).then(({ value }: any) => {
+                  this.$confirm(`您输入的密码是 ${value}`, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                  })
+                    .then(() => {
+                      this.$http
+                        .post(
+                          "/api/root/user/updatePassword",
+                          {
+                            worknum: userData.worknum,
+                            password: value,
+                          },
+                          {
+                            headers: {
+                              token: this.$store.state.userInfo.token,
+                            },
+                          }
+                        )
+                        .then((res: AxiosResponse) => {
+                          if (res.data.code === 0) {
+                            this.$message({
+                              message: "修改成功",
+                              type: "success",
+                            });
+                          } else {
+                            return Promise.reject(res.data.msg);
+                          }
+                        })
+                        .catch((err: string) => {
+                          this.$message({
+                            message: err || "出现未知错误，暂时无法修改密码",
+                            type: "warning",
+                          });
+                        });
+                    })
+                    .catch(() => {
+                      // element 要求占位
                     });
                 });
               },
@@ -269,51 +308,73 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
-      this.options.loading = true;
+    fetchData(needAlert: boolean) {
+      if (oneNotNull(this.filterForm)) {
+        this.options.loading = true;
 
-      this.$http
-        .post(
-          "/api/root/user/getUserList",
-          {},
-          {
-            params: {
-              page: this.pagination.pageIndex,
-              size: this.pagination.pageSize,
-            },
-            headers: {
-              token: this.$store.state.userInfo.token,
-            },
-          }
-        )
-        .then((res: AxiosResponse) => {
-          this.options.loading = false;
-          if (res.data.code === 0) {
-            const { list, total } = res.data.data;
-            this.tableData = list;
-            this.pagination.total = total;
-          } else {
-            return Promise.reject(res.data.msg);
-          }
-        })
-        .catch((err: string) => {
+        this.$http
+          .post(
+            "/api/root/user/getUserList",
+
+            Object.assign({}, this.filterForm),
+            {
+              params: {
+                page: this.pagination.pageIndex,
+                size: this.pagination.pageSize,
+              },
+              headers: {
+                token: this.$store.state.userInfo.token,
+              },
+            }
+          )
+          .then((res: AxiosResponse) => {
+            this.options.loading = false;
+            if (res.data.code === 0) {
+              const { list, total } = res.data.data;
+              this.tableData = list;
+              this.pagination.total = total;
+            } else {
+              return Promise.reject(res.data.msg || "用户信息保存失败");
+            }
+          })
+          .catch((err: string) => {
+            this.$message({
+              message: err || "由于未知因素，无法获取表格",
+              type: "warning",
+            });
+            this.options.loading = false;
+          });
+      } else {
+        if (needAlert) {
           this.$message({
-            message: err || "由于未知因素，无法获取表格",
+            message: "请至少填入一项，以进行筛选",
             type: "warning",
           });
-          this.options.loading = false;
-        });
+        }
+      }
     },
     toggleEditUser(isVisible: boolean) {
       this.editUserIsVisible =
         typeof isVisible === "undefined" ? !this.editUserIsVisible : isVisible;
     },
   },
+  created() {
+    // 请求院部列表
+    fetchDepartmentList()
+      .then((data: Department[]) => (this.department = data as any))
+      .catch((err: string) => {
+        this.$message({
+          message: err || "由于未知因素，无法获取院部列表",
+          type: "warning",
+        });
+      });
+  },
 });
 </script>
 
 <style scoped>
-div >>> .el-table__body-wrapper {
-  max-height: 62vh !important;
+div >>> .el-table__body-wrapper,
+div >>> .el-table__fixed-body-wrapper {
+  height: 52vh !important;
 }
 </style>

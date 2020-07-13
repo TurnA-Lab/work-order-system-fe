@@ -18,6 +18,8 @@ export default new Vuex.Store({
   },
   getters: {
     permission: (state) => state.userInfo.permission,
+    siteName: () => "JUST WO",
+    siteShortName: () => "J.",
   },
   mutations: {
     updateUserInfo(state, newUserInfo: object) {

@@ -39,7 +39,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="奖励计算科室" prop="computeoffice">
+        <el-form-item label="奖励计算科室" prop="computeOffice">
           <el-select v-model="form.computeOffice" placeholder="请选择">
             <el-option
               v-for="item in computeOfficeList"
@@ -88,7 +88,7 @@ import { Department } from "@/interface/list-data";
 interface Data {
   id: number;
   department: string;
-  computeoffice: string;
+  computeOffice: string;
   type: string;
   year: string;
   project: string;

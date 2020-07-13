@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router, { RawLocation } from "vue-router";
 import Page404 from "@/views/404.vue";
 import { Roles } from "@/interface/login";
+import store from "./store";
 
 Vue.use(Router);
 
@@ -40,11 +41,11 @@ const router = new Router({
       name: "user",
       component: () => import("@/views/User/Home/index.vue"),
       meta: {
-        title: "首页",
+        title: "主页",
       },
     },
     {
-      path: "user/info",
+      path: "/user/info",
       name: "userInfo",
       component: () => import("@/views/User/Info/index.vue"),
       redirect: { name: "userInfoProfile" },
@@ -68,7 +69,7 @@ const router = new Router({
       ],
     },
     {
-      path: "user/work_order",
+      path: "/user/work_order",
       name: "userWorkOrder",
       component: () => import("@/views/User/WorkOrder/index.vue"),
       redirect: { name: "userOrders" },
@@ -92,7 +93,7 @@ const router = new Router({
       ],
     },
     {
-      path: "college_admin",
+      path: "/college_admin",
       name: "collegeAdmin",
       component: () => import("@/views/User/CollegeAdmin/index.vue"),
       redirect: { name: "collegeAdminMemberManager" },
@@ -117,7 +118,7 @@ const router = new Router({
       ],
     },
     {
-      path: "office_admin",
+      path: "/office_admin",
       name: "officeAdmin",
       component: () => import("@/views/OfficeAdmin/index.vue"),
       redirect: { name: "officeAdminHome" },
@@ -150,7 +151,7 @@ const router = new Router({
       ],
     },
     {
-      path: "root",
+      path: "/root",
       name: "root",
       component: () => import("@/views/Root/index.vue"),
       redirect: { name: "rootHome" },
@@ -160,7 +161,7 @@ const router = new Router({
           name: "rootHome",
           component: () => import("@/views/Root/Main/Home.vue"),
           meta: {
-            title: "首页",
+            title: "主页",
           },
         },
         {
@@ -211,12 +212,14 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  // 设置选项卡显示标题
-  document.title = (to.meta.title ? to.meta.title + " - " : "") + "JUST WO";
-
   // 获取权限
   const permission = sessionStorage.getItem("wo_permission");
   const toName = to.name as string;
+  const metaTitle = to.meta.title as string;
+
+  // 设置选项卡显示标题
+  document.title =
+    (metaTitle ? metaTitle + " - " : "") + store.getters.siteName;
 
   if (toName === "login") {
     if (typeof permission === "string") {
@@ -230,14 +233,14 @@ router.beforeEach((to, from, next) => {
       // 如果权限匹配
       if (
         (toName.indexOf("collegeAdmin") !== -1 &&
-          permission === Roles.college_admin.toString()) ||
+          permission !== Roles.college_admin.toString()) ||
         (toName.indexOf("officeAdmin") !== -1 &&
-          permission === Roles.office_admin.toString()) ||
-        (toName.indexOf("root") !== -1 && permission === Roles.root.toString())
+          permission !== Roles.office_admin.toString()) ||
+        (toName.indexOf("root") !== -1 && permission !== Roles.root.toString())
       ) {
-        next();
-      } else {
         next({ name: "index" });
+      } else {
+        next();
       }
     } else {
       next({ name: "login" });
@@ -269,11 +272,5 @@ router.afterEach((to, from) => {
     }
   });
 });
-
-// 修复重复访问同一个路由时报错的问题
-Router.prototype.push = (location: RawLocation) =>
-  (Router.prototype.push.call(Router, location) as any).catch(
-    (err: string) => err
-  );
 
 export default router;

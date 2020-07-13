@@ -89,8 +89,8 @@ export default Vue.extend({
       sessionStorage.clear();
       this.$router.replace({ name: "login" });
       this.$message({
-        type: "success",
-        message: "退出登录成功!",
+        type: "info",
+        message: "已退出登录",
       });
     },
     toggleFullScreen() {

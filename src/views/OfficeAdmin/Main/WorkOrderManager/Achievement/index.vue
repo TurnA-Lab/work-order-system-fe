@@ -49,7 +49,7 @@ const statusText = ["未通过", "审核中", "已通过"];
 export default Vue.extend({
   components: {
     WhatTable,
-    Audit
+    Audit,
   },
   data() {
     return {
@@ -61,20 +61,20 @@ export default Vue.extend({
         {
           prop: "production",
           label: "成果名称",
-          width: 160
+          width: 160,
         },
         {
           prop: "name",
-          label: "第一作者"
+          label: "第一作者",
         },
         {
           prop: "class3",
           label: "类别",
-          width: 160
+          width: 160,
         },
         {
           prop: "status",
-          label: "审核状态"
+          label: "审核状态",
         },
         {
           button: true,
@@ -92,10 +92,10 @@ export default Vue.extend({
                 this.$data.data = data;
                 this.$data.index = index;
                 this.$data.auditIsVisible = true;
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ],
       options: {
         mutiSelect: false,
@@ -103,13 +103,13 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true // 是否一挂载就加载数据
+        initTable: true, // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20
-      }
+        pageSize: 20,
+      },
     };
   },
   methods: {
@@ -123,11 +123,11 @@ export default Vue.extend({
           {
             params: {
               page: this.pagination.pageIndex,
-              size: this.pagination.pageSize
+              size: this.pagination.pageSize,
             },
             headers: {
-              token: this.$store.state.userInfo.token
-            }
+              token: this.$store.state.userInfo.token,
+            },
           }
         )
         .then((res: AxiosResponse) => {
@@ -148,19 +148,16 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || "由于未知因素，无法获取表格",
-            type: "warning"
+            type: "warning",
           });
           this.options.loading = false;
         });
     },
     toggleAudit(isVisible: boolean) {
-      if (typeof isVisible === "undefined") {
-        this.auditIsVisible = !this.auditIsVisible;
-      } else {
-        this.auditIsVisible = isVisible;
-      }
-    }
-  }
+      this.auditIsVisible =
+        typeof isVisible === "undefined" ? !this.auditIsVisible : isVisible;
+    },
+  },
 });
 </script>
 

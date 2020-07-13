@@ -1,4 +1,4 @@
-// TODO 是否不加参数输出所有？
+// TODO 是否需要不加参数输出所有？
 
 <template>
   <div class="download-page">
@@ -10,12 +10,13 @@
       placeholder="请选择立项年度"
     ></el-date-picker>
     <el-button
-      style="margin-inline-start: 15px"
+      class="download-btn"
       type="primary"
+      icon="el-icon-download"
+      :loading="isLoading"
       @click="downloadTable"
     >
-      <i class="el-icon-download"></i>
-      下载{{ fileName }}
+      {{ isLoading ? "下载中" : `下载${fileName}` }}
     </el-button>
   </div>
 </template>
@@ -31,10 +32,13 @@ export default Vue.extend({
   data() {
     return {
       year: "",
+      isLoading: false,
     };
   },
   methods: {
     downloadTable() {
+      this.isLoading = true;
+
       this.$http
         .get(this.api, {
           params: {
@@ -48,12 +52,12 @@ export default Vue.extend({
         .then((res: AxiosResponse) =>
           res.status === 200
             ? Promise.resolve([
-                decodeFilename(res, `${this.fileName}.xlsx`),
                 res.data,
+                decodeFilename(res, `${this.fileName}.xlsx`),
               ])
             : Promise.reject(res.data.msg)
         )
-        .then(([filename, data]) => {
+        .then(([data, filename]) => {
           saveAs(data, filename);
         })
         .catch((err: string) => {
@@ -61,7 +65,8 @@ export default Vue.extend({
             message: err || `由于未知因素，无法下载${this.fileName}`,
             type: "warning",
           });
-        });
+        })
+        .finally(() => (this.isLoading = false));
     },
   },
 });
@@ -73,5 +78,9 @@ export default Vue.extend({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.download-btn {
+  margin-inline-start: 15px;
 }
 </style>

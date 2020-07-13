@@ -25,7 +25,7 @@ import { AxiosResponse } from "axios";
 interface Data {
   id: number;
   department: string;
-  computeoffice: string;
+  computeOffice: string;
   type: string;
   year: string;
   project: string;

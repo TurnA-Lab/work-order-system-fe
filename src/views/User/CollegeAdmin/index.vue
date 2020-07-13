@@ -2,7 +2,7 @@
   <main-card>
     <template v-slot:header>
       <back-link @click="$router.push({ name: 'index' })"></back-link>
-      <vertical-divider isTransparent="true"></vertical-divider>
+      <vertical-divider :isTransparent="true"></vertical-divider>
       <el-button
         type="text"
         @click="$router.push({ name: 'collegeAdminMemberManager' })"

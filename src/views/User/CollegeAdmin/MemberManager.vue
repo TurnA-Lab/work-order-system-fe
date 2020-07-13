@@ -28,14 +28,14 @@ import { AxiosResponse } from "axios";
 
 interface UserData {
   dtpId: number;
-  dptname: string;
+  dptName: string;
   name: string;
   worknum: string;
   gender: string;
   birthday: string;
   enterTime: string;
   phone: string;
-  techTittle: string;
+  teacherTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -76,7 +76,7 @@ export default Vue.extend({
           label: "联系电话",
         },
         {
-          prop: "techTittle",
+          prop: "teacherTitle",
           label: "职称",
         },
         {

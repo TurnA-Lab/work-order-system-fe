@@ -38,7 +38,7 @@
 
         <el-form-item class="form-item" label="院部" prop="department">
           <el-select
-            v-model="form.dptname"
+            v-model="form.dptName"
             placeholder="请选择，或输入以查找"
             filterable
           >
@@ -74,7 +74,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.techTittle"></el-input>
+          <el-input v-model="form.teacherTitle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -146,14 +146,14 @@ import { Department } from "@/interface/list-data";
 
 interface UserData {
   dtpId: number;
-  dptname: string;
+  dptName: string;
   name: string;
   worknum: string;
   gender: string;
   birthday: string;
   enterTime: string;
   phone: string;
-  techTittle: string;
+  teacherTitle: string;
   eduBgd: string;
   degree: string;
   school: string;

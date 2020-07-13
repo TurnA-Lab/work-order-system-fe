@@ -28,17 +28,6 @@
           <el-input v-model="form.worknum"></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="权限">
-          <el-select v-model="form.permission" placeholder="请选择">
-            <el-option
-              :key="item.value"
-              v-for="item in options.permission"
-              :label="item.label"
-              :value="item.label"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
         <el-form-item class="form-item" label="性别">
           <el-select v-model="form.gender" placeholder="请选择">
             <el-option
@@ -52,7 +41,7 @@
 
         <el-form-item class="form-item" label="院部" prop="department">
           <el-select
-            v-model="form.dptname"
+            v-model="form.dptName"
             placeholder="请选择，或输入以查找"
             filterable
           >
@@ -88,7 +77,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.techTittle"></el-input>
+          <el-input v-model="form.teacherTitle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -111,7 +100,7 @@
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.doubleTeacher"
+              v-for="item in options.tutor_background_doubleTeacher"
               :label="item.label"
               :value="item.label"
             ></el-option>
@@ -122,7 +111,7 @@
           <el-select v-model="form.background" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.background"
+              v-for="item in options.tutor_background_doubleTeacher"
               :label="item.label"
               :value="item.label"
             ></el-option>
@@ -133,7 +122,7 @@
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.tutor"
+              v-for="item in options.tutor_background_doubleTeacher"
               :label="item.label"
               :value="item.label"
             ></el-option>
@@ -155,17 +144,19 @@
 import Vue from "vue";
 import { AxiosResponse } from "axios";
 import { allNotNull } from "@/utils/validate";
+import { fetchDepartmentList } from "@/utils/fetchList";
+import { Department } from "@/interface/list-data";
 
 interface UserData {
   dtpId: number;
-  dptname: string;
+  dptName: string;
   name: string;
   worknum: string;
   gender: string;
   birthday: string;
   enterTime: string;
   phone: string;
-  techTittle: string;
+  teacherTitle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -196,7 +187,7 @@ export default Vue.extend({
             value: "1",
           },
         ],
-        tutor: [
+        tutor_background_doubleTeacher: [
           {
             label: "否",
             value: "0",
@@ -204,40 +195,6 @@ export default Vue.extend({
           {
             label: "是",
             value: "1",
-          },
-        ],
-        background: [
-          {
-            label: "否",
-            value: "0",
-          },
-          {
-            label: "是",
-            value: "1",
-          },
-        ],
-        doubleTeacher: [
-          {
-            label: "否",
-            value: "0",
-          },
-          {
-            label: "是",
-            value: "1",
-          },
-        ],
-        permission: [
-          {
-            label: "普通用户",
-            value: "0",
-          },
-          {
-            label: "学院管理员",
-            value: "1",
-          },
-          {
-            label: "科室管理员",
-            value: "2",
           },
         ],
       },
@@ -252,18 +209,16 @@ export default Vue.extend({
         this.isDisable = true;
 
         this.$http
-          .post(
-            "/api/online/root/updateUserInfo",
-            Object.assign({}, this.form, {
-              doubleTeacher:
-                (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
-              background: (this.form as UserData).background === "否" ? 0 : 1,
-              tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
-              permission: permissionText.indexOf(
-                (this.form as UserData).permission as string
-              ),
-            }),
+          .get(
+            "/api/root/user/updateInfo",
+
             {
+              params: Object.assign({}, this.form, {
+                doubleTeacher:
+                  (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
+                background: (this.form as UserData).background === "否" ? 0 : 1,
+                tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
+              }),
               headers: {
                 token: this.$store.state.userInfo.token,
               },
@@ -307,31 +262,13 @@ export default Vue.extend({
       newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
       newValue.background = newValue.background === 0 ? "否" : "是";
       newValue.tutor = newValue.tutor === 0 ? "否" : "是";
-      newValue.permission = permissionText[newValue.permission as number];
       this.form = newValue;
     },
   },
   created() {
-    const stateToken = this.$store.state.userInfo.token;
-
     // 请求院部列表
-    this.$http
-      .post(
-        "/api/online/getDepartmentList",
-        {},
-        {
-          headers: {
-            token: stateToken,
-          },
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.options.department = res.data.data;
-        } else {
-          return Promise.reject(res.data.msg);
-        }
-      })
+    fetchDepartmentList()
+      .then((data: Department[]) => ((this.options.department as any) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",

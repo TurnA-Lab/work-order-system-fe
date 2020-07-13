@@ -1,14 +1,12 @@
 <template>
   <main>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
   </main>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+export default Vue.extend();
 </script>
 
 <style lang="scss" scoped>
