@@ -22,9 +22,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
+import Vue from "vue";
+
 import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
@@ -32,7 +33,7 @@ export default Vue.extend({
   data() {
     return {
       year: "",
-      isLoading: false,
+      isLoading: false
     };
   },
   methods: {
@@ -42,18 +43,18 @@ export default Vue.extend({
       this.$http
         .get(this.api, {
           params: {
-            year: this.year,
+            year: this.year
           },
           headers: {
-            token: this.$store.state.userInfo.token,
+            token: this.$store.state.userInfo.token
           },
-          responseType: "blob",
+          responseType: "blob"
         })
         .then((res: AxiosResponse) =>
           res.status === 200
             ? Promise.resolve([
                 res.data,
-                decodeFilename(res, `${this.fileName}.xlsx`),
+                decodeFilename(res, `${this.fileName}.xlsx`)
               ])
             : Promise.reject(res.data.msg)
         )
@@ -63,12 +64,12 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || `由于未知因素，无法下载${this.fileName}`,
-            type: "warning",
+            type: "warning"
           });
         })
         .finally(() => (this.isLoading = false));
-    },
-  },
+    }
+  }
 });
 </script>
 

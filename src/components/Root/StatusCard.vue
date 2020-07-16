@@ -25,21 +25,21 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios";
+import Vue from "vue";
 
 export default Vue.extend({
   props: {
     fetchApi: String,
     amendApi: String,
     title: String,
-    icon: String,
+    icon: String
   },
   data() {
     return {
       isDisable: true,
       isOff: true,
-      isLoading: true,
+      isLoading: true
     };
   },
   methods: {
@@ -48,14 +48,14 @@ export default Vue.extend({
       this.$http
         .get(this.amendApi, {
           headers: {
-            token: this.$store.state.userInfo.token,
-          },
+            token: this.$store.state.userInfo.token
+          }
         })
         .then((res: AxiosResponse) => res.data.code === 0 || Promise.reject())
         .catch(() => {
           this.$message({
             message: `由于未知因素，无法修改${this.title}状态`,
-            type: "warning",
+            type: "warning"
           });
         })
         .finally(() => {
@@ -67,7 +67,7 @@ export default Vue.extend({
       if (this.isDisable) {
         this.$message({
           message: `由于未知因素，无法获取、修改${this.title}状态`,
-          type: "warning",
+          type: "warning"
         });
       }
     },
@@ -75,13 +75,13 @@ export default Vue.extend({
       this.$http
         .get(this.fetchApi, {
           headers: {
-            token: this.$store.state.userInfo.token,
-          },
+            token: this.$store.state.userInfo.token
+          }
         })
         .then((res: AxiosResponse) =>
           res.data.code === 0 ? res.data.data : res.data.msg
         )
-        .then((data) => {
+        .then(data => {
           this.isDisable = false;
           this.isOff = !data[Object.keys(data)[0]];
         })
@@ -93,18 +93,18 @@ export default Vue.extend({
           setTimeout(() => {
             this.$message({
               message: err || `由于未知因素，无法获取${this.title}状态`,
-              type: "warning",
+              type: "warning"
             });
           }, Math.random());
         })
         .finally(() => {
           this.isLoading = false;
         });
-    },
+    }
   },
   created() {
     this.getStatus();
-  },
+  }
 });
 </script>
 

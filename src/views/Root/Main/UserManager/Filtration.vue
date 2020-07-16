@@ -42,13 +42,14 @@
 </template>
 
 <script lang="ts">
+import { AxiosResponse } from "axios";
 import Vue from "vue";
+
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/UserEditorDialog.vue";
-import { AxiosResponse } from "axios";
-import { oneNotNull } from "@/utils/validate";
-import { fetchDepartmentList } from "@/utils/fetchList";
 import { Department } from "@/interface/list-data";
+import { fetchDepartmentList } from "@/utils/fetchData";
+import { oneNotNull } from "@/utils/validate";
 
 interface UserData {
   dtpId: number;
@@ -73,14 +74,14 @@ interface UserData {
 export default Vue.extend({
   components: {
     WhatTable,
-    EditorDialog,
+    EditorDialog
   },
   data() {
     return {
       filterForm: {
         name: "",
         worknum: "",
-        department: "",
+        department: ""
       },
       isFilled: false,
       editUserIsVisible: false,
@@ -91,24 +92,24 @@ export default Vue.extend({
         {
           prop: "name",
           label: "姓名",
-          width: 120,
+          width: 120
         },
         {
           prop: "gender",
           label: "性别",
-          width: 60,
+          width: 60
         },
         {
           prop: "worknum",
-          label: "工号",
+          label: "工号"
         },
         {
           prop: "phone",
-          label: "联系电话",
+          label: "联系电话"
         },
         {
           prop: "teacherTitle",
-          label: "职称",
+          label: "职称"
         },
         {
           button: true,
@@ -125,7 +126,7 @@ export default Vue.extend({
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
-              },
+              }
             },
             {
               // name: "删除",
@@ -138,19 +139,19 @@ export default Vue.extend({
                 this.$confirm("删除用户后将不能直接恢复, 是否继续?", "注意", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
-                  type: "warning",
+                  type: "warning"
                 })
                   .then(() => {
                     this.$http
                       .post(
                         "/api/root/user/delete",
                         {
-                          worknum: userData.worknum,
+                          worknum: userData.worknum
                         },
                         {
                           headers: {
-                            token: this.$store.state.userInfo.token,
-                          },
+                            token: this.$store.state.userInfo.token
+                          }
                         }
                       )
                       .then((res: AxiosResponse) => {
@@ -158,7 +159,7 @@ export default Vue.extend({
                           this.$data.tableData.splice(index, 1);
                           this.$message({
                             message: res.data.msg || "用户信息删除成功",
-                            type: "success",
+                            type: "success"
                           });
                         } else {
                           return Promise.reject(res.data.msg);
@@ -167,17 +168,17 @@ export default Vue.extend({
                       .catch((err: string) => {
                         this.$message({
                           message: err || "由于未知因素，用户信息删除失败",
-                          type: "warning",
+                          type: "warning"
                         });
                       });
                   })
                   .catch(() => {
                     this.$message({
                       message: "已取消删除",
-                      type: "info",
+                      type: "info"
                     });
                   });
-              },
+              }
             },
             {
               // name: "权限",
@@ -185,17 +186,18 @@ export default Vue.extend({
               icon: "el-icon-coordinate",
               plain: true,
               circle: true,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (userData: UserData) => {
                 this.$prompt("请输入新密码", "修改密码", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
                   inputPattern: /.{6,32}/,
                   inputErrorMessage: "密码必须大于 5 位，小于 32 位",
-                  inputType: "text",
+                  inputType: "text"
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 }).then(({ value }: any) => {
                   this.$confirm(`您输入的密码是 ${value}`, "提示", {
                     confirmButtonText: "确定",
-                    cancelButtonText: "取消",
+                    cancelButtonText: "取消"
                   })
                     .then(() => {
                       this.$http
@@ -203,19 +205,19 @@ export default Vue.extend({
                           "/api/root/user/updatePassword",
                           {
                             worknum: userData.worknum,
-                            password: value,
+                            password: value
                           },
                           {
                             headers: {
-                              token: this.$store.state.userInfo.token,
-                            },
+                              token: this.$store.state.userInfo.token
+                            }
                           }
                         )
                         .then((res: AxiosResponse) => {
                           if (res.data.code === 0) {
                             this.$message({
                               message: "修改成功",
-                              type: "success",
+                              type: "success"
                             });
                           } else {
                             return Promise.reject(res.data.msg);
@@ -224,7 +226,7 @@ export default Vue.extend({
                         .catch((err: string) => {
                           this.$message({
                             message: err || "出现未知错误，暂时无法修改密码",
-                            type: "warning",
+                            type: "warning"
                           });
                         });
                     })
@@ -232,7 +234,7 @@ export default Vue.extend({
                       // element 要求占位
                     });
                 });
-              },
+              }
             },
             {
               // name: "改密",
@@ -240,17 +242,18 @@ export default Vue.extend({
               icon: "el-icon-key",
               plain: true,
               circle: true,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (userData: UserData) => {
                 this.$prompt("请输入新密码", "修改密码", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
                   inputPattern: /.{6,32}/,
                   inputErrorMessage: "密码必须大于 5 位，小于 32 位",
-                  inputType: "text",
+                  inputType: "text"
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 }).then(({ value }: any) => {
                   this.$confirm(`您输入的密码是 ${value}`, "提示", {
                     confirmButtonText: "确定",
-                    cancelButtonText: "取消",
+                    cancelButtonText: "取消"
                   })
                     .then(() => {
                       this.$http
@@ -258,19 +261,19 @@ export default Vue.extend({
                           "/api/root/user/updatePassword",
                           {
                             worknum: userData.worknum,
-                            password: value,
+                            password: value
                           },
                           {
                             headers: {
-                              token: this.$store.state.userInfo.token,
-                            },
+                              token: this.$store.state.userInfo.token
+                            }
                           }
                         )
                         .then((res: AxiosResponse) => {
                           if (res.data.code === 0) {
                             this.$message({
                               message: "修改成功",
-                              type: "success",
+                              type: "success"
                             });
                           } else {
                             return Promise.reject(res.data.msg);
@@ -279,7 +282,7 @@ export default Vue.extend({
                         .catch((err: string) => {
                           this.$message({
                             message: err || "出现未知错误，暂时无法修改密码",
-                            type: "warning",
+                            type: "warning"
                           });
                         });
                     })
@@ -287,10 +290,10 @@ export default Vue.extend({
                       // element 要求占位
                     });
                 });
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
       options: {
         mutiSelect: false,
@@ -298,13 +301,13 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true, // 是否一挂载就加载数据
+        initTable: true // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20,
-      },
+        pageSize: 20
+      }
     };
   },
   methods: {
@@ -320,11 +323,11 @@ export default Vue.extend({
             {
               params: {
                 page: this.pagination.pageIndex,
-                size: this.pagination.pageSize,
+                size: this.pagination.pageSize
               },
               headers: {
-                token: this.$store.state.userInfo.token,
-              },
+                token: this.$store.state.userInfo.token
+              }
             }
           )
           .then((res: AxiosResponse) => {
@@ -340,7 +343,7 @@ export default Vue.extend({
           .catch((err: string) => {
             this.$message({
               message: err || "由于未知因素，无法获取表格",
-              type: "warning",
+              type: "warning"
             });
             this.options.loading = false;
           });
@@ -348,7 +351,7 @@ export default Vue.extend({
         if (needAlert) {
           this.$message({
             message: "请至少填入一项，以进行筛选",
-            type: "warning",
+            type: "warning"
           });
         }
       }
@@ -356,19 +359,19 @@ export default Vue.extend({
     toggleEditUser(isVisible: boolean) {
       this.editUserIsVisible =
         typeof isVisible === "undefined" ? !this.editUserIsVisible : isVisible;
-    },
+    }
   },
   created() {
     // 请求院部列表
     fetchDepartmentList()
-      .then((data: Department[]) => (this.department = data as any))
+      .then((data: Department[]) => ((this.department as Department[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

@@ -55,12 +55,13 @@
 </template>
 
 <script lang="ts">
+import { AxiosResponse } from "axios";
 import Vue from "vue";
+
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/BonusEditorDialog.vue";
-import { AxiosResponse } from "axios";
-import { fetchDepartmentList } from "@/utils/fetchList";
 import { Department } from "@/interface/list-data";
+import { fetchDepartmentList, postData } from "@/utils/fetchData";
 import { oneNotNull } from "@/utils/validate";
 
 interface Data {
@@ -79,14 +80,14 @@ interface Data {
 export default Vue.extend({
   components: {
     WhatTable,
-    EditorDialog,
+    EditorDialog
   },
   data() {
     return {
       filterForm: {
         year: "",
         master: "",
-        department: "",
+        department: ""
       },
       isFilled: false,
       editIsVisible: false,
@@ -97,20 +98,20 @@ export default Vue.extend({
         {
           prop: "project",
           label: "项目名称",
-          width: 160,
+          width: 160
         },
         {
           prop: "master",
-          label: "负责人",
+          label: "负责人"
         },
         {
           prop: "type",
           label: "类别",
-          width: 160,
+          width: 160
         },
         {
           prop: "bonus",
-          label: "奖励",
+          label: "奖励"
         },
         {
           button: true,
@@ -127,7 +128,7 @@ export default Vue.extend({
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.editIsVisible = true;
-              },
+              }
             },
             {
               name: "删除",
@@ -139,18 +140,18 @@ export default Vue.extend({
                 this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
-                  type: "warning",
+                  type: "warning"
                 }).then(() =>
                   this.$http
                     .post(
                       "/api/root/bonus/delete",
                       {
-                        id: data.id,
+                        id: data.id
                       },
                       {
                         headers: {
-                          token: this.$store.state.userInfo.token,
-                        },
+                          token: this.$store.state.userInfo.token
+                        }
                       }
                     )
                     .then((res: AxiosResponse) => {
@@ -158,7 +159,7 @@ export default Vue.extend({
                         this.$data.tableData.splice(index, 1);
                         this.$message({
                           message: res.data.msg || "信息删除成功",
-                          type: "success",
+                          type: "success"
                         });
                       } else {
                         return Promise.reject(res.data.msg);
@@ -167,14 +168,14 @@ export default Vue.extend({
                     .catch((err: string) => {
                       this.$message({
                         message: err || "由于未知因素，用户信息删除失败",
-                        type: "warning",
+                        type: "warning"
                       });
                     })
                 );
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
       options: {
         mutiSelect: false,
@@ -182,52 +183,41 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true, // 是否一挂载就加载数据
+        initTable: true // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20,
-      },
+        pageSize: 20
+      }
     };
   },
   methods: {
     fetchData(needAlert: boolean) {
       if (oneNotNull(this.filterForm)) {
         this.options.loading = true;
-
-        this.$http
-          .post("/api/root/bonus/getBonuses", this.filterForm, {
-            params: {
-              page: this.pagination.pageIndex,
-              size: this.pagination.pageSize,
-            },
-            headers: {
-              token: this.$store.state.userInfo.token,
-            },
-          })
-          .then((res: AxiosResponse) => {
-            this.options.loading = false;
-            if (res.data.code === 0) {
-              const { list, total } = res.data.data;
-              this.tableData = list;
-              this.pagination.total = total;
-            } else {
-              return Promise.reject(res.data.msg);
-            }
+        postData("/api/root/bonus/getBonuses", this.filterForm, {
+          params: {
+            page: this.pagination.pageIndex,
+            size: this.pagination.pageSize
+          }
+        })
+          .then(({ list, total }) => {
+            this.tableData = list;
+            this.pagination.total = total;
           })
           .catch((err: string) => {
             this.$message({
               message: err || "由于未知因素，无法获取表格",
-              type: "warning",
+              type: "warning"
             });
-            this.options.loading = false;
-          });
+          })
+          .finally(() => (this.options.loading = false));
       } else {
         if (needAlert) {
           this.$message({
             message: "请至少填入一项，以进行筛选",
-            type: "warning",
+            type: "warning"
           });
         }
       }
@@ -235,19 +225,19 @@ export default Vue.extend({
     toggleEdit(isVisible: boolean) {
       this.editIsVisible =
         typeof isVisible === "undefined" ? !this.editIsVisible : isVisible;
-    },
+    }
   },
   created() {
     // 请求院部列表
     fetchDepartmentList()
-      .then((data: Department[]) => (this.department = data as any))
+      .then((data: Department[]) => ((this.department as Department[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

@@ -41,6 +41,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { Store } from "vuex";
 
 export default Vue.extend({
   props: { isCollapse: Boolean },
@@ -51,24 +52,23 @@ export default Vue.extend({
         rootTypeManager: "2",
         rootBonusManager: "3",
         rootPerformanceManager: "4",
-        rootUserManager: "5",
-      },
+        rootUserManager: "5"
+      }
     };
   },
   computed: {
     headerText() {
-      return this.isCollapse
-        ? (this.$store as any).getters.siteShortName
-        : (this.$store as any).getters.siteName;
-    },
+      return (this.$store as Store<unknown>).getters[
+        this.isCollapse ? "siteShortName" : "siteName"
+      ];
+    }
   },
   methods: {
     redirect2FileManager() {
-      this.$store.getters.siteName;
       this.$confirm("即将跳转至“文件管理”页面，是否继续？", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           window.open("http://10.3.4.18:8998", "JUST WO FileSystem");
@@ -76,8 +76,8 @@ export default Vue.extend({
         .catch(() => {
           this.$message({ type: "info", message: "已取消" });
         });
-    },
-  },
+    }
+  }
 });
 </script>
 

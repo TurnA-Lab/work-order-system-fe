@@ -18,14 +18,18 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { AxiosResponse } from "axios/";
+
 import WhatTable from "@/components/Etc/WhatTable.vue";
+import { Construction } from "@/interface/list-data";
+import { Status } from "@/static-data/work-order";
+
+import { postData } from "../../../../utils/fetchData";
 import ManagerDialog from "./AchievementManagerDialog.vue";
 
 export default Vue.extend({
   components: {
     WhatTable,
-    ManagerDialog,
+    ManagerDialog
   },
   data() {
     return {
@@ -35,19 +39,19 @@ export default Vue.extend({
       columns: [
         {
           prop: "production",
-          label: "成果名称",
+          label: "成果名称"
         },
         {
           prop: "class2",
-          label: "类别",
+          label: "类别"
         },
         {
           prop: "class3",
-          label: "级别",
+          label: "级别"
         },
         {
           prop: "publishTime",
-          label: "发表时间",
+          label: "发表时间"
         },
         {
           toolTip: true,
@@ -55,7 +59,7 @@ export default Vue.extend({
           label: "状态",
           content: "reason",
           show: "status",
-          showRule: "未通过",
+          showRule: "未通过"
         },
         {
           button: true,
@@ -63,78 +67,66 @@ export default Vue.extend({
           width: 200,
           group: [
             {
-              // you can props => type size icon disabled plain
               name: "管理",
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
-              onClick: (data: any, index: number) => {
+              onClick: (data: any) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.managerIsVisible = true;
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
       options: {
         mutiSelect: false,
         mutiSelectFixed: false,
         index: true, // 显示序号
         indexFixed: false,
-        loading: true, // 表格动画
+        loading: true // 表格动画
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20,
-      },
+        pageSize: 20
+      }
     };
   },
   methods: {
     fetchData() {
-      this.$http
-        .post(
-          "/api/online/user/getMyAchievements",
-          {},
-          {
-            params: {
-              page: this.pagination.pageIndex,
-              size: this.pagination.pageSize,
-            },
-            headers: {
-              token: this.$store.state.userInfo.token,
-            },
+      postData(
+        "/api/user/achievement/list",
+        {},
+        {
+          params: {
+            page: this.pagination.pageIndex,
+            size: this.pagination.pageSize
           }
-        )
-        .then((res: AxiosResponse) => {
-          this.options.loading = false;
-          if (res.data.code === 0) {
-            const { list, total } = res.data.data;
-            const statusArr = ["未通过", "审核中", "已通过"];
-
-            list.forEach((item: { status: number | string }) => {
-              item.status = statusArr[(item.status as number) + 1];
-            });
-            this.tableData = list;
-            this.pagination.total = total;
-          } else {
-            return Promise.reject(res.data.msg);
+        }
+      )
+        .then(({ list, total }: { list: Construction[]; total: number }) => {
+          for (let index = 0, length = list.length; index < length; index++) {
+            const element = list[index];
+            element.status = Status[(element.status as number) + 1];
           }
+          this.tableData = list as any;
+          this.pagination.total = total;
         })
         .catch((err: string) => {
           this.$message({
-            message: err || "由于未知因素，无法获取表格",
-            type: "warning",
+            message: err || "由于未知因素，无法获取成果类信息",
+            type: "warning"
           });
-          this.options.loading = false;
-        });
+        })
+        .finally(() => (this.options.loading = false));
     },
     toggleManager(isVisible: boolean) {
       this.managerIsVisible =
         typeof isVisible === "undefined" ? !this.managerIsVisible : isVisible;
-    },
-  },
+    }
+  }
 });
 </script>
 

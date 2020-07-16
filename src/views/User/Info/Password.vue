@@ -85,8 +85,10 @@
 </template>
 
 <script lang="ts">
+import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
-import { AxiosResponse } from "axios";
+
+import { postData } from "../../../utils/fetchData";
 
 export default Vue.extend({
   data() {
@@ -141,8 +143,9 @@ export default Vue.extend({
       isConfirming: false,
       isSaving: false,
       confirmBtn: "验证",
-      confirmBtnIcon: "",
+      // confirmBtnIcon: "",
       submitBtn: "保存修改",
+      userInfo: this.$store.state.userInfo,
       form: {
         oldPassword: "",
         newPassword: "",
@@ -158,12 +161,11 @@ export default Vue.extend({
     };
   },
   computed: {
+    confirmBtnIcon() {
+      return this.$data.isConfirming ? "el-icon-check" : "";
+    },
     confirmBtnText() {
-      return this.$data.isConfirming
-        ? ""
-        : this.$data.confirmBtnIcon
-        ? ""
-        : "验证";
+      return this.$data.isConfirming ? "" : "验证";
     },
     submitBtnText() {
       return this.$data.isSaving ? "请稍后..." : "保存修改";
@@ -171,91 +173,60 @@ export default Vue.extend({
   },
   methods: {
     confirmOldPassword(formName: string) {
-      (this as any).$refs[formName].validateField(
+      (this.$refs[formName] as ElForm).validateField(
         "oldPassword",
         (errorMsg: string) => {
           if (!errorMsg) {
             this.isConfirming = true;
-            this.$http
-              .post(
-                "/api/online/user/check",
-                {
-                  password: this.form.oldPassword
-                },
-                {
-                  headers: {
-                    token: this.$store.state.userInfo.token
-                  }
-                }
-              )
-              .then((res: AxiosResponse) => {
-                this.isConfirming = false;
-                if (res.data.code === 0) {
-                  this.isDisable = false;
-                  this.confirmBtnIcon = "el-icon-check";
-                } else {
-                  this.isDisable = true;
-                  return Promise.reject(res.data.msg);
-                }
-              })
+            postData("/api/user/authentication", {
+              worknum: this.userInfo.worknum,
+              password: this.form.oldPassword
+            })
+              .then(() => (this.isDisable = false))
               .catch((err: string) => {
-                this.isConfirming = false;
                 this.isDisable = true;
                 this.$message({
                   message: err || "由于未知因素，暂时无法验证密码",
                   type: "warning"
                 });
-              });
+              })
+              .finally(() => (this.isConfirming = false));
           }
         }
       );
     },
     resetForm(formName: string) {
-      (this as any).$refs[formName].resetFields();
+      (this.$refs[formName] as ElForm).resetFields();
       this.isDisable = true;
       this.isConfirming = false;
       this.isSaving = false;
-      this.confirmBtnIcon = "";
     },
     submitForm(formName: string) {
-      (this as any).$refs[formName].validate((valid: boolean) => {
+      (this.$refs[formName] as ElForm).validate((valid: boolean) => {
         this.isSaving = true;
         if (valid) {
-          this.$http
-            .post(
-              "/api/online/user/updatePassword",
-              {
-                password: this.form.oldPassword,
-                newPassword: this.form.newPassword
-              },
-              {
-                headers: {
-                  token: this.$store.state.userInfo.token
-                }
-              }
-            )
-            .then((res: AxiosResponse) => {
+          postData("/api/user/updatePassword", {
+            worknum: this.userInfo.worknum,
+            password: this.form.newPassword
+          })
+            .then(() => {
               this.resetForm("form");
-              if (res.data.code === 0) {
-                this.$message({
-                  message: "修改成功，正在跳转至登录页...",
-                  type: "success"
-                });
-                setTimeout(() => {
-                  this.$store.commit("clearUserInfo");
-                  sessionStorage.clear();
-                  this.$router.replace({ name: "login" });
-                }, 1000);
-              } else {
-                return Promise.reject(res.data.msg);
-              }
+              this.$message({
+                message: "修改成功，正在跳转至登录页...",
+                type: "success"
+              });
+              setTimeout(() => {
+                this.$store.commit("clearUserInfo");
+                sessionStorage.clear();
+                this.$router.replace({ name: "login" });
+              }, 1000);
             })
-            .catch((err: string) => {
+            .catch((err: string) =>
               this.$message({
                 message: err || "出现未知错误，暂时无法修改密码",
                 type: "warning"
-              });
-            });
+              })
+            );
         }
       });
     }

@@ -172,18 +172,20 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios";
-import yearRange from "@/utils/yearRange";
+import Vue from "vue";
+
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
+import { yearList } from "@/static-data/work-order";
 import { allNotNull } from "@/utils/validate";
-import {
-  fetchPrizeList,
-  fetchLevelList,
-  fetchKindList,
-  fetchDepartmentList,
-} from "../../../../utils/fetchList";
+
 import { Department } from "../../../../interface/list-data";
+import {
+  fetchDepartmentList,
+  fetchKindList,
+  fetchLevelList,
+  fetchPrizeList
+} from "../../../../utils/fetchData";
 
 interface Data {
   aid: number;
@@ -215,19 +217,17 @@ interface Type {
   children: Type[];
 }
 
-const statusText = ["未通过", "审核中", "已通过"];
-
 export default Vue.extend({
   props: { data: Object, isVisible: Boolean },
   components: {
-    FilePreviewerBtn,
+    FilePreviewerBtn
   },
   data() {
     return {
       isLoading: true,
       dataStatus: 0,
       canEdit: true,
-      schoolYears: yearRange,
+      schoolYears: yearList,
       statusIsVisible: false,
       editIsDisable: true,
       isDisable: false,
@@ -237,8 +237,8 @@ export default Vue.extend({
         department: [],
         prize: [],
         level: [],
-        sort: [],
-      },
+        sort: []
+      }
     };
   },
   methods: {
@@ -252,7 +252,7 @@ export default Vue.extend({
       } else {
         this.$message({
           message: "仅在“审核中”和“未通过”时可以进行编辑",
-          type: "warning",
+          type: "warning"
         });
       }
     },
@@ -263,7 +263,7 @@ export default Vue.extend({
         this.$prompt("请输入原因", "", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          inputType: "textarea",
+          inputType: "textarea"
         }).then(({ value }: any) => {
           form.status = text;
           form.reason = value;
@@ -274,11 +274,11 @@ export default Vue.extend({
         this.updateInfo(false);
       }
     },
-    updateInfo(isEdit: boolean = true) {
+    updateInfo(isEdit = true) {
       if (
         allNotNull(
           Object.assign({}, this.form, {
-            reason: "validate",
+            reason: "validate"
           })
         )
       ) {
@@ -286,36 +286,36 @@ export default Vue.extend({
         this.editIsDisable = true;
 
         // 处理类别
-        for (const key in this.options.sort) {
-          if (this.options.sort.hasOwnProperty(key)) {
-            const object = this.options.sort[key] as Type;
+        // for (const key in this.options.sort) {
+        //   if (this.options.sort.hasOwnProperty(key)) {
+        //     const object = this.options.sort[key] as Type;
 
-            if (object.value === this.sort[0]) {
-              (this.form as Data).class2 = object.label;
+        //     if (object.value === this.sort[0]) {
+        //       (this.form as Data).class2 = object.label;
 
-              for (const key2 in object.children) {
-                if (object.children.hasOwnProperty(key2)) {
-                  const element = object.children[key2];
+        //       for (const key2 in object.children) {
+        //         if (object.children.hasOwnProperty(key2)) {
+        //           const element = object.children[key2];
 
-                  if (element.value === this.sort[1]) {
-                    (this.form as Data).class3 = element.label;
-                  }
-                }
-              }
-            }
-          }
-        }
+        //           if (element.value === this.sort[1]) {
+        //             (this.form as Data).class3 = element.label;
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
 
         // 处理
         const temForm = Object.assign({}, this.form, {
-          status: 0,
+          status: 0
         });
 
         this.$http
           .post("/api/online/user/updateUserAward", temForm, {
             headers: {
-              token: this.$store.state.userInfo.token,
-            },
+              token: this.$store.state.userInfo.token
+            }
           })
           .then((res: AxiosResponse) => {
             this.isDisable = false;
@@ -325,7 +325,7 @@ export default Vue.extend({
                 this.$emit("refresh");
                 this.$message({
                   message: res.data.msg || "保存成功",
-                  type: "success",
+                  type: "success"
                 });
               }
             } else {
@@ -336,70 +336,73 @@ export default Vue.extend({
             this.isDisable = false;
             this.$message({
               message: err || "未知错误",
-              type: "warning",
+              type: "warning"
             });
           });
       } else {
         this.$message({
           message: "填写尚不完整，请补全后提交",
-          type: "warning",
+          type: "warning"
         });
       }
-    },
+    }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    },
+    }
   },
   watch: {
-    data(newValue: Data, oldValue: Data) {
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+    data(newValue: Data) {
+      // for (const key in this.options.sort) {
+      //   if (this.options.sort.hasOwnProperty(key)) {
+      //     const object = this.options.sort[key] as Type;
 
-          if (object.label === newValue.class2) {
-            (this.sort as any[])[0] = object.value;
+      //     if (object.label === newValue.class2) {
+      //       (this.sort as any[])[0] = object.value;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+      //       for (const key2 in object.children) {
+      //         if (object.children.hasOwnProperty(key2)) {
+      //           const element = object.children[key2];
 
-                if (element.label === newValue.class3) {
-                  (this.sort as any[])[1] = element.value;
-                }
-              }
-            }
-          }
-        }
-      }
+      //           if (element.label === newValue.class3) {
+      //             (this.sort as any[])[1] = element.value;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       this.canEdit = !(newValue.status === 1);
       this.form = newValue;
-    },
+    }
   },
   created() {
     // 请求院部列表
     const department = fetchDepartmentList()
-      .then((data: Department[]) => ((this.options.department as any) = data))
+      .then(
+        (data: Department[]) =>
+          ((this.options.department as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
     // 请求获奖类型列表
     const kind = fetchKindList({
       params: {
-        class1: "获奖类",
-      },
+        class1: "获奖类"
+      }
     })
       .then((data: Department[]) => ((this.options.sort as any) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖类型列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -409,7 +412,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取奖项列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -419,14 +422,14 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目级别列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
     Promise.all([department, kind, prize, level]).then(() => {
       this.isLoading = false;
     });
-  },
+  }
 });
 </script>
 

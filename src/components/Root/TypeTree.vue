@@ -68,31 +68,30 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Axios, { AxiosResponse } from "axios";
-import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
 import "@/interface/type-tree";
 
+import { AxiosResponse } from "axios";
+import Vue from "vue";
+
+import { getData } from "../../utils/fetchData";
+
 export default Vue.extend({
-  components: {
-    VerticalDivider,
-  },
   props: {
     type: String,
     typeApi: String,
     typeData: Object,
     removeApi: String,
     removeType: String,
-    appendApi: String,
+    appendApi: String
   },
   data() {
     return {
       data: [],
-      isLoading: true,
+      isLoading: true
     };
   },
   methods: {
-    append(node: TreeNode<any, TreeData>, data: TreeData) {
+    append(node: TreeNode<number, TreeData>, data: TreeData) {
       const newChild: TreeData = { label: "新节点", children: [] };
 
       if (!data.children) {
@@ -103,7 +102,7 @@ export default Vue.extend({
       this.$prompt("请输入名称", "新增节点", {
         confirmButtonText: "保存",
         cancelButtonText: "取消保存",
-        inputValue: newChild.label,
+        inputValue: newChild.label
       })
         .then(
           (returnInfo: MessageBoxData) =>
@@ -119,12 +118,12 @@ export default Vue.extend({
                   {
                     class1: this.type,
                     class2: node.label,
-                    class3: value,
+                    class3: value
                   },
                   {
                     headers: {
-                      token: this.$store.state.userInfo.token,
-                    },
+                      token: this.$store.state.userInfo.token
+                    }
                   }
                 )
                 .then((res: AxiosResponse) => {
@@ -135,8 +134,8 @@ export default Vue.extend({
                 .get(this.appendApi, {
                   params: { [this.removeType]: value },
                   headers: {
-                    token: this.$store.state.userInfo.token,
-                  },
+                    token: this.$store.state.userInfo.token
+                  }
                 })
                 .then((res: AxiosResponse) => {
                   return { res, value };
@@ -157,14 +156,14 @@ export default Vue.extend({
         .catch(([err, value]) =>
           this.$message({
             message: err || `由于未知因素，无法添加${value}}`,
-            type: "warning",
+            type: "warning"
           })
         );
 
       // 展开节点列表
       node.expanded = true;
     },
-    appendLevel(node: TreeNode<any, TreeData>, data: TreeData) {
+    appendLevel(node: TreeNode<number, TreeData>, data: TreeData) {
       const newChild: TreeData = { label: "新节点", children: [] };
       const parent = node.parent;
 
@@ -176,7 +175,7 @@ export default Vue.extend({
       this.$prompt("请输入名称", "新增节点", {
         confirmButtonText: "保存",
         cancelButtonText: "取消保存",
-        inputValue: newChild.label,
+        inputValue: newChild.label
       })
         .then(
           (returnInfo: MessageBoxData) =>
@@ -187,11 +186,11 @@ export default Vue.extend({
           this.$http
             .get(this.appendApi, {
               params: {
-                [this.removeType]: data.label,
+                [this.removeType]: data.label
               },
               headers: {
-                token: this.$store.state.userInfo.token,
-              },
+                token: this.$store.state.userInfo.token
+              }
             })
             .then((res: AxiosResponse) => {
               return { res, value };
@@ -200,26 +199,19 @@ export default Vue.extend({
         .then(({ res, value }) => {
           if (res.data.code === 0) {
             newChild.label = value;
-            (parent.data as any).push(newChild);
+            ((parent.data as unknown) as TreeData[]).push(newChild);
           } else {
             return Promise.reject([res.data.msg, value]);
           }
         })
-        .catch(([err, value]) =>
-          this.$message(
-            err === "cancel" || (err as string).startsWith("c")
-              ? {
-                  message: "已取消",
-                  type: "info",
-                }
-              : {
-                  message: err || `由于未知因素，无法添加${value}}`,
-                  type: "warning",
-                }
-          )
-        );
+        .catch(([err, value]) => {
+          this.$message({
+            message: err || `由于未知因素，无法添加${value}}`,
+            type: "warning"
+          });
+        });
     },
-    remove(node: TreeNode<any, TreeData>, data: TreeData) {
+    remove(node: TreeNode<number, TreeData>, data: TreeData) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
       const index = children.findIndex((d: TreeData) => d.value === data.value);
@@ -227,16 +219,16 @@ export default Vue.extend({
       this.$confirm(`即将删除“${data.label}”, 是否继续?`, "注意", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() =>
           this.$http.get(this.removeApi, {
             params: {
-              [this.removeType]: data.label,
+              [this.removeType]: data.label
             },
             headers: {
-              token: this.$store.state.userInfo.token,
-            },
+              token: this.$store.state.userInfo.token
+            }
           })
         )
         .then((res: AxiosResponse) =>
@@ -247,16 +239,15 @@ export default Vue.extend({
         .catch((err: string) =>
           this.$message({
             message: err || `由于未知因素，无法删除${data.label}`,
-            type: "warning",
+            type: "warning"
           })
         );
     },
-    edit(node: TreeNode<any, TreeData>, data: TreeData) {
-      const stateToken = this.$store.state.userInfo.token;
+    edit(node: TreeNode<number, TreeData>, data: TreeData) {
       this.$prompt("请输入名称", "编辑", {
         confirmButtonText: "保存",
         cancelButtonText: "取消编辑",
-        inputValue: data.label,
+        inputValue: data.label
       })
         .then(
           (returnInfo: MessageBoxData) =>
@@ -271,11 +262,11 @@ export default Vue.extend({
           this.$http
             .get(this.removeApi, {
               params: {
-                [this.removeType]: data.label,
+                [this.removeType]: data.label
               },
               headers: {
-                token: this.$store.state.userInfo.token,
-              },
+                token: this.$store.state.userInfo.token
+              }
             })
             .then((res: AxiosResponse) =>
               res.data.code === 0 ? value : Promise.reject(res.data.data.msg)
@@ -291,12 +282,12 @@ export default Vue.extend({
                   {
                     class1: this.type,
                     class2: node.label,
-                    class3: value,
+                    class3: value
                   },
                   {
                     headers: {
-                      token: this.$store.state.userInfo.token,
-                    },
+                      token: this.$store.state.userInfo.token
+                    }
                   }
                 )
                 .then((res: AxiosResponse) => {
@@ -307,8 +298,8 @@ export default Vue.extend({
                 .get(this.appendApi, {
                   params: { [this.removeType]: value },
                   headers: {
-                    token: this.$store.state.userInfo.token,
-                  },
+                    token: this.$store.state.userInfo.token
+                  }
                 })
                 .then((res: AxiosResponse) => {
                   return { res, value };
@@ -327,7 +318,7 @@ export default Vue.extend({
             // 生成节点
             const newChild: TreeData = {
               label: value,
-              children: [],
+              children: []
             };
 
             if (!parent.data.children) {
@@ -342,33 +333,24 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || `由于未知因素，无法添加${data.label}}`,
-            type: "warning",
+            type: "warning"
           });
         });
-    },
+    }
   },
   created() {
-    this.$http
-      .get(this.typeApi, {
-        headers: {
-          token: this.$store.state.userInfo.token,
-        },
-        params: this.typeData || {},
-      })
-      .then((res: AxiosResponse) =>
-        res.data.code === 0 ? res.data.data : Promise.reject(res.data.msg)
-      )
-      .then((data) => (this.data = data))
+    getData(this.typeApi, { params: this.typeData || {} })
+      .then(data => (this.data = data))
       .catch((err: string) =>
         this.$message({
           message: err || `由于未知因素，无法获取${this.type}列表`,
-          type: "warning",
+          type: "warning"
         })
       )
       .finally(() => {
         this.isLoading = false;
       });
-  },
+  }
 });
 </script>
 

@@ -259,10 +259,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios";
-import yearRange from "@/utils/yearRange";
+import Vue from "vue";
+
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
+import { yearList } from "@/static-data/work-order";
 
 interface Data {
   cid: number;
@@ -305,13 +306,13 @@ const statusText = ["未通过", "审核中", "已通过"];
 export default Vue.extend({
   props: { data: Object, isVisible: Boolean },
   components: {
-    FilePreviewerBtn,
+    FilePreviewerBtn
   },
   data() {
     return {
       isLoading: true,
       dataStatus: 0,
-      schoolYears: yearRange,
+      schoolYears: yearList,
       statusIsVisible: false,
       editIsDisable: true,
       isDisable: false,
@@ -322,16 +323,16 @@ export default Vue.extend({
         isEnd: [
           {
             label: "未结束",
-            value: "0",
+            value: "0"
           },
           {
             label: "已结束",
-            value: "1",
-          },
+            value: "1"
+          }
         ],
         level: [],
-        sort: [],
-      },
+        sort: []
+      }
     };
   },
   methods: {
@@ -349,7 +350,7 @@ export default Vue.extend({
         this.$prompt("请输入原因", "", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          inputType: "textarea",
+          inputType: "textarea"
         }).then(({ value }: any) => {
           form.status = text;
           form.reason = value;
@@ -360,30 +361,30 @@ export default Vue.extend({
         this.updateInfo(false);
       }
     },
-    updateInfo(isEdit: boolean = true) {
+    updateInfo(isEdit = true) {
       this.isDisable = true;
       this.editIsDisable = true;
 
       // 处理类别
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+      // for (const key in this.options.sort) {
+      //   if (this.options.sort.hasOwnProperty(key)) {
+      //     const object = this.options.sort[key] as Type;
 
-          if (object.value === this.sort[0]) {
-            (this.form as Data).class2 = object.label;
+      //     if (object.value === this.sort[0]) {
+      //       (this.form as Data).class2 = object.label;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+      //       for (const key2 in object.children) {
+      //         if (object.children.hasOwnProperty(key2)) {
+      //           const element = object.children[key2];
 
-                if (element.value === this.sort[1]) {
-                  (this.form as Data).class3 = element.label;
-                }
-              }
-            }
-          }
-        }
-      }
+      //           if (element.value === this.sort[1]) {
+      //             (this.form as Data).class3 = element.label;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       (this.form as Data).beginToEndTime = (this
         .form as Data).beginToEndTime.toString();
@@ -391,14 +392,14 @@ export default Vue.extend({
       // 处理审核状态和是否结束
       const temForm = Object.assign({}, this.form, {
         status: statusText.indexOf((this.form as Data).status as string) - 1,
-        isEnd: isEndText.indexOf((this.form as Data).isEnd as string),
+        isEnd: isEndText.indexOf((this.form as Data).isEnd as string)
       });
 
       this.$http
         .post("/api/online/officeAdmin/constructionSupplement", temForm, {
           headers: {
-            token: this.$store.state.userInfo.token,
-          },
+            token: this.$store.state.userInfo.token
+          }
         })
         .then((res: AxiosResponse) => {
           this.isDisable = false;
@@ -408,7 +409,7 @@ export default Vue.extend({
               this.$emit("refresh");
               this.$message({
                 message: res.data.msg || "保存成功",
-                type: "success",
+                type: "success"
               });
             }
           } else {
@@ -419,37 +420,37 @@ export default Vue.extend({
           this.isDisable = false;
           this.$message({
             message: err || "未知错误",
-            type: "warning",
+            type: "warning"
           });
         });
-    },
+    }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    },
+    }
   },
   watch: {
     data(newValue: Data, oldValue: Data) {
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+      // for (const key in this.options.sort) {
+      //   if (this.options.sort.hasOwnProperty(key)) {
+      //     const object = this.options.sort[key] as Type;
 
-          if (object.label === newValue.class2) {
-            (this.sort as any[])[0] = object.value;
+      //     if (object.label === newValue.class2) {
+      //       (this.sort as any[])[0] = object.value;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+      //       for (const key2 in object.children) {
+      //         if (object.children.hasOwnProperty(key2)) {
+      //           const element = object.children[key2];
 
-                if (element.label === newValue.class3) {
-                  (this.sort as any[])[1] = element.value;
-                }
-              }
-            }
-          }
-        }
-      }
+      //           if (element.label === newValue.class3) {
+      //             (this.sort as any[])[1] = element.value;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       newValue.beginToEndTime = (newValue.beginToEndTime as string).split(",");
 
@@ -459,7 +460,7 @@ export default Vue.extend({
       if (newValue === 3) {
         this.$data.isLoading = false;
       }
-    },
+    }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -471,8 +472,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -486,7 +487,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -495,12 +496,12 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "建设类",
+          class1: "建设类"
         },
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -514,7 +515,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目类型列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -525,8 +526,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -540,10 +541,10 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目级别列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

@@ -125,15 +125,15 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { AxiosResponse } from "axios";
+
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
 import { Department } from "@/interface/list-data";
 import {
-  fetchKindList,
   fetchDepartmentList,
-  fetchLevelList,
-} from "@/utils/fetchList";
+  fetchKindList,
+  fetchLevelList
+} from "@/utils/fetchData";
 
 interface Type {
   label: string;
@@ -144,7 +144,7 @@ interface Type {
 export default Vue.extend({
   components: {
     SubmitBtn,
-    UploadBtn,
+    UploadBtn
   },
   data() {
     return {
@@ -159,22 +159,22 @@ export default Vue.extend({
         sponsor: "",
         level: "",
         class2: "",
-        class3: "",
+        class3: ""
       },
       options: {
         department: [],
         sort: [],
-        level: [],
+        level: []
       },
       etc: {
         name: {
-          inputVisible: false,
+          inputVisible: false
         },
         teammate: {
-          inputVisible: false,
+          inputVisible: false
         },
-        inputValue: "",
-      },
+        inputValue: ""
+      }
     };
   },
   methods: {
@@ -184,12 +184,14 @@ export default Vue.extend({
     showPrincipalInput() {
       this.etc.name.inputVisible = true;
       this.$nextTick(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (this as any).$refs.principalInput.$refs.input.focus();
       });
     },
     showMemberInput() {
       this.etc.teammate.inputVisible = true;
       this.$nextTick(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (this as any).$refs.memberInput.$refs.input.focus();
       });
     },
@@ -209,34 +211,34 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      for (const key in this.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+      // for (const key in this.sort) {
+      //   if (this.options.sort.hasOwnProperty(key)) {
+      //     const object = this.options.sort[key] as Type;
 
-          if (object.value === this.sort[0]) {
-            this.form.class2 = object.label;
+      //     if (object.value === this.sort[0]) {
+      //       this.form.class2 = object.label;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+      //       for (const key2 in object.children) {
+      //         if (object.children.hasOwnProperty(key2)) {
+      //           const element = object.children[key2];
 
-                if (element.value === this.sort[1]) {
-                  this.form.class3 = element.label;
-                }
-              }
-            }
-          }
-        }
-      }
+      //           if (element.value === this.sort[1]) {
+      //             this.form.class3 = element.label;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       this.$store.commit(
         "orderForm",
         Object.assign({}, this.form, {
           teammate: this.form.teammate.toString(),
-          beginToEndTime: this.form.beginToEndTime.toString(),
+          beginToEndTime: this.form.beginToEndTime.toString()
         })
       );
-    },
+    }
   },
   created() {
     // 默认部门为自己的部门
@@ -244,38 +246,45 @@ export default Vue.extend({
 
     // 请求院部列表
     fetchDepartmentList()
-      .then((data: Department[]) => ((this.options.department as any) = data))
+      .then(
+        (data: Department[]) =>
+          ((this.options.department as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
     // 请求建设类型列表
     fetchKindList({
       params: {
-        class1: "建设类",
-      },
+        class1: "建设类"
+      }
     })
-      .then((data: Department[]) => ((this.options.sort as any) = data))
+      .then(
+        (data: Department[]) => ((this.options.sort as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取建设类型列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
     // 请求项目级别列表
     fetchLevelList()
-      .then((data: Department[]) => ((this.options.level as any) = data))
+      .then(
+        (data: Department[]) => ((this.options.level as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖级别列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

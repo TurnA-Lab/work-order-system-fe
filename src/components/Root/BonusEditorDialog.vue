@@ -91,11 +91,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { AxiosResponse } from "axios";
-import { computeOffice } from "@/utils/computeOffice";
-import { allNotNull } from "@/utils/validate";
-import { fetchDepartmentList } from "@/utils/fetchList";
+
 import { Department } from "@/interface/list-data";
+import { computeOffice } from "@/static-data/work-order";
+import { fetchDepartmentList, postData } from "@/utils/fetchData";
+import { allNotNull } from "@/utils/validate";
 
 interface Data {
   id: number;
@@ -120,8 +120,8 @@ export default Vue.extend({
       statusIsVisible: false,
       form: {},
       options: {
-        department: [],
-      },
+        department: []
+      }
     };
   },
   methods: {
@@ -135,34 +135,24 @@ export default Vue.extend({
             null1: "validate",
             null2: "validate",
             null3: "validate",
-            updateTime: "validate",
+            updateTime: "validate"
           })
         )
       ) {
         this.isDisable = true;
-
-        this.$http
-          .post("/api/root/bonus/update", this.form, {
-            headers: {
-              token: this.$store.state.userInfo.token,
-            },
-          })
-          .then((res: AxiosResponse) => {
-            if (res.data.code === 0) {
-              this.close();
-              this.$emit("refresh");
-              this.$message({
-                message: res.data.msg || "用户信息保存成功",
-                type: "success",
-              });
-            } else {
-              return Promise.reject(res.data.msg);
-            }
+        postData("/api/root/bonus/update", this.form)
+          .then(() => {
+            this.close();
+            this.$emit("refresh");
+            this.$message({
+              message: "用户信息保存成功",
+              type: "success"
+            });
           })
           .catch((err: string) => {
             this.$message({
-              message: "未知错误",
-              type: "warning",
+              message: err || "未知错误",
+              type: "warning"
             });
           })
           .finally(() => {
@@ -171,20 +161,20 @@ export default Vue.extend({
       } else {
         this.$message({
           message: "填写尚不完整，请补全后提交",
-          type: "warning",
+          type: "warning"
         });
       }
-    },
+    }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    },
+    }
   },
   watch: {
-    data(newValue: Data, oldValue: Data) {
+    data(newValue: Data) {
       this.form = newValue;
-    },
+    }
   },
   created() {
     // 请求院部列表
@@ -198,10 +188,10 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

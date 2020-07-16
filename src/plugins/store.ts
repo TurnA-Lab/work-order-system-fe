@@ -8,18 +8,18 @@ export default new Vuex.Store({
   state: {
     userInfo: {
       token: null,
-      permission: null,
+      permission: null
     },
     order: {
       active: 1,
       class: 0,
-      form: {},
-    },
+      form: {}
+    }
   },
   getters: {
-    permission: (state) => state.userInfo.permission,
+    permission: state => state.userInfo.permission,
     siteName: () => "JUST WO",
-    siteShortName: () => "J.",
+    siteShortName: () => "J."
   },
   mutations: {
     updateUserInfo(state, newUserInfo: object) {
@@ -47,10 +47,10 @@ export default new Vuex.Store({
         {
           active: 1,
           class: 0,
-          form: {},
+          form: {}
         }
       );
-    },
+    }
   },
-  actions: {},
+  actions: {}
 });

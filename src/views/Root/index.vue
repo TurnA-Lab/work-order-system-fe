@@ -13,26 +13,27 @@
 
 <script lang="ts">
 import Vue from "vue";
-import RootMenu from "./Menu.vue";
+
 import RootHeader from "./Header.vue";
 import RootMain from "./Main/index.vue";
+import RootMenu from "./Menu.vue";
 
 export default Vue.extend({
   components: {
     RootMenu,
     RootHeader,
-    RootMain,
+    RootMain
   },
   data() {
     return {
-      menuIsCollapse: false,
+      menuIsCollapse: false
     };
   },
   methods: {
     toggleIsCollapse() {
       this.menuIsCollapse = !this.menuIsCollapse;
-    },
-  },
+    }
+  }
 });
 </script>
 

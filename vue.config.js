@@ -6,9 +6,9 @@ module.exports = {
       sass: {
         data: `
           @import "@/assets/stylesheet/base.scss";
-        `,
-      },
-    },
+        `
+      }
+    }
   },
   devServer: {
     open: true, //浏览器自动打开页面
@@ -19,17 +19,17 @@ module.exports = {
       "^/api": {
         target: "http://10.3.4.18",
         ws: true,
-        changOrigin: true,
+        changOrigin: true
       },
       "^/api/alien": {
         target: "http://10.3.4.18",
         ws: true,
-        changOrigin: true,
-      },
-    },
+        changOrigin: true
+      }
+    }
     // https: true,
   },
   configureWebpack: {
-    devtool: "source-map",
-  },
+    devtool: "source-map"
+  }
 };

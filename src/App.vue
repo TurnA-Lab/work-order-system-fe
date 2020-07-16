@@ -11,13 +11,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import "vue-awesome/icons/plane";
+
+import Vue from "vue";
 
 export default Vue.extend({
   data() {
     return {
-      offline: !navigator.onLine,
+      offline: !navigator.onLine
     };
   },
   created() {
@@ -40,7 +41,7 @@ export default Vue.extend({
       location.reload();
       this.offline = false;
     });
-  },
+  }
 });
 </script>
 

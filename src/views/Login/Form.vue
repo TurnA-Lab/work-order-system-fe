@@ -47,9 +47,13 @@
 </template>
 
 <script lang="ts">
+import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
-import { AxiosResponse } from "axios";
-import { LoginData, Roles } from "../../interface/login";
+
+import { Roles } from "@/static-data/login";
+
+import { LoginData } from "../../interface/login";
+import { postData } from "../../utils/fetchData";
 
 export default Vue.extend({
   data() {
@@ -58,36 +62,32 @@ export default Vue.extend({
       form: {
         permission: "0",
         worknum: "",
-        password: "",
+        password: ""
       },
       rules: {
         worknum: [{ required: true, message: "请输入工号", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-      },
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      }
     };
   },
   computed: {
     submitBtnText() {
       return this.$data.isConfirming ? "请稍后..." : "登录";
-    },
+    }
   },
   methods: {
     submitForm(formName: string) {
       // 设置验证状态
       this.isConfirming = true;
 
-      ((this as any).$refs[formName].validate() as Promise<boolean>)
+      ((this.$refs[formName] as ElForm).validate() as Promise<boolean>)
         .then((valid: boolean) => valid || Promise.reject("请检查工号、密码"))
         .then(() =>
-          this.$http
-            .post("/api/login", this.form)
-            .then((res: AxiosResponse) =>
-              res.data.code === 0 ? res.data.data : Promise.reject(res.data.msg)
-            )
+          postData("/api/login", this.form)
             .then((data: LoginData) => {
               // 将权限数组转化为权限数字
-              let permission: number = 0;
-              data.roles.forEach((value) => {
+              let permission = 0;
+              data.roles.forEach(value => {
                 permission =
                   permission < parseInt(Roles[value], 10)
                     ? parseInt(Roles[value], 10)
@@ -116,14 +116,14 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || "未知错误",
-            type: "warning",
+            type: "warning"
           });
         })
         .finally(() => {
           this.isConfirming = false;
         });
-    },
-  },
+    }
+  }
 });
 </script>
 

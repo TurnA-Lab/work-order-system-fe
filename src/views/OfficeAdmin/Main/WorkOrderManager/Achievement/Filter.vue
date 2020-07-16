@@ -92,11 +92,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import WhatTable from "@/components/Etc/WhatTable.vue";
-import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
-import yearRange from "@/utils/yearRange";
+import Vue from "vue";
+
+import WhatTable from "@/components/Etc/WhatTable.vue";
+import { yearList } from "@/static-data/work-order";
+
+import Audit from "./Audit.vue";
 
 interface Data {
   aid: number;
@@ -125,7 +127,7 @@ const statusText = ["未通过", "审核中", "已通过"];
 export default Vue.extend({
   components: {
     WhatTable,
-    Audit,
+    Audit
   },
   data() {
     return {
@@ -136,13 +138,13 @@ export default Vue.extend({
         level: null,
         sort: null,
         year: null,
-        schoolYear: null,
+        schoolYear: null
       },
       filter: {
         department: [],
-        sort: [],
+        sort: []
       },
-      schoolYears: yearRange,
+      schoolYears: yearList,
       isFilled: false,
       auditIsVisible: false,
       data: {},
@@ -153,20 +155,20 @@ export default Vue.extend({
         {
           prop: "production",
           label: "成果名称",
-          width: 160,
+          width: 160
         },
         {
           prop: "name",
-          label: "第一作者",
+          label: "第一作者"
         },
         {
           prop: "class3",
           label: "类别",
-          width: 160,
+          width: 160
         },
         {
           prop: "status",
-          label: "审核状态",
+          label: "审核状态"
         },
         {
           button: true,
@@ -184,10 +186,10 @@ export default Vue.extend({
                 this.$data.data = data;
                 this.$data.index = index;
                 this.$data.auditIsVisible = true;
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
       options: {
         mutiSelect: false,
@@ -195,27 +197,27 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true, // 是否一挂载就加载数据
+        initTable: true // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20,
-      },
+        pageSize: 20
+      }
     };
   },
   methods: {
     fetchData(needAlert: boolean) {
       // 只要有一个填充就设置 isFilled 为真
-      for (const key in this.filterForm) {
-        if (this.filterForm.hasOwnProperty(key)) {
-          const element = (this.filterForm as any)[key];
-          if (element !== null) {
-            this.isFilled = true;
-            break;
-          }
-        }
-      }
+      // for (const key in this.filterForm) {
+      //   if (this.filterForm.hasOwnProperty(key)) {
+      //     const element = (this.filterForm as any)[key];
+      //     if (element !== null) {
+      //       this.isFilled = true;
+      //       break;
+      //     }
+      //   }
+      // }
 
       if (this.isFilled) {
         this.options.loading = true;
@@ -224,11 +226,11 @@ export default Vue.extend({
           .post("/api/online/officeAdmin/getUserAchievement", this.filterForm, {
             params: {
               page: this.pagination.pageIndex,
-              size: this.pagination.pageSize,
+              size: this.pagination.pageSize
             },
             headers: {
-              token: this.$store.state.userInfo.token,
-            },
+              token: this.$store.state.userInfo.token
+            }
           })
           .then((res: AxiosResponse) => {
             this.options.loading = false;
@@ -248,7 +250,7 @@ export default Vue.extend({
           .catch((err: string) => {
             this.$message({
               message: err || "由于未知因素，无法获取表格",
-              type: "warning",
+              type: "warning"
             });
             this.options.loading = false;
           });
@@ -256,7 +258,7 @@ export default Vue.extend({
         if (needAlert) {
           this.$message({
             message: "请至少填入一项，以进行筛选",
-            type: "warning",
+            type: "warning"
           });
         }
       }
@@ -267,7 +269,7 @@ export default Vue.extend({
       } else {
         this.auditIsVisible = isVisible;
       }
-    },
+    }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -279,8 +281,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -293,7 +295,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -302,12 +304,12 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "成果类",
+          class1: "成果类"
         },
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -320,10 +322,10 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

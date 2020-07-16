@@ -52,12 +52,13 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
 
 export default Vue.extend({
   props: { isCollapse: Boolean },
   components: {
-    VerticalDivider,
+    VerticalDivider
   },
   methods: {
     clickFun() {
@@ -77,7 +78,7 @@ export default Vue.extend({
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
       ).then(() => {
         sessionStorage.setItem(
@@ -87,7 +88,7 @@ export default Vue.extend({
         this.$router.replace({ name: "index" });
         this.$message({
           type: "success",
-          message: "切换成功!",
+          message: "切换成功!"
         });
       });
     },
@@ -98,7 +99,7 @@ export default Vue.extend({
           sessionStorage.clear();
           this.$message({
             type: "success",
-            message: "退出登录成功!",
+            message: "退出登录成功!"
           });
           this.$router.replace({ name: "login" });
           break;
@@ -106,12 +107,12 @@ export default Vue.extend({
         default: {
           this.$message({
             type: "info",
-            message: "未知操作",
+            message: "未知操作"
           });
           break;
         }
       }
-    },
+    }
   },
   computed: {
     btnIcon() {
@@ -119,8 +120,8 @@ export default Vue.extend({
     },
     foldText() {
       return this.isCollapse ? "展开菜单" : "折叠菜单";
-    },
-  },
+    }
+  }
 });
 </script>
 

@@ -7,13 +7,14 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import UploadBtn from "@/components/OfficeAdmin/DigitizeSheetUploadBtn.vue";
 
 export default Vue.extend({
   props: { api: String },
   components: {
-    UploadBtn,
-  },
+    UploadBtn
+  }
 });
 </script>
 

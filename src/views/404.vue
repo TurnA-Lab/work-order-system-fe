@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
 
 export default Vue.extend({

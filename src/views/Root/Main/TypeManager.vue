@@ -66,11 +66,12 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import TypeTree from "@/components/Root/TypeTree.vue";
 
 export default Vue.extend({
   components: {
-    TypeTree,
-  },
+    TypeTree
+  }
 });
 </script>

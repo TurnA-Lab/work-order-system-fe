@@ -17,10 +17,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import WhatTable from "@/components/Etc/WhatTable.vue";
-import Audit from "./Audit.vue";
 import { AxiosResponse } from "axios";
+import Vue from "vue";
+
+import WhatTable from "@/components/Etc/WhatTable.vue";
+
+import Audit from "./Audit.vue";
 
 interface Data {
   aid: number;

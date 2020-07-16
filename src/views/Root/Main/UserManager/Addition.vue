@@ -111,7 +111,7 @@
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.doubleTeacher"
+              v-for="item in options.noOrYesList"
               :label="item.label"
               :value="item.value"
             ></el-option>
@@ -126,7 +126,7 @@
           <el-select v-model="form.background" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.background"
+              v-for="item in options.noOrYesList"
               :label="item.label"
               :value="item.value"
             ></el-option>
@@ -141,7 +141,7 @@
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.tutor"
+              v-for="item in options.noOrYesList"
               :label="item.label"
               :value="item.value"
             ></el-option>
@@ -160,11 +160,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios";
-import { allNotNull } from "@/utils/validate";
-import { fetchDepartmentList } from "@/utils/fetchList";
+import { ElForm } from "element-ui/types/form";
+import Vue from "vue";
+
 import { Department } from "@/interface/list-data";
+import { fetchDepartmentList } from "@/utils/fetchData";
+import { allNotNull } from "@/utils/validate";
+
+import { noOrYesList } from "../../../../static-data/work-order";
 
 interface UserData {
   dtpId: number;
@@ -207,56 +211,27 @@ export default Vue.extend({
         doubleTeacher: "",
         background: "",
         tutor: "",
-        permission: 0,
+        permission: 0
       },
       options: {
         department: [],
         gender: [
           {
             label: "男",
-            value: "0",
+            value: "0"
           },
           {
             label: "女",
-            value: "1",
-          },
+            value: "1"
+          }
         ],
-        tutor: [
-          {
-            label: "否",
-            value: "0",
-          },
-          {
-            label: "是",
-            value: "1",
-          },
-        ],
-        background: [
-          {
-            label: "否",
-            value: "0",
-          },
-          {
-            label: "是",
-            value: "1",
-          },
-        ],
-        doubleTeacher: [
-          {
-            label: "否",
-            value: "0",
-          },
-          {
-            label: "是",
-            value: "1",
-          },
-        ],
-      },
+        noOrYesList: noOrYesList
+      }
     };
   },
   methods: {
     reset(formName: string) {
-      (this.$refs[formName] as any).resetFields();
+      (this.$refs[formName] as ElForm).resetFields();
     },
     addUserInfo() {
       if (allNotNull(this.form)) {
@@ -265,8 +240,8 @@ export default Vue.extend({
           .get("/api/root/user/addUser", {
             params: this.form,
             headers: {
-              token: this.$store.state.userInfo.token,
-            },
+              token: this.$store.state.userInfo.token
+            }
           })
           .then((res: AxiosResponse) =>
             res.data.code === 0
@@ -276,7 +251,7 @@ export default Vue.extend({
           .then(() => {
             this.$message({
               message: "用户信息添加成功",
-              type: "success",
+              type: "success"
             });
           })
           .catch((err: string) =>
@@ -286,29 +261,30 @@ export default Vue.extend({
       } else {
         this.$message({
           message: "请填写完整后提交!",
-          type: "warning",
+          type: "warning"
         });
       }
-    },
+    }
   },
   created() {
-    const stateToken = this.$store.state.userInfo.token;
-
     // 请求院部列表
     fetchDepartmentList()
-      .then((data: Department[]) => ((this.options.department as any) = data))
+      .then(
+        (data: Department[]) =>
+          ((this.options.department as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "添加用户";
-    },
-  },
+    }
+  }
 });
 </script>
 

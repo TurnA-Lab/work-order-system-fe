@@ -77,11 +77,12 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import MenuCard from "@/components/User/Card.vue";
 
 export default Vue.extend({
   components: {
-    MenuCard,
+    MenuCard
   },
   methods: {
     logout() {
@@ -90,7 +91,7 @@ export default Vue.extend({
       this.$router.replace({ name: "login" });
       this.$message({
         type: "info",
-        message: "已退出登录",
+        message: "已退出登录"
       });
     },
     toggleFullScreen() {
@@ -99,12 +100,12 @@ export default Vue.extend({
       } else {
         document.documentElement.requestFullscreen();
       }
-    },
+    }
   },
   computed: {
     isCollegeAdmin() {
       return this.$store.getters.permission === "1";
-    },
+    }
   },
   created() {
     if (
@@ -117,11 +118,11 @@ export default Vue.extend({
         message:
           "基于功能考虑，学院管理员被合并到用户页面，当前版本可通过<span style='color: #f39c12'>第三张卡片</span>进行访问。",
         type: "warning",
-        duration: 0,
+        duration: 0
       });
       localStorage.setItem("collageAdminAlertCount", "1");
     }
-  },
+  }
 });
 </script>
 

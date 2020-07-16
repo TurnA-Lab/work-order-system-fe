@@ -1,11 +1,14 @@
-import Console from "./utils/console";
-import Vue from "vue";
-import router from "@/plugins/router";
-import store from "@/plugins/store";
 import "@/plugins/axios";
 import "@/plugins/element";
 import "@/plugins/vue-awesome";
+
+import Vue from "vue";
+
+import router from "@/plugins/router";
+import store from "@/plugins/store";
+
 import App from "./App.vue";
+import Console from "./utils/console";
 
 /**
  * productionTip 设置
@@ -48,7 +51,7 @@ Vue.axios.interceptors.response.use(
     config.__retryCount += 1;
 
     // Create new promise to handle exponential backoff
-    const backoff = new Promise((resolve) => {
+    const backoff = new Promise(resolve => {
       setTimeout(() => {
         resolve();
       }, config.retryDelay || 1);
@@ -71,5 +74,5 @@ Console.snapShot();
 new Vue({
   router,
   store,
-  render: (h) => h(App)
+  render: h => h(App)
 }).$mount("#app");

@@ -19,23 +19,22 @@
 
 <script lang="ts">
 import Vue from "vue";
-import FilePreview from "./FilePreview.vue";
 
 export default Vue.extend({
   props: { files: String },
   components: {
-    FilePreview,
+    FilePreview: () => import("./FilePreview.vue")
   },
   data() {
     return {
-      isVisible: false,
+      isVisible: false
     };
   },
   methods: {
     showDialog() {
       this.isVisible = !this.isVisible;
-    },
-  },
+    }
+  }
 });
 </script>
 

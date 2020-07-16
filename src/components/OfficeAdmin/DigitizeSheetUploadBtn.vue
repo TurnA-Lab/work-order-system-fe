@@ -18,18 +18,18 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import UploadFile from "@/components/Etc/UploadFile.vue";
-import { AxiosResponse } from "axios/";
 
 export default Vue.extend({
   props: { api: String },
   components: {
-    UploadFile,
+    UploadFile
   },
   data() {
     return {
       isDisable: false,
-      isVisible: false,
+      isVisible: false
     };
   },
   computed: {
@@ -39,13 +39,13 @@ export default Vue.extend({
       } else {
         return "文件上传中...";
       }
-    },
+    }
   },
   methods: {
     showUploadDialog() {
       this.isVisible = !this.isVisible;
-    },
-  },
+    }
+  }
 });
 </script>
 

@@ -182,10 +182,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios";
-import yearRange from "@/utils/yearRange";
+import Vue from "vue";
+
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
+import { yearList } from "@/static-data/work-order";
 
 interface Data {
   aid: number;
@@ -221,13 +222,13 @@ const patentText = ["空", "是", "否"];
 export default Vue.extend({
   props: { data: Object, isVisible: Boolean },
   components: {
-    FilePreviewerBtn,
+    FilePreviewerBtn
   },
   data() {
     return {
       isLoading: true,
       dataStatus: 0,
-      schoolYears: yearRange,
+      schoolYears: yearList,
       statusIsVisible: false,
       editIsDisable: true,
       isDisable: false,
@@ -238,20 +239,20 @@ export default Vue.extend({
         patent: [
           {
             label: "空",
-            value: 0,
+            value: 0
           },
           {
             label: "是",
-            value: 1,
+            value: 1
           },
           {
             label: "否",
-            value: 2,
-          },
+            value: 2
+          }
         ],
         level: [],
-        sort: [],
-      },
+        sort: []
+      }
     };
   },
   methods: {
@@ -269,7 +270,7 @@ export default Vue.extend({
         this.$prompt("请输入原因", "", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          inputType: "textarea",
+          inputType: "textarea"
         }).then(({ value }: any) => {
           form.status = text;
           form.reason = value;
@@ -280,42 +281,42 @@ export default Vue.extend({
         this.updateInfo(false);
       }
     },
-    updateInfo(isEdit: boolean = true) {
+    updateInfo(isEdit = true) {
       this.isDisable = true;
       this.editIsDisable = true;
 
       // 处理类别
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+      // for (const key in this.options.sort) {
+      //   if (this.options.sort.hasOwnProperty(key)) {
+      //     const object = this.options.sort[key] as Type;
 
-          if (object.value === this.sort[0]) {
-            (this.form as Data).class2 = object.label;
+      //     if (object.value === this.sort[0]) {
+      //       (this.form as Data).class2 = object.label;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+      //       for (const key2 in object.children) {
+      //         if (object.children.hasOwnProperty(key2)) {
+      //           const element = object.children[key2];
 
-                if (element.value === this.sort[1]) {
-                  (this.form as Data).class3 = element.label;
-                }
-              }
-            }
-          }
-        }
-      }
+      //           if (element.value === this.sort[1]) {
+      //             (this.form as Data).class3 = element.label;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       // 处理审核状态
       const temForm = Object.assign({}, this.form, {
         status: statusText.indexOf((this.form as Data).status as string) - 1,
-        patent: patentText.indexOf((this.form as Data).patent as string),
+        patent: patentText.indexOf((this.form as Data).patent as string)
       });
 
       this.$http
         .post("/api/online/officeAdmin/achievementSupplement", temForm, {
           headers: {
-            token: this.$store.state.userInfo.token,
-          },
+            token: this.$store.state.userInfo.token
+          }
         })
         .then((res: AxiosResponse) => {
           this.isDisable = false;
@@ -325,7 +326,7 @@ export default Vue.extend({
               this.$emit("refresh");
               this.$message({
                 message: res.data.msg || "保存成功",
-                type: "success",
+                type: "success"
               });
             }
           } else {
@@ -336,15 +337,15 @@ export default Vue.extend({
           this.isDisable = false;
           this.$message({
             message: err || "未知错误",
-            type: "warning",
+            type: "warning"
           });
         });
-    },
+    }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    },
+    }
   },
   watch: {
     data(newValue: Data, oldValue: Data) {
@@ -352,25 +353,25 @@ export default Vue.extend({
       newValue.patent = patentText[newValue.patent as number];
 
       // 处理类型
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
+      // for (const key in this.options.sort) {
+      //   if (this.options.sort.hasOwnProperty(key)) {
+      //     const object = this.options.sort[key] as Type;
 
-          if (object.label === newValue.class2) {
-            (this.sort as any[])[0] = object.value;
+      //     if (object.label === newValue.class2) {
+      //       (this.sort as any[])[0] = object.value;
 
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
+      //       for (const key2 in object.children) {
+      //         if (object.children.hasOwnProperty(key2)) {
+      //           const element = object.children[key2];
 
-                if (element.label === newValue.class3) {
-                  (this.sort as any[])[1] = element.value;
-                }
-              }
-            }
-          }
-        }
-      }
+      //           if (element.label === newValue.class3) {
+      //             (this.sort as any[])[1] = element.value;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       this.form = newValue;
     },
@@ -378,7 +379,7 @@ export default Vue.extend({
       if (newValue === 2) {
         this.$data.isLoading = false;
       }
-    },
+    }
   },
   created() {
     const stateToken = this.$store.state.userInfo.token;
@@ -390,8 +391,8 @@ export default Vue.extend({
         {},
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -405,7 +406,7 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -414,12 +415,12 @@ export default Vue.extend({
       .post(
         "/api/online/getTypeList",
         {
-          class1: "成果类",
+          class1: "成果类"
         },
         {
           headers: {
-            token: stateToken,
-          },
+            token: stateToken
+          }
         }
       )
       .then((res: AxiosResponse) => {
@@ -433,10 +434,10 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

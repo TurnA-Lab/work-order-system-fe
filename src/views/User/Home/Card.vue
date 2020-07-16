@@ -21,11 +21,11 @@
 import Vue from "vue";
 export default Vue.extend({
   data() {
-    const userInfo = this.$store.state.userInfo;
+    const { name, worknum, department } = this.$store.state.userInfo;
     return {
-      name: userInfo.name,
-      worknum: userInfo.worknum,
-      department: userInfo.department
+      name,
+      worknum,
+      department
     };
   }
 });

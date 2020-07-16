@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import UserCard from "./Card.vue";
 import UserMenu from "./Menu.vue";
 
@@ -14,8 +15,8 @@ export default Vue.extend({
   name: "userIndex",
   components: {
     UserCard,
-    UserMenu,
-  },
+    UserMenu
+  }
 });
 </script>
 

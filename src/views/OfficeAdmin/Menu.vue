@@ -38,15 +38,15 @@ export default Vue.extend({
       active: {
         officeAdminHome: "1",
         officeAdminWorkOrderManager: "2",
-        officeAdminImportSheet: "3",
-      },
+        officeAdminImportSheet: "3"
+      }
     };
   },
   computed: {
     headerText() {
       return this.isCollapse ? "J." : "JUST WO";
-    },
-  },
+    }
+  }
 });
 </script>
 

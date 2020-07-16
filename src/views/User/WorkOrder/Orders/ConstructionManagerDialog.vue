@@ -9,158 +9,152 @@
   >
     <div slot="title">
       工单管理
-      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
+      <span class="last-time">最后修改时间 {{ lastModifiedTime }}</span>
     </div>
-    <div>
-      <el-form
-        :class="{ 'is-disable': isDisable }"
-        class="form-part"
-        ref="form"
-        :model="form"
-        size="medium"
-        label-position="left"
-        label-width="auto"
-      >
-        <el-form-item class="form-item" label="项目名称">
-          <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
-        </el-form-item>
+    <el-form
+      :model="form"
+      class="form-part"
+      ref="form"
+      size="medium"
+      label-position="left"
+      label-width="auto"
+    >
+      <el-form-item class="form-item" label="项目名称">
+        <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="院部">
-          <el-select
-            v-model="form.department"
-            placeholder="请选择，或输入以查找"
-            filterable
-            :disabled="editIsDisable"
-          >
-            <el-option
-              :key="item.value"
-              v-for="item in options.department"
-              :label="item.label"
-              :value="item.label"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+      <el-form-item class="form-item" label="院部">
+        <el-select
+          v-model="form.dptName"
+          placeholder="请选择，或输入以查找"
+          filterable
+          :disabled="editIsDisable"
+        >
+          <el-option
+            v-for="item in options.department"
+            :key="item.id"
+            :label="item.dptName"
+            :value="item.dptName"
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="项目负责人">
-          <el-input v-model="form.name" :disabled="editIsDisable"></el-input>
-        </el-form-item>
+      <el-form-item class="form-item" label="项目负责人">
+        <el-input v-model="form.name" :disabled="editIsDisable"></el-input>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="课题组成员">
-          <el-input
-            v-model="form.teammate"
-            :disabled="editIsDisable"
-          ></el-input>
-        </el-form-item>
+      <el-form-item class="form-item" label="课题组成员">
+        <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="立项年月">
-          <el-date-picker
-            align="center"
-            v-model="form.startTime"
-            type="month"
-            format="yyyy 年 MM 月"
-            value-format="yyyy-MM"
-            placeholder="请选择立项年月"
-            :disabled="editIsDisable"
-          ></el-date-picker>
-        </el-form-item>
+      <el-form-item class="form-item" label="立项日期">
+        <el-date-picker
+          v-model="form.startTime"
+          align="center"
+          type="date"
+          format="yyyy 年 MM 月 dd 日"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择立项年月"
+          :disabled="editIsDisable"
+        ></el-date-picker>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="项目起止年月">
-          <el-date-picker
-            align="center"
-            format="yyyy 年 MM 月"
-            value-format="yyyy-MM"
-            v-model="form.beginToEndTime"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :disabled="editIsDisable"
-          ></el-date-picker>
-        </el-form-item>
+      <el-form-item class="form-item" label="项目起止年月">
+        <el-date-picker
+          v-model="startingAndEnding"
+          align="center"
+          format="yyyy 年 MM 月"
+          value-format="yyyy/MM"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :disabled="editIsDisable"
+        ></el-date-picker>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="主办单位">
-          <el-input
-            v-model="form.sponsor"
-            placeholder="请输入主办单位"
-            :disabled="editIsDisable"
-          ></el-input>
-        </el-form-item>
+      <el-form-item class="form-item" label="主办单位">
+        <el-input
+          v-model="form.sponsor"
+          placeholder="请输入主办单位"
+          :disabled="editIsDisable"
+        ></el-input>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="项目类型">
-          <el-cascader
-            v-model="sort"
-            placeholder="请选择，或输入以查找"
-            :options="options.sort"
-            :props="{ expandTrigger: 'hover' }"
-            :show-all-levels="false"
-            filterable
-            :disabled="editIsDisable"
-          ></el-cascader>
-        </el-form-item>
+      <el-form-item class="form-item" label="项目类型">
+        <el-cascader
+          v-model="kind"
+          placeholder="请选择，或输入以查找"
+          :options="options.kind"
+          :props="{ expandTrigger: 'hover', value: 'label' }"
+          :show-all-levels="false"
+          filterable
+          :disabled="editIsDisable"
+        ></el-cascader>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="项目级别">
-          <el-select
-            v-model="form.level"
-            placeholder="请选择，或输入以查找"
-            filterable
-            :disabled="editIsDisable"
-          >
-            <el-option
-              v-for="item in options.level"
-              :key="item.value"
-              :label="item.label"
-              :value="item.label"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+      <el-form-item class="form-item" label="项目级别">
+        <el-select
+          v-model="form.level"
+          placeholder="请选择，或输入以查找"
+          filterable
+          :disabled="editIsDisable"
+        >
+          <el-option
+            v-for="item in options.level"
+            :key="item.id"
+            :label="item.label"
+            :value="item.label"
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="佐证材料">
-          <file-previewer-btn :files="form.testimonial"
-            >点击查看</file-previewer-btn
-          >
-        </el-form-item>
+      <el-form-item class="form-item" label="佐证材料">
+        <file-previewer-btn :files="form.testimonial"
+          >点击查看</file-previewer-btn
+        >
+      </el-form-item>
 
-        <el-form-item class="form-item" label="是否已结束">
-          <el-select v-model="form.isEnd" placeholder="请选择" disabled>
-            <el-option
-              :key="item.value"
-              v-for="item in options.isEnd"
-              :label="item.label"
-              :value="item.label"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+      <el-form-item class="form-item" label="是否已结束">
+        <el-select v-model="isEnd" placeholder="请选择" disabled>
+          <el-option
+            v-for="item in options.isEnd"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="建设经费">
-          <el-input
-            v-model="form.expenditure"
-            placeholder="请输入建设经费"
-            disabled
-          ></el-input>
-        </el-form-item>
+      <el-form-item class="form-item" label="建设经费">
+        <el-input
+          v-model="form.expenditure"
+          placeholder="请输入建设经费"
+          disabled
+        ></el-input>
+      </el-form-item>
 
-        <el-form-item class="form-item" label="年度">
-          <el-date-picker
-            align="center"
-            v-model="form.year"
-            type="year"
-            placeholder="年度"
-            disabled
-          ></el-date-picker>
-        </el-form-item>
+      <el-form-item class="form-item" label="年度">
+        <el-date-picker
+          v-model="form.year"
+          align="center"
+          type="year"
+          placeholder="年度"
+          disabled
+        ></el-date-picker>
+      </el-form-item>
 
-        <el-form-item label="学年">
-          <el-select v-model="form.schoolYear" placeholder="请选择" disabled>
-            <el-option
-              v-for="item in schoolYears"
-              :key="item"
-              :label="item"
-              :value="item"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-    </div>
+      <el-form-item label="学年">
+        <el-select v-model="form.schoolYear" placeholder="请选择" disabled>
+          <el-option
+            v-for="item in options.schoolYears"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
 
     <div slot="footer" class="dialog-btn-line">
       <div v-if="editIsDisable">
@@ -172,58 +166,28 @@
         <el-button @click="toggleEdit" :disabled="isDisable"
           >取消编辑</el-button
         >
-        <el-button
-          :loading="isDisable"
-          @click="updateInfo"
-          :disabled="isDisable"
-          >{{ saveBtnText }}</el-button
-        >
+        <el-button @click="updateInfo" :disabled="isDisable">{{
+          saveBtnText
+        }}</el-button>
       </div>
     </div>
   </el-dialog>
 </template>
 
 <script lang="ts">
+import moment from "moment";
 import Vue from "vue";
-import { AxiosResponse } from "axios";
-import yearRange from "@/utils/yearRange";
-import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
-import { allNotNull } from "@/utils/validate";
-import {
-  fetchLevelList,
-  fetchKindList,
-  fetchDepartmentList,
-} from "@/utils/fetchList";
-import { Department } from "@/interface/list-data";
 
-interface Data {
-  cid: number;
-  department: string;
-  projectNum: string;
-  project: string;
-  worknum: string;
-  name: string;
-  teammate: string;
-  class1: string;
-  class2: string;
-  class3: string;
-  startTime: string;
-  beginToEndTime: string | string[];
-  level: string;
-  sponsor: string;
-  testimonial: string;
-  expenditure: number;
-  point: number;
-  computeYear: string;
-  bonus: number;
-  fileNumber: number;
-  isEnd: number | string;
-  schoolYear: string;
-  year: string;
-  status: number | string;
-  reason: string;
-  lastTime: string;
-}
+import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
+import { Construction, Department } from "@/interface/list-data";
+import { EndStatus, endStatusList, yearList } from "@/static-data/work-order";
+import {
+  fetchDepartmentList,
+  fetchKindList,
+  fetchLevelList,
+  postData
+} from "@/utils/fetchData";
+import { allNotNull } from "@/utils/validate";
 
 interface Type {
   label: string;
@@ -231,46 +195,48 @@ interface Type {
   children: Type[];
 }
 
-const isEndText = ["未结束", "已结束"];
-const statusText = ["未通过", "审核中", "已通过"];
-
 export default Vue.extend({
-  props: { data: Object, isVisible: Boolean },
+  props: { data: Object, dataIndex: Number, isVisible: Boolean },
   components: {
-    FilePreviewerBtn,
+    FilePreviewerBtn
   },
-  data() {
+  data(): {
+    form: Construction | {}; // 表单
+    kind: string[]; // 工单类型
+    startingAndEnding: string[]; // 开始到结束的日期
+    isEnd: string; // 是否结束
+    isLoading: boolean; // 载入中
+    canEdit: boolean; // 是否处于可编辑状态
+    editIsDisable: boolean; // 禁止编辑
+    isDisable: boolean; // 保存时禁止按钮操作
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options: any; // 下拉选项列表
+  } {
     return {
+      form: {},
+      kind: [],
+      startingAndEnding: [],
+      isEnd: "",
       isLoading: true,
-      dataStatus: 0,
       canEdit: true,
-      schoolYears: yearRange,
-      statusIsVisible: false,
       editIsDisable: true,
       isDisable: false,
-      sort: [],
-      form: {},
       options: {
         department: [],
-        isEnd: [
-          {
-            label: "未结束",
-            value: 0,
-          },
-          {
-            label: "已结束",
-            value: 1,
-          },
-        ],
+        isEnd: endStatusList,
         level: [],
-        sort: [],
-      },
+        kind: [],
+        schoolYears: yearList
+      }
     };
   },
   methods: {
     close() {
-      this.$emit("toggle-is-visible", false);
-      this.editIsDisable = true;
+      // 在保存时禁止关闭操作
+      if (!this.isDisable) {
+        this.$emit("toggle-is-visible", false);
+        this.editIsDisable = true;
+      }
     },
     toggleEdit() {
       if (this.canEdit) {
@@ -278,11 +244,11 @@ export default Vue.extend({
       } else {
         this.$message({
           message: "仅在“审核中”和“未通过”时可以进行编辑",
-          type: "warning",
+          type: "warning"
         });
       }
     },
-    updateInfo(isEdit: boolean = true) {
+    updateInfo() {
       if (
         allNotNull(
           Object.assign({}, this.form, {
@@ -290,139 +256,109 @@ export default Vue.extend({
             computeYear: "validate",
             fileNumber: "validate",
             reason: "validate",
+            fileNum: "validate",
+            testimonial: "validate",
+            updateTime: "validate",
+            class2: this.kind[0],
+            class3: this.kind[1],
+            startingAndEnding: this.startingAndEnding.join("-")
           })
         )
       ) {
+        // 阻止操作按钮
         this.isDisable = true;
+        // 阻止操作表单
         this.editIsDisable = true;
-
-        // 处理类别
-        for (const key in this.options.sort) {
-          if (this.options.sort.hasOwnProperty(key)) {
-            const object = this.options.sort[key] as Type;
-
-            if (object.value === this.sort[0]) {
-              (this.form as Data).class2 = object.label;
-
-              for (const key2 in object.children) {
-                if (object.children.hasOwnProperty(key2)) {
-                  const element = object.children[key2];
-
-                  if (element.value === this.sort[1]) {
-                    (this.form as Data).class3 = element.label;
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        // 处理
-        const temForm = Object.assign({}, this.form, {
-          beginToEndTime: (this.form as Data).beginToEndTime.toString(),
-          isEnd: isEndText.indexOf((this.form as Data).isEnd as string),
+        // 合并表单数据
+        this.form = Object.assign(this.form, {
+          class2: this.kind[0],
+          class3: this.kind[1],
+          startingAndEnding: this.startingAndEnding.join("-"),
           status: 0,
+          reason: ""
         });
+        // 提交表单
+        postData("/api/user/construction/update", this.form)
+          .then(() => {
+            // 更新表格
+            this.$emit("update-table-data", this.dataIndex, this.form);
 
-        this.$http
-          .post("/api/online/user/updateUserConstruction", temForm, {
-            headers: {
-              token: this.$store.state.userInfo.token,
-            },
-          })
-          .then((res: AxiosResponse) => {
-            this.isDisable = false;
-            if (res.data.code === 0) {
-              if (isEdit) {
-                this.close();
-                this.$emit("refresh");
-                this.$message({
-                  message: res.data.msg || "保存成功",
-                  type: "success",
-                });
-              }
-            } else {
-              return Promise.reject(res.data.msg);
-            }
-          })
-          .catch((err: string) => {
-            this.isDisable = false;
             this.$message({
-              message: err || "未知错误",
-              type: "warning",
+              message: "保存成功",
+              type: "success"
             });
+          })
+          .catch(err => {
+            this.$message({
+              message: err || "保存时出现未知错误",
+              type: "warning"
+            });
+          })
+          .finally(() => {
+            this.isDisable = false;
+            this.close();
           });
       } else {
         this.$message({
           message: "填写尚不完整，请补全后提交",
-          type: "warning",
+          type: "warning"
         });
       }
-    },
+    }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
     },
+    lastModifiedTime() {
+      const form: Construction = this.$data.form;
+      return moment(
+        form.updateTime === null ? form.createTime : form.updateTime
+      ).format("YYYY-MM-DD HH:mm:ss");
+    }
   },
   watch: {
-    data(newValue: Data, oldValue: Data) {
-      for (const key in this.options.sort) {
-        if (this.options.sort.hasOwnProperty(key)) {
-          const object = this.options.sort[key] as Type;
-
-          if (object.label === newValue.class2) {
-            (this.sort as any[])[0] = object.value;
-
-            for (const key2 in object.children) {
-              if (object.children.hasOwnProperty(key2)) {
-                const element = object.children[key2];
-
-                if (element.label === newValue.class3) {
-                  (this.sort as any[])[1] = element.value;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      newValue.beginToEndTime = (newValue.beginToEndTime as string).split(",");
-
-      this.canEdit = !(newValue.status === "已通过");
-
-      newValue.isEnd = isEndText[newValue.isEnd as number];
-
-      this.form = newValue;
-    },
-    dataStatus(newValue: number, oldValue: number) {
-      if (newValue === 3) {
-        this.$data.isLoading = false;
-      }
-    },
+    data(newValue: Construction) {
+      // 深拷贝一份，防止覆盖原数据，影响操作
+      const form: Construction = JSON.parse(JSON.stringify(newValue));
+      // 转换部分数据以供显示
+      this.kind = [form.class2, form.class3]; // 类型
+      this.startingAndEnding = form.startingAndEnding.split("-"); // 起止日期
+      this.isEnd = EndStatus[form.isEnd]; // 是否已结束
+      // 是否可以编辑
+      this.canEdit = form.isEnd !== EndStatus.已结束;
+      // 赋给表单
+      this.form = form;
+    }
   },
   created() {
+    // 载入中
+    this.isLoading = true;
+
     // 请求院部列表
     const department = fetchDepartmentList()
-      .then((data: Department[]) => ((this.options.department as any) = data))
+      .then(
+        (data: Department[]) =>
+          ((this.options.department as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
     // 请求获奖类型列表
     const kind = fetchKindList({
       params: {
-        class1: "建设类",
-      },
+        class1: "建设类"
+      }
     })
-      .then((data: Department[]) => ((this.options.sort as any) = data))
+      .then((data: Department[]) => ((this.options.kind as any) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取建设类型列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
@@ -432,14 +368,15 @@ export default Vue.extend({
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目级别列表",
-          type: "warning",
+          type: "warning"
         });
       });
 
+    // 载入结束
     Promise.all([department, kind, level]).then(() => {
       this.isLoading = false;
     });
-  },
+  }
 });
 </script>
 

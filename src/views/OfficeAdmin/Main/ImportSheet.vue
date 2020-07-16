@@ -38,15 +38,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import UploadBtn from "@/components/OfficeAdmin/ImporSheettUploadBtn.vue";
 import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
+import Vue from "vue";
+
+import UploadBtn from "@/components/OfficeAdmin/ImporSheettUploadBtn.vue";
 import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   components: {
-    UploadBtn,
+    UploadBtn
   },
   methods: {
     download(api: string, fallbackFilename: string) {
@@ -56,16 +57,16 @@ export default Vue.extend({
           {},
           {
             headers: {
-              token: this.$store.state.userInfo.token,
+              token: this.$store.state.userInfo.token
             },
-            responseType: "blob",
+            responseType: "blob"
           }
         )
         .then((res: AxiosResponse) => {
           if (res.status === 200) {
             return Promise.resolve([
               decodeFilename(res, fallbackFilename),
-              res.data,
+              res.data
             ]);
           } else {
             return Promise.reject(res.data.msg);
@@ -77,11 +78,11 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || "由于未知因素，无法下载表格",
-            type: "warning",
+            type: "warning"
           });
         });
-    },
-  },
+    }
+  }
 });
 </script>
 

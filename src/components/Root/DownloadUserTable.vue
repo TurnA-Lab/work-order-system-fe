@@ -8,16 +8,17 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
+import Vue from "vue";
+
 import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   props: { fileName: String, api: String },
   data() {
     return {
-      fetchFile: false,
+      fetchFile: false
     };
   },
   methods: {
@@ -29,16 +30,16 @@ export default Vue.extend({
           {},
           {
             headers: {
-              token: this.$store.state.userInfo.token,
+              token: this.$store.state.userInfo.token
             },
-            responseType: "blob",
+            responseType: "blob"
           }
         )
         .then((res: AxiosResponse) => {
           if (res.status === 200) {
             return Promise.resolve([
               decodeFilename(res, `${this.fileName}.xlsx`),
-              res.data,
+              res.data
             ]);
           } else {
             return Promise.reject(res.data.msg);
@@ -51,11 +52,11 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || `由于未知因素，无法下载${this.fileName}`,
-            type: "warning",
+            type: "warning"
           });
         });
-    },
-  },
+    }
+  }
 });
 </script>
 

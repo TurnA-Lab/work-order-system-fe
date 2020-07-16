@@ -50,12 +50,13 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import MenuCard from "@/components/User/Card.vue";
 
 export default Vue.extend({
   components: {
-    MenuCard,
-  },
+    MenuCard
+  }
 });
 </script>
 

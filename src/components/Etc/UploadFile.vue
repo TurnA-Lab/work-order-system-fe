@@ -31,23 +31,18 @@
  * https://tank-doc.eyeblue.cn/
  */
 
-import Vue from "vue";
-import vueFilePond from "vue-filepond";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginImageCrop from "filepond-plugin-image-crop";
-import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { AxiosResponse, AxiosRequestConfig } from "axios";
-import { resolve } from "dns";
 
-interface AxiosError extends Error {
-  config: AxiosRequestConfig;
-  code: string;
-  request: any;
-  response: AxiosResponse;
-}
+import { AxiosResponse } from "axios";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImageCrop from "filepond-plugin-image-crop";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import Vue from "vue";
+import vueFilePond from "vue-filepond";
+
+import { postData } from "../../utils/fetchData";
 
 interface FileInfo {
   name: string;
@@ -64,14 +59,12 @@ const FilePond = vueFilePond(
 
 export default Vue.extend({
   props: {
-    customApi: String,
+    customApi: String
   },
   components: {
-    FilePond,
+    FilePond
   },
   data() {
-    const stateToken = this.$store.state.userInfo.token;
-
     return {
       files: [],
       acceptTypes: [
@@ -80,7 +73,7 @@ export default Vue.extend({
         "application/msword",
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/pdf",
+        "application/pdf"
       ],
       myFiles: [],
       myServer: {
@@ -90,135 +83,77 @@ export default Vue.extend({
         process: (
           fieldName: string,
           file: File,
-          metadata: any,
-          load: any,
-          error: any,
-          progress: any,
-          abort: any,
-          transfer: any,
-          options: any
+          metadata: string,
+          load: (arg?: string) => string,
+          error: (arg?: string) => string,
+          progress: VoidFunction,
+          abort: VoidFunction
         ) => {
           const cancelToken = this.$http.CancelToken;
           const source = cancelToken.source();
 
+          // 自己设计的文件处理系统
           if (this.customApi) {
             const uploadData = new FormData();
             uploadData.append("file", file);
-            this.$http
-              .post(this.customApi, uploadData, {
-                headers: {
-                  token: stateToken,
-                },
-                cancelToken: source.token,
-                timeout: 2500,
-              })
-              .then((res: AxiosResponse) => {
-                if (res.data.code === 0) {
-                  load();
-                } else {
-                  return Promise.reject(res.data.msg);
-                }
-              })
+            postData(this.customApi, uploadData, {
+              cancelToken: source.token,
+              timeout: 2500
+            })
+              .then(load)
               .catch((err: string) => {
                 error(err || "暂时无法上传");
               });
           } else {
             // 请求上传 token
-            // /api/online/getPanToken
-            this.$http
-              .post(
-                "/api/online/getPanToken",
-                {
-                  filename: file.name,
-                  size: file.size,
-                },
-                {
-                  headers: {
-                    token: stateToken,
-                  },
-                  cancelToken: source.token,
-                  timeout: 2500,
-                }
-              )
-              .then((res: AxiosResponse) => {
-                if (res.data.code === 0) {
-                  return Promise.resolve(
-                    JSON.parse(res.data.data.body).data.uuid
-                  );
-                } else {
-                  return Promise.reject(res.data.msg);
-                }
-              })
-              .then((uuid: string) => {
+            postData(
+              "/api/common/file/getPanToken",
+              {
+                filename: file.name,
+                size: file.size
+              },
+              {
+                cancelToken: source.token,
+                timeout: 2500
+              }
+            )
+              .then(data => JSON.parse(data.body).data.uuid)
+              // 进行上传
+              .then(uuid => {
                 const uploadData = new FormData();
                 uploadData.append("uploadTokenUuid", uuid);
                 uploadData.append("file", file);
 
-                return this.$http
-                  .post("/api/alien/upload", uploadData, {
-                    cancelToken: source.token,
-                  })
-                  .then((response: AxiosResponse) => {
-                    if (response.data.code === "OK") {
-                      return Promise.resolve(response.data.data.uuid);
-                    } else {
-                      return Promise.reject(response.data.msg);
-                    }
-                  })
-                  .then((fileUuid: string) => {
-                    return this.$http
-                      .post(
-                        `/api/online/confirmUploaded`,
-                        {
-                          name: file.name,
-                          uuid: fileUuid,
-                        },
-                        {
-                          headers: {
-                            token: stateToken,
-                          },
-                          cancelToken: source.token,
-                        }
-                      )
-                      .then((confirmRes: AxiosResponse) => {
-                        if (confirmRes.data.code === 0) {
-                          // 存入
-                          (this.$data.files as FileInfo[]).push({
-                            name: file.name,
-                            uuid: fileUuid,
-                            type: file.type,
-                          });
-                          load(uuid);
-                        } else {
-                          return Promise.reject(confirmRes.data.msg);
-                        }
-                      })
-                      .catch((err: AxiosError | string) => {
-                        if (!this.$http.isCancel(err)) {
-                          this.$message({
-                            message:
-                              (err as string) || "由于未知因素，暂时无法上传",
-                            type: "warning",
-                          });
-                          error("暂时无法上传");
-                        }
-                      });
-                  })
-                  .catch((err: AxiosError) => {
-                    if (!this.$http.isCancel(err)) {
-                      this.$message({
-                        message: err.response.data.msg,
-                        type: "warning",
-                      });
-                      error("暂时无法上传");
-                    }
-                  });
+                return this.$http.post("/api/alien/upload", uploadData, {
+                  cancelToken: source.token
+                });
               })
-              .catch((err: AxiosError | string) => {
+              .then((res: AxiosResponse) =>
+                res.data.code === "OK"
+                  ? res.data.data.uuid
+                  : Promise.reject(res.data.msg)
+              )
+              // 验证上传结果
+              .then((uuid: string) =>
+                postData(
+                  "/api/common/file/confirmUploaded",
+                  { uuid },
+                  { cancelToken: source.token }
+                ).then(() => uuid)
+              )
+              .then((uuid: string) => {
+                (this.$data.files as FileInfo[]).push({
+                  uuid,
+                  name: file.name,
+                  type: file.type
+                });
+                load(uuid);
+              })
+              .catch((err: string) => {
                 if (!this.$http.isCancel(err)) {
                   this.$message({
                     message: (err as string) || "由于未知因素，暂时无法上传",
-                    type: "warning",
+                    type: "warning"
                   });
                   error("暂时无法上传");
                 }
@@ -229,17 +164,12 @@ export default Vue.extend({
             abort: () => {
               source.cancel();
               abort();
-            },
+            }
           };
-        },
-      },
+        }
+      }
     };
-  },
-  methods: {
-    handleFilePondInit() {
-      // console.log("FilePond has initialized");
-    },
-  },
+  }
 });
 </script>
 

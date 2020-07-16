@@ -13,16 +13,18 @@
 </template>
 
 <script>
-import LoginForm from "./Form.vue";
-import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
 import Vue from "vue";
+
+import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
+
+import LoginForm from "./Form.vue";
 
 export default Vue.extend({
   name: "login",
   components: {
     LoginForm,
-    BackgroundAni,
-  },
+    BackgroundAni
+  }
 });
 </script>
 

@@ -18,25 +18,25 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import UploadFile from "@/components/Etc/UploadFile.vue";
-import { AxiosResponse } from "axios/";
 
 export default Vue.extend({
   props: { api: String },
   components: {
-    UploadFile,
+    UploadFile
   },
   data() {
     return {
-      isVisible: false,
+      isVisible: false
     };
   },
 
   methods: {
     showUploadDialog() {
       this.isVisible = !this.isVisible;
-    },
-  },
+    }
+  }
 });
 </script>
 

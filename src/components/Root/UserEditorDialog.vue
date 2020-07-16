@@ -100,7 +100,7 @@
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.tutor_background_doubleTeacher"
+              v-for="item in options.noOrYesList"
               :label="item.label"
               :value="item.label"
             ></el-option>
@@ -111,7 +111,7 @@
           <el-select v-model="form.background" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.tutor_background_doubleTeacher"
+              v-for="item in options.noOrYesList"
               :label="item.label"
               :value="item.label"
             ></el-option>
@@ -122,7 +122,7 @@
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               :key="item.value"
-              v-for="item in options.tutor_background_doubleTeacher"
+              v-for="item in options.noOrYesList"
               :label="item.label"
               :value="item.label"
             ></el-option>
@@ -141,11 +141,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { AxiosResponse } from "axios";
-import { allNotNull } from "@/utils/validate";
-import { fetchDepartmentList } from "@/utils/fetchList";
+import Vue from "vue";
+
 import { Department } from "@/interface/list-data";
+import { noOrYesList } from "@/static-data/work-order";
+import { fetchDepartmentList } from "@/utils/fetchData";
+import { allNotNull } from "@/utils/validate";
 
 interface UserData {
   dtpId: number;
@@ -167,8 +169,6 @@ interface UserData {
   permission: number | string;
 }
 
-const permissionText = ["普通用户", "学院管理员", "科室管理员"];
-
 export default Vue.extend({
   props: { userData: Object, isVisible: Boolean },
   data() {
@@ -180,24 +180,15 @@ export default Vue.extend({
         gender: [
           {
             label: "男",
-            value: "0",
+            value: "0"
           },
           {
             label: "女",
-            value: "1",
-          },
+            value: "1"
+          }
         ],
-        tutor_background_doubleTeacher: [
-          {
-            label: "否",
-            value: "0",
-          },
-          {
-            label: "是",
-            value: "1",
-          },
-        ],
-      },
+        noOrYesList
+      }
     };
   },
   methods: {
@@ -217,11 +208,11 @@ export default Vue.extend({
                 doubleTeacher:
                   (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
                 background: (this.form as UserData).background === "否" ? 0 : 1,
-                tutor: (this.form as UserData).tutor === "否" ? 0 : 1,
+                tutor: (this.form as UserData).tutor === "否" ? 0 : 1
               }),
               headers: {
-                token: this.$store.state.userInfo.token,
-              },
+                token: this.$store.state.userInfo.token
+              }
             }
           )
           .then((res: AxiosResponse) => {
@@ -231,7 +222,7 @@ export default Vue.extend({
               this.$emit("refresh");
               this.$message({
                 message: res.data.msg || "用户信息保存成功",
-                type: "success",
+                type: "success"
               });
             } else {
               return Promise.reject(res.data.msg || "用户信息保存失败");
@@ -241,41 +232,44 @@ export default Vue.extend({
             this.isDisable = false;
             this.$message({
               message: err || "未知错误",
-              type: "warning",
+              type: "warning"
             });
           });
       } else {
         this.$message({
           message: "填写尚不完整，请补全后提交",
-          type: "warning",
+          type: "warning"
         });
       }
-    },
+    }
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
-    },
+    }
   },
   watch: {
-    userData(newValue: UserData, oldValue: UserData) {
+    userData(newValue: UserData) {
       newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
       newValue.background = newValue.background === 0 ? "否" : "是";
       newValue.tutor = newValue.tutor === 0 ? "否" : "是";
       this.form = newValue;
-    },
+    }
   },
   created() {
     // 请求院部列表
     fetchDepartmentList()
-      .then((data: Department[]) => ((this.options.department as any) = data))
+      .then(
+        (data: Department[]) =>
+          ((this.options.department as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
-  },
+  }
 });
 </script>
 

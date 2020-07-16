@@ -1,3 +1,7 @@
+/**
+ * 用于在控制台中显示一些信息
+ */
+
 import * as config from "../../package.json";
 
 interface InfoStyleConfig {
@@ -85,7 +89,7 @@ export default class Console {
   private static phraseToUpperCase(sentence: string): string {
     return sentence
       .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.substr(1))
+      .map(word => word.charAt(0).toUpperCase() + word.substr(1))
       .join("-");
   }
 }

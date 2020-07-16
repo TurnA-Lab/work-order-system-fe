@@ -25,21 +25,23 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import "vue-awesome/icons/pen-alt";
 import "vue-awesome/icons/clipboard-list";
+
+import Vue from "vue";
+
 import StatusCard from "@/components/Root/StatusCard.vue";
 
 export default Vue.extend({
   components: {
-    StatusCard,
+    StatusCard
   },
   data() {
     const userInfo = this.$store.state.userInfo;
     return {
-      name: userInfo.name,
+      name: userInfo.name
     };
-  },
+  }
 });
 </script>
 

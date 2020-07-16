@@ -32,7 +32,8 @@
       <!--数据列-->
       <template v-for="(column, index) in columns">
         <el-table-column
-          :key="index"
+          :show-overflow-tooltip="column.showOverflowTooltip || true"
+          :key="column[options.indexProp] || index"
           :prop="column.prop"
           :label="column.label"
           :align="column.align || 'center'"
@@ -40,11 +41,22 @@
           :fixed="column.fixed"
         >
           <template slot-scope="scope">
-            <template v-if="!column.render">{{
-              scope.row[column.prop]
-            }}</template>
-
-            <!-- render -->
+            <!-- 正常渲染 -->
+            <template v-if="!column.render">
+              <template v-if="column.labelList">
+                {{
+                  value2Label(
+                    column.labelList,
+                    scope.row[column.prop],
+                    column.labelListOffset
+                  )
+                }}
+              </template>
+              <template v-else>
+                {{ scope.row[column.prop] }}
+              </template>
+            </template>
+            <!-- TODO 可能不是正常渲染吧~~ -->
             <template v-else>
               <RenderDom
                 :row="scope.row"
@@ -56,8 +68,10 @@
             <!-- render button -->
             <template v-if="column.button">
               <template v-for="(btn, index) in column.group">
+                <!-- tooltip 和圆形按钮 -->
                 <template v-if="btn.tooltip">
                   <el-tooltip
+                    :key="index"
                     :effect="btn.tooltipEffect || 'dark'"
                     :placement="btn.tooltipPlacement || 'top'"
                   >
@@ -77,6 +91,7 @@
                     >
                   </el-tooltip>
                 </template>
+                <!-- 无 tooltip 和圆形按钮 -->
                 <template v-else>
                   <el-button
                     :key="index"
@@ -85,11 +100,8 @@
                     :icon="btn.icon"
                     :disabled="btn.disabled"
                     :plain="btn.plain"
-                    :circle="btn.circle || false"
                     @click.stop="btn.onClick(scope.row, scope.$index)"
-                    ><template v-if="!btn.circle">{{
-                      btn.name
-                    }}</template></el-button
+                    >{{ btn.name }}</el-button
                   >
                 </template>
               </template>
@@ -134,8 +146,9 @@
 </template>
 
 <script>
-// Origin: guodada
-// Url: https://juejin.im/post/5b45e4c55188251b1a7b2301
+// 原作者: guodada
+// 链接: https://juejin.im/post/5b45e4c55188251b1a7b2301
+// 本版本已被 Skye 修改
 export default {
   components: {
     RenderDom: {
@@ -143,7 +156,7 @@ export default {
       props: {
         row: Object,
         index: Number,
-        render: Function,
+        render: Function
       },
       /**
        * @param {Function} createElement - 原生创建dom元素的方法， 弃用，推荐使用 jsx
@@ -153,15 +166,16 @@ export default {
       render(createElement, ctx) {
         const { row, index } = ctx.props;
         return ctx.props.render(row, index);
-      },
-    },
+      }
+    }
   },
   props: {
     dataSource: Array,
+    labelDataSource: Object,
     options: Object, // 表格参数控制 maxHeight、stripe 等等...
     columns: Array,
     fetch: Function, // 获取数据的函数
-    pagination: Object, // 分页，不传则不显示
+    pagination: Object // 分页，不传则不显示
   },
   created() {
     // 传入的options覆盖默认设置
@@ -169,10 +183,9 @@ export default {
       {
         maxHeight: 500,
         stripe: true, // 是否为斑马纹
-        border: true,
+        border: true, // 是否显示边框
         initTable: true,
-        button: false,
-        toolTip: false,
+        button: false
       },
       this.options
     );
@@ -198,7 +211,11 @@ export default {
     handleRowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
-  },
+    value2Label(labelListName, value, offset = 0) {
+      // 将某些值转换为想要显示的 label
+      return this.labelDataSource[labelListName][value + offset];
+    }
+  }
 };
 </script>
 

@@ -27,6 +27,8 @@
 import Vue from "vue";
 import VuePictureSwipe from "vue-picture-swipe";
 
+import { strIsJSON } from "../../utils/validate";
+
 interface FileInfo {
   name: string;
   uuid: string;
@@ -36,7 +38,7 @@ interface FileInfo {
 export default Vue.extend({
   props: { files: String },
   components: {
-    VuePictureSwipe,
+    VuePictureSwipe
   },
   data() {
     return {
@@ -49,10 +51,10 @@ export default Vue.extend({
             id: "downloadImage",
             label: "下载图片",
             url: "{{raw_image_url}}",
-            download: true,
-          },
-        ],
-      },
+            download: true
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -62,43 +64,47 @@ export default Vue.extend({
         message: `<iframe class="content" src="${pdf.src}"></iframe>`,
         dangerouslyUseHTMLString: true,
         showConfirmButton: false,
-        customClass: "pdf-viewer",
+        customClass: "pdf-viewer"
       });
-    },
+    }
   },
   created() {
-    if (typeof this.files === "undefined" || this.files === null) {
+    if (
+      typeof this.files === "undefined" ||
+      this.files === null ||
+      (typeof this.files !== "object" && !strIsJSON(this.files))
+    ) {
       this.hasNoFiles = true;
     } else {
       // 用于判断图片大小
       const img = new Image();
-      // 处理输入
-      let files: FileInfo[];
-      if (typeof this.files === "string") {
-        files = JSON.parse(this.files);
-      } else {
-        files = this.files;
-      }
+      // 处理输入文件
+      const files: FileInfo[] =
+        typeof this.files === "string" ? JSON.parse(this.files) : this.files;
 
       files.forEach((file: FileInfo) => {
         if (file.type.slice(0, 5) === "image") {
           img.src = `/api/alien/preview/${file.uuid}/${file.name}`;
-          (this.images as any).push({
+          (this.images as {
+            [key: string]: string | number;
+          }[]).push({
             src: img.src,
             thumbnail: `${img.src}?ir=fill_100_100`,
             w: img.naturalWidth,
             h: img.naturalHeight,
-            alt: img.name,
+            alt: img.name
           });
         } else if (file.type.slice(-3) === "pdf") {
-          (this.pdfs as any).push({
+          (this.pdfs as {
+            [key: string]: string;
+          }[]).push({
             name: file.name,
-            src: `/api/alien/preview/${file.uuid}/${file.name}`,
+            src: `/api/alien/preview/${file.uuid}/${file.name}`
           });
         }
       });
     }
-  },
+  }
 });
 </script>
 

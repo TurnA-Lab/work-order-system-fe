@@ -23,20 +23,21 @@
 
 <script lang="ts">
 import Vue from "vue";
-import MainCard from "@/components/User/MainCard.vue";
+
 import BackLink from "@/components/Etc/BackLink.vue";
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
+import MainCard from "@/components/User/MainCard.vue";
 
 export default Vue.extend({
   components: {
     MainCard,
     BackLink,
-    VerticalDivider,
+    VerticalDivider
   },
   computed: {
     btnIsDisabled() {
       return this.$route.name === "collegeAdminMemberManager";
-    },
-  },
+    }
+  }
 });
 </script>

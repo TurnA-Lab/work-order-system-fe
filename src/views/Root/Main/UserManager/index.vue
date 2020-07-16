@@ -28,17 +28,19 @@
 
 <script lang="ts">
 import Vue from "vue";
+
+import DownloadTable from "@/components/Root/DownloadUserTable.vue";
+
+import Addition from "./Addition.vue";
 import Editor from "./Editor.vue";
 import Filtration from "./Filtration.vue";
-import Addition from "./Addition.vue";
-import DownloadTable from "@/components/Root/DownloadUserTable.vue";
 
 export default Vue.extend({
   components: {
     Editor,
     Filtration,
     Addition,
-    DownloadTable,
-  },
+    DownloadTable
+  }
 });
 </script>

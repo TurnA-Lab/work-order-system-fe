@@ -21,16 +21,17 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import UploadFile from "@/components/Etc/UploadFile.vue";
 
 export default Vue.extend({
   props: { files: String },
   components: {
-    UploadFile,
+    UploadFile
   },
   data() {
     return {
-      isVisible: false,
+      isVisible: false
     };
   },
   methods: {
@@ -40,10 +41,10 @@ export default Vue.extend({
     finishUpload() {
       this.isVisible = false;
       this.$store.commit("orderForm", {
-        [this.files]: JSON.stringify((this.$refs.uploadField as any).files),
+        [this.files]: JSON.stringify((this.$refs.uploadField as any).files)
       });
-    },
-  },
+    }
+  }
 });
 </script>
 

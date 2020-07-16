@@ -1,7 +1,9 @@
 import Vue from "vue";
-import Router, { RawLocation } from "vue-router";
+import Router from "vue-router";
+
+import { Roles } from "@/static-data/login";
 import Page404 from "@/views/404.vue";
-import { Roles } from "@/interface/login";
+
 import store from "./store";
 
 Vue.use(Router);
@@ -14,8 +16,8 @@ const router = new Router({
       name: "login",
       component: () => import("@/views/Login/index.vue"),
       meta: {
-        title: "登录",
-      },
+        title: "登录"
+      }
     },
     {
       path: "/",
@@ -34,15 +36,15 @@ const router = new Router({
         } else {
           return "/login";
         }
-      },
+      }
     },
     {
       path: "/user",
       name: "user",
       component: () => import("@/views/User/Home/index.vue"),
       meta: {
-        title: "主页",
-      },
+        title: "主页"
+      }
     },
     {
       path: "/user/info",
@@ -55,18 +57,18 @@ const router = new Router({
           name: "userInfoProfile",
           component: () => import("@/views/User/Info/Profile.vue"),
           meta: {
-            title: "个人资料",
-          },
+            title: "个人资料"
+          }
         },
         {
           path: "password",
           name: "userInfoPassword",
           component: () => import("@/views/User/Info/Password.vue"),
           meta: {
-            title: "修改密码",
-          },
-        },
-      ],
+            title: "修改密码"
+          }
+        }
+      ]
     },
     {
       path: "/user/work_order",
@@ -79,18 +81,18 @@ const router = new Router({
           name: "userOrders",
           component: () => import("@/views/User/WorkOrder/Orders/index.vue"),
           meta: {
-            title: "我的工单",
-          },
+            title: "我的工单"
+          }
         },
         {
           path: "new_order",
           name: "userNewOrder",
           component: () => import("@/views/User/WorkOrder/NewOrder/index.vue"),
           meta: {
-            title: "创建工单",
-          },
-        },
-      ],
+            title: "创建工单"
+          }
+        }
+      ]
     },
     {
       path: "/college_admin",
@@ -104,18 +106,18 @@ const router = new Router({
           component: () =>
             import("@/views/User/CollegeAdmin/MemberManager.vue"),
           meta: {
-            title: "部门成员管理",
-          },
+            title: "部门成员管理"
+          }
         },
         {
           path: "export_sheet",
           name: "collegeAdminExportSheet",
           component: () => import("@/views/User/CollegeAdmin/ExportSheet.vue"),
           meta: {
-            title: "确认表导出",
-          },
-        },
-      ],
+            title: "确认表导出"
+          }
+        }
+      ]
     },
     {
       path: "/office_admin",
@@ -128,8 +130,8 @@ const router = new Router({
           name: "officeAdminHome",
           component: () => import("@/views/OfficeAdmin/Main/Home.vue"),
           meta: {
-            title: "主页",
-          },
+            title: "主页"
+          }
         },
         {
           path: "work_order_manager",
@@ -137,18 +139,18 @@ const router = new Router({
           component: () =>
             import("@/views/OfficeAdmin/Main/WorkOrderManager/index.vue"),
           meta: {
-            title: "工单管理",
-          },
+            title: "工单管理"
+          }
         },
         {
           path: "import_sheet",
           name: "officeAdminImportSheet",
           component: () => import("@/views/OfficeAdmin/Main/ImportSheet.vue"),
           meta: {
-            title: "奖励 / 业绩分表格录入",
-          },
-        },
-      ],
+            title: "奖励 / 业绩分表格录入"
+          }
+        }
+      ]
     },
     {
       path: "/root",
@@ -161,24 +163,24 @@ const router = new Router({
           name: "rootHome",
           component: () => import("@/views/Root/Main/Home.vue"),
           meta: {
-            title: "主页",
-          },
+            title: "主页"
+          }
         },
         {
           path: "type_manager",
           name: "rootTypeManager",
           component: () => import("@/views/Root/Main/TypeManager.vue"),
           meta: {
-            title: "类型 / 级别管理",
-          },
+            title: "类型 / 级别管理"
+          }
         },
         {
           path: "bonus_manager",
           name: "rootBonusManager",
           component: () => import("@/views/Root/Main/BonusManager/index.vue"),
           meta: {
-            title: "奖励管理",
-          },
+            title: "奖励管理"
+          }
         },
         {
           path: "performance_manager",
@@ -186,18 +188,18 @@ const router = new Router({
           component: () =>
             import("@/views/Root/Main/PerformanceManager/index.vue"),
           meta: {
-            title: "业绩分管理",
-          },
+            title: "业绩分管理"
+          }
         },
         {
           path: "user_manager",
           name: "rootUserManager",
           component: () => import("@/views/Root/Main/UserManager/index.vue"),
           meta: {
-            title: "用户管理",
-          },
-        },
-      ],
+            title: "用户管理"
+          }
+        }
+      ]
     },
 
     {
@@ -205,10 +207,10 @@ const router = new Router({
       name: "page404",
       component: Page404,
       meta: {
-        title: "404",
-      },
-    },
-  ],
+        title: "404"
+      }
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {
@@ -251,7 +253,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   // 动态标题
   const title = document.title; // 记录下当前的网页的标题
-  let timer: any; // 计时器
+  let timer: number; // 计时器
   let count = 0; // 计数
   const dot = ["", ".", "..", "..."];
 

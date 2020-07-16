@@ -9,13 +9,13 @@
 import Vue from "vue";
 export default Vue.extend({
   props: {
-    text: String,
+    text: String
   },
   methods: {
     clickFun() {
       this.$emit("click");
-    },
-  },
+    }
+  }
 });
 </script>
 

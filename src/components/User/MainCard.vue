@@ -26,10 +26,9 @@ export default Vue.extend({
   },
   methods: {
     mouseWheel() {
-      if ((event as any).deltaY > 20) {
+      if ((event as MouseWheelEvent).deltaY > 20) {
         this.wheel = true;
-      }
-      if ((event as any).deltaY < -20) {
+      } else if ((event as MouseWheelEvent).deltaY < -20) {
         this.wheel = false;
       }
     }

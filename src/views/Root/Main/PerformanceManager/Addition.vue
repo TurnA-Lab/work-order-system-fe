@@ -79,11 +79,12 @@
 </template>
 
 <script lang="ts">
+import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
-import { AxiosResponse } from "axios";
-import { computeOffice } from "@/utils/computeOffice";
-import { fetchDepartmentList } from "@/utils/fetchList";
+
 import { Department } from "@/interface/list-data";
+import { computeOffice } from "@/static-data/work-order";
+import { fetchDepartmentList, postData } from "@/utils/fetchData";
 
 interface Data {
   id: number;
@@ -110,61 +111,54 @@ export default Vue.extend({
         year: "",
         project: "",
         master: "",
-        points: "",
+        points: ""
       },
       options: {
-        department: [],
-      },
+        department: []
+      }
     };
   },
   methods: {
     reset(formName: string) {
-      (this.$refs[formName] as any).resetFields();
+      (this.$refs[formName] as ElForm).resetFields();
     },
     addInfo() {
       this.isDisable = true;
-      this.$http
-        .post("/api/root/performance/add", this.form, {
-          headers: {
-            token: this.$store.state.userInfo.token,
-          },
-        })
-        .then((res: AxiosResponse) => {
-          this.isDisable = false;
-          if (res.data.code === 0) {
-            this.$message({
-              message: res.data.msg || "业绩分信息添加成功",
-              type: "success",
-            });
-          } else {
-            return Promise.reject(res.data.msg);
-          }
-        })
+      postData("/api/root/performance/add", this.form)
+        .then(() =>
+          this.$message({
+            message: "业绩分信息添加成功",
+            type: "success"
+          })
+        )
         .catch((err: string) => {
-          this.isDisable = false;
           this.$message({
             message: err || "未知错误",
-            type: "warning",
+            type: "warning"
           });
-        });
-    },
+        })
+        .finally(() => (this.isDisable = false));
+    }
   },
   created() {
     // 请求院部列表
     fetchDepartmentList()
-      .then((data: Department[]) => ((this.options.department as any) = data))
+      .then(
+        (data: Department[]) =>
+          ((this.options.department as Department[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取院部列表",
-          type: "warning",
+          type: "warning"
         });
       });
   },
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "添加";
-    },
-  },
+    }
+  }
 });
 </script>
 

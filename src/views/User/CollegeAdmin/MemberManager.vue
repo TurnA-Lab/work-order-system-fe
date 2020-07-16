@@ -21,10 +21,11 @@
 </template>
 
 <script lang="ts">
+import { AxiosResponse } from "axios";
 import Vue from "vue";
+
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import MemberManagerDialog from "@/components/User/MemberManagerDialog.vue";
-import { AxiosResponse } from "axios";
 
 interface UserData {
   dtpId: number;
@@ -49,7 +50,7 @@ interface UserData {
 export default Vue.extend({
   components: {
     WhatTable,
-    MemberManagerDialog,
+    MemberManagerDialog
   },
   data() {
     return {
@@ -60,24 +61,24 @@ export default Vue.extend({
         {
           prop: "name",
           label: "姓名",
-          width: 120,
+          width: 120
         },
         {
           prop: "gender",
           label: "性别",
-          width: 60,
+          width: 60
         },
         {
           prop: "worknum",
-          label: "工号",
+          label: "工号"
         },
         {
           prop: "phone",
-          label: "联系电话",
+          label: "联系电话"
         },
         {
           prop: "teacherTitle",
-          label: "职称",
+          label: "职称"
         },
         {
           button: true,
@@ -94,10 +95,10 @@ export default Vue.extend({
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
       options: {
         mutiSelect: false,
@@ -105,13 +106,13 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true, // 是否一挂载就加载数据
+        initTable: true // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
         pageIndex: 1,
-        pageSize: 20,
-      },
+        pageSize: 20
+      }
     };
   },
   methods: {
@@ -123,12 +124,12 @@ export default Vue.extend({
           "/api/online/collegeAdmin/getDptUserInfo",
           {
             page: this.pagination.pageIndex,
-            size: this.pagination.pageSize,
+            size: this.pagination.pageSize
           },
           {
             headers: {
-              token: this.$store.state.userInfo.token,
-            },
+              token: this.$store.state.userInfo.token
+            }
           }
         )
         .then((res: AxiosResponse) => {
@@ -144,7 +145,7 @@ export default Vue.extend({
         .catch((err: string) => {
           this.$message({
             message: err || "由于未知因素，无法获取表格",
-            type: "warning",
+            type: "warning"
           });
           this.options.loading = false;
         });
@@ -152,8 +153,8 @@ export default Vue.extend({
     toggleEditUser(isVisible: boolean) {
       this.editUserIsVisible =
         typeof isVisible === "undefined" ? !this.editUserIsVisible : isVisible;
-    },
-  },
+    }
+  }
 });
 </script>
 

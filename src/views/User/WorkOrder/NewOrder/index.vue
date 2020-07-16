@@ -38,8 +38,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { AxiosResponse } from "axios";
 
+import { getData } from "../../../../utils/fetchData";
 import Process1 from "./Process1.vue";
 import Process2 from "./Process2/index.vue";
 import Process3 from "./Process3.vue";
@@ -48,54 +48,42 @@ export default Vue.extend({
   components: {
     Process1,
     Process2,
-    Process3,
+    Process3
   },
   data() {
     return {
       isOff: true,
-      isLoading: true,
+      isLoading: true
     };
   },
   methods: {
     getStatus() {
-      this.$http
-        .post(
-          "/api/online/user/getEntrancePermission",
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token,
-            },
-          }
-        )
-        .then((res: AxiosResponse) => {
-          this.$data.isLoading = false;
-          this.$data.isOff = !res.data.data[Object.keys(res.data.data)[0]];
-        })
-        .catch(() => {
+      getData("/api/common/entrance/getUserEntrancePermission")
+        .then(data => (this.isOff = !data[Object.keys(data)[0]]))
+        .catch((err: string) => {
           this.isOff = true;
-          this.isLoading = true;
           // 随机延时，以减少消息弹窗类型的错误
           setTimeout(() => {
             this.$message({
               message: `由于未知因素，无法获取工单提交入口状态`,
-              type: "warning",
+              type: "warning"
             });
           }, Math.random());
-        });
-    },
+        })
+        .finally(() => (this.isLoading = false));
+    }
   },
   computed: {
     process() {
       return "Process" + this.$store.state.order.active;
-    },
+    }
   },
   mounted() {
     this.getStatus();
   },
   destroyed() {
     this.$store.commit("clearOrder");
-  },
+  }
 });
 </script>
 
