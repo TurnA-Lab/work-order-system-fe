@@ -65,7 +65,7 @@ export default Vue.extend({
           // 随机延时，以减少消息弹窗类型的错误
           setTimeout(() => {
             this.$message({
-              message: `由于未知因素，无法获取工单提交入口状态`,
+              message: err || "由于未知因素，无法获取工单提交入口状态",
               type: "warning"
             });
           }, Math.random());

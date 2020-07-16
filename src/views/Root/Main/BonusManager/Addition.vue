@@ -118,7 +118,7 @@ export default Vue.extend({
         lastTime: ""
       },
       options: {
-        department: ""
+        department: []
       }
     };
   },

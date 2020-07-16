@@ -1,5 +1,5 @@
 interface Item {
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 /**
@@ -13,7 +13,7 @@ export const allNotNull: (item: Item) => boolean = item => {
     index++
   ) {
     const value = values[index];
-    if (value === "" || value === null) {
+    if (value === "" || value === null || value === undefined) {
       return false;
     }
   }
@@ -32,7 +32,7 @@ export const oneNotNull: (item: Item) => boolean = item => {
     index++
   ) {
     const value = values[index];
-    if (value === "" || value === null) {
+    if (value === "" || value === null || value === undefined) {
       return true;
     }
   }

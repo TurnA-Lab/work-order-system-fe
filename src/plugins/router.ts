@@ -253,7 +253,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   // 动态标题
   const title = document.title; // 记录下当前的网页的标题
-  let timer: number; // 计时器
+  let timer: any; // 计时器
   let count = 0; // 计数
   const dot = ["", ".", "..", "..."];
 
