@@ -83,7 +83,7 @@ export default Vue.extend({
   background-color: #fdfdff;
 
   &:hover {
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2) !important;
   }
 
   .header,

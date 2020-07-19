@@ -15,7 +15,9 @@
           <li>请注意，在此时刷新，系统将不会保存任何数据。</li>
         </ul>
         <el-divider></el-divider>
-        <span>输入负责人工号以进行确认</span>
+        <div>
+          输入用户 <span class="username">{{ name }}</span> 的工号以确认
+        </div>
       </main>
       <footer>
         <el-input
@@ -30,7 +32,7 @@
           :disabled="submitIsDisable"
           :loading="isConfirming"
           @click="submit"
-          >{{ submitBtn }}</el-button
+          >{{ submitBtnText }}</el-button
         >
       </footer>
     </el-dialog>
@@ -38,16 +40,17 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
 import Vue from "vue";
 
+import { postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
-const formApi = ["addConstruction", "addAchievement", "addAward"];
+const formApi = ["construction", "achievement", "award"];
 
 export default Vue.extend({
   data() {
     return {
+      name: "",
       isVisible: false,
       isConfirming: false,
       input: ""
@@ -55,7 +58,7 @@ export default Vue.extend({
   },
   methods: {
     nextActive() {
-      new Promise((resolve, reject) => {
+      new Promise(resolve => {
         resolve(this.$emit("next"));
       }).then(() => {
         if (allNotNull(this.$store.state.order.form)) {
@@ -71,65 +74,46 @@ export default Vue.extend({
     submit() {
       const state = this.$store.state;
 
+      // 验证中
       this.isConfirming = true;
-      this.$http
-        .post(
-          "/api/online/validate",
-          {
-            worknum: this.input
-          },
-          {
-            headers: {
-              token: state.userInfo.token
-            }
-          }
+      // 验证工号
+      new Promise((resolve, reject) =>
+        state.userInfo.worknum === this.input
+          ? resolve()
+          : reject(`工号必须与 ${this.name} 工号相同`)
+      )
+        .then(() =>
+          postData(
+            `/api/user/${formApi[state.order.class - 1]}/add`,
+            state.order.form
+          )
         )
-        .then((res: AxiosResponse) => {
-          if (res.data.code !== 0) {
-            return Promise.reject(
-              res.data.msg || "项目负责人必须与当前登录用户相同"
-            );
-          }
-        })
         .then(() => {
-          return this.$http
-            .post(
-              `/api/online/user/${formApi[state.order.class - 1]}`,
-              state.order.form,
-              {
-                headers: {
-                  token: state.userInfo.token
-                }
-              }
-            )
-            .then((response: AxiosResponse) => {
-              if (response.data.code === 0) {
-                this.isConfirming = false;
-                this.$store.commit("nextActive");
-                this.isVisible = false;
-              } else {
-                return Promise.reject(
-                  response.data.msg || "由于未知因素，暂时无法提交表单"
-                );
-              }
-            });
+          this.$store.commit("nextActive");
+          this.isVisible = false;
         })
         .catch((err: string) => {
-          this.isConfirming = false;
           this.$message({
             message: err || "由于未知因素，暂时无法进行提交",
             type: "warning"
           });
-        });
+        })
+        .finally(() => (this.isConfirming = false));
     }
   },
   computed: {
     submitIsDisable() {
-      return this.$data.input ? false : true;
+      return !this.$data.input;
     },
-    submitBtn() {
-      return this.$data.isConfirming ? "请稍后……" : "我已检查，进行提交";
+    submitBtnText() {
+      return this.$data.isConfirming ? "请稍后..." : "我已检查，进行提交";
     }
+  },
+  created() {
+    // 获取个人信息
+    const userInfo = this.$store.state.userInfo;
+    // 默认负责人是自己
+    this.name = userInfo.name;
   }
 });
 </script>
@@ -141,7 +125,6 @@ span.submit-btn {
 
 ul {
   font-size: 1rem;
-  // margin: 0%;
   padding-inline-start: 30px;
 }
 li {
@@ -161,9 +144,15 @@ footer {
 }
 </style>
 
-<style>
+<style lang="scss">
+@import "@/assets/stylesheet/base.scss";
+
 .el-dialog {
   border-radius: 1rem;
   width: 430px;
+}
+
+.username {
+  color: $main;
 }
 </style>

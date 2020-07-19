@@ -89,8 +89,7 @@ export default Vue.extend({
           progress: VoidFunction,
           abort: VoidFunction
         ) => {
-          const cancelToken = this.$http.CancelToken;
-          const source = cancelToken.source();
+          const source = this.$http.CancelToken.source();
 
           // 自己设计的文件处理系统
           if (this.customApi) {
@@ -117,9 +116,9 @@ export default Vue.extend({
                 timeout: 2500
               }
             )
-              .then(data => JSON.parse(data.body).data.uuid)
+              .then(data => JSON.parse(data).data.uuid)
               // 进行上传
-              .then(uuid => {
+              .then((uuid: string) => {
                 const uploadData = new FormData();
                 uploadData.append("uploadTokenUuid", uuid);
                 uploadData.append("file", file);
@@ -137,8 +136,13 @@ export default Vue.extend({
               .then((uuid: string) =>
                 postData(
                   "/api/common/file/confirmUploaded",
-                  { uuid },
-                  { cancelToken: source.token }
+                  {},
+                  {
+                    params: {
+                      uuid
+                    },
+                    cancelToken: source.token
+                  }
                 ).then(() => uuid)
               )
               .then((uuid: string) => {
@@ -185,7 +189,13 @@ export default Vue.extend({
 }
 
 .filepond-label {
-  box-shadow: 0px 0.1rem #ddd, 0px -0.56rem #ddd inset;
+  cursor: pointer;
+  box-shadow: 0px 0.1rem #ccc, 0px -0.4rem #ccc inset;
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0px 0.1rem #ccc, 0px -0.56rem #ccc inset;
+  }
 }
 
 .filepond-label-upload {
@@ -194,5 +204,9 @@ export default Vue.extend({
   height: 26px;
   background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 10.414v3.585a1 1 0 0 1-2 0v-3.585l-1.293 1.293a1 1 0 0 1-1.414-1.415l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.415L14 10.414zM9 18a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2H9z' fill='currentColor' fill-rule='evenodd'/%3E%3C/svg%3E");
   vertical-align: middle;
+}
+
+.filepond--file-action-button {
+  cursor: pointer;
 }
 </style>

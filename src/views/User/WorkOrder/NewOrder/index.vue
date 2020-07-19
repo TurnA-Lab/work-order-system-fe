@@ -39,7 +39,8 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { getData } from "../../../../utils/fetchData";
+import { getData } from "@/utils/fetchData";
+
 import Process1 from "./Process1.vue";
 import Process2 from "./Process2/index.vue";
 import Process3 from "./Process3.vue";

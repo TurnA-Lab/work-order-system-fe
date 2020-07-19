@@ -1,17 +1,20 @@
+/* eslint-disable simple-import-sort/sort */
 <template>
   <div>
     <what-table
       :columns="columns"
       :dataSource="tableData"
+      :labelDataSource="labelData"
       :options="options"
       :pagination="pagination"
       :fetch="fetchData"
     ></what-table>
     <manager-dialog
       :data="data"
+      :data-index="index"
       :is-visible="managerIsVisible"
       @toggle-is-visible="toggleManager"
-      @refresh="fetchData"
+      @update-table-data="updateTableData"
     ></manager-dialog>
   </div>
 </template>
@@ -20,22 +23,24 @@
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import { Construction } from "@/interface/list-data";
+import { Achievement, Construction } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
-
-import { postData } from "../../../../utils/fetchData";
-import ManagerDialog from "./AchievementManagerDialog.vue";
+import { postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   components: {
     WhatTable,
-    ManagerDialog
+    ManagerDialog: () => import("./AchievementManagerDialog.vue")
   },
   data() {
     return {
       managerIsVisible: false,
       data: {},
+      index: -1,
       tableData: [],
+      labelData: {
+        Status
+      },
       columns: [
         {
           prop: "production",
@@ -43,6 +48,7 @@ export default Vue.extend({
         },
         {
           prop: "class2",
+          width: 100,
           label: "类别"
         },
         {
@@ -51,15 +57,17 @@ export default Vue.extend({
         },
         {
           prop: "publishTime",
+          width: 100,
           label: "发表时间"
         },
         {
-          toolTip: true,
           prop: "status",
           label: "状态",
-          content: "reason",
-          show: "status",
-          showRule: "未通过"
+          width: 100,
+          labelList: "Status",
+          labelListOffset: 1,
+          show: "reason",
+          showCondition: -1
         },
         {
           button: true,
@@ -71,9 +79,10 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
-              onClick: (data: any) => {
+              onClick: (data: Construction, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
+                this.$data.index = index;
                 this.$data.managerIsVisible = true;
               }
             }
@@ -81,6 +90,7 @@ export default Vue.extend({
         }
       ],
       options: {
+        indexProp: "id",
         mutiSelect: false,
         mutiSelectFixed: false,
         index: true, // 显示序号
@@ -106,12 +116,8 @@ export default Vue.extend({
           }
         }
       )
-        .then(({ list, total }: { list: Construction[]; total: number }) => {
-          for (let index = 0, length = list.length; index < length; index++) {
-            const element = list[index];
-            element.status = Status[(element.status as number) + 1];
-          }
-          this.tableData = list as any;
+        .then(({ list, total }: { list: Achievement[]; total: number }) => {
+          (this.tableData as Achievement[]) = list;
           this.pagination.total = total;
         })
         .catch((err: string) => {
@@ -125,9 +131,10 @@ export default Vue.extend({
     toggleManager(isVisible: boolean) {
       this.managerIsVisible =
         typeof isVisible === "undefined" ? !this.managerIsVisible : isVisible;
+    },
+    updateTableData(index: number, data: Construction) {
+      this.$set(this.tableData, index, data);
     }
   }
 });
 </script>
-
-<style lang="scss" scoped></style>

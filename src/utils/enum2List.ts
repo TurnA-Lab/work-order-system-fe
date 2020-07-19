@@ -1,5 +1,5 @@
 export interface LabelList {
-  key: string;
+  key: number;
   value: string;
   label: string | null;
 }
@@ -15,7 +15,7 @@ export default (enumerator: any, value2Label?: Value2Label) => {
       !isNaN(parseInt(key, 10))
     ) {
       arr.push({
-        key,
+        key: parseInt(key, 10),
         value: enumerator[key],
         label:
           typeof value2Label === "undefined"

@@ -269,7 +269,7 @@ router.afterEach((to, from) => {
     } else {
       timer = setInterval(() => {
         document.title = "等待操作中" + dot[count];
-        count = count === 3 ? 0 : count++;
+        count = count === 3 ? 0 : count + 1;
       }, 100);
     }
   });

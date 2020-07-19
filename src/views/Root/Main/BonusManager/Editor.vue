@@ -77,7 +77,7 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (data: Data, index: number) => {
+              onClick: (data: Data) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.editIsVisible = true;

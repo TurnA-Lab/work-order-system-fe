@@ -1,40 +1,43 @@
 import "@/assets/stylesheet/element-variables.scss";
 
 import {
-  Pagination,
   Button,
-  Dialog,
-  Table,
-  Tooltip,
-  Popover,
-  Form,
-  FormItem,
-  Select,
-  DatePicker,
-  Option,
-  Input,
-  Tree,
-  Tag,
   Card,
+  Cascader,
+  DatePicker,
+  Dialog,
   Divider,
-  Alert,
-  RadioGroup,
-  RadioButton,
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  Form,
+  FormItem,
+  Icon,
+  Input,
+  Loading,
   Menu,
   MenuItem,
+  Option,
+  Pagination,
+  Popover,
+  RadioButton,
+  RadioGroup,
+  Select,
+  Step,
+  Steps,
+  Table,
+  TableColumn,
   TabPane,
   Tabs,
-  Cascader,
-  Icon,
-  Step,
-  Steps
+  Tag,
+  Tooltip,
+  Tree,
+  Message,
+  MessageBox,
+  Alert
 } from "element-ui";
 import Vue from "vue";
 
-Vue.use(Alert);
 Vue.use(Button);
 Vue.use(Card);
 Vue.use(Cascader);
@@ -44,10 +47,12 @@ Vue.use(Divider);
 Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
+Vue.use(Alert);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Icon);
 Vue.use(Input);
+Vue.use(Loading);
 Vue.use(Menu);
 Vue.use(MenuItem);
 Vue.use(Option);
@@ -59,8 +64,16 @@ Vue.use(Select);
 Vue.use(Step);
 Vue.use(Steps);
 Vue.use(Table);
+Vue.use(TableColumn);
 Vue.use(TabPane);
 Vue.use(Tag);
 Vue.use(Tabs);
 Vue.use(Tooltip);
 Vue.use(Tree);
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$notify = Notification;
+Vue.prototype.$message = Message;

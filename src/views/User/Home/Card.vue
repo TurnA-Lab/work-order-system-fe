@@ -1,5 +1,5 @@
 <template>
-  <div class="box" shadow="never">
+  <div class="box">
     <div class="slide-enter">
       <h1>欢迎回来，</h1>
       <h2>{{ name }}</h2>
@@ -43,6 +43,7 @@ export default Vue.extend({
   width: var(--card-width);
   background: linear-gradient(0deg, #06beb6 0%, #48b1bf 100%);
   border-radius: 1rem;
+  box-shadow: 0px 2px 18px 0px rgba(0, 0, 0, 0.2);
 
   padding-block-end: 4vh;
   padding-inline-start: 2vw;

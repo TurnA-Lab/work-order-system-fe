@@ -7,18 +7,18 @@
     label-position="left"
     label-width="auto"
   >
-    <el-form-item class="form-item" label="院部" prop="department">
+    <el-form-item class="form-item" label="院部" prop="dptName">
       <el-select
-        v-model="form.department"
+        v-model="form.dptName"
         placeholder="请选择，或输入以查找"
         filterable
         disabled
       >
         <el-option
-          :key="item.value"
           v-for="item in options.department"
-          :label="item.label"
-          :value="item.label"
+          :key="item.id"
+          :label="item.dptName"
+          :value="item.dptName"
         ></el-option>
       </el-select>
     </el-form-item>
@@ -30,43 +30,41 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="第一作者">
-      <el-input v-model="form.name" placeholder="请输入第一作者"></el-input>
+    <el-form-item class="form-item" label="第一作者" prop="name">
+      <el-input
+        v-model="form.name"
+        placeholder="请输入第一作者"
+        disabled
+      ></el-input>
     </el-form-item>
 
-    <el-form-item label="组员">
+    <el-form-item class="form-item" label="课题组成员" prop="teammate">
       <el-tag
         :key="name"
-        v-for="name in form.teammate"
+        v-for="name in teammate"
         closable
-        @close="handleClose(form.teammate, name)"
+        @close="handleClose(teammate, name)"
         >{{ name }}</el-tag
       >
       <el-input
         class="input-new-member"
-        v-if="etc.teammate.inputVisible"
-        v-model="etc.inputValue"
+        v-if="teammateInputVisible"
+        v-model.trim="teammateInputValue"
         ref="memberInput"
-        @keyup.enter.native="
-          handleInputConfirm(form.teammate, etc.teammate.inputVisible)
-        "
-        @blur="handleInputConfirm(form.teammate, etc.teammate.inputVisible)"
+        @keyup.enter.native="handleInputConfirm(form.teammate)"
+        @blur="handleInputConfirm(form.teammate)"
       ></el-input>
-      <el-button
-        v-else
-        class="button-new-member"
-        @click="showMemberInput()"
-        plain
-        >+ 新组员</el-button
+      <el-button v-else class="button-new-member" @click="showMemberInput" plain
+        >+ 新成员</el-button
       >
     </el-form-item>
 
-    <el-form-item class="form-item" label="成果类别" prop="sort">
+    <el-form-item class="form-item" label="成果类别" prop="kind">
       <el-cascader
-        v-model="sort"
+        v-model="kind"
         placeholder="请选择，或输入以查找"
-        :options="options.sort"
-        :props="{ expandTrigger: 'hover' }"
+        :options="options.kind"
+        :props="{ expandTrigger: 'hover', value: 'label' }"
         :show-all-levels="false"
         filterable
       ></el-cascader>
@@ -88,12 +86,12 @@
       label="是否被转让（仅限专利）"
       prop="patent"
     >
-      <el-select v-model="form.patent" placeholder="请选择">
+      <el-select v-model="form.isUsed" placeholder="请选择">
         <el-option
-          v-for="item in options.patent"
-          :key="item.value"
-          :label="item.label"
-          :value="item.label"
+          v-for="item in options.patentisUsed"
+          :key="item.key"
+          :label="item.value"
+          :value="item.key"
         ></el-option>
       </el-select>
     </el-form-item>
@@ -113,8 +111,8 @@
       ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="佐证材料" prop="uploadField">
-      <upload-btn files="certificate"></upload-btn>
+    <el-form-item class="form-item" label="佐证材料" prop="testimonial">
+      <upload-btn files="testimonial"></upload-btn>
     </el-form-item>
 
     <el-form-item class="form-item btn-line">
@@ -147,7 +145,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      sort: [],
+      kind: [],
       form: {
         department: "",
         production: "",
@@ -161,7 +159,7 @@ export default Vue.extend({
       },
       options: {
         department: [],
-        sort: [],
+        kind: [],
         patent: [
           {
             label: "空",
@@ -222,26 +220,6 @@ export default Vue.extend({
       this.$store.commit("repealActive");
     },
     nextActive() {
-      // for (const key in this.options.sort) {
-      //   if (this.options.sort.hasOwnProperty(key)) {
-      //     const object = this.options.sort[key] as Type;
-
-      //     if (object.value === this.sort[0]) {
-      //       this.form.class2 = object.label;
-
-      //       for (const key2 in object.children) {
-      //         if (object.children.hasOwnProperty(key2)) {
-      //           const element = object.children[key2];
-
-      //           if (element.value === this.sort[1]) {
-      //             this.form.class3 = element.label;
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-
       this.$store.commit(
         "orderForm",
         Object.assign({}, this.form, {
@@ -274,7 +252,7 @@ export default Vue.extend({
         class1: "成果类"
       }
     })
-      .then((data: Department[]) => ((this.options.sort as any) = data))
+      .then((data: Department[]) => ((this.options.kind as any) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",

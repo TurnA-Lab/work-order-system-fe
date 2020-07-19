@@ -9,16 +9,16 @@
   >
     <el-form-item class="form-item" label="院部" prop="department">
       <el-select
-        v-model="form.department"
+        v-model="form.dptName"
         placeholder="请选择，或输入以查找"
         filterable
         disabled
       >
         <el-option
-          :key="item.value"
           v-for="item in options.department"
-          :label="item.label"
-          :value="item.label"
+          :key="item.id"
+          :label="item.dptName"
+          :value="item.dptName"
         ></el-option>
       </el-select>
     </el-form-item>
@@ -27,36 +27,31 @@
       <el-input v-model="form.content" placeholder="请输入获奖名称"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖教师（第一）">
+    <el-form-item class="form-item" label="获奖教师（第一）" prop="name">
       <el-input
         v-model="form.name"
         placeholder="请输入获奖教师（第一）"
+        disabled
       ></el-input>
     </el-form-item>
 
-    <el-form-item label="获奖成员">
+    <el-form-item class="form-item" label="课题组成员" prop="teammate">
       <el-tag
         :key="name"
-        v-for="name in form.teammate"
+        v-for="name in teammate"
         closable
-        @close="handleClose(form.teammate, name)"
+        @close="handleClose(teammate, name)"
         >{{ name }}</el-tag
       >
       <el-input
         class="input-new-member"
-        v-if="etc.teammate.inputVisible"
-        v-model="etc.inputValue"
+        v-if="teammateInputVisible"
+        v-model.trim="teammateInputValue"
         ref="memberInput"
-        @keyup.enter.native="
-          handleInputConfirm(form.teammate, etc.teammate.inputVisible)
-        "
-        @blur="handleInputConfirm(form.teammate, etc.teammate.inputVisible)"
+        @keyup.enter.native="handleInputConfirm(form.teammate)"
+        @blur="handleInputConfirm(form.teammate)"
       ></el-input>
-      <el-button
-        v-else
-        class="button-new-member"
-        @click="showMemberInput()"
-        plain
+      <el-button v-else class="button-new-member" @click="showMemberInput" plain
         >+ 新成员</el-button
       >
     </el-form-item>
@@ -76,12 +71,12 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="form-item" label="获奖类型" prop="sort">
+    <el-form-item class="form-item" label="获奖类型" prop="kind">
       <el-cascader
-        v-model="sort"
+        v-model="kind"
         placeholder="请选择，或输入以查找"
-        :options="options.sort"
-        :props="{ expandTrigger: 'hover' }"
+        :options="options.kind"
+        :props="{ expandTrigger: 'hover', value: 'label' }"
         :show-all-levels="false"
         filterable
       ></el-cascader>
@@ -95,7 +90,7 @@
       >
         <el-option
           v-for="item in options.level"
-          :key="item.value"
+          :key="item.id"
           :label="item.label"
           :value="item.label"
         ></el-option>
@@ -113,15 +108,15 @@
       <el-date-picker
         align="center"
         v-model="form.awardTime"
-        type="month"
-        format="yyyy 年 MM 月"
-        value-format="yyyy-MM"
+        type="date"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
         placeholder="获奖时间"
       ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="证书" prop="uploadField">
-      <upload-btn files="certificate"></upload-btn>
+    <el-form-item class="form-item" label="证书" prop="testimonial">
+      <upload-btn files="testimonial"></upload-btn>
     </el-form-item>
 
     <el-form-item class="form-item btn-line">
@@ -136,19 +131,13 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Award, Department } from "@/interface/list-data";
+import { Award, Department, Level } from "@/interface/list-data";
 import {
   fetchDepartmentList,
   fetchKindList,
   fetchLevelList,
   fetchPrizeList
 } from "@/utils/fetchData";
-
-interface Type {
-  label: string;
-  value: string | number;
-  children: Type[];
-}
 
 export default Vue.extend({
   components: {
@@ -157,12 +146,15 @@ export default Vue.extend({
   },
   data() {
     return {
-      sort: [],
+      isLoading: true,
+      kind: [],
+      teammate: [],
+      teammateInputVisible: false,
+      teammateInputValue: "",
       form: {
-        department: "",
+        dptName: "",
         content: "",
         name: "",
-        teammate: [],
         awardUnit: "",
         awardTime: "",
         prize: "",
@@ -174,16 +166,7 @@ export default Vue.extend({
         department: [],
         prize: [],
         level: [],
-        sort: []
-      },
-      etc: {
-        name: {
-          inputVisible: false
-        },
-        teammate: {
-          inputVisible: false
-        },
-        inputValue: ""
+        kind: []
       }
     };
   },
@@ -191,70 +174,46 @@ export default Vue.extend({
     handleClose(nameField: string[], member: string) {
       nameField.splice(nameField.indexOf(member), 1);
     },
-    showPrincipalInput() {
-      this.etc.name.inputVisible = true;
-      this.$nextTick(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (this as any).$refs.principalInput.$refs.input.focus();
-      });
-    },
     showMemberInput() {
-      this.etc.teammate.inputVisible = true;
+      this.teammateInputVisible = true;
       this.$nextTick(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (this as any).$refs.memberInput.$refs.input.focus();
       });
     },
-    handleInputConfirm(nameField: string[], inputVisible: boolean) {
-      const inputValue = this.etc.inputValue;
-      if (inputValue) {
-        nameField.push(inputValue);
+    handleInputConfirm() {
+      const inputValue = this.teammateInputValue;
+      if (inputValue && typeof inputValue === "string") {
+        (this.teammate as string[]).push(inputValue);
       }
-      if (this.etc.name.inputVisible === inputVisible) {
-        this.etc.name.inputVisible = false;
-      } else {
-        this.etc.teammate.inputVisible = false;
-      }
-      this.etc.inputValue = "";
+      this.teammateInputVisible = false;
+      this.teammateInputValue = "";
     },
     repealActive() {
       this.$store.commit("repealActive");
     },
     nextActive() {
-      // for (const key in this.options.sort) {
-      //   if (this.options.sort.hasOwnProperty(key)) {
-      //     const object = this.options.sort[key] as Type;
-
-      //     if (object.value === this.sort[0]) {
-      //       this.form.class2 = object.label;
-
-      //       for (const key2 in object.children) {
-      //         if (object.children.hasOwnProperty(key2)) {
-      //           const element = object.children[key2];
-
-      //           if (element.value === this.sort[1]) {
-      //             this.form.class3 = element.label;
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-
       this.$store.commit(
         "orderForm",
         Object.assign(this.form, {
-          teammate: this.form.teammate.toString()
+          class2: this.kind[0],
+          class3: this.kind[1],
+          teammate: this.teammate.join("、"),
+          status: 0
         })
       );
     }
   },
   created() {
+    // 获取个人信息
+    const userInfo = this.$store.state.userInfo;
     // 默认部门为自己的部门
-    this.form.department = this.$store.state.userInfo.department;
+    this.form.dptName = userInfo.department;
+    // 默认负责人是自己
+    this.form.name = userInfo.name;
 
     // 请求院部列表
-    fetchDepartmentList()
+    const department = fetchDepartmentList()
       .then(
         (data: Department[]) =>
           ((this.options.department as Department[]) = data)
@@ -267,7 +226,7 @@ export default Vue.extend({
       });
 
     // 请求奖项列表
-    fetchPrizeList()
+    const prize = fetchPrizeList()
       .then(
         (data: Department[]) => ((this.options.prize as Department[]) = data)
       )
@@ -279,10 +238,8 @@ export default Vue.extend({
       });
 
     // 请求级别列表
-    fetchLevelList()
-      .then(
-        (data: Department[]) => ((this.options.level as Department[]) = data)
-      )
+    const level = fetchLevelList()
+      .then((data: Level[]) => ((this.options.level as Level[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖级别列表",
@@ -291,18 +248,22 @@ export default Vue.extend({
       });
 
     // 请求获奖类型列表
-    fetchKindList({
+    const kind = fetchKindList({
       params: {
         class1: "获奖类"
       }
     })
-      .then((data: Award[]) => ((this.options.sort as Award[]) = data))
+      .then((data: Award[]) => ((this.options.kind as Award[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖类型列表",
           type: "warning"
         });
       });
+
+    Promise.all([department, kind, level, prize]).then(() => {
+      this.isLoading = false;
+    });
   }
 });
 </script>

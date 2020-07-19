@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+export default Vue.extend();
 </script>
 
 <style lang="scss" scoped>
@@ -21,5 +21,6 @@ main {
 h1 {
   font-family: "FZCuJinLJW";
   font-size: 3em;
+  color: #999;
 }
 </style>

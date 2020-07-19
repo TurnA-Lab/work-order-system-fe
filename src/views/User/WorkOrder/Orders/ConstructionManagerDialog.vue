@@ -13,6 +13,7 @@
     </div>
     <el-form
       :model="form"
+      :class="{ 'is-disable': isDisable }"
       class="form-part"
       ref="form"
       size="medium"
@@ -21,26 +22,6 @@
     >
       <el-form-item class="form-item" label="项目名称">
         <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
-      </el-form-item>
-
-      <el-form-item class="form-item" label="院部">
-        <el-select
-          v-model="form.dptName"
-          placeholder="请选择，或输入以查找"
-          filterable
-          :disabled="editIsDisable"
-        >
-          <el-option
-            v-for="item in options.department"
-            :key="item.id"
-            :label="item.dptName"
-            :value="item.dptName"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item class="form-item" label="项目负责人">
-        <el-input v-model="form.name" :disabled="editIsDisable"></el-input>
       </el-form-item>
 
       <el-form-item class="form-item" label="课题组成员">
@@ -115,44 +96,28 @@
         >
       </el-form-item>
 
-      <el-form-item class="form-item" label="是否已结束">
-        <el-select v-model="isEnd" placeholder="请选择" disabled>
-          <el-option
-            v-for="item in options.isEnd"
-            :key="item.key"
-            :label="item.value"
-            :value="item.key"
-          ></el-option>
-        </el-select>
+      <el-form-item class="form-item" label="院部">
+        <el-input v-model="form.dptName" disabled></el-input>
+      </el-form-item>
+
+      <el-form-item class="form-item" label="项目负责人">
+        <el-input v-model="form.name" disabled></el-input>
       </el-form-item>
 
       <el-form-item class="form-item" label="建设经费">
-        <el-input
-          v-model="form.expenditure"
-          placeholder="请输入建设经费"
-          disabled
-        ></el-input>
+        <el-input v-model="form.expenditure" disabled></el-input>
       </el-form-item>
 
       <el-form-item class="form-item" label="年度">
-        <el-date-picker
-          v-model="form.year"
-          align="center"
-          type="year"
-          placeholder="年度"
-          disabled
-        ></el-date-picker>
+        <el-input v-model="form.year" disabled></el-input>
       </el-form-item>
 
-      <el-form-item label="学年">
-        <el-select v-model="form.schoolYear" placeholder="请选择" disabled>
-          <el-option
-            v-for="item in options.schoolYears"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
-        </el-select>
+      <el-form-item class="form-item" label="学年">
+        <el-input v-model="form.schoolYear" disabled></el-input>
+      </el-form-item>
+
+      <el-form-item class="form-item" label="是否已结束">
+        <el-input v-model="isEnd" disabled></el-input>
       </el-form-item>
     </el-form>
 
@@ -179,21 +144,10 @@ import moment from "moment";
 import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
-import { Construction, Department } from "@/interface/list-data";
-import { EndStatus, endStatusList, yearList } from "@/static-data/work-order";
-import {
-  fetchDepartmentList,
-  fetchKindList,
-  fetchLevelList,
-  postData
-} from "@/utils/fetchData";
+import { Construction, Level } from "@/interface/list-data";
+import { EndStatus } from "@/static-data/work-order";
+import { fetchKindList, fetchLevelList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
-
-interface Type {
-  label: string;
-  value: string | number;
-  children: Type[];
-}
 
 export default Vue.extend({
   props: { data: Object, dataIndex: Number, isVisible: Boolean },
@@ -222,11 +176,8 @@ export default Vue.extend({
       editIsDisable: true,
       isDisable: false,
       options: {
-        department: [],
-        isEnd: endStatusList,
         level: [],
-        kind: [],
-        schoolYears: yearList
+        kind: []
       }
     };
   },
@@ -243,7 +194,7 @@ export default Vue.extend({
         this.editIsDisable = !this.editIsDisable;
       } else {
         this.$message({
-          message: "仅在“审核中”和“未通过”时可以进行编辑",
+          message: "仅在 “审核中” 和 “未通过” 时可以进行编辑",
           type: "warning"
         });
       }
@@ -335,26 +286,15 @@ export default Vue.extend({
     // 载入中
     this.isLoading = true;
 
-    // 请求院部列表
-    const department = fetchDepartmentList()
-      .then(
-        (data: Department[]) =>
-          ((this.options.department as Department[]) = data)
-      )
-      .catch((err: string) => {
-        this.$message({
-          message: err || "由于未知因素，无法获取院部列表",
-          type: "warning"
-        });
-      });
-
     // 请求获奖类型列表
     const kind = fetchKindList({
       params: {
         class1: "建设类"
       }
     })
-      .then((data: Department[]) => ((this.options.kind as any) = data))
+      .then(
+        (data: Construction[]) => ((this.options.kind as Construction[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取建设类型列表",
@@ -364,7 +304,7 @@ export default Vue.extend({
 
     // 获取项目级别列表
     const level = fetchLevelList()
-      .then((data: Department[]) => ((this.options.level as any) = data))
+      .then((data: Level[]) => ((this.options.level as Level[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取项目级别列表",
@@ -373,7 +313,7 @@ export default Vue.extend({
       });
 
     // 载入结束
-    Promise.all([department, kind, level]).then(() => {
+    Promise.all([kind, level]).then(() => {
       this.isLoading = false;
     });
   }

@@ -1,5 +1,4 @@
 import enum2List from "@/utils/enum2List";
-import enum2list from "@/utils/enum2List";
 
 // 审核状态
 export enum Status {
@@ -9,7 +8,7 @@ export enum Status {
   "科室通过"
 }
 
-export const statusList = enum2list(Status);
+export const statusList = enum2List(Status);
 
 // 是否结束
 export enum EndStatus {

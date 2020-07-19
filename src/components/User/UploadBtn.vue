@@ -22,12 +22,10 @@
 <script lang="ts">
 import Vue from "vue";
 
-import UploadFile from "@/components/Etc/UploadFile.vue";
-
 export default Vue.extend({
   props: { files: String },
   components: {
-    UploadFile
+    UploadFile: () => import("@/components/Etc/UploadFile.vue")
   },
   data() {
     return {

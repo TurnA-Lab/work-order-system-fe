@@ -3,6 +3,7 @@
     <what-table
       :columns="columns"
       :dataSource="tableData"
+      :labelDataSource="labelData"
       :options="options"
       :pagination="pagination"
       :fetch="fetchData"
@@ -12,7 +13,7 @@
       :data-index="index"
       :is-visible="managerIsVisible"
       @toggle-is-visible="toggleManager"
-      @refresh="fetchData"
+      @update-table-data="updateTableData"
     ></manager-dialog>
   </div>
 </template>
@@ -36,6 +37,9 @@ export default Vue.extend({
       data: {},
       index: -1,
       tableData: [],
+      labelData: {
+        Status
+      },
       columns: [
         {
           prop: "content",
@@ -47,7 +51,8 @@ export default Vue.extend({
         },
         {
           prop: "prize",
-          label: "奖项"
+          label: "奖项",
+          width: 100
         },
         {
           prop: "level",
@@ -58,9 +63,10 @@ export default Vue.extend({
           prop: "status",
           label: "状态",
           width: 100,
-          content: "reason",
-          show: "status",
-          showRule: "未通过"
+          labelList: "Status",
+          labelListOffset: 1,
+          show: "reason",
+          showCondition: -1
         },
         {
           button: true,
@@ -84,6 +90,7 @@ export default Vue.extend({
         }
       ],
       options: {
+        indexProp: "id",
         mutiSelect: false,
         mutiSelectFixed: false,
         index: true, // 显示序号
@@ -110,10 +117,6 @@ export default Vue.extend({
         }
       )
         .then(({ list, total }: { list: Award[]; total: number }) => {
-          for (let index = 0, length = list.length; index < length; index++) {
-            const element = list[index];
-            element.status = Status[(element.status as number) + 1];
-          }
           (this.tableData as Award[]) = list;
           this.pagination.total = total;
         })
@@ -128,9 +131,10 @@ export default Vue.extend({
     toggleManager(isVisible: boolean) {
       this.managerIsVisible =
         typeof isVisible === "undefined" ? !this.managerIsVisible : isVisible;
+    },
+    updateTableData(index: number, data: Award) {
+      this.$set(this.tableData, index, data);
     }
   }
 });
 </script>
-
-<style lang="scss" scoped></style>
