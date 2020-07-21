@@ -18,15 +18,6 @@ export enum EndStatus {
 
 export const endStatusList = enum2List(EndStatus);
 
-// 专利状态
-export enum Patent {
-  "空",
-  "是",
-  "否"
-}
-
-export const patentList = enum2List(Patent);
-
 // 年度范围
 // 这么烂的实现肯定不是我想出来的……是 lt 的锅
 const years = () => {
@@ -53,7 +44,7 @@ export const computeOffice = [
 ];
 
 // 是否
-// 用于 tutor background doubleTeacher
+// 用于 tutor background doubleTeacher isUsed
 export enum noOrYes {
   "否",
   "是"

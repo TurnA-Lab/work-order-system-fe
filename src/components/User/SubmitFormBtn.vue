@@ -85,7 +85,7 @@ export default Vue.extend({
         .then(() =>
           postData(
             `/api/user/${formApi[state.order.class - 1]}/add`,
-            state.order.form
+            Object.assign({}, state.order.form, { worknum: this.input })
           )
         )
         .then(() => {

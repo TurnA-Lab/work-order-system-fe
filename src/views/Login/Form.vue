@@ -6,13 +6,17 @@
   >
     <el-card
       class="login-card"
-      shadow="hover"
+      shadow="always"
       :body-style="{ padding: '20px 40px' }"
       @keyup.enter.native="submitForm('form')"
     >
+      <header>Login</header>
       <el-form ref="form" :model="form" :rules="rules">
-        <el-form-item style="text-align: center;" prop="permission">
-          <el-radio-group v-model="form.permission">
+        <el-form-item
+          style="text-align: center;margin-bottom: 10px;"
+          prop="permission"
+        >
+          <el-radio-group v-model="form.permission" size="mini">
             <el-radio-button label="0">普通帐户</el-radio-button>
             <el-radio-button label="1">管理员账户</el-radio-button>
           </el-radio-group>
@@ -42,6 +46,7 @@
           >
         </el-form-item>
       </el-form>
+      <footer>Completed by Skye Young & Just Geeker</footer>
     </el-card>
   </transition>
 </template>
@@ -50,10 +55,9 @@
 import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
 
+import { LoginData } from "@/interface/login";
 import { Roles } from "@/static-data/login";
-
-import { LoginData } from "../../interface/login";
-import { postData } from "../../utils/fetchData";
+import { postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   data() {
@@ -129,8 +133,26 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .login-card {
-  width: 480px; //35vw
+  width: 350px; //35vw
   border-radius: 1rem;
+}
+
+header {
+  font-variant: all-petite-caps;
+  font-size: 4em;
+  text-align: center;
+  color: #888;
+  word-spacing: 10px;
+  margin-inline-end: -8px;
+  letter-spacing: 8px;
+  user-select: none;
+}
+
+footer {
+  text-align: right;
+  color: #888;
+  font-size: 0.6em;
+  font-variant: small-caps;
 }
 
 // slide

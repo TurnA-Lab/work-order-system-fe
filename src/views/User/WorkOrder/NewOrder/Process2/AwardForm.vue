@@ -6,10 +6,11 @@
     size="medium"
     label-position="left"
     label-width="auto"
+    v-loading="isLoading"
   >
     <el-form-item class="form-item" label="院部" prop="department">
       <el-select
-        v-model="form.dptName"
+        v-model="form.department"
         placeholder="请选择，或输入以查找"
         filterable
         disabled
@@ -64,7 +65,7 @@
       >
         <el-option
           v-for="item in options.prize"
-          :key="item.value"
+          :key="item.id"
           :label="item.label"
           :value="item.label"
         ></el-option>
@@ -131,7 +132,7 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Award, Department, Level } from "@/interface/list-data";
+import { Award, Department, Level, Prize } from "@/interface/list-data";
 import {
   fetchDepartmentList,
   fetchKindList,
@@ -152,15 +153,13 @@ export default Vue.extend({
       teammateInputVisible: false,
       teammateInputValue: "",
       form: {
-        dptName: "",
+        department: "",
         content: "",
         name: "",
         awardUnit: "",
         awardTime: "",
         prize: "",
-        level: "",
-        class2: "",
-        class3: ""
+        level: ""
       },
       options: {
         department: [],
@@ -208,7 +207,7 @@ export default Vue.extend({
     // 获取个人信息
     const userInfo = this.$store.state.userInfo;
     // 默认部门为自己的部门
-    this.form.dptName = userInfo.department;
+    this.form.department = userInfo.department;
     // 默认负责人是自己
     this.form.name = userInfo.name;
 
@@ -227,9 +226,7 @@ export default Vue.extend({
 
     // 请求奖项列表
     const prize = fetchPrizeList()
-      .then(
-        (data: Department[]) => ((this.options.prize as Department[]) = data)
-      )
+      .then((data: Prize[]) => ((this.options.prize as Prize[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取奖项列表",

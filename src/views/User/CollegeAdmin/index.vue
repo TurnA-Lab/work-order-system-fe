@@ -7,7 +7,7 @@
         type="text"
         @click="$router.push({ name: 'collegeAdminMemberManager' })"
         :disabled="btnIsDisabled"
-        >部门成员管理</el-button
+        >部门成员浏览</el-button
       >
       <vertical-divider></vertical-divider>
       <el-button

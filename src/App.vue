@@ -30,6 +30,15 @@ export default Vue.extend({
     }
   },
   mounted() {
+    const loadingPage: HTMLElement = document.querySelector(
+      ".loading-page"
+    ) as HTMLElement;
+    if (loadingPage) {
+      loadingPage.classList.add("fade");
+      setTimeout(() => {
+        (loadingPage.parentElement as HTMLElement).removeChild(loadingPage);
+      }, 1000);
+    }
     // 离线
     window.addEventListener("offline", () => {
       this.offline = true;
@@ -46,8 +55,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "assets/stylesheet/font";
-
 :root {
   // User Card Width
   --card-width: 20vw;

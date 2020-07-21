@@ -64,7 +64,7 @@ export default Vue.extend({
         },
         {
           prop: "points",
-          label: "业绩分分"
+          label: "业绩"
         },
         {
           button: true,
@@ -108,7 +108,7 @@ export default Vue.extend({
                       .then(() => {
                         this.$data.tableData.splice(index, 1);
                         this.$message({
-                          message: "业绩分信息删除成功",
+                          message: "业绩信息删除成功",
                           type: "success"
                         });
                       })

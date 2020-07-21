@@ -23,7 +23,7 @@
 
     <el-menu-item index="3" :route="{ name: 'officeAdminImportSheet' }">
       <i class="el-icon-menu"></i>
-      <span slot="title">奖励 / 业绩分表格录入</span>
+      <span slot="title">奖金 / 业绩表格录入</span>
     </el-menu-item>
   </el-menu>
 </template>

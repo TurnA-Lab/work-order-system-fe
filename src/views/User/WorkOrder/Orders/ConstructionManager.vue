@@ -24,7 +24,7 @@ import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import { Construction } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
-import { postData } from "@/utils/fetchData";
+import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   components: {
@@ -93,19 +93,15 @@ export default Vue.extend({
                     cancelButtonText: "取消",
                     type: "warning"
                   }).then(() =>
-                    postData(
-                      "/api/root/bonus/delete",
-                      {},
-                      {
-                        params: {
-                          id: data.id
-                        }
+                    getData("/api/user/construction/delete", {
+                      params: {
+                        id: data.id
                       }
-                    )
+                    })
                       .then(() => {
                         this.$data.tableData.splice(index, 1);
                         this.$message({
-                          message: "奖励信息删除成功",
+                          message: "工单删除成功",
                           type: "success"
                         });
                       })

@@ -17,6 +17,7 @@ import {
   Loading,
   Menu,
   MenuItem,
+  Notification,
   Option,
   Pagination,
   Popover,

@@ -4,24 +4,14 @@
       <h2>确认表导出</h2>
     </header>
     <main>
-      <div>
-        <el-button
-          type="primary"
-          @click="downloadPerformanceTable"
-          :disabled="!performance"
-        >
-          <i class="el-icon-download"></i>
-          导出业绩分表
-        </el-button>
-        <el-button
-          type="primary"
-          @click="downloadBonusTable"
-          :disabled="!bonus"
-        >
-          <i class="el-icon-download"></i>
-          导出奖励表
-        </el-button>
-      </div>
+      <el-button type="primary" @click="downloadPerformanceTable">
+        <i class="el-icon-download"></i>
+        导出业绩表
+      </el-button>
+      <el-button type="primary" @click="downloadBonusTable">
+        <i class="el-icon-download"></i>
+        导出奖金表
+      </el-button>
     </main>
     <el-dialog
       custom-class="custom-dialog"
@@ -70,67 +60,40 @@ export default Vue.extend({
       fileName: ""
     };
   },
-  created() {
-    this.$http
-      .post(
-        "/api/online/collegeAdmin/getAdminEnterPermission",
-        {},
-        {
-          headers: {
-            token: this.$store.state.userInfo.token
-          }
-        }
-      )
-      .then((res: AxiosResponse) => {
-        if (res.data.code === 0) {
-          this.performance = res.data.data.performance;
-          this.bonus = res.data.data.bonus;
-        } else {
-          return Promise.reject(res.data.msg);
-        }
-      })
-      .catch((err: string) => {
-        this.$message({
-          message: err || "由于未知因素，无法输出表",
-          type: "warning"
-        });
-      });
-  },
   methods: {
     downloadPerformanceTable() {
-      this.sheetApi = "/api/online/collegeAdmin/getConfirmPerformanceExcel";
+      this.sheetApi = "/api/college/getPerformanceExcel";
       this.isVisible = true;
-      this.fileName = "业绩分表";
+      this.fileName = "业绩表";
     },
     downloadBonusTable() {
-      this.sheetApi = "/api/online/collegeAdmin/getConfirmBonusExcel";
+      this.sheetApi = "/api/college/getBonusExcel";
       this.isVisible = true;
-      this.fileName = "奖励表";
+      this.fileName = "奖金表";
     },
     exportSheets() {
       this.isDisable = true;
 
       if (this.selectYear) {
         this.$http
-          .post(
-            `${this.sheetApi}?year=${this.selectYear}`,
-            {},
-            {
-              headers: {
-                token: this.$store.state.userInfo.token
-              },
-              responseType: "blob"
-            }
-          )
+          .get(this.sheetApi, {
+            headers: {
+              token: this.$store.state.userInfo.token
+            },
+            params: {
+              year: this.selectYear
+            },
+            responseType: "blob"
+          })
           .then((res: AxiosResponse) => {
             this.isVisible = false;
             this.isDisable = false;
 
             if (res.status === 200) {
-              return Promise.resolve([
+              return [
                 decodeFilename(res, `${this.selectYear}-${this.fileName}.xlsx`),
                 res.data
-              ]);
+              ];
             } else {
               return Promise.reject(res.data.msg);
             }

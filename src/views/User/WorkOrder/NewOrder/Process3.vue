@@ -23,4 +23,9 @@ h1 {
   font-size: 3em;
   color: #999;
 }
+
+.post-another-order {
+  position: absolute;
+  right: 6em;
+}
 </style>

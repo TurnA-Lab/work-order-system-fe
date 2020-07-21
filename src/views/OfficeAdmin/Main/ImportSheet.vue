@@ -1,36 +1,28 @@
 <template>
   <el-tabs tab-position="right">
-    <el-tab-pane label="奖励">
+    <el-tab-pane label="奖金">
       <div class="tabs-body">
         <el-button
           type="primary"
-          @click="
-            download(
-              '/api/online/officeAdmin/getBonusTemplate',
-              '奖励模板.xlsx'
-            )
-          "
-          >下载奖励模板</el-button
+          @click="download('/api/office/bonus/getTemplate', '奖金模板.xlsx')"
+          >下载奖金模板</el-button
         >
-        <upload-btn api="/api/online/officeAdmin/excelImportBonus"
-          >上传奖励表格</upload-btn
+        <upload-btn api="/api/office/bonus/excelImport"
+          >上传奖金表格</upload-btn
         >
       </div>
     </el-tab-pane>
-    <el-tab-pane label="业绩分">
+    <el-tab-pane label="业绩">
       <div class="tabs-body">
         <el-button
           type="primary"
           @click="
-            download(
-              '/api/online/officeAdmin/getPerformanceTemplate',
-              '业绩分模板.xlsx'
-            )
+            download('/api/office/performance/getTemplate', '业绩模板.xlsx')
           "
-          >下载业绩分模板</el-button
+          >下载业绩模板</el-button
         >
-        <upload-btn api="/api/online/officeAdmin/excelImportPerformance"
-          >上传业绩分表格</upload-btn
+        <upload-btn api="/api/office/performance/excelImport"
+          >上传业绩表格</upload-btn
         >
       </div>
     </el-tab-pane>

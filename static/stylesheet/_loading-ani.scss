@@ -1,35 +1,16 @@
-<template>
-  <div class="bruce flex-ct-x">
-    <ul class="reflect-loading">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
-</template>
-
-<script lang="ts">
-import Vue from "vue";
-export default Vue.extend();
-</script>
-
-<style lang="scss" scoped>
 $count: 10;
-$color: $purple $blue;
+// $color: #ff6e7f #bfe9ff;
+$color: #00467f #a5cc82;
 
 .reflect-loading {
+  z-index: 2;
   display: flex;
-  height: 100px;
+  height: 40px;
+  padding: 0px 50px;
   -webkit-box-reflect: below 0 linear-gradient(rgba(#fff, 0), rgba(#fff, 0.7));
-  li {
-    width: 20px;
+  & > div {
+    width: 10px;
+    border-radius: 5px;
     @for $i from 0 to $count {
       $args: append($color, $i * 100% / ($count - 1));
       &:nth-child(#{$i + 1}) {
@@ -40,6 +21,7 @@ $color: $purple $blue;
     }
   }
 }
+
 @keyframes rotate {
   0% {
     transform: rotate(-0.5turn) rotateX(-1turn);
@@ -49,4 +31,3 @@ $color: $purple $blue;
     transform: none;
   }
 }
-</style>

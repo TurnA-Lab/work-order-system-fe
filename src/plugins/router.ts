@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import { Roles } from "@/static-data/login";
-import Page404 from "@/views/404.vue";
 
 import store from "./store";
 
@@ -106,7 +105,7 @@ const router = new Router({
           component: () =>
             import("@/views/User/CollegeAdmin/MemberManager.vue"),
           meta: {
-            title: "部门成员管理"
+            title: "部门成员浏览"
           }
         },
         {
@@ -147,7 +146,7 @@ const router = new Router({
           name: "officeAdminImportSheet",
           component: () => import("@/views/OfficeAdmin/Main/ImportSheet.vue"),
           meta: {
-            title: "奖励 / 业绩分表格录入"
+            title: "奖金 / 业绩表格录入"
           }
         }
       ]
@@ -179,7 +178,7 @@ const router = new Router({
           name: "rootBonusManager",
           component: () => import("@/views/Root/Main/BonusManager/index.vue"),
           meta: {
-            title: "奖励管理"
+            title: "奖金管理"
           }
         },
         {
@@ -188,7 +187,7 @@ const router = new Router({
           component: () =>
             import("@/views/Root/Main/PerformanceManager/index.vue"),
           meta: {
-            title: "业绩分管理"
+            title: "业绩管理"
           }
         },
         {
@@ -205,7 +204,7 @@ const router = new Router({
     {
       path: "*",
       name: "page404",
-      component: Page404,
+      component: () => import("@/views/404.vue"),
       meta: {
         title: "404"
       }
@@ -250,7 +249,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach((to, from) => {
+router.afterEach(() => {
   // 动态标题
   const title = document.title; // 记录下当前的网页的标题
   let timer: any; // 计时器

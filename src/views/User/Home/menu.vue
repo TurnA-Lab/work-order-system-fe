@@ -18,7 +18,7 @@
         class="menu-link"
         @click="$router.push({ name: 'collegeAdmin' })"
       >
-        <span>学院管理入口</span>
+        <span>学院管理</span>
       </div>
       <div v-else class="user-about">
         <span>
@@ -104,14 +104,11 @@ export default Vue.extend({
   },
   computed: {
     isCollegeAdmin() {
-      return this.$store.getters.permission === "1";
+      return this.$store.getters.permission === 1;
     }
   },
   created() {
-    if (
-      sessionStorage.getItem("wo_permission") === "1" &&
-      !localStorage.getItem("collageAdminAlertCount")
-    ) {
+    if (this.isCollegeAdmin && !localStorage.getItem("collageAdminAlert")) {
       this.$notify({
         title: "注意",
         dangerouslyUseHTMLString: true,
@@ -120,7 +117,7 @@ export default Vue.extend({
         type: "warning",
         duration: 0
       });
-      localStorage.setItem("collageAdminAlertCount", "1");
+      localStorage.setItem("collageAdminAlert", "true");
     }
   }
 });

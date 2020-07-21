@@ -1,4 +1,3 @@
-/* eslint-disable simple-import-sort/sort */
 <template>
   <div>
     <what-table
@@ -25,7 +24,7 @@ import Vue from "vue";
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import { Achievement, Construction } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
-import { postData } from "@/utils/fetchData";
+import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   components: {
@@ -75,7 +74,7 @@ export default Vue.extend({
           width: 200,
           group: [
             {
-              name: "管理",
+              name: "查看",
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
@@ -84,6 +83,46 @@ export default Vue.extend({
                 this.$data.data = data;
                 this.$data.index = index;
                 this.$data.managerIsVisible = true;
+              }
+            },
+            {
+              name: "删除",
+              type: "danger",
+              icon: "el-icon-delete",
+              disabled: false,
+              onClick: (data: Achievement, index: number) => {
+                if (data.status < 1) {
+                  // 这种写法的 this 代表 group 里的对象
+                  this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                  }).then(() =>
+                    getData("/api/user/achievement/delete", {
+                      params: {
+                        id: data.id
+                      }
+                    })
+                      .then(() => {
+                        this.$data.tableData.splice(index, 1);
+                        this.$message({
+                          message: "工单删除成功",
+                          type: "success"
+                        });
+                      })
+                      .catch((err: string) => {
+                        this.$message({
+                          message: err || "由于未知因素，用户信息删除失败",
+                          type: "warning"
+                        });
+                      })
+                  );
+                } else {
+                  this.$message({
+                    message: "仅在 “审核中” 和 “未通过” 时可以进行编辑",
+                    type: "warning"
+                  });
+                }
               }
             }
           ]

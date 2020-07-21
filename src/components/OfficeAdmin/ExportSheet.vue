@@ -47,8 +47,7 @@ import Vue from "vue";
 import DownloadAsZip from "@/components/Etc/DownloadAsZip.vue";
 import { yearList } from "@/static-data/work-order";
 import decodeFilename from "@/utils/decodeFilename";
-
-import { postData } from "../../utils/fetchData";
+import { postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   props: { api: String, fileApi: String },

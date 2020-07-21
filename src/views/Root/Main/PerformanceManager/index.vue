@@ -18,7 +18,7 @@
     <el-tab-pane label="导出">
       <div class="tabs-body">
         <download-table
-          file-name="业绩分表"
+          file-name="业绩表"
           api="/api/root/performance/getExcel"
         ></download-table>
       </div>

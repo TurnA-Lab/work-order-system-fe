@@ -111,7 +111,7 @@ export default Vue.extend({
         },
         {
           prop: "bonus",
-          label: "奖励"
+          label: "奖金"
         },
         {
           button: true,
@@ -124,7 +124,7 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (data: Data, index: number) => {
+              onClick: (data: Data) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.editIsVisible = true;
@@ -183,7 +183,7 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true // 是否一挂载就加载数据
+        initTable: false // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,

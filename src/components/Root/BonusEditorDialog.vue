@@ -7,7 +7,7 @@
     append-to-body
   >
     <div slot="title">
-      编辑奖励信息
+      编辑奖金信息
       <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
     </div>
     <div>
@@ -50,7 +50,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="奖励计算科室">
+        <el-form-item label="奖金计算科室">
           <el-select v-model="form.computeOffice" placeholder="请选择">
             <el-option
               v-for="item in computeOfficeList"
@@ -71,10 +71,10 @@
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="奖励">
+        <el-form-item class="form-item" label="奖金">
           <el-input
             v-model.number="form.bonus"
-            placeholder="请输入奖励"
+            placeholder="请输入奖金"
           ></el-input>
         </el-form-item>
       </el-form>

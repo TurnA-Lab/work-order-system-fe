@@ -29,7 +29,7 @@ interface RawWorkOrder {
 
 // 建设类
 export interface Construction extends RawWorkOrder {
-  bonus: number; //奖励
+  bonus: number; //奖金
   point: number;
   computeYear: string;
   expenditure: string; // 建设经费

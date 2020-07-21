@@ -18,7 +18,7 @@
     <el-tab-pane label="导出">
       <div class="tabs-body">
         <download-table
-          file-name="奖励表"
+          file-name="奖金表"
           api="/api/root/bonus/getExcel"
         ></download-table>
       </div>

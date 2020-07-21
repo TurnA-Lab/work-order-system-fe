@@ -11,8 +11,8 @@
           </el-tab-pane>
           <el-tab-pane label="导出">
             <export-sheet
-              api="/api/online/officeAdmin/getConstructionExcel"
-              fileApi="/api/online/officeAdmin/getConstructionFileKey"
+              api="/api/office/construction/getExcel"
+              fileApi="/api/office/construction/getFileKeys"
             ></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
@@ -20,10 +20,10 @@
               @click="
                 downloadTemplate(
                   '建设类模板.xlsx',
-                  '/api/online/officeAdmin/getConstructionTemplate'
+                  '/api/office/construction/getTemplate'
                 )
               "
-              api="/api/online/officeAdmin/excelImportConstruction"
+              api="/api/office/construction/excelImport"
             ></digitize-sheet>
           </el-tab-pane>
         </el-tabs>
@@ -41,8 +41,8 @@
           </el-tab-pane>
           <el-tab-pane label="导出">
             <export-sheet
-              api="/api/online/officeAdmin/getAchievementExcel"
-              fileApi="/api/online/officeAdmin/getAchievementFileKey"
+              api="/api/office/achievement/getExcel"
+              fileApi="/api/office/achievement/getFileKeys"
             ></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
@@ -50,10 +50,10 @@
               @click="
                 downloadTemplate(
                   '成果类模板.xlsx',
-                  '/api/online/officeAdmin/getAchievementTemplate'
+                  '/api/office/achievement/getTemplate'
                 )
               "
-              api="/api/online/officeAdmin/excelImportAchievement"
+              api="/api/office/achievement/excelImport"
             ></digitize-sheet>
           </el-tab-pane>
         </el-tabs>
@@ -71,8 +71,8 @@
           </el-tab-pane>
           <el-tab-pane label="导出">
             <export-sheet
-              api="/api/online/officeAdmin/getAwardExcel"
-              fileApi="/api/online/officeAdmin/getAwardFileKey"
+              api="/api/office/award/getExcel"
+              fileApi="/api/office/award/getFileKeys"
             ></export-sheet>
           </el-tab-pane>
           <el-tab-pane label="录入">
@@ -80,10 +80,10 @@
               @click="
                 downloadTemplate(
                   '获奖类模板.xlsx',
-                  '/api/online/officeAdmin/getAwardTemplate'
+                  '/api/office/award/getTemplate'
                 )
               "
-              api="/api/online/officeAdmin/excelImportAward"
+              api="/api/office/award/excelImport"
             ></digitize-sheet>
           </el-tab-pane>
         </el-tabs>
@@ -97,41 +97,28 @@ import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
 import Vue from "vue";
 
-import ExportSheet from "@/components/OfficeAdmin/ExportSheet.vue";
 import decodeFilename from "@/utils/decodeFilename";
-
-import FilterAchievement from "./Achievement/Filter.vue";
-import AuditAchievement from "./Achievement/index.vue";
-import FilterAward from "./Award/Filter.vue";
-import AuditAward from "./Award/index.vue";
-import FilterConstruction from "./Construction/Filter.vue";
-import AuditConstruction from "./Construction/index.vue";
-import DigitizeSheet from "./DigitizeSheet.vue";
 
 export default Vue.extend({
   components: {
-    AuditConstruction,
-    AuditAchievement,
-    AuditAward,
-    FilterConstruction,
-    FilterAchievement,
-    FilterAward,
-    DigitizeSheet,
-    ExportSheet
+    AuditConstruction: () => import("./Construction/index.vue"),
+    AuditAchievement: () => import("./Achievement/index.vue"),
+    AuditAward: () => import("./Award/index.vue"),
+    FilterConstruction: () => import("./Construction/Filter.vue"),
+    FilterAchievement: () => import("./Achievement/Filter.vue"),
+    FilterAward: () => import("./Award/Filter.vue"),
+    DigitizeSheet: () => import("@/components/OfficeAdmin/DigitizeSheet.vue"),
+    ExportSheet: () => import("@/components/OfficeAdmin/ExportSheet.vue")
   },
   methods: {
     downloadTemplate(fallbackFilename: string, api: string) {
       this.$http
-        .post(
-          api,
-          {},
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            },
-            responseType: "blob"
-          }
-        )
+        .get(api, {
+          headers: {
+            token: this.$store.state.userInfo.token
+          },
+          responseType: "blob"
+        })
         .then((res: AxiosResponse) => {
           if (res.status === 200) {
             return Promise.resolve([

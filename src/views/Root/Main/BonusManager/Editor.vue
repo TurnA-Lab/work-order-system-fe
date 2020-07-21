@@ -64,7 +64,7 @@ export default Vue.extend({
         },
         {
           prop: "bonus",
-          label: "奖励"
+          label: "奖金"
         },
         {
           button: true,
@@ -107,7 +107,7 @@ export default Vue.extend({
                     .then(() => {
                       this.$data.tableData.splice(index, 1);
                       this.$message({
-                        message: "奖励信息删除成功",
+                        message: "奖金信息删除成功",
                         type: "success"
                       });
                     })

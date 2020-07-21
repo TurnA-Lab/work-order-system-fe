@@ -8,9 +8,9 @@
     label-width="auto"
     v-loading="isLoading"
   >
-    <el-form-item class="form-item" label="院部" prop="dptName">
+    <el-form-item class="form-item" label="院部" prop="department">
       <el-select
-        v-model="form.dptName"
+        v-model="form.department"
         placeholder="请选择，或输入以查找"
         filterable
         disabled
@@ -148,14 +148,12 @@ export default Vue.extend({
       teammateInputVisible: false,
       teammateInputValue: "",
       form: {
-        dptName: "",
+        department: "",
         project: "",
         name: "",
         startTime: "",
         sponsor: "",
-        level: "",
-        class2: "",
-        class3: ""
+        level: ""
       },
       options: {
         department: [],
@@ -193,8 +191,7 @@ export default Vue.extend({
           class2: this.kind[0],
           class3: this.kind[1],
           teammate: this.teammate.join("、"),
-          startingAndEnding: this.startingAndEnding.join("-"),
-          status: 0
+          startingAndEnding: this.startingAndEnding.join("-")
         })
       );
     }
@@ -206,7 +203,7 @@ export default Vue.extend({
     // 获取个人信息
     const userInfo = this.$store.state.userInfo;
     // 默认部门为自己的部门
-    this.form.dptName = userInfo.department;
+    this.form.department = userInfo.department;
     // 默认负责人是自己
     this.form.name = userInfo.name;
 

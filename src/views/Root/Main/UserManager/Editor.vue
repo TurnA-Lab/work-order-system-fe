@@ -47,28 +47,8 @@ import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/UserEditorDialog.vue";
-
-import { rolesList } from "../../../../static-data/login";
-
-interface UserData {
-  dtpId: number;
-  dptName: string;
-  name: string;
-  worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  techTitle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number;
-  background: number;
-  tutor: number;
-  permission: number;
-}
+import { UserInfo } from "@/interface/user";
+import { rolesList } from "@/static-data/login";
 
 export default Vue.extend({
   components: {
@@ -102,6 +82,7 @@ export default Vue.extend({
           prop: "phone",
           label: "联系电话"
         },
+
         {
           prop: "techTitle",
           label: "职称"
@@ -119,7 +100,7 @@ export default Vue.extend({
               circle: true,
               tooltip: true,
               tooltipContent: "编辑信息",
-              onClick: (userData: UserData, index: number) => {
+              onClick: (userData: UserInfo) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
@@ -133,7 +114,7 @@ export default Vue.extend({
               circle: true,
               tooltip: true,
               tooltipContent: "删除账户",
-              onClick: (userData: UserData, index: number) => {
+              onClick: (userData: UserInfo, index: number) => {
                 // 这种写法的 this 代表 group 里的对象
                 this.$confirm("删除用户后将不能直接恢复, 是否继续?", "注意", {
                   confirmButtonText: "确定",
@@ -187,7 +168,7 @@ export default Vue.extend({
               circle: true,
               tooltip: true,
               tooltipContent: "修改权限",
-              onClick: (userData: UserData, index: number) => {
+              onClick: (userData: UserInfo) => {
                 console.log(userData.permission);
                 this.$data.dialogVisible = true;
               }
@@ -200,7 +181,7 @@ export default Vue.extend({
               circle: true,
               tooltip: true,
               tooltipContent: "修改密码",
-              onClick: (userData: UserData) => {
+              onClick: (userData: UserInfo) => {
                 this.$prompt("请输入新密码", "修改密码", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",

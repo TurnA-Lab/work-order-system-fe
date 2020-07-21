@@ -184,18 +184,18 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="业绩分分">
+        <el-form-item class="form-item" label="业绩">
           <el-input
             v-model="form.point"
-            placeholder="请输入业绩分分"
+            placeholder="请输入业绩"
             :disabled="editIsDisable"
           ></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="奖励">
+        <el-form-item class="form-item" label="奖金">
           <el-input
             v-model="form.bonus"
-            placeholder="请输入奖励"
+            placeholder="请输入奖金"
             :disabled="editIsDisable"
           ></el-input>
         </el-form-item>

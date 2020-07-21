@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <h2>部门成员管理</h2>
+      <h2>部门成员浏览</h2>
     </header>
     <main @mousewheel.stop>
       <what-table
@@ -11,46 +11,19 @@
         :pagination="pagination"
         :fetch="fetchData"
       ></what-table>
-      <member-manager-dialog
-        :user-data="userData"
-        :is-visible="editUserIsVisible"
-        @toggle-is-visible="toggleEditUser"
-      ></member-manager-dialog>
     </main>
   </div>
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import MemberManagerDialog from "@/components/User/MemberManagerDialog.vue";
-
-interface UserData {
-  dtpId: number;
-  dptName: string;
-  name: string;
-  worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  teacherTitle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number;
-  background: number;
-  tutor: number;
-  permission: number;
-}
+import { getData } from "@/utils/fetchData";
 
 export default Vue.extend({
   components: {
-    WhatTable,
-    MemberManagerDialog
+    WhatTable
   },
   data() {
     return {
@@ -77,27 +50,16 @@ export default Vue.extend({
           label: "联系电话"
         },
         {
-          prop: "teacherTitle",
-          label: "职称"
+          prop: "dptName",
+          label: "部门"
         },
         {
-          button: true,
-          label: "操作",
-          width: 200,
-          group: [
-            {
-              // you can props => type size icon disabled plain
-              name: "编辑",
-              type: "warning",
-              icon: "el-icon-edit",
-              plain: true,
-              onClick: (userData: UserData, index: number) => {
-                // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.userData = userData;
-                this.$data.editUserIsVisible = true;
-              }
-            }
-          ]
+          prop: "major",
+          label: "专业"
+        },
+        {
+          prop: "teacherTittle",
+          label: "职称"
         }
       ],
       options: {
@@ -117,38 +79,26 @@ export default Vue.extend({
   },
   methods: {
     fetchData() {
+      // 加载中
       this.options.loading = true;
 
-      this.$http
-        .post(
-          "/api/online/collegeAdmin/getDptUserInfo",
-          {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          },
-          {
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
-          }
-        )
-        .then((res: AxiosResponse) => {
-          this.options.loading = false;
-          if (res.data.code === 0) {
-            const { list, total } = res.data.data;
-            this.tableData = list;
-            this.pagination.total = total;
-          } else {
-            return Promise.reject(res.data.msg);
-          }
+      getData("/api/college/getDptUserList", {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
+        }
+      })
+        .then(({ list, total }) => {
+          this.tableData = list;
+          this.pagination.total = total;
         })
         .catch((err: string) => {
           this.$message({
             message: err || "由于未知因素，无法获取表格",
             type: "warning"
           });
-          this.options.loading = false;
-        });
+        })
+        .finally(() => (this.options.loading = false));
     },
     toggleEditUser(isVisible: boolean) {
       this.editUserIsVisible =

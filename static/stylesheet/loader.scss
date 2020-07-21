@@ -1,0 +1,32 @@
+@import "font";
+@import "loading-ani";
+@import "dashed-shadow";
+
+.transition {
+  transition: all 0.1s;
+}
+
+.loading-page {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s;
+
+  &.fade {
+    opacity: 0;
+  }
+
+  > .title {
+    font-family: "Parisienne", cursive;
+    font-size: 160px;
+    // color: #888;
+    // text-shadow: 4px 4px 0px #fff, 7px 7px 0px rgba(0, 0, 0, 0.2);
+  }
+}

@@ -6,10 +6,11 @@
     size="medium"
     label-position="left"
     label-width="auto"
+    v-loading="isLoading"
   >
-    <el-form-item class="form-item" label="院部" prop="dptName">
+    <el-form-item class="form-item" label="院部" prop="department">
       <el-select
-        v-model="form.dptName"
+        v-model="form.department"
         placeholder="请选择，或输入以查找"
         filterable
         disabled
@@ -83,8 +84,8 @@
 
     <el-form-item
       class="form-item"
-      label="是否被转让（仅限专利）"
-      prop="patent"
+      label="是否被转让（非专利填否）"
+      prop="isUsed"
     >
       <el-select v-model="form.isUsed" placeholder="请选择">
         <el-option
@@ -127,16 +128,9 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Department } from "@/interface/list-data";
+import { Achievement, Department } from "@/interface/list-data";
+import { noOrYesList } from "@/static-data/work-order";
 import { fetchDepartmentList, fetchKindList } from "@/utils/fetchData";
-
-interface Type {
-  label: string;
-  value: string | number;
-  children: Type[];
-}
-
-const patentText = ["空", "是", "否"];
 
 export default Vue.extend({
   components: {
@@ -145,44 +139,23 @@ export default Vue.extend({
   },
   data() {
     return {
+      isLoading: true,
       kind: [],
+      teammate: [],
+      teammateInputVisible: false,
+      teammateInputValue: "",
       form: {
         department: "",
         production: "",
         name: "",
-        teammate: [],
-        patent: "空",
         unit: "",
         publishTime: "",
-        class2: "",
-        class3: ""
+        isUsed: ""
       },
       options: {
         department: [],
         kind: [],
-        patent: [
-          {
-            label: "空",
-            value: 0
-          },
-          {
-            label: "是",
-            value: 1
-          },
-          {
-            label: "否",
-            value: 2
-          }
-        ]
-      },
-      etc: {
-        name: {
-          inputVisible: false
-        },
-        teammate: {
-          inputVisible: false
-        },
-        inputValue: ""
+        patentisUsed: noOrYesList
       }
     };
   },
@@ -190,31 +163,20 @@ export default Vue.extend({
     handleClose(nameField: string[], member: string) {
       nameField.splice(nameField.indexOf(member), 1);
     },
-    showPrincipalInput() {
-      this.etc.name.inputVisible = true;
-      this.$nextTick(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (this as any).$refs.principalInput.$refs.input.focus();
-      });
-    },
     showMemberInput() {
-      this.etc.teammate.inputVisible = true;
+      this.teammateInputVisible = true;
       this.$nextTick(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (this as any).$refs.memberInput.$refs.input.focus();
       });
     },
-    handleInputConfirm(nameField: string[], inputVisible: boolean) {
-      const inputValue = this.etc.inputValue;
-      if (inputValue) {
-        nameField.push(inputValue);
+    handleInputConfirm() {
+      const inputValue = this.teammateInputValue;
+      if (inputValue && typeof inputValue === "string") {
+        (this.teammate as string[]).push(inputValue);
       }
-      if (this.etc.name.inputVisible === inputVisible) {
-        this.etc.name.inputVisible = false;
-      } else {
-        this.etc.teammate.inputVisible = false;
-      }
-      this.etc.inputValue = "";
+      this.teammateInputVisible = false;
+      this.teammateInputValue = "";
     },
     repealActive() {
       this.$store.commit("repealActive");
@@ -223,18 +185,26 @@ export default Vue.extend({
       this.$store.commit(
         "orderForm",
         Object.assign({}, this.form, {
-          teammate: this.form.teammate.toString(),
-          patent: patentText.indexOf(this.form.patent as string)
+          class2: this.kind[0],
+          class3: this.kind[1],
+          teammate: this.teammate.join("、")
         })
       );
     }
   },
   created() {
+    // 加载中
+    this.isLoading = true;
+
+    // 获取个人信息
+    const userInfo = this.$store.state.userInfo;
     // 默认部门为自己的部门
-    this.form.department = this.$store.state.userInfo.department;
+    this.form.department = userInfo.department;
+    // 默认负责人是自己
+    this.form.name = userInfo.name;
 
     // 请求院部列表
-    fetchDepartmentList()
+    const department = fetchDepartmentList()
       .then(
         (data: Department[]) =>
           ((this.options.department as Department[]) = data)
@@ -247,18 +217,24 @@ export default Vue.extend({
       });
 
     // 请求成果类型列表
-    fetchKindList({
+    const kind = fetchKindList({
       params: {
         class1: "成果类"
       }
     })
-      .then((data: Department[]) => ((this.options.kind as any) = data))
+      .then(
+        (data: Achievement[]) => ((this.options.kind as Achievement[]) = data)
+      )
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",
           type: "warning"
         });
       });
+
+    Promise.all([department, kind]).then(() => {
+      this.isLoading = false;
+    });
   }
 });
 </script>

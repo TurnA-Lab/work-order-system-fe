@@ -68,9 +68,9 @@
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="职称" prop="teacherTitle">
+        <el-form-item class="form-item" label="职称" prop="teacherTittle">
           <el-input
-            v-model="form.teacherTitle"
+            v-model="form.teacherTittle"
             placeholder="请输入职称"
           ></el-input>
         </el-form-item>
@@ -179,7 +179,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  teacherTitle: string;
+  teacherTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -203,7 +203,7 @@ export default Vue.extend({
         birthday: "",
         enterTime: "",
         phone: "",
-        teacherTitle: "",
+        teacherTittle: "",
         eduBgd: "",
         degree: "",
         school: "",

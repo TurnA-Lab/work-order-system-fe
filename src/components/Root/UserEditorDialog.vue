@@ -77,7 +77,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.teacherTitle"></el-input>
+          <el-input v-model="form.teacherTittle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -141,33 +141,15 @@
 </template>
 
 <script lang="ts">
+// TODO 未写完
 import { AxiosResponse } from "axios";
 import Vue from "vue";
 
 import { Department } from "@/interface/list-data";
+import { UserInfo } from "@/interface/user";
 import { noOrYesList } from "@/static-data/work-order";
 import { fetchDepartmentList } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
-
-interface UserData {
-  dtpId: number;
-  dptName: string;
-  name: string;
-  worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  teacherTitle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number | string;
-  background: number | string;
-  tutor: number | string;
-  permission: number | string;
-}
 
 export default Vue.extend({
   props: { userData: Object, isVisible: Boolean },
@@ -206,9 +188,9 @@ export default Vue.extend({
             {
               params: Object.assign({}, this.form, {
                 doubleTeacher:
-                  (this.form as UserData).doubleTeacher === "否" ? 0 : 1,
-                background: (this.form as UserData).background === "否" ? 0 : 1,
-                tutor: (this.form as UserData).tutor === "否" ? 0 : 1
+                  (this.form as UserInfo).doubleTeacher === "否" ? 0 : 1,
+                background: (this.form as UserInfo).background === "否" ? 0 : 1,
+                tutor: (this.form as UserInfo).tutor === "否" ? 0 : 1
               }),
               headers: {
                 token: this.$store.state.userInfo.token
@@ -249,7 +231,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    userData(newValue: UserData) {
+    userData(newValue: UserInfo) {
       newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
       newValue.background = newValue.background === 0 ? "否" : "是";
       newValue.tutor = newValue.tutor === 0 ? "否" : "是";

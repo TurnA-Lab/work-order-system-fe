@@ -125,7 +125,7 @@ import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 import { Achievement } from "@/interface/list-data";
-import { patentList, Status } from "@/static-data/work-order";
+import { Status, noOrYesList } from "@/static-data/work-order";
 import { fetchKindList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
@@ -155,7 +155,7 @@ export default Vue.extend({
         department: [],
         level: [],
         kind: [],
-        patentisUsed: patentList
+        patentisUsed: noOrYesList
       }
     };
   },

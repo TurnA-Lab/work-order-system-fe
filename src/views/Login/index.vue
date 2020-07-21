@@ -5,14 +5,13 @@
       appear-class="fade-enter"
       appear-active-class="fade-enter-active"
     >
-      <header>{{ $store.getters.siteName }}</header>
+      <login-form></login-form>
     </transition>
-    <login-form></login-form>
     <background-ani></background-ani>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 
 import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
@@ -20,7 +19,6 @@ import BackgroundAni from "@/components/Etc/BackgroundAni.vue";
 import LoginForm from "./Form.vue";
 
 export default Vue.extend({
-  name: "login",
   components: {
     LoginForm,
     BackgroundAni

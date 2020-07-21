@@ -8,11 +8,7 @@
         <el-input v-model="filterForm.worknum" placeholder="工号"></el-input>
       </el-form-item>
       <el-form-item class="form-item" prop="department">
-        <el-select
-          v-model="filterForm.department"
-          placeholder="院部"
-          filterable
-        >
+        <el-select v-model="filterForm.dptName" placeholder="院部" filterable>
           <el-option
             v-for="item in department"
             :key="item.id"
@@ -60,7 +56,7 @@ interface UserData {
   birthday: string;
   enterTime: string;
   phone: string;
-  teacherTitle: string;
+  teacherTittle: string;
   eduBgd: string;
   degree: string;
   school: string;
@@ -81,7 +77,7 @@ export default Vue.extend({
       filterForm: {
         name: "",
         worknum: "",
-        department: ""
+        dptName: ""
       },
       isFilled: false,
       editUserIsVisible: false,
@@ -108,7 +104,7 @@ export default Vue.extend({
           label: "联系电话"
         },
         {
-          prop: "teacherTitle",
+          prop: "teacherTittle",
           label: "职称"
         },
         {
@@ -122,7 +118,7 @@ export default Vue.extend({
               icon: "el-icon-edit",
               plain: true,
               circle: true,
-              onClick: (userData: UserData, index: number) => {
+              onClick: (userData: UserData) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
                 this.$data.editUserIsVisible = true;
@@ -301,7 +297,7 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true // 是否一挂载就加载数据
+        initTable: false // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,

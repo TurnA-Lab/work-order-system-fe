@@ -18,12 +18,12 @@
 
     <el-menu-item index="3" :route="{ name: 'rootBonusManager' }">
       <i class="el-icon-lollipop"></i>
-      <span slot="title">奖励管理</span>
+      <span slot="title">奖金管理</span>
     </el-menu-item>
 
     <el-menu-item index="4" :route="{ name: 'rootPerformanceManager' }">
       <i class="el-icon-ice-cream"></i>
-      <span slot="title">业绩分管理</span>
+      <span slot="title">业绩管理</span>
     </el-menu-item>
 
     <el-menu-item index="5" :route="{ name: 'rootUserManager' }">
