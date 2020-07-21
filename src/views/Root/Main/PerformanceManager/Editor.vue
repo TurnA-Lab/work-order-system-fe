@@ -9,9 +9,10 @@
     ></what-table>
     <editor-dialog
       :data="data"
+      :data-index="index"
       :is-visible="editIsVisible"
       @toggle-is-visible="toggleEdit"
-      @refresh="fetchData"
+      @update-table-data="updateTableData"
     ></editor-dialog>
   </div>
 </template>
@@ -21,23 +22,14 @@ import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/PerformanceEditorDialog.vue";
-
-import { postData } from "../../../../utils/fetchData";
-
-interface Data {
-  id: number;
-  department: string;
-  computeOffice: string;
-  type: string;
-  year: string;
-  project: string;
-  master: string;
-  bonus: number;
-  status: number | string;
-  lastTime: string;
-}
+import { PerformanceFilterForm } from "@/interface/filter-form";
+import { Performance } from "@/interface/list-data";
+import { postData } from "@/utils/fetchData";
 
 export default Vue.extend({
+  props: {
+    initTable: Boolean
+  },
   components: {
     WhatTable,
     EditorDialog
@@ -45,6 +37,7 @@ export default Vue.extend({
   data() {
     return {
       editIsVisible: false,
+      index: -1,
       data: {},
       tableData: [],
       columns: [
@@ -77,9 +70,10 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-edit",
               plain: true,
-              onClick: (data: Data, index: number) => {
+              onClick: (data: Performance, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
+                this.$data.index = index;
                 this.$data.editIsVisible = true;
               }
             },
@@ -88,7 +82,7 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick: (data: Data, index: number) => {
+              onClick: (data: Performance, index: number) => {
                 // 这种写法的 this 代表 group 里的对象
                 this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
                   confirmButtonText: "确定",
@@ -136,7 +130,7 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: true // 是否一挂载就加载数据
+        initTable: this.initTable || true // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,
@@ -146,19 +140,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
+    fetchData(filterForm: PerformanceFilterForm) {
       this.options.loading = true;
 
-      postData(
-        "/api/root/performance/getPerformances",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+      postData("/api/root/performance/getPerformances", filterForm || {}, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
+      })
         .then(({ list, total }) => {
           this.tableData = list;
           this.pagination.total = total;
@@ -174,6 +164,9 @@ export default Vue.extend({
     toggleEdit(isVisible: boolean) {
       this.editIsVisible =
         typeof isVisible === "undefined" ? !this.editIsVisible : isVisible;
+    },
+    updateTableData(index: number, data: Performance) {
+      this.$set(this.tableData, index, data);
     }
   }
 });

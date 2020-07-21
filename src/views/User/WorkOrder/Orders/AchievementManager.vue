@@ -22,14 +22,15 @@
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import { Achievement, Construction } from "@/interface/list-data";
+import { Achievement } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   components: {
     WhatTable,
-    ManagerDialog: () => import("./AchievementManagerDialog.vue")
+    ManagerDialog: () =>
+      import("@/components/User/AchievementManagerDialog.vue")
   },
   data() {
     return {
@@ -78,7 +79,7 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
-              onClick: (data: Construction, index: number) => {
+              onClick: (data: Achievement, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.index = index;
@@ -171,7 +172,7 @@ export default Vue.extend({
       this.managerIsVisible =
         typeof isVisible === "undefined" ? !this.managerIsVisible : isVisible;
     },
-    updateTableData(index: number, data: Construction) {
+    updateTableData(index: number, data: Achievement) {
       this.$set(this.tableData, index, data);
     }
   }

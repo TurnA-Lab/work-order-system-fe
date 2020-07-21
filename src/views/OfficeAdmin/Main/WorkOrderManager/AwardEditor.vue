@@ -22,15 +22,19 @@
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import { Construction } from "@/interface/list-data";
+import { AwardFilterForm } from "@/interface/filter-form";
+import { Award } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
+  props: {
+    initTable: Boolean
+  },
   components: {
     WhatTable,
     ManagerDialog: () =>
-      import("@/components/User/ConstructionManagerDialog.vue")
+      import("@/components/OfficeAdmin/AwardEditorDialog.vue")
   },
   data() {
     return {
@@ -43,17 +47,22 @@ export default Vue.extend({
       },
       columns: [
         {
-          prop: "project",
-          label: "项目名称"
+          prop: "content",
+          label: "获奖名称"
         },
         {
           prop: "class3",
           label: "具体类别"
         },
         {
+          prop: "prize",
+          label: "奖项",
+          width: 100
+        },
+        {
           prop: "level",
-          width: 100,
-          label: "项目级别"
+          label: "级别",
+          width: 100
         },
         {
           prop: "status",
@@ -70,11 +79,12 @@ export default Vue.extend({
           width: 200,
           group: [
             {
-              name: "查看",
+              // you can props => type size icon disabled plain
+              name: "管理",
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
-              onClick: (data: Construction, index: number) => {
+              onClick: (data: Award, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.index = index;
@@ -86,7 +96,7 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick: (data: Construction, index: number) => {
+              onClick: (data: Award, index: number) => {
                 if (data.status < 1) {
                   // 这种写法的 this 代表 group 里的对象
                   this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
@@ -94,7 +104,7 @@ export default Vue.extend({
                     cancelButtonText: "取消",
                     type: "warning"
                   }).then(() =>
-                    getData("/api/user/construction/delete", {
+                    getData("/api/user/award/delete", {
                       params: {
                         id: data.id
                       }
@@ -130,7 +140,8 @@ export default Vue.extend({
         mutiSelectFixed: false,
         index: true, // 显示序号
         indexFixed: false,
-        loading: true // 表格动画
+        loading: true, // 表格动画
+        initTable: this.initTable || true
       },
       pagination: {
         total: 0,
@@ -140,19 +151,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
-      postData(
-        "/api/user/construction/list",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+    fetchData(filterForm: AwardFilterForm) {
+      postData("/api/user/award/list", filterForm || {}, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
-        .then(({ list, total }: { list: Construction[]; total: number }) => {
-          (this.tableData as Construction[]) = list;
+      })
+        .then(({ list, total }: { list: Award[]; total: number }) => {
+          (this.tableData as Award[]) = list;
           this.pagination.total = total;
         })
         .catch((err: string) => {
@@ -167,7 +174,7 @@ export default Vue.extend({
       this.managerIsVisible =
         typeof isVisible === "undefined" ? !this.managerIsVisible : isVisible;
     },
-    updateTableData(index: number, data: Construction) {
+    updateTableData(index: number, data: Award) {
       this.$set(this.tableData, index, data);
     }
   }

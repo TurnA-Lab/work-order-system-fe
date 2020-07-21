@@ -42,7 +42,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import Vue from "vue";
 import vueFilePond from "vue-filepond";
 
-import { postData } from "../../utils/fetchData";
+import { postData } from "@/utils/fetchData";
 
 interface FileInfo {
   name: string;
@@ -102,6 +102,10 @@ export default Vue.extend({
               .then(load)
               .catch((err: string) => {
                 error(err || "暂时无法上传");
+                this.$message({
+                  message: (err as string) || "由于未知因素，暂时无法上传",
+                  type: "warning"
+                });
               });
           } else {
             // 请求上传 token

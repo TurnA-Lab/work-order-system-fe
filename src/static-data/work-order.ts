@@ -31,7 +31,7 @@ const years = () => {
   return arr;
 };
 
-export const yearList = years();
+export const yearList: string[] = years();
 
 // 计算科室
 export const computeOffice = [

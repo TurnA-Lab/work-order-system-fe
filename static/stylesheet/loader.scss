@@ -17,10 +17,14 @@
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  transition: opacity 1s;
+  transition: opacity 1.2s ease-in;
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
 
-  &.fade {
-    opacity: 0;
+  &.show {
+    opacity: 1;
+    pointer-events: all;
   }
 
   > .title {

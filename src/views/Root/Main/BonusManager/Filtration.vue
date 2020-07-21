@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="filter-part">
-      <el-form :inline="true" :model="filterForm">
+      <el-form :inline="true" :model="filterForm" v-loading="isLoading">
         <el-form-item>
           <el-input v-model="filterForm.master" placeholder="负责人"></el-input>
         </el-form-item>
@@ -33,35 +33,21 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="fetchData(true)">查询</el-button>
+          <el-button type="primary" @click="fetchData">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
-    <what-table
-      :columns="columns"
-      :dataSource="tableData"
-      :options="options"
-      :pagination="pagination"
-      :fetch="fetchData"
-    ></what-table>
-    <editor-dialog
-      :data="data"
-      :is-visible="editIsVisible"
-      @toggle-is-visible="toggleEdit"
-      @refresh="fetchData"
-    ></editor-dialog>
+    <editor ref="editor" :init-table="false"></editor>
   </div>
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
 import Vue from "vue";
 
-import WhatTable from "@/components/Etc/WhatTable.vue";
-import EditorDialog from "@/components/Root/BonusEditorDialog.vue";
+import { BonusFilterForm } from "@/interface/filter-form";
 import { Department } from "@/interface/list-data";
-import { fetchDepartmentList, postData } from "@/utils/fetchData";
+import { fetchDepartmentList } from "@/utils/fetchData";
 import { oneNotNull } from "@/utils/validate";
 
 interface Data {
@@ -79,155 +65,39 @@ interface Data {
 
 export default Vue.extend({
   components: {
-    WhatTable,
-    EditorDialog
+    editor: () => import("./Editor.vue")
   },
-  data() {
+  data(): {
+    isLoading: boolean;
+    department: Department[];
+    filterForm: BonusFilterForm;
+  } {
     return {
+      isLoading: true,
+      department: [],
       filterForm: {
         year: "",
         master: "",
         department: ""
-      },
-      isFilled: false,
-      editIsVisible: false,
-      data: {},
-      tableData: [],
-      department: [],
-      columns: [
-        {
-          prop: "project",
-          label: "项目名称",
-          width: 160
-        },
-        {
-          prop: "master",
-          label: "负责人"
-        },
-        {
-          prop: "type",
-          label: "类别",
-          width: 160
-        },
-        {
-          prop: "bonus",
-          label: "奖金"
-        },
-        {
-          button: true,
-          label: "操作",
-          width: 200,
-          group: [
-            {
-              // you can props => type size icon disabled plain
-              name: "编辑",
-              type: "warning",
-              icon: "el-icon-edit",
-              plain: true,
-              onClick: (data: Data) => {
-                // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.data = data;
-                this.$data.editIsVisible = true;
-              }
-            },
-            {
-              name: "删除",
-              type: "danger",
-              icon: "el-icon-delete",
-              disabled: false,
-              onClick: (data: Data, index: number) => {
-                // 这种写法的 this 代表 group 里的对象
-                this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                }).then(() =>
-                  this.$http
-                    .post(
-                      "/api/root/bonus/delete",
-                      {
-                        id: data.id
-                      },
-                      {
-                        headers: {
-                          token: this.$store.state.userInfo.token
-                        }
-                      }
-                    )
-                    .then((res: AxiosResponse) => {
-                      if (res.data.code === 0) {
-                        this.$data.tableData.splice(index, 1);
-                        this.$message({
-                          message: res.data.msg || "信息删除成功",
-                          type: "success"
-                        });
-                      } else {
-                        return Promise.reject(res.data.msg);
-                      }
-                    })
-                    .catch((err: string) => {
-                      this.$message({
-                        message: err || "由于未知因素，用户信息删除失败",
-                        type: "warning"
-                      });
-                    })
-                );
-              }
-            }
-          ]
-        }
-      ],
-      options: {
-        mutiSelect: false,
-        mutiSelectFixed: false,
-        index: true, // 显示序号
-        indexFixed: false,
-        loading: false, // 表格动画
-        initTable: false // 是否一挂载就加载数据
-      },
-      pagination: {
-        total: 0,
-        pageIndex: 1,
-        pageSize: 20
       }
     };
   },
   methods: {
-    fetchData(needAlert: boolean) {
+    fetchData() {
       if (oneNotNull(this.filterForm)) {
-        this.options.loading = true;
-        postData("/api/root/bonus/getBonuses", this.filterForm, {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
-        })
-          .then(({ list, total }) => {
-            this.tableData = list;
-            this.pagination.total = total;
-          })
-          .catch((err: string) => {
-            this.$message({
-              message: err || "由于未知因素，无法获取表格",
-              type: "warning"
-            });
-          })
-          .finally(() => (this.options.loading = false));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (this.$refs.editor as any).fetchData(this.filterForm);
       } else {
-        if (needAlert) {
-          this.$message({
-            message: "请至少填入一项，以进行筛选",
-            type: "warning"
-          });
-        }
+        this.$message({
+          message: "请至少填一项用于筛选",
+          type: "warning"
+        });
       }
-    },
-    toggleEdit(isVisible: boolean) {
-      this.editIsVisible =
-        typeof isVisible === "undefined" ? !this.editIsVisible : isVisible;
     }
   },
   created() {
+    this.isLoading = true;
+
     // 请求院部列表
     fetchDepartmentList()
       .then((data: Department[]) => ((this.department as Department[]) = data))
@@ -236,7 +106,8 @@ export default Vue.extend({
           message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
-      });
+      })
+      .finally(() => (this.isLoading = false));
   }
 });
 </script>

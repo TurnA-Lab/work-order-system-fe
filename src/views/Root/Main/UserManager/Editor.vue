@@ -49,6 +49,7 @@ import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/UserEditorDialog.vue";
 import { UserInfo } from "@/interface/user";
 import { rolesList } from "@/static-data/login";
+import { postData } from "../../../../utils/fetchData";
 
 export default Vue.extend({
   components: {
@@ -84,7 +85,7 @@ export default Vue.extend({
         },
 
         {
-          prop: "techTitle",
+          prop: "teacherTittle",
           label: "职称"
         },
         {
@@ -169,7 +170,7 @@ export default Vue.extend({
               tooltip: true,
               tooltipContent: "修改权限",
               onClick: (userData: UserInfo) => {
-                console.log(userData.permission);
+                this.$data.permission = userData.permission;
                 this.$data.dialogVisible = true;
               }
             },
@@ -195,28 +196,15 @@ export default Vue.extend({
                     cancelButtonText: "取消"
                   })
                     .then(() => {
-                      this.$http
-                        .post(
-                          "/api/root/user/updatePassword",
-                          {
-                            worknum: userData.worknum,
-                            password: value
-                          },
-                          {
-                            headers: {
-                              token: this.$store.state.userInfo.token
-                            }
-                          }
-                        )
-                        .then((res: AxiosResponse) => {
-                          if (res.data.code === 0) {
-                            this.$message({
-                              message: "修改成功",
-                              type: "success"
-                            });
-                          } else {
-                            return Promise.reject(res.data.msg);
-                          }
+                      postData("/api/root/user/updatePassword", {
+                        worknum: userData.worknum,
+                        password: value
+                      })
+                        .then(() => {
+                          this.$message({
+                            message: "修改成功",
+                            type: "success"
+                          });
                         })
                         .catch((err: string) => {
                           this.$message({
@@ -256,37 +244,27 @@ export default Vue.extend({
     fetchData() {
       this.options.loading = true;
 
-      this.$http
-        .post(
-          "/api/root/user/getUserList",
-          {},
-          {
-            params: {
-              page: this.pagination.pageIndex,
-              size: this.pagination.pageSize
-            },
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
+      postData(
+        "/api/root/user/getUserList",
+        {},
+        {
+          params: {
+            page: this.pagination.pageIndex,
+            size: this.pagination.pageSize
           }
-        )
-        .then((res: AxiosResponse) => {
-          this.options.loading = false;
-          if (res.data.code === 0) {
-            const { list, total } = res.data.data;
-            this.tableData = list;
-            this.pagination.total = total;
-          } else {
-            return Promise.reject(res.data.msg);
-          }
+        }
+      )
+        .then(({ list, total }) => {
+          this.tableData = list;
+          this.pagination.total = total;
         })
         .catch((err: string) => {
           this.$message({
             message: err || "由于未知因素，无法获取表格",
             type: "warning"
           });
-          this.options.loading = false;
-        });
+        })
+        .finally(() => (this.options.loading = false));
     },
     toggleEditUser(isVisible: boolean) {
       this.editUserIsVisible =

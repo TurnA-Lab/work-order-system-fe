@@ -125,7 +125,7 @@ import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 import { Achievement } from "@/interface/list-data";
-import { Status, noOrYesList } from "@/static-data/work-order";
+import { noOrYesList, Status } from "@/static-data/work-order";
 import { fetchKindList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 

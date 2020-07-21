@@ -4,6 +4,7 @@
     :visible="isVisible"
     :close-on-click-modal="false"
     @close="close"
+    v-loading="isLoading"
     append-to-body
   >
     <div slot="title">
@@ -92,26 +93,13 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { Department } from "@/interface/list-data";
+import { Department, Performance } from "@/interface/list-data";
 import { computeOffice } from "@/static-data/work-order";
 import { fetchDepartmentList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
-interface Data {
-  id: number;
-  department: string;
-  computeOffice: string;
-  type: string;
-  year: string;
-  project: string;
-  master: string;
-  points: number;
-  status: number | string;
-  lastTime: string;
-}
-
 export default Vue.extend({
-  props: { data: Object, isVisible: Boolean },
+  props: { data: Object, dataIndex: Number, isVisible: Boolean },
   data() {
     return {
       computeOfficeList: computeOffice,
@@ -142,19 +130,23 @@ export default Vue.extend({
         this.isDisable = true;
         postData("/api/root/performance/update", this.form)
           .then(() => {
-            this.close();
-            this.$emit("refresh");
+            // 更新表格
+            this.$emit("update-table-data", this.dataIndex, this.form);
+
             this.$message({
               message: "用户信息保存成功",
               type: "success"
             });
           })
           .catch((err: string) => {
-            this.isDisable = false;
             this.$message({
               message: err || "未知错误",
               type: "warning"
             });
+          })
+          .finally(() => {
+            this.isDisable = false;
+            this.close();
           });
       } else {
         this.$message({
@@ -170,8 +162,10 @@ export default Vue.extend({
     }
   },
   watch: {
-    data(newValue: Data) {
-      this.form = newValue;
+    data(newValue: Performance) {
+      // 深拷贝一份，防止覆盖原数据，影响操作
+      const form: Performance = JSON.parse(JSON.stringify(newValue));
+      this.form = form;
     }
   },
   created() {

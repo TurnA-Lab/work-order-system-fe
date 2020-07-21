@@ -92,26 +92,13 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { Department } from "@/interface/list-data";
+import { Bonus, Department } from "@/interface/list-data";
 import { computeOffice } from "@/static-data/work-order";
 import { fetchDepartmentList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
-interface Data {
-  id: number;
-  department: string;
-  computeOffice: string;
-  type: string;
-  year: string;
-  project: string;
-  master: string;
-  bonus: number;
-  status: number | string;
-  lastTime: string;
-}
-
 export default Vue.extend({
-  props: { data: Object, isVisible: Boolean },
+  props: { data: Object, dataIndex: Number, isVisible: Boolean },
   data() {
     return {
       computeOfficeList: computeOffice,
@@ -140,10 +127,12 @@ export default Vue.extend({
         )
       ) {
         this.isDisable = true;
+
         postData("/api/root/bonus/update", this.form)
           .then(() => {
-            this.close();
-            this.$emit("refresh");
+            // 更新表格
+            this.$emit("update-table-data", this.dataIndex, this.form);
+
             this.$message({
               message: "用户信息保存成功",
               type: "success"
@@ -157,6 +146,7 @@ export default Vue.extend({
           })
           .finally(() => {
             this.isDisable = false;
+            this.close();
           });
       } else {
         this.$message({
@@ -172,8 +162,11 @@ export default Vue.extend({
     }
   },
   watch: {
-    data(newValue: Data) {
-      this.form = newValue;
+    data(newValue: Bonus) {
+      // 深拷贝一份，防止覆盖原数据，影响操作
+      const form: Bonus = JSON.parse(JSON.stringify(newValue));
+      // 赋给表单
+      this.form = form;
     }
   },
   created() {

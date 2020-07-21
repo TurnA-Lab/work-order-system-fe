@@ -33,11 +33,8 @@ export default Vue.extend({
     const loadingPage: HTMLElement = document.querySelector(
       ".loading-page"
     ) as HTMLElement;
-    if (loadingPage) {
-      loadingPage.classList.add("fade");
-      setTimeout(() => {
-        (loadingPage.parentElement as HTMLElement).removeChild(loadingPage);
-      }, 1000);
+    if (loadingPage.classList.contains("show")) {
+      loadingPage.classList.remove("show");
     }
     // 离线
     window.addEventListener("offline", () => {

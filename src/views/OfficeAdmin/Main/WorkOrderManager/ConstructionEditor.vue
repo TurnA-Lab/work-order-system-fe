@@ -27,10 +27,13 @@ import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
+  props: {
+    initTable: Boolean
+  },
   components: {
     WhatTable,
     ManagerDialog: () =>
-      import("@/components/User/ConstructionManagerDialog.vue")
+      import("@/components/OfficeAdmin/ConstructionEditorDialog.vue")
   },
   data() {
     return {
@@ -130,7 +133,8 @@ export default Vue.extend({
         mutiSelectFixed: false,
         index: true, // 显示序号
         indexFixed: false,
-        loading: true // 表格动画
+        loading: true, // 表格动画
+        initTable: this.initTable || true
       },
       pagination: {
         total: 0,
@@ -173,3 +177,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+div >>> .el-table__body-wrapper {
+  max-height: 62vh !important;
+}
+</style>

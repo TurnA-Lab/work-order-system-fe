@@ -22,15 +22,19 @@
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
-import { Construction } from "@/interface/list-data";
+import { AchievementFilterForm } from "@/interface/filter-form";
+import { Achievement } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
+  props: {
+    initTable: Boolean
+  },
   components: {
     WhatTable,
     ManagerDialog: () =>
-      import("@/components/User/ConstructionManagerDialog.vue")
+      import("@/components/OfficeAdmin/AchievementEditorDialog.vue")
   },
   data() {
     return {
@@ -43,17 +47,22 @@ export default Vue.extend({
       },
       columns: [
         {
-          prop: "project",
-          label: "项目名称"
+          prop: "production",
+          label: "成果名称"
+        },
+        {
+          prop: "class2",
+          width: 100,
+          label: "类别"
         },
         {
           prop: "class3",
-          label: "具体类别"
+          label: "级别"
         },
         {
-          prop: "level",
+          prop: "publishTime",
           width: 100,
-          label: "项目级别"
+          label: "发表时间"
         },
         {
           prop: "status",
@@ -74,7 +83,7 @@ export default Vue.extend({
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
-              onClick: (data: Construction, index: number) => {
+              onClick: (data: Achievement, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.data = data;
                 this.$data.index = index;
@@ -86,7 +95,7 @@ export default Vue.extend({
               type: "danger",
               icon: "el-icon-delete",
               disabled: false,
-              onClick: (data: Construction, index: number) => {
+              onClick: (data: Achievement, index: number) => {
                 if (data.status < 1) {
                   // 这种写法的 this 代表 group 里的对象
                   this.$confirm("删除后将不能直接恢复, 是否继续?", "注意", {
@@ -94,7 +103,7 @@ export default Vue.extend({
                     cancelButtonText: "取消",
                     type: "warning"
                   }).then(() =>
-                    getData("/api/user/construction/delete", {
+                    getData("/api/user/achievement/delete", {
                       params: {
                         id: data.id
                       }
@@ -130,7 +139,8 @@ export default Vue.extend({
         mutiSelectFixed: false,
         index: true, // 显示序号
         indexFixed: false,
-        loading: true // 表格动画
+        loading: true, // 表格动画
+        initTable: this.initTable || true // 初始化表格
       },
       pagination: {
         total: 0,
@@ -140,24 +150,20 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
-      postData(
-        "/api/user/construction/list",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+    fetchData(filterForm: AchievementFilterForm) {
+      postData("/api/user/achievement/list", filterForm || {}, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
-        .then(({ list, total }: { list: Construction[]; total: number }) => {
-          (this.tableData as Construction[]) = list;
+      })
+        .then(({ list, total }: { list: Achievement[]; total: number }) => {
+          (this.tableData as Achievement[]) = list;
           this.pagination.total = total;
         })
         .catch((err: string) => {
           this.$message({
-            message: err || "由于未知因素，无法获取建设类信息",
+            message: err || "由于未知因素，无法获取成果类信息",
             type: "warning"
           });
         })
@@ -167,9 +173,15 @@ export default Vue.extend({
       this.managerIsVisible =
         typeof isVisible === "undefined" ? !this.managerIsVisible : isVisible;
     },
-    updateTableData(index: number, data: Construction) {
+    updateTableData(index: number, data: Achievement) {
       this.$set(this.tableData, index, data);
     }
   }
 });
 </script>
+
+<style scoped>
+div >>> .el-table__body-wrapper {
+  max-height: 62vh !important;
+}
+</style>

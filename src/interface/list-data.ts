@@ -60,6 +60,32 @@ export interface Award extends RawWorkOrder {
   prize: string; // 奖项
 }
 
+export interface Bonus {
+  id: number;
+  department: string;
+  computeOffice: string;
+  type: string;
+  year: string;
+  project: string;
+  master: string;
+  bonus: number;
+  status: number | string;
+  lastTime: string;
+}
+
+export interface Performance {
+  id: number;
+  department: string;
+  computeOffice: string;
+  type: string;
+  year: string;
+  project: string;
+  master: string;
+  bonus: number;
+  status: number | string;
+  lastTime: string;
+}
+
 // 某些简单的接口，不知道咋命名
 interface RawSimple {
   id: number;

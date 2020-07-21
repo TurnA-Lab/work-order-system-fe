@@ -4,7 +4,7 @@
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="核审">
-            <audit-construction></audit-construction>
+            <edit-construction></edit-construction>
           </el-tab-pane>
           <el-tab-pane label="筛选">
             <filter-construction></filter-construction>
@@ -34,7 +34,7 @@
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="核审">
-            <audit-achievement></audit-achievement>
+            <edit-achievement></edit-achievement>
           </el-tab-pane>
           <el-tab-pane label="筛选">
             <filter-achievement></filter-achievement>
@@ -64,7 +64,7 @@
       <div class="tabs-body">
         <el-tabs>
           <el-tab-pane label="核审">
-            <audit-award></audit-award>
+            <edit-award></edit-award>
           </el-tab-pane>
           <el-tab-pane label="筛选">
             <filter-award></filter-award>
@@ -101,12 +101,12 @@ import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({
   components: {
-    AuditConstruction: () => import("./Construction/index.vue"),
-    AuditAchievement: () => import("./Achievement/index.vue"),
-    AuditAward: () => import("./Award/index.vue"),
-    FilterConstruction: () => import("./Construction/Filter.vue"),
-    FilterAchievement: () => import("./Achievement/Filter.vue"),
-    FilterAward: () => import("./Award/Filter.vue"),
+    EditConstruction: () => import("./ConstructionEditor.vue"),
+    EditAchievement: () => import("./AchievementEditor.vue"),
+    EditAward: () => import("./AwardEditor.vue"),
+    FilterConstruction: () => import("./ConstructionFiltration.vue"),
+    FilterAchievement: () => import("./AchievementFiltration.vue"),
+    FilterAward: () => import("./AwardFiltration.vue"),
     DigitizeSheet: () => import("@/components/OfficeAdmin/DigitizeSheet.vue"),
     ExportSheet: () => import("@/components/OfficeAdmin/ExportSheet.vue")
   },

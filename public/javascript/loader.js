@@ -15,4 +15,8 @@ if (loadingPage) {
       ".reflect-loading"
     ).style.transform = calTransform(-3);
   });
+
+  if (!sessionStorage.getItem("wo_user")) {
+    loadingPage.classList.add("show");
+  }
 }

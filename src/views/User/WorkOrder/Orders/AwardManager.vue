@@ -29,7 +29,7 @@ import { getData, postData } from "@/utils/fetchData";
 export default Vue.extend({
   components: {
     WhatTable,
-    ManagerDialog: () => import("./AwardManagerDialog.vue")
+    ManagerDialog: () => import("@/components/User/AwardManagerDialog.vue")
   },
   data() {
     return {
