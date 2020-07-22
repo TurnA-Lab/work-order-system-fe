@@ -13,6 +13,7 @@
             v-model="filterForm.department"
             placeholder="院部"
             filterable
+            clearable
           >
             <el-option
               :key="item.id"
@@ -31,6 +32,7 @@
             :props="{ expandTrigger: 'hover', value: 'label' }"
             :show-all-levels="false"
             filterable
+            clearable
           ></el-cascader>
         </el-form-item>
 
@@ -40,11 +42,16 @@
             v-model="filterForm.year"
             type="year"
             placeholder="年度"
+            clearable
           ></el-date-picker>
         </el-form-item>
 
         <el-form-item>
-          <el-select v-model="filterForm.schoolYear" placeholder="学年">
+          <el-select
+            v-model="filterForm.schoolYear"
+            placeholder="学年"
+            clearable
+          >
             <el-option
               v-for="item in schoolYears"
               :key="item"
@@ -55,9 +62,9 @@
         </el-form-item>
 
         <el-form-item>
-          <el-select v-model="filterForm.status" placeholder="状态">
+          <el-select v-model="filterForm.status" placeholder="状态" clearable>
             <el-option
-              v-for="item in Status"
+              v-for="item in options.status"
               :key="item.key"
               :label="item.value"
               :value="item.key"
@@ -71,7 +78,7 @@
       </el-form>
     </div>
 
-    <editor ref="editor" :init-table="false"></editor>
+    <editor ref="editor"></editor>
   </div>
 </template>
 
@@ -80,10 +87,10 @@ import Vue from "vue";
 
 import { AchievementFilterForm } from "@/interface/filter-form";
 import { Achievement, Department } from "@/interface/list-data";
-import { yearList } from "@/static-data/work-order";
+import { statusList, yearList } from "@/static-data/work-order";
+import { LabelList } from "@/utils/enum2List";
 import { fetchDepartmentList, fetchKindList } from "@/utils/fetchData";
-
-import { oneNotNull } from "../../../../utils/validate";
+import { oneNotNull } from "@/utils/validate";
 
 export default Vue.extend({
   components: {
@@ -97,6 +104,7 @@ export default Vue.extend({
     options: {
       department: Department[];
       kind: Achievement[];
+      status: LabelList[];
     };
   } {
     return {
@@ -108,11 +116,12 @@ export default Vue.extend({
         class3: "",
         year: "",
         schoolYear: "",
-        status: 0
+        status: null
       },
       options: {
         department: [],
-        kind: []
+        kind: [],
+        status: statusList
       }
     };
   },

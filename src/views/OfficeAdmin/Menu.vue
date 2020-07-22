@@ -9,7 +9,7 @@
 
     <el-menu-item index="1" :route="{ name: 'officeAdminHome' }">
       <i class="el-icon-s-home"></i>
-      <span slot="title">首页</span>
+      <span slot="title">主页</span>
     </el-menu-item>
 
     <el-menu-item

@@ -27,9 +27,6 @@ import { Performance } from "@/interface/list-data";
 import { postData } from "@/utils/fetchData";
 
 export default Vue.extend({
-  props: {
-    initTable: Boolean
-  },
   components: {
     WhatTable,
     EditorDialog
@@ -130,7 +127,7 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: false, // 表格动画
-        initTable: this.initTable || true // 是否一挂载就加载数据
+        initTable: true // 是否一挂载就加载数据
       },
       pagination: {
         total: 0,

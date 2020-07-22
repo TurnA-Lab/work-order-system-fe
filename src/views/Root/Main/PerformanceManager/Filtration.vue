@@ -3,7 +3,11 @@
     <div class="filter-part">
       <el-form :inline="true" :model="filterForm">
         <el-form-item>
-          <el-input v-model="filterForm.master" placeholder="负责人"></el-input>
+          <el-input
+            v-model="filterForm.master"
+            placeholder="负责人"
+            clearable
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -14,10 +18,11 @@
             format="yyyy 年"
             value-format="yyyy"
             placeholder="年度"
+            clearable
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" prop="department">
+        <el-form-item class="form-item" prop="department" clearable>
           <el-select
             v-model="filterForm.department"
             placeholder="院部"
@@ -33,12 +38,12 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="fetchData(true)">查询</el-button>
+          <el-button type="primary" @click="fetchData">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
-    <editor ref="editor" :init-table="false"></editor>
+    <editor ref="editor"></editor>
   </div>
 </template>
 

@@ -3,7 +3,7 @@ interface RawFilterForm {
   class3: string;
   year: string;
   schoolYear: string;
-  status: number;
+  status: number | null;
 }
 
 export interface ConstructionFilterForm extends RawFilterForm {

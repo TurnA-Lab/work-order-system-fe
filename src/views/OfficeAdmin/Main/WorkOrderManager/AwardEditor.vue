@@ -28,9 +28,6 @@ import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
-  props: {
-    initTable: Boolean
-  },
   components: {
     WhatTable,
     ManagerDialog: () =>
@@ -141,7 +138,7 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: true, // 表格动画
-        initTable: this.initTable || true
+        initTable: true
       },
       pagination: {
         total: 0,

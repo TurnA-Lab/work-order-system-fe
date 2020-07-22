@@ -13,6 +13,7 @@
             v-model="filterForm.department"
             placeholder="院部"
             filterable
+            clearable
           >
             <el-option
               :key="item.id"
@@ -31,14 +32,16 @@
             :props="{ expandTrigger: 'hover', value: 'label' }"
             :show-all-levels="false"
             filterable
+            clearable
           ></el-cascader>
         </el-form-item>
 
-        <el-form-item class="form-item" label="级别" prop="level">
+        <el-form-item>
           <el-select
-            v-model="form.level"
-            placeholder="请选择，或输入以查找"
+            v-model="filterForm.level"
+            placeholder="级别"
             filterable
+            clearable
           >
             <el-option
               v-for="item in options.level"
@@ -59,9 +62,13 @@
         </el-form-item>
 
         <el-form-item>
-          <el-select v-model="filterForm.schoolYear" placeholder="学年">
+          <el-select
+            v-model="filterForm.schoolYear"
+            placeholder="学年"
+            clearable
+          >
             <el-option
-              v-for="item in schoolYears"
+              v-for="item in options.schoolYears"
               :key="item"
               :label="item"
               :value="item"
@@ -70,9 +77,9 @@
         </el-form-item>
 
         <el-form-item>
-          <el-select v-model="filterForm.status" placeholder="状态">
+          <el-select v-model="filterForm.status" placeholder="状态" clearable>
             <el-option
-              v-for="item in Status"
+              v-for="item in options.status"
               :key="item.key"
               :label="item.value"
               :value="item.key"
@@ -86,7 +93,7 @@
       </el-form>
     </div>
 
-    <editor ref="editor" :init-table="false"></editor>
+    <editor ref="editor"></editor>
   </div>
 </template>
 
@@ -95,7 +102,8 @@ import Vue from "vue";
 
 import { AwardFilterForm } from "@/interface/filter-form";
 import { Award, Department, Level } from "@/interface/list-data";
-import { yearList } from "@/static-data/work-order";
+import { statusList, yearList } from "@/static-data/work-order";
+import { LabelList } from "@/utils/enum2List";
 import {
   fetchDepartmentList,
   fetchKindList,
@@ -110,30 +118,32 @@ export default Vue.extend({
   data(): {
     isLoading: boolean;
     kind: string[];
-    schoolYears: string[];
     filterForm: AwardFilterForm;
     options: {
       department: Department[];
       kind: Award[];
       level: Level[];
+      status: LabelList[];
+      schoolYears: string[];
     };
   } {
     return {
       isLoading: true,
       kind: [],
-      schoolYears: yearList,
       filterForm: {
         department: "",
         class3: "",
         year: "",
         level: "",
         schoolYear: "",
-        status: 0
+        status: null
       },
       options: {
         department: [],
         kind: [],
-        level: []
+        level: [],
+        status: statusList,
+        schoolYears: yearList
       }
     };
   },

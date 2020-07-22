@@ -8,7 +8,7 @@
     <header>{{ headerText }}</header>
     <el-menu-item index="1" :route="{ name: 'rootHome' }">
       <i class="el-icon-s-home"></i>
-      <span slot="title">首页</span>
+      <span slot="title">主页</span>
     </el-menu-item>
 
     <el-menu-item index="2" :route="{ name: 'rootTypeManager' }">

@@ -26,10 +26,9 @@ import { Construction } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
+import { ConstructionFilterForm } from "../../../../interface/filter-form";
+
 export default Vue.extend({
-  props: {
-    initTable: Boolean
-  },
   components: {
     WhatTable,
     ManagerDialog: () =>
@@ -134,7 +133,7 @@ export default Vue.extend({
         index: true, // 显示序号
         indexFixed: false,
         loading: true, // 表格动画
-        initTable: this.initTable || true
+        initTable: true
       },
       pagination: {
         total: 0,
@@ -144,17 +143,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
-      postData(
-        "/api/user/construction/list",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+    fetchData(filterForm: ConstructionFilterForm) {
+      console.log(filterForm);
+
+      postData("/api/user/construction/list", filterForm || {}, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
+      })
         .then(({ list, total }: { list: Construction[]; total: number }) => {
           (this.tableData as Construction[]) = list;
           this.pagination.total = total;

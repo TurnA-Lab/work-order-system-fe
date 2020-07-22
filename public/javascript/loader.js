@@ -4,6 +4,10 @@ const calculateTransform = (horizontal, vertical, offset) =>
 
 const loadingPage = document.querySelector(".loading-page");
 if (loadingPage) {
+  if (!sessionStorage.getItem("wo_user")) {
+    loadingPage.classList.add("show");
+  }
+
   loadingPage.addEventListener("mousemove", event => {
     const computedStyle = getComputedStyle(loadingPage);
     const horizontal = event.clientX / parseInt(computedStyle.width, 10);
@@ -15,8 +19,4 @@ if (loadingPage) {
       ".reflect-loading"
     ).style.transform = calTransform(-3);
   });
-
-  if (!sessionStorage.getItem("wo_user")) {
-    loadingPage.classList.add("show");
-  }
 }

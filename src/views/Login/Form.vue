@@ -112,7 +112,7 @@ export default Vue.extend({
               sessionStorage.setItem("wo_user", JSON.stringify(woUser));
               // 设置到 vuex
               this.$store.commit("updateUserInfo", woUser);
-              // 切换到首页
+              // 切换到主页
               this.$router.replace({ name: "index" });
             })
             .catch((err: string) => Promise.reject(err))
