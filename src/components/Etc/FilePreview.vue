@@ -25,9 +25,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import VuePictureSwipe from "vue-picture-swipe";
 
-import { strIsJSON } from "../../utils/validate";
+import { strIsJSON } from "@/utils/validate";
 
 interface FileInfo {
   name: string;
@@ -38,7 +37,7 @@ interface FileInfo {
 export default Vue.extend({
   props: { files: String },
   components: {
-    VuePictureSwipe
+    VuePictureSwipe: () => import("vue-picture-swipe")
   },
   data() {
     return {
@@ -165,8 +164,8 @@ export default Vue.extend({
 
 <style lang="scss">
 .pdf-viewer {
-  width: 95%;
-  height: 95%;
+  width: 95vw;
+  height: 95vh;
 
   & > .el-message-box__content {
     height: calc(100% - 20px);
@@ -182,7 +181,7 @@ export default Vue.extend({
 
   .content {
     width: 100%;
-    height: 100%;
+    height: 80vh;
     border: 1px solid #eee;
   }
 }

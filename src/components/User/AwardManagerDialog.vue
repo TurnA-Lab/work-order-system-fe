@@ -84,11 +84,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item
-          class="form-item"
-          label="获奖时间"
-          :disabled="editIsDisable"
-        >
+        <el-form-item class="form-item" label="获奖时间">
           <el-date-picker
             align="center"
             v-model="form.awardTime"
@@ -147,7 +143,7 @@ import moment from "moment";
 import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
-import { Award, Level, Prize } from "@/interface/list-data";
+import { Award, Kind, Level, Prize } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
 import {
   fetchKindList,
@@ -169,8 +165,11 @@ export default Vue.extend({
     canEdit: boolean; // 是否处于可编辑状态
     editIsDisable: boolean; // 禁止编辑
     isDisable: boolean; // 保存时禁止按钮操作
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    options: any; // 下拉选项列表
+    options: {
+      prize: Prize[];
+      level: Level[];
+      kind: Kind[];
+    }; // 下拉选项列表
   } {
     return {
       form: {},
@@ -180,7 +179,6 @@ export default Vue.extend({
       editIsDisable: true,
       isDisable: false,
       options: {
-        department: [],
         prize: [],
         level: [],
         kind: []
@@ -233,7 +231,7 @@ export default Vue.extend({
           reason: ""
         });
         // 提交表单
-        postData("/api/user/construction/update", this.form)
+        postData("/api/user/award/update", this.form)
           .then(() => {
             // 更新表格
             this.$emit("update-table-data", this.dataIndex, this.form);
@@ -292,7 +290,7 @@ export default Vue.extend({
         class1: "获奖类"
       }
     })
-      .then((data: Award[]) => ((this.options.kind as Award[]) = data))
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖类型列表",

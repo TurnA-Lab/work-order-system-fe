@@ -21,3 +21,9 @@ export interface BonusFilterForm {
 }
 
 export type PerformanceFilterForm = BonusFilterForm;
+
+export interface UserFilterForm {
+  dptName: string;
+  name: string;
+  worknum: string;
+}

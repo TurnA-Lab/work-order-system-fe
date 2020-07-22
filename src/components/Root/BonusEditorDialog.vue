@@ -8,7 +8,7 @@
   >
     <div slot="title">
       编辑奖金信息
-      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
+      <span class="last-time">最后修改时间 {{ lastModifiedTime }}</span>
     </div>
     <div>
       <el-form
@@ -53,7 +53,7 @@
         <el-form-item label="奖金计算科室">
           <el-select v-model="form.computeOffice" placeholder="请选择">
             <el-option
-              v-for="item in computeOfficeList"
+              v-for="item in options.computeOfficeList"
               :key="item"
               :label="item"
               :value="item"
@@ -90,6 +90,7 @@
 </template>
 
 <script lang="ts">
+import moment from "moment";
 import Vue from "vue";
 
 import { Bonus, Department } from "@/interface/list-data";
@@ -101,13 +102,14 @@ export default Vue.extend({
   props: { data: Object, dataIndex: Number, isVisible: Boolean },
   data() {
     return {
-      computeOfficeList: computeOffice,
+      isLoading: true,
       isDisable: false,
       editIsDisable: true,
       statusIsVisible: false,
       form: {},
       options: {
-        department: []
+        department: [],
+        computeOfficeList: computeOffice
       }
     };
   },
@@ -159,6 +161,12 @@ export default Vue.extend({
   computed: {
     saveBtnText() {
       return this.$data.isDisable ? "正在保存..." : "保存编辑";
+    },
+    lastModifiedTime() {
+      const form: Bonus = this.$data.form;
+      return moment(
+        form.updateTime === null ? form.createTime : form.updateTime
+      ).format("YYYY-MM-DD HH:mm:ss");
     }
   },
   watch: {
@@ -170,6 +178,8 @@ export default Vue.extend({
     }
   },
   created() {
+    this.isLoading = true;
+
     // 请求院部列表
     fetchDepartmentList()
       .then(
@@ -183,7 +193,8 @@ export default Vue.extend({
           message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
-      });
+      })
+      .finally(() => (this.isLoading = false));
   }
 });
 </script>

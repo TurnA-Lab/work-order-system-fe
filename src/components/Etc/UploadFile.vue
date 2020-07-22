@@ -70,9 +70,10 @@ export default Vue.extend({
       acceptTypes: [
         "image/*",
         "text/*",
-        "application/msword",
-        "application/vnd.ms-excel",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        // 这仨暂时不要，也没做出来相应的预览效果
+        // "application/msword",
+        // "application/vnd.ms-excel",
+        // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/pdf"
       ],
       myFiles: [],

@@ -36,7 +36,7 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="课题组成员">
+    <el-form-item class="form-item" label="成员">
       <el-tag
         :key="name"
         v-for="name in teammate"
@@ -64,7 +64,7 @@
         type="date"
         format="yyyy 年 MM 月 dd 日"
         value-format="yyyy-MM-dd"
-        placeholder="请选择立项年月"
+        placeholder="请选择立项日期"
       ></el-date-picker>
     </el-form-item>
 
@@ -81,7 +81,7 @@
       ></el-date-picker>
     </el-form-item>
 
-    <el-form-item class="form-item" label="主办单位" prop="sponsor">
+    <el-form-item class="form-item" label="主办单位">
       <el-input v-model="form.sponsor" placeholder="请输入主办单位"></el-input>
     </el-form-item>
 
@@ -127,7 +127,7 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Construction, Department, Level } from "@/interface/list-data";
+import { Department, Kind, Level } from "@/interface/list-data";
 import {
   fetchDepartmentList,
   fetchKindList,
@@ -226,9 +226,7 @@ export default Vue.extend({
         class1: "建设类"
       }
     })
-      .then(
-        (data: Construction[]) => ((this.options.kind as Construction[]) = data)
-      )
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取建设类型列表",

@@ -102,7 +102,7 @@
 import Vue from "vue";
 
 import { ConstructionFilterForm } from "@/interface/filter-form";
-import { Construction, Department, Level } from "@/interface/list-data";
+import { Department, Kind, Level } from "@/interface/list-data";
 import { statusList, yearList } from "@/static-data/work-order";
 import { LabelList } from "@/utils/enum2List";
 import {
@@ -122,7 +122,7 @@ export default Vue.extend({
     filterForm: ConstructionFilterForm;
     options: {
       department: Department[];
-      kind: Construction[];
+      kind: Kind[];
       level: Level[];
       status: LabelList[];
       schoolYears: string[];
@@ -167,7 +167,7 @@ export default Vue.extend({
             status:
               typeof this.filterForm.status === "number" &&
               Number.isInteger(this.filterForm.status)
-                ? this.filterForm.status - 1
+                ? this.filterForm.status
                 : ""
           })
         );
@@ -212,9 +212,7 @@ export default Vue.extend({
         class1: "建设类"
       }
     })
-      .then(
-        (data: Construction[]) => ((this.options.kind as Construction[]) = data)
-      )
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取建设类型列表",

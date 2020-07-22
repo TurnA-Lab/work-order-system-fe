@@ -36,7 +36,7 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="课题组成员" prop="teammate">
+    <el-form-item class="form-item" label="成员" prop="teammate">
       <el-tag
         :key="name"
         v-for="name in teammate"
@@ -132,7 +132,7 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Award, Department, Level, Prize } from "@/interface/list-data";
+import { Department, Kind, Level, Prize } from "@/interface/list-data";
 import {
   fetchDepartmentList,
   fetchKindList,
@@ -250,7 +250,7 @@ export default Vue.extend({
         class1: "获奖类"
       }
     })
-      .then((data: Award[]) => ((this.options.kind as Award[]) = data))
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖类型列表",

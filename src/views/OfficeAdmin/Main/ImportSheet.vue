@@ -34,7 +34,7 @@ import { AxiosResponse } from "axios/";
 import { saveAs } from "file-saver";
 import Vue from "vue";
 
-import UploadBtn from "@/components/OfficeAdmin/ImporSheettUploadBtn.vue";
+import UploadBtn from "@/components/OfficeAdmin/ImporSheetUploadBtn.vue";
 import decodeFilename from "@/utils/decodeFilename";
 
 export default Vue.extend({

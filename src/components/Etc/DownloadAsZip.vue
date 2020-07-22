@@ -103,7 +103,6 @@ export default Vue.extend({
           Promise.all(promises).then(() => {
             zip.generateAsync({ type: "blob" }).then((content: Blob) => {
               saveAs(content, `${this.zipName || "下载的文件"}.zip`);
-              this.isDownLoading = false;
             });
           });
         })
@@ -112,7 +111,8 @@ export default Vue.extend({
             message: msg || "由于未知因素，无法获得文件列表",
             type: "warning"
           });
-        });
+        })
+        .finally(() => (this.isDownLoading = false));
     }
   }
 });

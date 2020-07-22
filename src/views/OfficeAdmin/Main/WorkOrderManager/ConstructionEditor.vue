@@ -22,11 +22,10 @@
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
+import { ConstructionFilterForm } from "@/interface/filter-form";
 import { Construction } from "@/interface/list-data";
 import { Status } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
-
-import { ConstructionFilterForm } from "../../../../interface/filter-form";
 
 export default Vue.extend({
   components: {
@@ -62,7 +61,6 @@ export default Vue.extend({
           label: "状态",
           width: 100,
           labelList: "Status",
-          labelListOffset: 1,
           show: "reason",
           showCondition: -1
         },
@@ -72,7 +70,7 @@ export default Vue.extend({
           width: 200,
           group: [
             {
-              name: "查看",
+              name: "管理",
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
@@ -96,7 +94,7 @@ export default Vue.extend({
                     cancelButtonText: "取消",
                     type: "warning"
                   }).then(() =>
-                    getData("/api/user/construction/delete", {
+                    getData("/api/office/construction/delete", {
                       params: {
                         id: data.id
                       }
@@ -144,9 +142,7 @@ export default Vue.extend({
   },
   methods: {
     fetchData(filterForm: ConstructionFilterForm) {
-      console.log(filterForm);
-
-      postData("/api/user/construction/list", filterForm || {}, {
+      postData("/api/office/construction/getConstructions", filterForm || {}, {
         params: {
           page: this.pagination.pageIndex,
           size: this.pagination.pageSize

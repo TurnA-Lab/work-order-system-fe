@@ -101,7 +101,7 @@
 import Vue from "vue";
 
 import { AwardFilterForm } from "@/interface/filter-form";
-import { Award, Department, Level } from "@/interface/list-data";
+import { Department, Kind, Level } from "@/interface/list-data";
 import { statusList, yearList } from "@/static-data/work-order";
 import { LabelList } from "@/utils/enum2List";
 import {
@@ -121,7 +121,7 @@ export default Vue.extend({
     filterForm: AwardFilterForm;
     options: {
       department: Department[];
-      kind: Award[];
+      kind: Kind[];
       level: Level[];
       status: LabelList[];
       schoolYears: string[];
@@ -149,13 +149,21 @@ export default Vue.extend({
   },
   methods: {
     fetchData() {
-      if (Array.isArray(this.kind) && this.kind.length === 2) {
-        this.filterForm.class3 = this.kind[1];
-      }
-
       if (oneNotNull(this.filterForm)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (this.$refs.editor as any).fetchData(this.filterForm);
+        (this.$refs.editor as any).fetchData(
+          Object.assign({}, this.filterForm, {
+            class3:
+              Array.isArray(this.kind) && this.kind.length === 2
+                ? this.kind[2]
+                : "",
+            status:
+              typeof this.filterForm.status === "number" &&
+              Number.isInteger(this.filterForm.status)
+                ? this.filterForm.status
+                : ""
+          })
+        );
       } else {
         this.$message({
           message: "请至少填一项",
@@ -197,7 +205,7 @@ export default Vue.extend({
         class1: "获奖类"
       }
     })
-      .then((data: Award[]) => ((this.options.kind as Award[]) = data))
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取获奖类型列表",

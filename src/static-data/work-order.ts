@@ -2,13 +2,22 @@ import enum2List from "@/utils/enum2List";
 
 // 审核状态
 export enum Status {
-  "未通过",
+  "未通过" = -1,
   "审核中",
   "学院通过",
   "科室通过"
 }
 
 export const statusList = enum2List(Status);
+
+// 科室审核状态
+export enum OfficeStatus {
+  "未通过" = -1,
+  "审核中",
+  "通过"
+}
+
+export const officeStatusList = enum2List(OfficeStatus);
 
 // 是否结束
 export enum EndStatus {
@@ -45,9 +54,17 @@ export const computeOffice = [
 
 // 是否
 // 用于 tutor background doubleTeacher isUsed
-export enum noOrYes {
+export enum NoOrYes {
   "否",
   "是"
 }
 
-export const noOrYesList = enum2List(noOrYes);
+export const noOrYesList = enum2List(NoOrYes);
+
+// 男女
+export enum Gender {
+  "男",
+  "女"
+}
+
+export const genderList = enum2List(Gender);

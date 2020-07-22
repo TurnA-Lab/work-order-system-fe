@@ -66,7 +66,6 @@ export default Vue.extend({
           label: "状态",
           width: 100,
           labelList: "Status",
-          labelListOffset: 1,
           show: "reason",
           showCondition: -1
         },
@@ -101,7 +100,7 @@ export default Vue.extend({
                     cancelButtonText: "取消",
                     type: "warning"
                   }).then(() =>
-                    getData("/api/user/award/delete", {
+                    getData("/api/office/award/delete", {
                       params: {
                         id: data.id
                       }
@@ -149,7 +148,7 @@ export default Vue.extend({
   },
   methods: {
     fetchData(filterForm: AwardFilterForm) {
-      postData("/api/user/award/list", filterForm || {}, {
+      postData("/api/office/award/getAwards", filterForm || {}, {
         params: {
           page: this.pagination.pageIndex,
           size: this.pagination.pageSize

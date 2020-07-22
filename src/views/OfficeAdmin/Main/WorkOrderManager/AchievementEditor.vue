@@ -66,7 +66,6 @@ export default Vue.extend({
           label: "状态",
           width: 100,
           labelList: "Status",
-          labelListOffset: 1,
           show: "reason",
           showCondition: -1
         },
@@ -76,7 +75,7 @@ export default Vue.extend({
           width: 200,
           group: [
             {
-              name: "查看",
+              name: "管理",
               type: "warning",
               icon: "el-icon-s-grid",
               plain: true,
@@ -100,7 +99,7 @@ export default Vue.extend({
                     cancelButtonText: "取消",
                     type: "warning"
                   }).then(() =>
-                    getData("/api/user/achievement/delete", {
+                    getData("/api/office/achievement/delete", {
                       params: {
                         id: data.id
                       }
@@ -148,7 +147,7 @@ export default Vue.extend({
   },
   methods: {
     fetchData(filterForm: AchievementFilterForm) {
-      postData("/api/user/achievement/list", filterForm || {}, {
+      postData("/api/office/achievement/getAchievements", filterForm || {}, {
         params: {
           page: this.pagination.pageIndex,
           size: this.pagination.pageSize

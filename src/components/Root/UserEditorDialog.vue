@@ -5,6 +5,7 @@
     :close-on-click-modal="false"
     @close="close"
     append-to-body
+    v-loading="isLoading"
   >
     <div slot="title">
       编辑用户信息
@@ -31,25 +32,25 @@
         <el-form-item class="form-item" label="性别">
           <el-select v-model="form.gender" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.gender"
-              :label="item.label"
-              :value="item.label"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item class="form-item" label="院部" prop="department">
+        <el-form-item class="form-item" label="院部">
           <el-select
-            v-model="form.dptName"
+            v-model="form.department"
             placeholder="请选择，或输入以查找"
             filterable
           >
             <el-option
-              :key="item.value"
               v-for="item in options.department"
-              :label="item.label"
-              :value="item.label"
+              :key="item.id"
+              :label="item.dptName"
+              :value="item.dptName"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -99,10 +100,10 @@
         <el-form-item class="form-item" label="是否双师型">
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.noOrYesList"
-              :label="item.label"
-              :value="item.label"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -110,10 +111,10 @@
         <el-form-item class="form-item" label="是否具有行业背景">
           <el-select v-model="form.background" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.noOrYesList"
-              :label="item.label"
-              :value="item.label"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -121,10 +122,10 @@
         <el-form-item class="form-item" label="是否博士生导师">
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.noOrYesList"
-              :label="item.label"
-              :value="item.label"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -141,34 +142,24 @@
 </template>
 
 <script lang="ts">
-// TODO 未写完
-import { AxiosResponse } from "axios";
 import Vue from "vue";
 
 import { Department } from "@/interface/list-data";
 import { UserInfo } from "@/interface/user";
-import { noOrYesList } from "@/static-data/work-order";
-import { fetchDepartmentList } from "@/utils/fetchData";
+import { genderList, noOrYesList } from "@/static-data/work-order";
+import { fetchDepartmentList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
 export default Vue.extend({
-  props: { userData: Object, isVisible: Boolean },
+  props: { userData: Object, dataIndex: Number, isVisible: Boolean },
   data() {
     return {
+      isLoading: true,
       isDisable: false,
       form: {},
       options: {
         department: [],
-        gender: [
-          {
-            label: "男",
-            value: "0"
-          },
-          {
-            label: "女",
-            value: "1"
-          }
-        ],
+        gender: genderList,
         noOrYesList
       }
     };
@@ -178,44 +169,37 @@ export default Vue.extend({
       this.$emit("toggle-is-visible", false);
     },
     updateUserInfo() {
-      if (allNotNull(this.form)) {
+      if (
+        allNotNull(
+          Object.assign({}, this.form, {
+            null1: "validate",
+            null2: "validate",
+            null3: "validate",
+            updateTime: "validate"
+          })
+        )
+      ) {
         this.isDisable = true;
 
-        this.$http
-          .get(
-            "/api/root/user/updateInfo",
+        postData("/api/root/user/updateInfo", this.form)
+          .then(() => {
+            // 更新表格
+            this.$emit("update-table-data", this.dataIndex, this.form);
 
-            {
-              params: Object.assign({}, this.form, {
-                doubleTeacher:
-                  (this.form as UserInfo).doubleTeacher === "否" ? 0 : 1,
-                background: (this.form as UserInfo).background === "否" ? 0 : 1,
-                tutor: (this.form as UserInfo).tutor === "否" ? 0 : 1
-              }),
-              headers: {
-                token: this.$store.state.userInfo.token
-              }
-            }
-          )
-          .then((res: AxiosResponse) => {
-            this.isDisable = false;
-            if (res.data.code === 0) {
-              this.close();
-              this.$emit("refresh");
-              this.$message({
-                message: res.data.msg || "用户信息保存成功",
-                type: "success"
-              });
-            } else {
-              return Promise.reject(res.data.msg || "用户信息保存失败");
-            }
+            this.$message({
+              message: "用户信息保存成功",
+              type: "success"
+            });
           })
           .catch((err: string) => {
-            this.isDisable = false;
             this.$message({
               message: err || "未知错误",
               type: "warning"
             });
+          })
+          .finally(() => {
+            this.isDisable = false;
+            this.close();
           });
       } else {
         this.$message({
@@ -232,13 +216,15 @@ export default Vue.extend({
   },
   watch: {
     userData(newValue: UserInfo) {
-      newValue.doubleTeacher = newValue.doubleTeacher === 0 ? "否" : "是";
-      newValue.background = newValue.background === 0 ? "否" : "是";
-      newValue.tutor = newValue.tutor === 0 ? "否" : "是";
-      this.form = newValue;
+      // 深拷贝一份，防止覆盖原数据，影响操作
+      const form: UserInfo = JSON.parse(JSON.stringify(newValue));
+      // 赋给表单
+      this.form = form;
     }
   },
   created() {
+    this.isLoading = true;
+
     // 请求院部列表
     fetchDepartmentList()
       .then(
@@ -250,7 +236,8 @@ export default Vue.extend({
           message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
-      });
+      })
+      .finally(() => (this.isLoading = false));
   }
 });
 </script>

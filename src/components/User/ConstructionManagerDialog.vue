@@ -24,7 +24,7 @@
         <el-input v-model="form.project" :disabled="editIsDisable"></el-input>
       </el-form-item>
 
-      <el-form-item class="form-item" label="课题组成员">
+      <el-form-item class="form-item" label="成员">
         <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
       </el-form-item>
 
@@ -144,7 +144,7 @@ import moment from "moment";
 import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
-import { Construction, Level } from "@/interface/list-data";
+import { Construction, Kind, Level } from "@/interface/list-data";
 import { EndStatus } from "@/static-data/work-order";
 import { fetchKindList, fetchLevelList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
@@ -163,8 +163,10 @@ export default Vue.extend({
     canEdit: boolean; // 是否处于可编辑状态
     editIsDisable: boolean; // 禁止编辑
     isDisable: boolean; // 保存时禁止按钮操作
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    options: any; // 下拉选项列表
+    options: {
+      level: Level[];
+      kind: Kind[];
+    }; // 下拉选项列表
   } {
     return {
       form: {},
@@ -292,9 +294,7 @@ export default Vue.extend({
         class1: "建设类"
       }
     })
-      .then(
-        (data: Construction[]) => ((this.options.kind as Construction[]) = data)
-      )
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取建设类型列表",

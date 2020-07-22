@@ -1,48 +1,46 @@
 <template>
   <div>
-    <div class="filter-part">
-      <el-form :inline="true" :model="filterForm" v-loading="isLoading">
-        <el-form-item>
-          <el-input
-            v-model="filterForm.master"
-            placeholder="负责人"
-            clearable
-          ></el-input>
-        </el-form-item>
+    <el-form :inline="true" :model="filterForm" v-loading="isLoading">
+      <el-form-item>
+        <el-input
+          v-model="filterForm.master"
+          placeholder="负责人"
+          clearable
+        ></el-input>
+      </el-form-item>
 
-        <el-form-item>
-          <el-date-picker
-            align="center"
-            v-model="filterForm.year"
-            type="year"
-            format="yyyy 年"
-            value-format="yyyy"
-            placeholder="年度"
-            clearable
-          ></el-date-picker>
-        </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          align="center"
+          v-model="filterForm.year"
+          type="year"
+          format="yyyy 年"
+          value-format="yyyy"
+          placeholder="年度"
+          clearable
+        ></el-date-picker>
+      </el-form-item>
 
-        <el-form-item class="form-item" prop="department">
-          <el-select
-            v-model="filterForm.department"
-            placeholder="院部"
-            filterable
-            clearable
-          >
-            <el-option
-              v-for="item in department"
-              :key="item.id"
-              :label="item.dptName"
-              :value="item.dptName"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+      <el-form-item class="form-item" prop="department">
+        <el-select
+          v-model="filterForm.department"
+          placeholder="院部"
+          filterable
+          clearable
+        >
+          <el-option
+            v-for="item in department"
+            :key="item.id"
+            :label="item.dptName"
+            :value="item.dptName"
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-form-item>
-          <el-button type="primary" @click="fetchData">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+      <el-form-item>
+        <el-button type="primary" @click="fetchData">查询</el-button>
+      </el-form-item>
+    </el-form>
 
     <editor ref="editor"></editor>
   </div>
@@ -55,19 +53,6 @@ import { BonusFilterForm } from "@/interface/filter-form";
 import { Department } from "@/interface/list-data";
 import { fetchDepartmentList } from "@/utils/fetchData";
 import { oneNotNull } from "@/utils/validate";
-
-interface Data {
-  id: string;
-  department: string;
-  computeOffice: string;
-  type: string;
-  year: string;
-  project: string;
-  master: string;
-  bonus: number;
-  status: number | string;
-  lastTime: string;
-}
 
 export default Vue.extend({
   components: {

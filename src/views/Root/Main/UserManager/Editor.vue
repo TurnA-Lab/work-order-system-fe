@@ -42,14 +42,14 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/UserEditorDialog.vue";
+import { UserFilterForm } from "@/interface/filter-form";
 import { UserInfo } from "@/interface/user";
 import { rolesList } from "@/static-data/login";
-import { postData } from "../../../../utils/fetchData";
+import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   components: {
@@ -60,7 +60,7 @@ export default Vue.extend({
     return {
       editUserIsVisible: false,
       dialogVisible: false,
-      permission: null,
+      permission: [],
       roles: rolesList,
       userData: {},
       tableData: [],
@@ -101,9 +101,10 @@ export default Vue.extend({
               circle: true,
               tooltip: true,
               tooltipContent: "编辑信息",
-              onClick: (userData: UserInfo) => {
+              onClick: (userData: UserInfo, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
                 this.$data.userData = userData;
+                this.$data.index = index;
                 this.$data.editUserIsVisible = true;
               }
             },
@@ -123,28 +124,17 @@ export default Vue.extend({
                   type: "warning"
                 })
                   .then(() => {
-                    this.$http
-                      .post(
-                        "/api/root/user/delete",
-                        {
-                          worknum: userData.worknum
-                        },
-                        {
-                          headers: {
-                            token: this.$store.state.userInfo.token
-                          }
-                        }
-                      )
-                      .then((res: AxiosResponse) => {
-                        if (res.data.code === 0) {
-                          this.$data.tableData.splice(index, 1);
-                          this.$message({
-                            message: res.data.msg || "用户信息删除成功",
-                            type: "success"
-                          });
-                        } else {
-                          return Promise.reject(res.data.msg);
-                        }
+                    getData("/api/root/user/delete", {
+                      params: {
+                        worknum: userData.worknum
+                      }
+                    })
+                      .then(() => {
+                        this.$data.tableData.splice(index, 1);
+                        this.$message({
+                          message: "用户信息删除成功",
+                          type: "success"
+                        });
                       })
                       .catch((err: string) => {
                         this.$message({
@@ -241,19 +231,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
+    fetchData(filterForm: UserFilterForm) {
       this.options.loading = true;
 
-      postData(
-        "/api/root/user/getUserList",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+      postData("/api/root/user/getUserList", filterForm || {}, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
+      })
         .then(({ list, total }) => {
           this.tableData = list;
           this.pagination.total = total;

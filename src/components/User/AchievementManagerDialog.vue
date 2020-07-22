@@ -27,7 +27,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item class="form-item" label="课题组成员">
+      <el-form-item class="form-item" label="成员">
         <el-input v-model="form.teammate" :disabled="editIsDisable"></el-input>
       </el-form-item>
 
@@ -70,7 +70,7 @@
           :disabled="editIsDisable"
         >
           <el-option
-            v-for="item in options.patentisUsed"
+            v-for="item in options.patentIsUsed"
             :key="item.key"
             :label="item.value"
             :value="item.key"
@@ -124,8 +124,9 @@ import moment from "moment";
 import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
-import { Achievement } from "@/interface/list-data";
+import { Achievement, Department, Kind } from "@/interface/list-data";
 import { noOrYesList, Status } from "@/static-data/work-order";
+import { LabelList } from "@/utils/enum2List";
 import { fetchKindList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
@@ -142,7 +143,11 @@ export default Vue.extend({
     editIsDisable: boolean; // 禁止编辑
     isDisable: boolean; // 保存时禁止按钮操作
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    options: any; // 下拉选项列表
+    options: {
+      department: Department[];
+      kind: Kind[];
+      patentIsUsed: LabelList[];
+    }; // 下拉选项列表
   } {
     return {
       form: {},
@@ -153,9 +158,8 @@ export default Vue.extend({
       isDisable: false,
       options: {
         department: [],
-        level: [],
         kind: [],
-        patentisUsed: noOrYesList
+        patentIsUsed: noOrYesList
       }
     };
   },
@@ -266,9 +270,7 @@ export default Vue.extend({
         class1: "成果类"
       }
     })
-      .then(
-        (data: Achievement[]) => ((this.options.kind as Achievement[]) = data)
-      )
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",

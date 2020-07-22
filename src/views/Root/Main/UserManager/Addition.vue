@@ -165,10 +165,9 @@ import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
 
 import { Department } from "@/interface/list-data";
+import { noOrYesList } from "@/static-data/work-order";
 import { fetchDepartmentList } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
-
-import { noOrYesList } from "../../../../static-data/work-order";
 
 interface UserData {
   dtpId: number;

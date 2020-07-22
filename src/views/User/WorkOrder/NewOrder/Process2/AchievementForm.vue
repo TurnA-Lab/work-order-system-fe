@@ -39,7 +39,7 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" label="课题组成员" prop="teammate">
+    <el-form-item class="form-item" label="成员" prop="teammate">
       <el-tag
         :key="name"
         v-for="name in teammate"
@@ -89,7 +89,7 @@
     >
       <el-select v-model="form.isUsed" placeholder="请选择">
         <el-option
-          v-for="item in options.patentisUsed"
+          v-for="item in options.patentIsUsed"
           :key="item.key"
           :label="item.value"
           :value="item.key"
@@ -106,8 +106,8 @@
         align="center"
         v-model="form.publishTime"
         type="month"
-        format="yyyy 年 MM 月"
-        value-format="yyyy-MM"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
         placeholder="发表/出版/授权时间"
       ></el-date-picker>
     </el-form-item>
@@ -128,7 +128,7 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Achievement, Department } from "@/interface/list-data";
+import { Department } from "@/interface/list-data";
 import { noOrYesList } from "@/static-data/work-order";
 import { fetchDepartmentList, fetchKindList } from "@/utils/fetchData";
 
@@ -155,7 +155,7 @@ export default Vue.extend({
       options: {
         department: [],
         kind: [],
-        patentisUsed: noOrYesList
+        patentIsUsed: noOrYesList
       }
     };
   },
@@ -222,9 +222,7 @@ export default Vue.extend({
         class1: "成果类"
       }
     })
-      .then(
-        (data: Achievement[]) => ((this.options.kind as Achievement[]) = data)
-      )
+      .then((data: Kind[]) => ((this.options.kind as Kind[]) = data))
       .catch((err: string) => {
         this.$message({
           message: err || "由于未知因素，无法获取成果类型列表",

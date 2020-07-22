@@ -60,7 +60,7 @@ export interface Award extends RawWorkOrder {
   prize: string; // 奖项
 }
 
-export interface Bonus {
+interface RawRootWorkOrder {
   id: number;
   department: string;
   computeOffice: string;
@@ -68,22 +68,19 @@ export interface Bonus {
   year: string;
   project: string;
   master: string;
-  bonus: number;
-  status: number | string;
-  lastTime: string;
+  status: number;
+  createTime: string;
+  updateTime: string | null;
 }
 
-export interface Performance {
-  id: number;
-  department: string;
-  computeOffice: string;
-  type: string;
-  year: string;
-  project: string;
-  master: string;
+// 奖金
+export interface Bonus extends RawRootWorkOrder {
   bonus: number;
-  status: number | string;
-  lastTime: string;
+}
+
+// 业绩
+export interface Performance extends RawRootWorkOrder {
+  points: number;
 }
 
 // 某些简单的接口，不知道咋命名
@@ -97,8 +94,12 @@ export type Prize = RawSimple;
 // 级别
 export type Level = RawSimple;
 
-interface Type {
+// 工单类别
+export interface Kind {
   label: string;
-  value: string | number;
-  children: Type[];
+  value: number;
+  children: {
+    label: string;
+    value: number;
+  };
 }
