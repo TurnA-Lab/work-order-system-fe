@@ -65,7 +65,6 @@ export default Vue.extend({
           label: "状态",
           width: 100,
           labelList: "Status",
-
           show: "reason",
           showCondition: -1
         },

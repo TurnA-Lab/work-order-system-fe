@@ -1,7 +1,5 @@
-import { Roles } from "@/static-data/login";
-
 export interface LoginData {
-  roles: Roles[];
+  roles: string[];
   name: string;
   department: string;
   worknum: string;

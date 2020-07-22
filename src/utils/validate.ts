@@ -1,3 +1,5 @@
+import { Roles } from "@/static-data/login";
+
 interface Item {
   [key: string]: any;
 }
@@ -56,3 +58,6 @@ export const strIsJSON: (str: string) => boolean = str => {
     throw new TypeError(str + " 不是一个 string");
   }
 };
+
+export const rolesInOrder: (roles: string[]) => string[] = roles =>
+  roles.sort((a, b) => (Roles as any)[a] - (Roles as any)[b]);

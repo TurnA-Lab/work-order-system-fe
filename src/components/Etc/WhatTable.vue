@@ -43,6 +43,7 @@
           <template slot-scope="scope">
             <!-- 正常渲染 -->
             <template v-if="!column.render">
+              <!-- 带 label 转换 -->
               <template v-if="column.labelList">
                 {{
                   value2Label(
@@ -52,8 +53,31 @@
                   )
                 }}
               </template>
+              <!-- 不带 label 转换 -->
               <template v-else>
                 {{ scope.row[column.prop] }}
+              </template>
+              <!-- 带展示原因 -->
+              <template
+                v-if="
+                  column.show && scope.row[column.prop] === column.showCondition
+                "
+              >
+                <el-popover
+                  placement="top"
+                  width="200"
+                  trigger="hover"
+                  :content="scope.row[column.show]"
+                >
+                  <el-button
+                    class="show-btn"
+                    slot="reference"
+                    icon="el-icon-question"
+                    type="text"
+                    size="medium"
+                    circle
+                  ></el-button>
+                </el-popover>
               </template>
             </template>
             <!-- TODO 可能不是正常渲染吧~~ -->
@@ -237,5 +261,10 @@ export default {
 
 .tooltipBtn {
   padding: 5px;
+}
+
+.show-btn {
+  padding: 0%;
+  color: #f56d6d;
 }
 </style>

@@ -18,18 +18,18 @@
         ></el-button>
       </el-tooltip>
       <vertical-divider :isTransparent="true"></vertical-divider>
-      <el-tooltip content="进入用户界面" placement="bottom">
+      <el-tooltip content="进入用户与学院管理界面" placement="bottom">
         <el-button
-          @click="turn2OtherPage('用户')"
+          @click="turn2OtherPage(roles[1])"
           icon="el-icon-s-flag"
           type="text"
           circle
           plain
         ></el-button>
       </el-tooltip>
-      <el-tooltip content="进入科室管理员界面" placement="bottom">
+      <el-tooltip content="进入科室管理界面" placement="bottom">
         <el-button
-          @click="turn2OtherPage('科室管理员')"
+          @click="turn2OtherPage(roles[2])"
           icon="el-icon-s-platform"
           type="text"
           circle
@@ -54,11 +54,18 @@
 import Vue from "vue";
 
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
+import { Roles } from "@/static-data/login";
+import { rolesInOrder } from "../../utils/validate";
 
 export default Vue.extend({
   props: { isCollapse: Boolean },
   components: {
     VerticalDivider
+  },
+  data() {
+    return {
+      roles: Roles
+    };
   },
   methods: {
     clickFun() {
@@ -81,10 +88,18 @@ export default Vue.extend({
           type: "warning"
         }
       ).then(() => {
-        sessionStorage.setItem(
-          "wo_permission",
-          role === "科室管理员" ? "2" : "0"
+        // 修改权限
+        const permission: string[] = rolesInOrder(
+          JSON.parse(sessionStorage.getItem("wo_permission") as string)
         );
+
+        if (role === Roles[1]) {
+          permission.splice(1);
+        } else if (role === Roles[2]) {
+          permission.splice(permission.indexOf(role));
+        }
+        sessionStorage.setItem("wo_permission", JSON.stringify(permission));
+        // 切换路由
         this.$router.replace({ name: "index" });
         this.$message({
           type: "success",

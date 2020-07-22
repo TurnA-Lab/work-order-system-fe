@@ -4,6 +4,7 @@ import Router from "vue-router";
 import { Roles } from "@/static-data/login";
 
 import store from "./store";
+import { rolesInOrder } from "@/utils/validate";
 
 Vue.use(Router);
 
@@ -22,15 +23,18 @@ const router = new Router({
       path: "/",
       name: "index",
       redirect: () => {
-        const permission = sessionStorage.getItem("wo_permission");
+        const permission: string[] = rolesInOrder(
+          JSON.parse(sessionStorage.getItem("wo_permission") as string)
+        );
+
         if (
-          permission === Roles.user.toString() ||
-          permission === Roles.college_admin.toString()
+          permission.indexOf(Roles[0]) !== -1 ||
+          permission.indexOf(Roles[1]) !== -1
         ) {
           return "/user";
-        } else if (permission === Roles.office_admin.toString()) {
+        } else if (permission.indexOf(Roles[2]) !== -1) {
           return "/office_admin";
-        } else if (permission === Roles.root.toString()) {
+        } else if (permission.indexOf(Roles[3]) !== -1) {
           return "/root";
         } else {
           return "/login";
@@ -231,13 +235,14 @@ router.beforeEach((to, from, next) => {
   } else {
     // 如果有权限
     if (typeof permission === "string") {
+      const roles = rolesInOrder(JSON.parse(permission));
       // 如果权限匹配
       if (
         (toName.indexOf("collegeAdmin") !== -1 &&
-          permission !== Roles.college_admin.toString()) ||
+          roles.indexOf(Roles[1]) !== -1) ||
         (toName.indexOf("officeAdmin") !== -1 &&
-          permission !== Roles.office_admin.toString()) ||
-        (toName.indexOf("root") !== -1 && permission !== Roles.root.toString())
+          roles.indexOf(Roles[2]) !== -1) ||
+        (toName.indexOf("root") !== -1 && roles.indexOf(Roles[3]) !== -1)
       ) {
         next({ name: "index" });
       } else {

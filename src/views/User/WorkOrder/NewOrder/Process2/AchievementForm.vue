@@ -128,7 +128,7 @@ import Vue from "vue";
 
 import SubmitBtn from "@/components/User/SubmitFormBtn.vue";
 import UploadBtn from "@/components/User/UploadBtn.vue";
-import { Department } from "@/interface/list-data";
+import { Department, Kind } from "@/interface/list-data";
 import { noOrYesList } from "@/static-data/work-order";
 import { fetchDepartmentList, fetchKindList } from "@/utils/fetchData";
 

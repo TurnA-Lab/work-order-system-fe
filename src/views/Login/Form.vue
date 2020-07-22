@@ -42,6 +42,7 @@
             type="primary"
             @click="submitForm('form')"
             :loading="isConfirming"
+            :disabled="submitBtnDisable"
             >{{ submitBtnText }}</el-button
           >
         </el-form-item>
@@ -58,6 +59,7 @@ import Vue from "vue";
 import { LoginData } from "@/interface/login";
 import { Roles } from "@/static-data/login";
 import { postData } from "@/utils/fetchData";
+import { rolesInOrder } from "@/utils/validate";
 
 export default Vue.extend({
   data() {
@@ -77,6 +79,10 @@ export default Vue.extend({
   computed: {
     submitBtnText() {
       return this.$data.isConfirming ? "请稍后..." : "登录";
+    },
+    submitBtnDisable() {
+      const form = this.$data.form;
+      return form.worknum === "" || form.password === "";
     }
   },
   methods: {
@@ -85,28 +91,27 @@ export default Vue.extend({
       this.isConfirming = true;
 
       ((this.$refs[formName] as ElForm).validate() as Promise<boolean>)
-        .then((valid: boolean) => valid || Promise.reject("请检查工号、密码"))
+        .then((valid: boolean) =>
+          valid ? valid : Promise.reject("请检查工号、密码")
+        )
         .then(() =>
           postData("/api/login", this.form)
             .then((data: LoginData) => {
-              // 将权限数组转化为权限数字
-              let permission = 0;
-              data.roles.forEach(value => {
-                permission =
-                  permission < parseInt(Roles[value], 10)
-                    ? parseInt(Roles[value], 10)
-                    : permission;
-              });
-
+              // 设置权限
+              let permission: string[] = [];
+              if (this.form.permission === "0") {
+                permission.push(Roles[0]);
+              } else {
+                permission = rolesInOrder(data.roles).slice();
+              }
               // 合并到 woUser
               const woUser = Object.assign(data, { permission });
-
               // 删除 data
               delete data.roles;
               // 设置 sessionStorage
               sessionStorage.setItem(
                 "wo_permission",
-                this.form.permission === "0" ? "0" : permission.toString()
+                JSON.stringify(permission)
               );
 
               sessionStorage.setItem("wo_user", JSON.stringify(woUser));
