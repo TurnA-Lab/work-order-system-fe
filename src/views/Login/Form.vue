@@ -57,7 +57,7 @@ import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
 
 import { LoginData } from "@/interface/login";
-import { Roles } from "@/static-data/login";
+import { Roles } from "@/static-data/roles";
 import { postData } from "@/utils/fetchData";
 import { rolesInOrder } from "@/utils/validate";
 

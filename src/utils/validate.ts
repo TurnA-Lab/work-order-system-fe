@@ -1,4 +1,4 @@
-import { Roles } from "@/static-data/login";
+import { Roles } from "@/static-data/roles";
 
 interface Item {
   [key: string]: any;

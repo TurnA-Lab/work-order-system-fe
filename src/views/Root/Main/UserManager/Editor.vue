@@ -16,26 +16,19 @@
     <el-dialog
       title="修改权限"
       :visible.sync="dialogVisible"
-      width="30%"
+      width="40%"
       append-to-body
+      v-loading="permissionIsLoading"
     >
-      <el-select
+      <el-transfer
         v-model="permission"
-        placeholder="请选择，或输入以查找"
-        filterable
-      >
-        <el-option
-          :key="item.key"
-          v-for="item in roles"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
+        :data="permissionOptions"
+        :props="{ key: 'value' }"
+        :titles="['未拥有', '已拥有']"
+      ></el-transfer>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveRoles">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -48,7 +41,7 @@ import WhatTable from "@/components/Etc/WhatTable.vue";
 import EditorDialog from "@/components/Root/UserEditorDialog.vue";
 import { UserFilterForm } from "@/interface/filter-form";
 import { UserInfo } from "@/interface/user";
-import { rolesList } from "@/static-data/login";
+import { rolesListForUserManager } from "@/static-data/roles";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
@@ -60,8 +53,11 @@ export default Vue.extend({
     return {
       editUserIsVisible: false,
       dialogVisible: false,
+      permissionIsLoading: true,
+      permissionOptions: rolesListForUserManager,
       permission: [],
-      roles: rolesList,
+      permissionOrigin: [],
+      userWorknum: -1,
       userData: {},
       tableData: [],
       columns: [
@@ -160,8 +156,23 @@ export default Vue.extend({
               tooltip: true,
               tooltipContent: "修改权限",
               onClick: (userData: UserInfo) => {
-                this.$data.permission = userData.permission;
-                this.$data.dialogVisible = true;
+                getData("/api/root/user/getRoles", {
+                  params: {
+                    worknum: userData.worknum
+                  }
+                })
+                  .then(rolesArr => {
+                    this.$data.permissionOrigin = rolesArr.slice();
+                    this.$data.permission = rolesArr.slice();
+                    this.$data.userWorknum = userData.worknum;
+                    this.$data.dialogVisible = true;
+                  })
+                  .catch((err: string) => {
+                    this.$message({
+                      message: err || "出现未知错误，暂时无法修改权限",
+                      type: "warning"
+                    });
+                  });
               }
             },
             {
@@ -255,6 +266,60 @@ export default Vue.extend({
     toggleEditUser(isVisible: boolean) {
       this.editUserIsVisible =
         typeof isVisible === "undefined" ? !this.editUserIsVisible : isVisible;
+    },
+    saveRoles() {
+      const permission = new Set(this.permission);
+      const permissionOrigin = new Set(this.permissionOrigin);
+      const userWorknum = this.userWorknum;
+      const removedArr = [
+        ...new Set(this.permissionOrigin.filter(x => !permission.has(x)))
+      ];
+      const addedArr = [
+        ...new Set(this.permission.filter(x => !permissionOrigin.has(x)))
+      ];
+      const promises = [];
+
+      for (let index = 0, length = removedArr.length; index < length; index++) {
+        const role = removedArr[index];
+        promises.push(
+          getData("/api/root/user/removeRole", {
+            params: {
+              role: role,
+              worknum: userWorknum
+            }
+          })
+        );
+      }
+
+      for (let index = 0, length = addedArr.length; index < length; index++) {
+        const role = addedArr[index];
+        promises.push(
+          getData("/api/root/user/removeRole", {
+            params: {
+              role: role,
+              worknum: userWorknum
+            }
+          })
+        );
+      }
+
+      Promise.all(promises)
+        .then(() => {
+          this.$message({
+            message: `修改用户 ${userWorknum} 权限成功`,
+            type: "success"
+          });
+        })
+        .catch((err: string) => {
+          this.$message({
+            message:
+              err || `出现未知错误，暂时无法修改用户 ${userWorknum} 权限`,
+            type: "warning"
+          });
+        })
+        .finally(() => {
+          this.dialogVisible = false;
+        });
     }
   }
 });
@@ -263,5 +328,22 @@ export default Vue.extend({
 <style scoped>
 div >>> .el-table__body-wrapper {
   max-height: 62vh !important;
+}
+</style>
+
+<style lang="scss">
+.el-transfer {
+  display: flex;
+  height: 200px;
+
+  .el-transfer__buttons {
+    display: inline-flex;
+    flex-flow: column;
+    justify-content: center;
+
+    .el-button + .el-button {
+      margin-left: 0px;
+    }
+  }
 }
 </style>

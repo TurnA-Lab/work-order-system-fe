@@ -6,6 +6,15 @@ export interface LabelList {
 
 type Value2Label = undefined | { [value: string]: string };
 
+/**
+ * 返回对象 key 所对应的 value
+ * @param obj 一个对象
+ * @param key 对象的 key
+ */
+export function getProp<T extends Object, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+
 export default (enumerator: any, value2Label?: Value2Label) => {
   const arr: LabelList[] = [];
   for (const key in enumerator) {

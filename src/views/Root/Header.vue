@@ -20,7 +20,7 @@
       <vertical-divider :isTransparent="true"></vertical-divider>
       <el-tooltip content="进入用户与学院管理界面" placement="bottom">
         <el-button
-          @click="turn2OtherPage(roles[1])"
+          @click="turn2OtherPage(roles.user)"
           icon="el-icon-s-flag"
           type="text"
           circle
@@ -29,7 +29,7 @@
       </el-tooltip>
       <el-tooltip content="进入科室管理界面" placement="bottom">
         <el-button
-          @click="turn2OtherPage(roles[2])"
+          @click="turn2OtherPage(roles.office_admin)"
           icon="el-icon-s-platform"
           type="text"
           circle
@@ -54,8 +54,8 @@
 import Vue from "vue";
 
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
-import { Roles } from "@/static-data/login";
-import { rolesInOrder } from "../../utils/validate";
+import { Roles, rolesObject } from "@/static-data/roles";
+import { rolesInOrder } from "@/utils/validate";
 
 export default Vue.extend({
   props: { isCollapse: Boolean },
@@ -78,9 +78,11 @@ export default Vue.extend({
         document.documentElement.requestFullscreen();
       }
     },
-    turn2OtherPage(role: string) {
+    turn2OtherPage(role: number) {
       this.$confirm(
-        `切换到${role}页面后，回到 ROOT 管理页面将要求再次登录, 是否继续?`,
+        `切换到${
+          rolesObject[Roles[role] as keyof typeof rolesObject]
+        }页面后，回到 ROOT 管理页面将要求再次登录, 是否继续?`,
         "注意",
         {
           confirmButtonText: "确定",
@@ -93,11 +95,9 @@ export default Vue.extend({
           JSON.parse(sessionStorage.getItem("wo_permission") as string)
         );
 
-        if (role === Roles[1]) {
-          permission.splice(1);
-        } else if (role === Roles[2]) {
-          permission.splice(permission.indexOf(role));
-        }
+        // 删除其余权限
+        permission.splice(permission.indexOf(Roles[role]));
+
         sessionStorage.setItem("wo_permission", JSON.stringify(permission));
         // 切换路由
         this.$router.replace({ name: "index" });

@@ -35,7 +35,8 @@ import {
   Tree,
   Message,
   MessageBox,
-  Alert
+  Alert,
+  Transfer
 } from "element-ui";
 import Vue from "vue";
 
@@ -70,6 +71,7 @@ Vue.use(TabPane);
 Vue.use(Tag);
 Vue.use(Tabs);
 Vue.use(Tooltip);
+Vue.use(Transfer);
 Vue.use(Tree);
 
 Vue.prototype.$msgbox = MessageBox;

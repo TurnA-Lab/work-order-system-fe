@@ -79,6 +79,8 @@
 import Vue from "vue";
 
 import MenuCard from "@/components/User/Card.vue";
+import { Roles } from "@/static-data/roles";
+import { rolesInOrder } from "@/utils/validate";
 
 export default Vue.extend({
   components: {
@@ -86,8 +88,10 @@ export default Vue.extend({
   },
   methods: {
     logout() {
+      // 清除信息
       this.$store.commit("clearUserInfo");
       sessionStorage.clear();
+      // 切换至登录页
       this.$router.replace({ name: "login" });
       this.$message({
         type: "info",
@@ -104,7 +108,11 @@ export default Vue.extend({
   },
   computed: {
     isCollegeAdmin() {
-      return this.$store.getters.permission === 1;
+      return (
+        rolesInOrder(
+          JSON.parse(sessionStorage.getItem("wo_permission") as string)
+        ).pop() === Roles[1]
+      );
     }
   },
   created() {

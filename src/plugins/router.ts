@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import { Roles } from "@/static-data/login";
+import { Roles } from "@/static-data/roles";
 
 import store from "./store";
 import { rolesInOrder } from "@/utils/validate";
@@ -23,19 +23,20 @@ const router = new Router({
       path: "/",
       name: "index",
       redirect: () => {
-        const permission: string[] = rolesInOrder(
-          JSON.parse(sessionStorage.getItem("wo_permission") as string)
-        );
+        const permission = sessionStorage.getItem("wo_permission");
 
-        if (
-          permission.indexOf(Roles[0]) !== -1 ||
-          permission.indexOf(Roles[1]) !== -1
-        ) {
-          return "/user";
-        } else if (permission.indexOf(Roles[2]) !== -1) {
-          return "/office_admin";
-        } else if (permission.indexOf(Roles[3]) !== -1) {
-          return "/root";
+        if (typeof permission === "string") {
+          const lastRole = rolesInOrder(JSON.parse(permission as string)).pop();
+
+          if (lastRole === Roles[0] || lastRole === Roles[1]) {
+            return "/user";
+          } else if (lastRole === Roles[1]) {
+            return "/office_admin";
+          } else if (lastRole === Roles[3]) {
+            return "/root";
+          } else {
+            return "/login";
+          }
         } else {
           return "/login";
         }
@@ -235,14 +236,13 @@ router.beforeEach((to, from, next) => {
   } else {
     // 如果有权限
     if (typeof permission === "string") {
-      const roles = rolesInOrder(JSON.parse(permission));
+      const lastRole = rolesInOrder(JSON.parse(permission as string)).pop();
+
       // 如果权限匹配
       if (
-        (toName.indexOf("collegeAdmin") !== -1 &&
-          roles.indexOf(Roles[1]) !== -1) ||
-        (toName.indexOf("officeAdmin") !== -1 &&
-          roles.indexOf(Roles[2]) !== -1) ||
-        (toName.indexOf("root") !== -1 && roles.indexOf(Roles[3]) !== -1)
+        (toName.indexOf("collegeAdmin") !== -1 && lastRole !== Roles[1]) ||
+        (toName.indexOf("officeAdmin") !== -1 && lastRole !== Roles[2]) ||
+        (toName.indexOf("root") !== -1 && lastRole !== Roles[3])
       ) {
         next({ name: "index" });
       } else {
