@@ -8,7 +8,6 @@
               type="建设类"
               :type-data="{ class1: '建设类' }"
               remove-type="class3"
-              type-api="/api/common/kind/list"
               remove-api="/api/common/kind/delete"
               append-api="/api/common/kind/add"
             ></type-tree>
@@ -18,7 +17,6 @@
               type="成果类"
               :type-data="{ class1: '成果类' }"
               remove-type="class3"
-              type-api="/api/common/kind/list"
               remove-api="/api/common/kind/delete"
               append-api="/api/common/kind/add"
             ></type-tree>
@@ -28,7 +26,6 @@
               type="获奖类"
               :type-data="{ class1: '获奖类' }"
               remove-type="class3"
-              type-api="/api/common/kind/list"
               remove-api="/api/common/kind/delete"
               append-api="/api/common/kind/add"
             ></type-tree>

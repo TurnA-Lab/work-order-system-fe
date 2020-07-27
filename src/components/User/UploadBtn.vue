@@ -39,6 +39,7 @@ export default Vue.extend({
     finishUpload() {
       this.isVisible = false;
       this.$store.commit("orderForm", {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [this.files]: JSON.stringify((this.$refs.uploadField as any).files)
       });
     }

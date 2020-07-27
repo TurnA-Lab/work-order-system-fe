@@ -70,10 +70,9 @@
 <script lang="ts">
 import "@/interface/type-tree";
 
-import { AxiosResponse } from "axios";
 import Vue from "vue";
 
-import { getData } from "../../utils/fetchData";
+import { fetchKindList, getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
   props: {
@@ -112,40 +111,16 @@ export default Vue.extend({
         .then((value: string) =>
           this.removeType === "class3"
             ? // 类型
-              this.$http
-                .post(
-                  this.appendApi,
-                  {
-                    class1: this.type,
-                    class2: node.label,
-                    class3: value
-                  },
-                  {
-                    headers: {
-                      token: this.$store.state.userInfo.token
-                    }
-                  }
-                )
-                .then((res: AxiosResponse) => {
-                  return { res, value };
-                })
+              postData(this.appendApi, {
+                class1: this.type,
+                class2: node.label,
+                class3: value
+              }).then(() => value)
             : // 级别、奖项
-              this.$http
-                .get(this.appendApi, {
-                  params: { [this.removeType]: value },
-                  headers: {
-                    token: this.$store.state.userInfo.token
-                  }
-                })
-                .then((res: AxiosResponse) => {
-                  return { res, value };
-                })
+              getData(this.appendApi, {
+                params: { [this.removeType]: value }
+              }).then(() => value)
         )
-        .then(({ res, value }) => {
-          return res.data.code === 0
-            ? value
-            : Promise.reject([res.data.msg, value]);
-        })
         .then((value: string) => {
           // 设置 newChild 的值
           newChild.label = value;
@@ -153,9 +128,9 @@ export default Vue.extend({
           // 添加到树
           data.children.push(newChild);
         })
-        .catch(([err, value]) =>
+        .catch(err =>
           this.$message({
-            message: err || `由于未知因素，无法添加${value}}`,
+            message: err || "由于未知因素，无法添加",
             type: "warning"
           })
         );
@@ -183,30 +158,19 @@ export default Vue.extend({
             Promise.reject("名称不能为空")
         )
         .then((value: string) =>
-          this.$http
-            .get(this.appendApi, {
-              params: {
-                [this.removeType]: data.label
-              },
-              headers: {
-                token: this.$store.state.userInfo.token
-              }
-            })
-            .then((res: AxiosResponse) => {
-              return { res, value };
-            })
+          getData(this.appendApi, {
+            params: {
+              [this.removeType]: data.label
+            }
+          }).then(() => value)
         )
-        .then(({ res, value }) => {
-          if (res.data.code === 0) {
-            newChild.label = value;
-            ((parent.data as unknown) as TreeData[]).push(newChild);
-          } else {
-            return Promise.reject([res.data.msg, value]);
-          }
+        .then(value => {
+          newChild.label = value;
+          ((parent.data as unknown) as TreeData[]).push(newChild);
         })
-        .catch(([err, value]) => {
+        .catch(err => {
           this.$message({
-            message: err || `由于未知因素，无法添加${value}}`,
+            message: err || "由于未知因素，无法添加",
             type: "warning"
           });
         });
@@ -222,20 +186,15 @@ export default Vue.extend({
         type: "warning"
       })
         .then(() =>
-          this.$http.get(this.removeApi, {
+          getData(this.removeApi, {
             params: {
               [this.removeType]: data.label
-            },
-            headers: {
-              token: this.$store.state.userInfo.token
             }
           })
         )
-        .then((res: AxiosResponse) =>
-          res.data.code === 0
-            ? children.splice(index, 1)
-            : Promise.reject(res.data.msg)
-        )
+        .then(() => {
+          children.splice(index, 1);
+        })
         .catch((err: string) =>
           this.$message({
             message: err || `由于未知因素，无法删除${data.label}`,
@@ -259,76 +218,46 @@ export default Vue.extend({
         )
         .then((value: string) =>
           // 先删除
-          this.$http
-            .get(this.removeApi, {
-              params: {
-                [this.removeType]: data.label
-              },
-              headers: {
-                token: this.$store.state.userInfo.token
-              }
-            })
-            .then((res: AxiosResponse) =>
-              res.data.code === 0 ? value : Promise.reject(res.data.data.msg)
-            )
+          getData(this.removeApi, {
+            params: {
+              [this.removeType]: data.label
+            }
+          }).then(() => value)
         )
         .then((value: string) =>
           // 再添加
           this.removeType === "class3"
             ? // 类型
-              this.$http
-                .post(
-                  this.appendApi,
-                  {
-                    class1: this.type,
-                    class2: node.label,
-                    class3: value
-                  },
-                  {
-                    headers: {
-                      token: this.$store.state.userInfo.token
-                    }
-                  }
-                )
-                .then((res: AxiosResponse) => {
-                  return { res, value };
-                })
+              postData(this.appendApi, {
+                class1: this.type,
+                class2: node.label,
+                class3: value
+              }).then(() => value)
             : // 级别、奖项
-              this.$http
-                .get(this.appendApi, {
-                  params: { [this.removeType]: value },
-                  headers: {
-                    token: this.$store.state.userInfo.token
-                  }
-                })
-                .then((res: AxiosResponse) => {
-                  return { res, value };
-                })
+              getData(this.appendApi, {
+                params: { [this.removeType]: value }
+              }).then(() => value)
         )
-        .then(({ res, value }) => {
-          if (res.data.code === 0) {
-            const parent = node.parent;
-            const children = parent.data.children || parent.data;
-            const index = children.findIndex(
-              (d: TreeData) => d.value === data.value
-            );
+        .then(value => {
+          const parent = node.parent;
+          const children = parent.data.children || parent.data;
+          const index = children.findIndex(
+            (d: TreeData) => d.value === data.value
+          );
 
-            // 删除节点
-            children.splice(index, 1);
-            // 生成节点
-            const newChild: TreeData = {
-              label: value,
-              children: []
-            };
+          // 删除节点
+          children.splice(index, 1);
+          // 生成节点
+          const newChild: TreeData = {
+            label: value,
+            children: []
+          };
 
-            if (!parent.data.children) {
-              this.$set(parent.data, "children", []);
-            }
-
-            parent.data.children.push(newChild);
-          } else {
-            return Promise.reject(res.data.msg);
+          if (!parent.data.children) {
+            this.$set(parent.data, "children", []);
           }
+
+          parent.data.children.push(newChild);
         })
         .catch((err: string) => {
           this.$message({
@@ -339,8 +268,16 @@ export default Vue.extend({
     }
   },
   created() {
-    getData(this.typeApi, { params: this.typeData || {} })
-      .then(data => (this.data = data))
+    new Promise(resolve =>
+      resolve(
+        this.typeData
+          ? fetchKindList({ params: this.typeData })
+          : getData(this.typeApi)
+      )
+    )
+      .then(data => {
+        this.data = data as never[];
+      }) //TODO 懒得写类型
       .catch((err: string) =>
         this.$message({
           message: err || `由于未知因素，无法获取${this.type}列表`,

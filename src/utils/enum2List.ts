@@ -1,10 +1,10 @@
 export interface LabelList {
   key: number;
   value: string;
-  label: string | null;
+  label: string | number | boolean | null;
 }
 
-type Value2Label = undefined | { [value: string]: string };
+type Value2Label = undefined | { [value: string]: string | number | boolean };
 
 /**
  * 返回对象 key 所对应的 value

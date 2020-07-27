@@ -1,4 +1,4 @@
-import enum2List, { LabelList } from "@/utils/enum2List";
+import enum2List from "@/utils/enum2List";
 
 export enum Roles {
   "user",

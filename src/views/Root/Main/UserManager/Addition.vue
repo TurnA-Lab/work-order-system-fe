@@ -20,25 +20,25 @@
         <el-form-item class="form-item" label="性别" prop="gender">
           <el-select v-model="form.gender" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.gender"
-              :label="item.label"
-              :value="item.label"
+              :key="item.key"
+              :label="item.value"
+              :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item class="form-item" label="院部" prop="department">
           <el-select
-            v-model="form.dptName"
+            v-model="form.department"
             placeholder="请选择，或输入以查找"
             filterable
           >
             <el-option
-              :key="item.value"
               v-for="item in options.department"
-              :label="item.label"
-              :value="item.label"
+              :key="item.id"
+              :label="item.dptName"
+              :value="item.dptName"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -56,6 +56,8 @@
             v-model="form.birthday"
             type="date"
             placeholder="选择日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
 
@@ -65,19 +67,25 @@
             v-model="form.enterTime"
             type="date"
             placeholder="选择日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
 
-        <el-form-item class="form-item" label="职称" prop="teacherTittle">
+        <el-form-item class="form-item" label="职称" prop="teacherTitle">
           <el-input
-            v-model="form.teacherTittle"
+            v-model="form.teacherTitle"
             placeholder="请输入职称"
           ></el-input>
         </el-form-item>
 
-        <el-form-item class="form-item" label="最高学历" prop="eduBgd">
+        <el-form-item
+          class="form-item"
+          label="最高学历"
+          prop="educationBackground"
+        >
           <el-input
-            v-model="form.eduBgd"
+            v-model="form.educationBackground"
             placeholder="请输入最高学历"
           ></el-input>
         </el-form-item>
@@ -110,10 +118,10 @@
         <el-form-item class="form-item" label="是否双师型" prop="doubleTeacher">
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.noOrYesList"
-              :label="item.label"
-              :value="item.value"
+              :key="item.label"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -123,12 +131,12 @@
           label="是否具有行业背景"
           prop="background"
         >
-          <el-select v-model="form.background" placeholder="请选择">
+          <el-select v-model="form.industryBackground" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.noOrYesList"
-              :label="item.label"
-              :value="item.value"
+              :key="item.label"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -140,10 +148,10 @@
         >
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
-              :key="item.value"
               v-for="item in options.noOrYesList"
-              :label="item.label"
-              :value="item.value"
+              :key="item.label"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -160,70 +168,39 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
 import { ElForm } from "element-ui/types/form";
 import Vue from "vue";
 
 import { Department } from "@/interface/list-data";
-import { noOrYesList } from "@/static-data/work-order";
-import { fetchDepartmentList } from "@/utils/fetchData";
+import { genderList, noOrYesList } from "@/static-data/work-order";
+import { fetchDepartmentList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
-
-interface UserData {
-  dtpId: number;
-  dptName: string;
-  name: string;
-  worknum: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  phone: string;
-  teacherTittle: string;
-  eduBgd: string;
-  degree: string;
-  school: string;
-  major: string;
-  doubleTeacher: number | string;
-  background: number | string;
-  tutor: number | string;
-  permission: number;
-}
 
 export default Vue.extend({
   data() {
     return {
       isDisable: false,
       form: {
-        dtpId: "",
-        dptName: "",
-        name: "",
-        worknum: "",
-        gender: "",
         birthday: "",
-        enterTime: "",
-        phone: "",
-        teacherTittle: "",
-        eduBgd: "",
         degree: "",
-        school: "",
-        major: "",
+        department: "",
         doubleTeacher: "",
-        background: "",
+        educationBackground: "",
+        enterTime: "",
+        gender: "",
+        industryBackground: "",
+        major: "",
+        name: "",
+        phone: "",
+        worknum: "",
+        school: "",
+        teacherTitle: "",
         tutor: "",
         permission: 0
       },
       options: {
         department: [],
-        gender: [
-          {
-            label: "男",
-            value: "0"
-          },
-          {
-            label: "女",
-            value: "1"
-          }
-        ],
+        gender: genderList,
         noOrYesList: noOrYesList
       }
     };
@@ -233,20 +210,18 @@ export default Vue.extend({
       (this.$refs[formName] as ElForm).resetFields();
     },
     addUserInfo() {
-      if (allNotNull(this.form)) {
-        this.isDisable = true;
-        this.$http
-          .get("/api/root/user/addUser", {
-            params: this.form,
-            headers: {
-              token: this.$store.state.userInfo.token
-            }
+      console.log(this.form);
+
+      if (
+        allNotNull(
+          Object.assign({}, this.form, {
+            dtpId: "validate"
           })
-          .then((res: AxiosResponse) =>
-            res.data.code === 0
-              ? true
-              : Promise.reject(res.data.msg || "用户信息保存失败")
-          )
+        )
+      ) {
+        this.isDisable = true;
+
+        postData("/api/root/user/addUser", this.form)
           .then(() => {
             this.$message({
               message: "用户信息添加成功",
@@ -254,7 +229,10 @@ export default Vue.extend({
             });
           })
           .catch((err: string) =>
-            this.$message({ message: err || "未知错误", type: "warning" })
+            this.$message({
+              message: err || "未知错误，用户信息保存失败",
+              type: "warning"
+            })
           )
           .finally(() => (this.isDisable = false));
       } else {

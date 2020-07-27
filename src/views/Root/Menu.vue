@@ -41,7 +41,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Store } from "vuex";
 
 export default Vue.extend({
   props: { isCollapse: Boolean },
@@ -58,9 +57,7 @@ export default Vue.extend({
   },
   computed: {
     headerText() {
-      return (this.$store as Store<unknown>).getters[
-        this.isCollapse ? "siteShortName" : "siteName"
-      ];
+      return this.$store.getters.siteName(this.isCollapse);
     }
   },
   methods: {

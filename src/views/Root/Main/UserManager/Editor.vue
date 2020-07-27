@@ -191,12 +191,12 @@ export default Vue.extend({
                   inputErrorMessage: "密码必须大于 5 位，小于 32 位",
                   inputType: "text"
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                }).then(({ value }: any) => {
-                  this.$confirm(`您输入的密码是 ${value}`, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消"
-                  })
-                    .then(() => {
+                })
+                  .then(({ value }: any) => {
+                    this.$confirm(`您输入的密码是 ${value}`, "提示", {
+                      confirmButtonText: "确定",
+                      cancelButtonText: "取消"
+                    }).then(() => {
                       postData("/api/root/user/updatePassword", {
                         worknum: userData.worknum,
                         password: value
@@ -213,14 +213,14 @@ export default Vue.extend({
                             type: "warning"
                           });
                         });
-                    })
-                    .catch(() => {
-                      this.$message({
-                        message: "已取消修改密码",
-                        type: "info"
-                      });
                     });
-                });
+                  })
+                  .catch(() => {
+                    this.$message({
+                      message: "已取消修改密码",
+                      type: "info"
+                    });
+                  });
               }
             }
           ]
@@ -271,16 +271,16 @@ export default Vue.extend({
       const permission = new Set(this.permission);
       const permissionOrigin = new Set(this.permissionOrigin);
       const userWorknum = this.userWorknum;
-      const removedArr = [
+      const removeArr = [
         ...new Set(this.permissionOrigin.filter(x => !permission.has(x)))
       ];
-      const addedArr = [
+      const addArr = [
         ...new Set(this.permission.filter(x => !permissionOrigin.has(x)))
       ];
       const promises = [];
 
-      for (let index = 0, length = removedArr.length; index < length; index++) {
-        const role = removedArr[index];
+      for (let index = 0, length = removeArr.length; index < length; index++) {
+        const role = removeArr[index];
         promises.push(
           getData("/api/root/user/removeRole", {
             params: {
@@ -291,10 +291,10 @@ export default Vue.extend({
         );
       }
 
-      for (let index = 0, length = addedArr.length; index < length; index++) {
-        const role = addedArr[index];
+      for (let index = 0, length = addArr.length; index < length; index++) {
+        const role = addArr[index];
         promises.push(
-          getData("/api/root/user/removeRole", {
+          getData("/api/root/user/addRole", {
             params: {
               role: role,
               worknum: userWorknum

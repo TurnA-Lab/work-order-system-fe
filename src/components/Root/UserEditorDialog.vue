@@ -42,7 +42,7 @@
 
         <el-form-item class="form-item" label="院部">
           <el-select
-            v-model="form.department"
+            v-model="form.dptName"
             placeholder="请选择，或输入以查找"
             filterable
           >
@@ -82,7 +82,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
-          <el-input v-model="form.eduBgd"></el-input>
+          <el-input v-model="form.educationBackground"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学位">
@@ -109,7 +109,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="是否具有行业背景">
-          <el-select v-model="form.background" placeholder="请选择">
+          <el-select v-model="form.industryBackground" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
               :key="item.key"

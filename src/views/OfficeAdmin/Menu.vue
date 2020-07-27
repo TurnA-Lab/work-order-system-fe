@@ -13,7 +13,7 @@
     </el-menu-item>
 
     <el-menu-item
-      v-if="this.$store.state.userInfo.department === '质量建设与评估办公室'"
+      v-if="$store.state.userInfo.department === '质量建设与评估办公室'"
       index="2"
       :route="{ name: 'officeAdminWorkOrderManager' }"
     >
@@ -44,7 +44,7 @@ export default Vue.extend({
   },
   computed: {
     headerText() {
-      return this.isCollapse ? "J." : "JUST WO";
+      return this.$store.getters.siteName(this.isCollapse);
     }
   }
 });

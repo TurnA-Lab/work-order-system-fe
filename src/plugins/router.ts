@@ -26,7 +26,7 @@ const router = new Router({
         const permission = sessionStorage.getItem("wo_permission");
 
         if (typeof permission === "string") {
-          const lastRole = rolesInOrder(JSON.parse(permission as string)).pop();
+          const lastRole = rolesInOrder(JSON.parse(permission)).pop();
 
           if (lastRole === Roles[0] || lastRole === Roles[1]) {
             return "/user";
@@ -225,7 +225,7 @@ router.beforeEach((to, from, next) => {
 
   // 设置选项卡显示标题
   document.title =
-    (metaTitle ? metaTitle + " - " : "") + store.getters.siteName;
+    (metaTitle ? metaTitle + " - " : "") + store.getters.siteName();
 
   if (toName === "login") {
     if (typeof permission === "string") {
@@ -236,7 +236,7 @@ router.beforeEach((to, from, next) => {
   } else {
     // 如果有权限
     if (typeof permission === "string") {
-      const lastRole = rolesInOrder(JSON.parse(permission as string)).pop();
+      const lastRole = rolesInOrder(JSON.parse(permission)).pop();
 
       // 如果权限匹配
       if (

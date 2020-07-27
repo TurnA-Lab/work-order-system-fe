@@ -1,5 +1,12 @@
 import enum2List from "@/utils/enum2List";
 
+// 工单类型
+export const Class1 = new Map([
+  ["建设类", "construction"],
+  ["成果类", "achievement"],
+  ["获奖类", "award"]
+]);
+
 // 审核状态
 export enum Status {
   "未通过" = -1,
@@ -59,7 +66,12 @@ export enum NoOrYes {
   "是"
 }
 
-export const noOrYesList = enum2List(NoOrYes);
+const NoOrYesObject = {
+  否: false,
+  是: true
+};
+
+export const noOrYesList = enum2List(NoOrYes, NoOrYesObject);
 
 // 男女
 export enum Gender {
