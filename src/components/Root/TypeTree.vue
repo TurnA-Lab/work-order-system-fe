@@ -103,6 +103,7 @@ export default Vue.extend({
         cancelButtonText: "取消保存",
         inputValue: newChild.label
       })
+        .catch(() => Promise.reject("已取消"))
         .then(
           (returnInfo: MessageBoxData) =>
             (returnInfo as MessageBoxInputData).value ||
@@ -152,6 +153,7 @@ export default Vue.extend({
         cancelButtonText: "取消保存",
         inputValue: newChild.label
       })
+        .catch(() => Promise.reject("已取消"))
         .then(
           (returnInfo: MessageBoxData) =>
             (returnInfo as MessageBoxInputData).value ||
@@ -185,6 +187,7 @@ export default Vue.extend({
         cancelButtonText: "取消",
         type: "warning"
       })
+        .catch(() => Promise.reject("已取消"))
         .then(() =>
           getData(this.removeApi, {
             params: {
@@ -208,6 +211,7 @@ export default Vue.extend({
         cancelButtonText: "取消编辑",
         inputValue: data.label
       })
+        .catch(() => Promise.reject("已取消"))
         .then(
           (returnInfo: MessageBoxData) =>
             (returnInfo as MessageBoxInputData).value ||
@@ -245,8 +249,6 @@ export default Vue.extend({
             (d: TreeData) => d.value === data.value
           );
 
-          // 删除节点
-          children.splice(index, 1);
           // 生成节点
           const newChild: TreeData = {
             label: value,
@@ -257,7 +259,8 @@ export default Vue.extend({
             this.$set(parent.data, "children", []);
           }
 
-          parent.data.children.push(newChild);
+          // 删除并添加节点
+          children.splice(index, 1, newChild);
         })
         .catch((err: string) => {
           this.$message({

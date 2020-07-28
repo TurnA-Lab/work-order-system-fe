@@ -23,24 +23,8 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { getData } from "../../../utils/fetchData";
-
-interface UserInfo {
-  worknum: string;
-  permission: string;
-  name: string;
-  gender: string;
-  birthday: string;
-  enterTime: string;
-  teacherTittle: string;
-  educationBackground: string;
-  degree: string;
-  school: string;
-  major: string;
-  phone: string;
-  dptName: string;
-  dtpId: string;
-}
+import { UserInfo } from "@/interface/user";
+import { getData } from "@/utils/fetchData";
 
 export default Vue.extend({
   data() {
@@ -72,7 +56,7 @@ export default Vue.extend({
           },
           {
             key: "工作部门",
-            value: userInfo.dptName
+            value: userInfo.department
           },
           {
             key: "出生日期",
@@ -86,7 +70,7 @@ export default Vue.extend({
         (this.table2 as Array<{ key: string; value: string }>) = [
           {
             key: "专业技术职称",
-            value: userInfo.teacherTittle
+            value: userInfo.teacherTitle
           },
           {
             key: "最高学历",

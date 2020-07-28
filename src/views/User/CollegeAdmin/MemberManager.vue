@@ -50,7 +50,7 @@ export default Vue.extend({
           label: "联系电话"
         },
         {
-          prop: "dptName",
+          prop: "department",
           label: "部门"
         },
         {

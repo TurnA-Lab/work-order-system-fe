@@ -16,7 +16,7 @@
           style="text-align: center;margin-bottom: 10px;"
           prop="permission"
         >
-          <el-radio-group v-model="form.permission" size="mini">
+          <el-radio-group v-model="permission" size="mini">
             <el-radio-button label="0">普通帐户</el-radio-button>
             <el-radio-button label="1">管理员账户</el-radio-button>
           </el-radio-group>
@@ -65,8 +65,8 @@ export default Vue.extend({
   data() {
     return {
       isConfirming: false,
+      permission: "0",
       form: {
-        permission: "0",
         worknum: "",
         password: ""
       },
@@ -98,16 +98,13 @@ export default Vue.extend({
           postData("/api/login", this.form)
             .then((data: LoginData) => {
               // 设置权限
-              let permission: string[] = [];
-              if (this.form.permission === "0") {
-                permission.push(Roles[0]);
-              } else {
-                permission = rolesInOrder(data.roles).slice();
-              }
+              const permission =
+                this.permission === "0"
+                  ? [Roles[0]]
+                  : rolesInOrder(data.roles).slice();
+
               // 合并到 woUser
               const woUser = Object.assign(data, { permission });
-              // 删除 data
-              delete data.roles;
               // 设置 sessionStorage
               sessionStorage.setItem(
                 "wo_permission",

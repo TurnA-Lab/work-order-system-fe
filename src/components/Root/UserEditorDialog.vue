@@ -42,7 +42,7 @@
 
         <el-form-item class="form-item" label="院部">
           <el-select
-            v-model="form.dptName"
+            v-model="form.department"
             placeholder="请选择，或输入以查找"
             filterable
           >
@@ -78,7 +78,7 @@
         </el-form-item>
 
         <el-form-item class="form-item" label="职称">
-          <el-input v-model="form.teacherTittle"></el-input>
+          <el-input v-model="form.teacherTitle"></el-input>
         </el-form-item>
 
         <el-form-item class="form-item" label="最高学历">
@@ -101,7 +101,7 @@
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.key"
+              :key="item.label"
               :label="item.value"
               :value="item.key"
             ></el-option>
@@ -123,7 +123,7 @@
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.key"
+              :key="item.label"
               :label="item.value"
               :value="item.key"
             ></el-option>

@@ -2,9 +2,9 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import { Roles } from "@/static-data/roles";
+import { rolesInOrder } from "@/utils/validate";
 
 import store from "./store";
-import { rolesInOrder } from "@/utils/validate";
 
 Vue.use(Router);
 
@@ -257,6 +257,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   // 动态标题
   const title = document.title; // 记录下当前的网页的标题
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timer: any; // 计时器
   let count = 0; // 计数
   const dot = ["", ".", "..", "..."];
