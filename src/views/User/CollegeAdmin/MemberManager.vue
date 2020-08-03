@@ -58,7 +58,7 @@ export default Vue.extend({
           label: "专业"
         },
         {
-          prop: "teacherTittle",
+          prop: "teacherTitle",
           label: "职称"
         }
       ],

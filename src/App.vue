@@ -33,6 +33,7 @@ export default Vue.extend({
     const loadingPage: HTMLElement = document.querySelector(
       ".loading-page"
     ) as HTMLElement;
+
     if (loadingPage.classList.contains("show")) {
       loadingPage.classList.remove("show");
     }
@@ -56,6 +57,8 @@ export default Vue.extend({
   // User Card Width
   --card-width: 20vw;
   --card-height: calc(var(--card-width) * 1.414);
+  // 主色调
+  --main: #20b2aa;
 
   @include screen($larger) {
     --card-width: 301px;

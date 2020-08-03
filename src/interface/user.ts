@@ -12,8 +12,7 @@ export interface UserInfo {
   degree: string;
   school: string;
   major: string;
-  doubleTeacher: number;
-  industryBackground: number;
-  tutor: number;
-  permission: number;
+  doubleTeacher: number | boolean;
+  industryBackground: number | boolean;
+  tutor: number | boolean;
 }

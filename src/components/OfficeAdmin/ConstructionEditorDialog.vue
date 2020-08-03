@@ -207,7 +207,7 @@
             :disabled="editIsDisable"
           >
             <el-option
-              v-for="item in options.officeStatus"
+              v-for="item in options.status"
               :key="item.key"
               :label="item.value"
               :value="item.key"
@@ -252,11 +252,7 @@ import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 import { Construction, Kind, Level } from "@/interface/list-data";
-import {
-  endStatusList,
-  officeStatusList,
-  yearList
-} from "@/static-data/work-order";
+import { endStatusList, statusList, yearList } from "@/static-data/work-order";
 import { LabelList } from "@/utils/enum2List";
 import { fetchKindList, fetchLevelList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
@@ -277,7 +273,7 @@ export default Vue.extend({
       level: Level[];
       kind: Kind[];
       schoolYears: string[];
-      officeStatus: LabelList[];
+      status: LabelList[];
       isEnd: LabelList[];
     }; // 下拉选项列表
   } {
@@ -292,7 +288,7 @@ export default Vue.extend({
         level: [],
         kind: [],
         schoolYears: yearList,
-        officeStatus: officeStatusList,
+        status: statusList,
         isEnd: endStatusList
       }
     };

@@ -2,7 +2,7 @@
   <header>
     <div class="before-part">
       <el-tooltip :content="foldText" placement="bottom">
-        <el-button :icon="btnIcon" @click="clickFun" circle></el-button>
+        <el-button :icon="btnIcon" @click="$emit('click')" circle></el-button>
       </el-tooltip>
       <vertical-divider :isTransparent="true"></vertical-divider>
       <span class="title">ROOT · 管理后台</span>
@@ -18,24 +18,7 @@
         ></el-button>
       </el-tooltip>
       <vertical-divider :isTransparent="true"></vertical-divider>
-      <el-tooltip content="进入用户与学院管理界面" placement="bottom">
-        <el-button
-          @click="turn2OtherPage(roles.user)"
-          icon="el-icon-s-flag"
-          type="text"
-          circle
-          plain
-        ></el-button>
-      </el-tooltip>
-      <el-tooltip content="进入科室管理界面" placement="bottom">
-        <el-button
-          @click="turn2OtherPage(roles.office_admin)"
-          icon="el-icon-s-platform"
-          type="text"
-          circle
-          plain
-        ></el-button>
-      </el-tooltip>
+      <change-role-bar></change-role-bar>
       <vertical-divider :isTransparent="true"></vertical-divider>
       <el-dropdown trigger="click" @command="menuCommand">
         <el-button icon="el-icon-s-custom" circle></el-button>
@@ -53,59 +36,22 @@
 <script lang="ts">
 import Vue from "vue";
 
+import ChangeRoleBar from "@/components/Etc/ChangeRoleBar.vue";
 import VerticalDivider from "@/components/Etc/VerticalDivider.vue";
-import { Roles, rolesObject } from "@/static-data/roles";
-import { rolesInOrder } from "@/utils/validate";
 
 export default Vue.extend({
   props: { isCollapse: Boolean },
   components: {
-    VerticalDivider
-  },
-  data() {
-    return {
-      roles: Roles
-    };
+    VerticalDivider,
+    ChangeRoleBar
   },
   methods: {
-    clickFun() {
-      this.$emit("click");
-    },
     toggleFullScreen() {
       if (document.fullscreen) {
         document.exitFullscreen();
       } else {
         document.documentElement.requestFullscreen();
       }
-    },
-    turn2OtherPage(role: number) {
-      this.$confirm(
-        `切换到${
-          rolesObject[Roles[role] as keyof typeof rolesObject]
-        }页面后，回到 ROOT 管理页面将要求再次登录, 是否继续?`,
-        "注意",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
-      ).then(() => {
-        // 修改权限
-        const permission: string[] = rolesInOrder(
-          JSON.parse(sessionStorage.getItem("wo_permission") as string)
-        );
-
-        // 删除其余权限
-        permission.splice(permission.indexOf(Roles[role]));
-
-        sessionStorage.setItem("wo_permission", JSON.stringify(permission));
-        // 切换路由
-        this.$router.replace({ name: "index" });
-        this.$message({
-          type: "success",
-          message: "切换成功!"
-        });
-      });
     },
     menuCommand(command: string) {
       switch (command) {

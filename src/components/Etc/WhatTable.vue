@@ -8,6 +8,7 @@
       :border="options.border"
       @row-click="handleRowClick"
       @selection-change="handleSelectionChange"
+      @filter-change="filterMethod"
       header-row-class-name="table-header-row"
     >
       <!--selection选择框-->
@@ -32,18 +33,22 @@
       <!--数据列-->
       <template v-for="(column, index) in columns">
         <el-table-column
-          :show-overflow-tooltip="column.showOverflowTooltip || true"
           :key="column[options.indexProp] || index"
           :prop="column.prop"
+          :column-key="column.prop"
           :label="column.label"
           :align="column.align || 'center'"
           :width="column.width"
           :fixed="column.fixed"
+          :filters="column.filters"
+          :filter-multiple="column.filterMultipe || false"
+          :filter-placement="column.filterPlacement || 'bottom'"
+          :show-overflow-tooltip="column.showOverflowTooltip || true"
         >
           <template slot-scope="scope">
             <!-- 正常渲染 -->
             <template v-if="!column.render">
-              <!-- 带 label 转换 -->
+              <!-- label 列表转换 -->
               <template v-if="column.labelList">
                 {{
                   value2Label(
@@ -52,6 +57,10 @@
                     column.labelListOffset
                   )
                 }}
+              </template>
+              <!-- label 函数转换 -->
+              <template v-else-if="column.labelFunc">
+                {{ column.labelFunc(scope.row[column.prop]) }}
               </template>
               <!-- 不带 label 转换 -->
               <template v-else>
@@ -201,6 +210,11 @@ export default {
     fetch: Function, // 获取数据的函数
     pagination: Object // 分页，不传则不显示
   },
+  data() {
+    return {
+      filters: {}
+    };
+  },
   created() {
     // 传入的options覆盖默认设置
     this.$parent.options = Object.assign(
@@ -215,19 +229,19 @@ export default {
     );
 
     if (this.$parent.options.initTable) {
-      this.fetch();
+      this.fetch(this.filters);
     }
   },
   methods: {
     handleSizeChange(size) {
       // 切换每页显示的数量
       this.pagination.pageSize = size;
-      this.fetch();
+      this.fetch(this.filters);
     },
     handleIndexChange(current) {
       // 切换页码
       this.pagination.pageIndex = current;
-      this.fetch();
+      this.fetch(this.filters);
     },
     handleSelectionChange(selection) {
       this.$emit("selection-change", selection);
@@ -238,6 +252,15 @@ export default {
     value2Label(labelListName, value, offset = 0) {
       // 将某些值转换为想要显示的 label
       return this.labelDataSource[labelListName][value + offset];
+    },
+    // TODO: 水平太差，没想到好的方法，暂时还是写死了
+    filterMethod(filters) {
+      for (const key in filters) {
+        if (Object.prototype.hasOwnProperty.call(filters, key)) {
+          this.filters[key] = filters[key][0];
+        }
+      }
+      this.fetch(this.filters);
     }
   }
 };

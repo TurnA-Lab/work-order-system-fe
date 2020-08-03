@@ -119,7 +119,7 @@
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.label"
+              :key="item.key"
               :label="item.value"
               :value="item.key"
             ></el-option>
@@ -134,7 +134,7 @@
           <el-select v-model="form.industryBackground" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.label"
+              :key="item.key"
               :label="item.value"
               :value="item.key"
             ></el-option>
@@ -149,7 +149,7 @@
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.label"
+              :key="item.key"
               :label="item.value"
               :value="item.key"
             ></el-option>

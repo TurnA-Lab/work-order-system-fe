@@ -9,7 +9,9 @@ export enum Roles {
 
 export const rolesObject = {
   user: "普通用户",
+  // eslint-disable-next-line @typescript-eslint/camelcase
   college_admin: "学院管理员",
+  // eslint-disable-next-line @typescript-eslint/camelcase
   office_admin: "科室管理员",
   root: "Root 管理员"
 };

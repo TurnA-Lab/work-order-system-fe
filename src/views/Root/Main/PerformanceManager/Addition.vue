@@ -31,10 +31,10 @@
             filterable
           >
             <el-option
-              :key="item.value"
               v-for="item in options.department"
-              :label="item.label"
-              :value="item.label"
+              :key="item.id"
+              :label="item.dptName"
+              :value="item.dptName"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -42,7 +42,7 @@
         <el-form-item label="奖金计算科室" prop="computeOffice">
           <el-select v-model="form.computeOffice" placeholder="请选择">
             <el-option
-              v-for="item in computeOfficeList"
+              v-for="item in options.computeOfficeList"
               :key="item"
               :label="item"
               :value="item"
@@ -86,23 +86,10 @@ import { Department } from "@/interface/list-data";
 import { computeOffice } from "@/static-data/work-order";
 import { fetchDepartmentList, postData } from "@/utils/fetchData";
 
-interface Data {
-  id: number;
-  department: string;
-  computeOffice: string;
-  type: string;
-  year: string;
-  project: string;
-  master: string;
-  bonus: number;
-  status: number | string;
-  lastTime: string;
-}
-
 export default Vue.extend({
   data() {
     return {
-      computeOfficeList: computeOffice,
+      isLoading: true,
       isDisable: false,
       form: {
         department: "",
@@ -114,7 +101,8 @@ export default Vue.extend({
         points: ""
       },
       options: {
-        department: []
+        department: [],
+        computeOfficeList: computeOffice
       }
     };
   },
@@ -141,6 +129,8 @@ export default Vue.extend({
     }
   },
   created() {
+    this.isLoading = true;
+
     // 请求院部列表
     fetchDepartmentList()
       .then(
@@ -152,7 +142,8 @@ export default Vue.extend({
           message: err || "由于未知因素，无法获取院部列表",
           type: "warning"
         });
-      });
+      })
+      .finally(() => (this.isLoading = false));
   },
   computed: {
     saveBtnText() {

@@ -99,13 +99,13 @@
 
     <el-form-item
       class="form-item"
-      label="发表/出版/授权时间"
+      label="发表/出版/授权日期"
       prop="publishTime"
     >
       <el-date-picker
         align="center"
         v-model="form.publishTime"
-        type="month"
+        type="date"
         format="yyyy 年 MM 月 dd 日"
         value-format="yyyy-MM-dd"
         placeholder="发表/出版/授权时间"

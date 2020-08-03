@@ -32,7 +32,7 @@ export default Vue.extend({
     text-align: center;
     font-size: 48px;
     font-weight: 800;
-    color: $main;
+    color: var(--main);
     margin-block-end: 0.5vw;
   }
 }

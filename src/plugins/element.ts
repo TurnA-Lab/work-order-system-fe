@@ -1,6 +1,7 @@
 import "@/assets/stylesheet/element-variables.scss";
 
 import {
+  Alert,
   Button,
   Card,
   Cascader,
@@ -17,6 +18,8 @@ import {
   Loading,
   Menu,
   MenuItem,
+  Message,
+  MessageBox,
   Notification,
   Option,
   Pagination,
@@ -32,11 +35,8 @@ import {
   Tabs,
   Tag,
   Tooltip,
-  Tree,
-  Message,
-  MessageBox,
-  Alert,
-  Transfer
+  Transfer,
+  Tree
 } from "element-ui";
 import Vue from "vue";
 

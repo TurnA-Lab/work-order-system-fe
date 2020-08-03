@@ -26,11 +26,12 @@ const router = new Router({
         const permission = sessionStorage.getItem("wo_permission");
 
         if (typeof permission === "string") {
+          // 获取最高级权限
           const lastRole = rolesInOrder(JSON.parse(permission)).pop();
 
           if (lastRole === Roles[0] || lastRole === Roles[1]) {
             return "/user";
-          } else if (lastRole === Roles[1]) {
+          } else if (lastRole === Roles[2]) {
             return "/office_admin";
           } else if (lastRole === Roles[3]) {
             return "/root";

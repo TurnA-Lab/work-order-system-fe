@@ -1,6 +1,7 @@
 import { Roles } from "@/static-data/roles";
 
-interface Item {
+export interface Item {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -59,5 +60,30 @@ export const strIsJSON: (str: string) => boolean = str => {
   }
 };
 
+/**
+ * 返回一个按权限从小到大排列的数组
+ * @param roles 角色数组
+ */
 export const rolesInOrder: (roles: string[]) => string[] = roles =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   roles.sort((a, b) => (Roles as any)[a] - (Roles as any)[b]);
+
+/**
+ * 检测是否包含某数据
+ * @param value
+ * @param list 一个 Object[]
+ * @param key Object 中的键
+ */
+export const includeInObject: (
+  value: string | number,
+  list: Item[],
+  key: string
+) => boolean = (value, list, key) => {
+  for (let index = 0, length = list.length; index < length; index++) {
+    const item = list[index];
+    if (item[key] === value) {
+      return false;
+    }
+  }
+  return true;
+};

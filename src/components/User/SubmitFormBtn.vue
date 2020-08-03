@@ -145,14 +145,12 @@ footer {
 </style>
 
 <style lang="scss">
-@import "@/assets/stylesheet/base.scss";
-
 .el-dialog {
   border-radius: 1rem;
   width: 430px;
 }
 
 .username {
-  color: $main;
+  color: var(--main);
 }
 </style>

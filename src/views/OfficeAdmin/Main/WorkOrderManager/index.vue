@@ -119,16 +119,11 @@ export default Vue.extend({
           },
           responseType: "blob"
         })
-        .then((res: AxiosResponse) => {
-          if (res.status === 200) {
-            return Promise.resolve([
-              decodeFilename(res, fallbackFilename),
-              res.data
-            ]);
-          } else {
-            return Promise.reject(res.data.msg);
-          }
-        })
+        .then((res: AxiosResponse) =>
+          res.status === 200
+            ? [decodeFilename(res, fallbackFilename), res.data]
+            : Promise.reject(res.data.msg)
+        )
         .then(([filename, data]) => {
           saveAs(data, filename);
         })

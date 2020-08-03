@@ -11,10 +11,14 @@ type Value2Label = undefined | { [value: string]: string | number | boolean };
  * @param obj 一个对象
  * @param key 对象的 key
  */
-export function getProp<T extends Object, K extends keyof T>(obj: T, key: K) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getProp<T extends Record<string, any>, K extends keyof T>(
+  obj: T,
+  key: K
+) {
   return obj[key];
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default (enumerator: any, value2Label?: Value2Label) => {
   const arr: LabelList[] = [];
   for (const key in enumerator) {

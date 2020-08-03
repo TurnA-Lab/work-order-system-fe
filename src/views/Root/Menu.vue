@@ -93,7 +93,7 @@ export default Vue.extend({
     font-size: 24px;
     font-weight: 800;
     line-height: 72px;
-    color: $main;
+    color: var(--main);
     overflow: hidden;
   }
 }

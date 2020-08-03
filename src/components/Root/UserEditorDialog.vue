@@ -9,7 +9,6 @@
   >
     <div slot="title">
       编辑用户信息
-      <span class="last-time">最后修改时间 {{ form.lastTime }}</span>
     </div>
     <div>
       <el-form
@@ -35,7 +34,7 @@
               v-for="item in options.gender"
               :key="item.key"
               :label="item.value"
-              :value="item.key"
+              :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -63,6 +62,8 @@
           <el-date-picker
             align="center"
             v-model="form.birthday"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
             type="date"
             placeholder="选择日期"
           ></el-date-picker>
@@ -72,6 +73,8 @@
           <el-date-picker
             align="center"
             v-model="form.enterTime"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
             type="date"
             placeholder="选择日期"
           ></el-date-picker>
@@ -101,7 +104,7 @@
           <el-select v-model="form.doubleTeacher" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.label"
+              :key="item.key"
               :label="item.value"
               :value="item.key"
             ></el-option>
@@ -123,7 +126,7 @@
           <el-select v-model="form.tutor" placeholder="请选择">
             <el-option
               v-for="item in options.noOrYesList"
-              :key="item.label"
+              :key="item.key"
               :label="item.value"
               :value="item.key"
             ></el-option>
@@ -151,7 +154,7 @@ import { fetchDepartmentList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
 
 export default Vue.extend({
-  props: { userData: Object, dataIndex: Number, isVisible: Boolean },
+  props: { data: Object, dataIndex: Number, isVisible: Boolean },
   data() {
     return {
       isLoading: true,
@@ -215,9 +218,12 @@ export default Vue.extend({
     }
   },
   watch: {
-    userData(newValue: UserInfo) {
+    data(newValue: UserInfo) {
       // 深拷贝一份，防止覆盖原数据，影响操作
       const form: UserInfo = JSON.parse(JSON.stringify(newValue));
+      form.tutor = form.tutor === true ? 1 : 0;
+      form.industryBackground = form.industryBackground === true ? 1 : 0;
+      form.doubleTeacher = form.doubleTeacher === true ? 1 : 0;
       // 赋给表单
       this.form = form;
     }

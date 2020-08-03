@@ -1,12 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {
-  Department,
-  Level,
-  Kind,
-  Prize,
-  Achievement
-} from "@/interface/list-data";
+
+import { Department, Kind, Level, Prize } from "@/interface/list-data";
 
 Vue.use(Vuex);
 
@@ -32,7 +27,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    siteName: state => (isShort: boolean = false) => {
+    siteName: () => (isShort = false) => {
       return isShort ? "J." : "JUST WO";
     },
     token: state => state.userInfo.token,
@@ -81,6 +76,7 @@ export default new Vuex.Store({
           | "department"
           | "level"
           | "prize";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: any;
       }
     ) {

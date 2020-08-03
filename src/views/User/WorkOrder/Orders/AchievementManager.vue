@@ -1,6 +1,7 @@
 <template>
   <div>
     <what-table
+      ref="table"
       :columns="columns"
       :dataSource="tableData"
       :labelDataSource="labelData"
@@ -19,11 +20,12 @@
 </template>
 
 <script lang="ts">
+import moment from "moment";
 import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import { Achievement } from "@/interface/list-data";
-import { Status } from "@/static-data/work-order";
+import { Status, statusList } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
@@ -41,24 +43,31 @@ export default Vue.extend({
       labelData: {
         Status
       },
+      filters: {},
       columns: [
         {
           prop: "production",
+          width: 250,
           label: "成果名称"
         },
         {
           prop: "class2",
-          width: 100,
+          width: 150,
           label: "类别"
         },
         {
           prop: "class3",
+          width: 150,
           label: "级别"
         },
         {
           prop: "publishTime",
-          width: 100,
-          label: "发表时间"
+          label: "发表时间",
+          labelFunc(time: string) {
+            return moment(new Date(time.replace(/-/g, "/"))).format(
+              "YYYY 年 MM 月 DD 日"
+            );
+          }
         },
         {
           prop: "status",
@@ -66,7 +75,10 @@ export default Vue.extend({
           width: 100,
           labelList: "Status",
           show: "reason",
-          showCondition: -1
+          showCondition: -1,
+          filters: statusList.map(status => {
+            return { text: status.value, value: status.key };
+          })
         },
         {
           button: true,
@@ -144,17 +156,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
-      postData(
-        "/api/user/achievement/list",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+    fetchData(filters: { [key: string]: string | number }) {
+      this.options.loading = true;
+
+      postData("/api/user/achievement/list", filters, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
+      })
         .then(({ list, total }: { list: Achievement[]; total: number }) => {
           (this.tableData as Achievement[]) = list;
           this.pagination.total = total;

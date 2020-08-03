@@ -8,10 +8,11 @@
       :fetch="fetchData"
     ></what-table>
     <editor-dialog
-      :user-data="userData"
+      :data="data"
+      :data-index="index"
       :is-visible="editUserIsVisible"
       @toggle-is-visible="toggleEditUser"
-      @refresh="fetchData"
+      @update-table-data="updateTableData"
     ></editor-dialog>
     <el-dialog
       title="修改权限"
@@ -58,7 +59,8 @@ export default Vue.extend({
       permission: [],
       permissionOrigin: [],
       userWorknum: -1,
-      userData: {},
+      index: -1,
+      data: {},
       tableData: [],
       columns: [
         {
@@ -81,7 +83,7 @@ export default Vue.extend({
         },
 
         {
-          prop: "teacherTittle",
+          prop: "teacherTitle",
           label: "职称"
         },
         {
@@ -99,7 +101,7 @@ export default Vue.extend({
               tooltipContent: "编辑信息",
               onClick: (userData: UserInfo, index: number) => {
                 // 箭头函数写法的 this 代表 Vue 实例
-                this.$data.userData = userData;
+                this.$data.data = userData;
                 this.$data.index = index;
                 this.$data.editUserIsVisible = true;
               }
@@ -190,8 +192,8 @@ export default Vue.extend({
                   inputPattern: /.{6,32}/,
                   inputErrorMessage: "密码必须大于 5 位，小于 32 位",
                   inputType: "text"
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 })
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   .then(({ value }: any) => {
                     this.$confirm(`您输入的密码是 ${value}`, "提示", {
                       confirmButtonText: "确定",
@@ -320,6 +322,9 @@ export default Vue.extend({
         .finally(() => {
           this.dialogVisible = false;
         });
+    },
+    updateTableData(index: number, data: UserInfo) {
+      this.$set(this.tableData, index, data);
     }
   }
 });

@@ -4,7 +4,7 @@
       class="tree"
       v-loading="isLoading"
       :data="data"
-      node-key="value"
+      :node-key="removeType === 'class3' ? 'value' : 'id'"
       :highlight-current="true"
       accordion
     >
@@ -12,7 +12,7 @@
         <!-- 添加按钮，用于只有一级树的结构 -->
         <el-button
           v-if="removeType !== 'class3' && data.id === 1"
-          @click.stop="appendLevel(node, data)"
+          @click.stop="() => appendLevel(node, data)"
           class="level-add-btn"
           type="primary"
           circle
@@ -28,7 +28,7 @@
             v-if="!node.isLeaf || (typeData && !node.parent.parent)"
             class="hover-action"
             type="text"
-            @click.stop="append(node, data)"
+            @click.stop="() => append(node, data)"
           >
             <span class="el-icon-plus hover-action"></span>
             添加
@@ -73,6 +73,7 @@ import "@/interface/type-tree";
 import Vue from "vue";
 
 import { fetchKindList, getData, postData } from "@/utils/fetchData";
+import { includeInObject } from "@/utils/validate";
 
 export default Vue.extend({
   props: {
@@ -110,6 +111,11 @@ export default Vue.extend({
             Promise.reject("名称不能为空")
         )
         .then((value: string) =>
+          includeInObject(value, data.children, "label")
+            ? value
+            : Promise.reject("不能与已存在的重复")
+        )
+        .then((value: string) =>
           this.removeType === "class3"
             ? // 类型
               postData(this.appendApi, {
@@ -127,7 +133,7 @@ export default Vue.extend({
           newChild.label = value;
 
           // 添加到树
-          data.children.push(newChild);
+          this.$set(data.children, data.children.length, newChild);
         })
         .catch(err =>
           this.$message({
@@ -139,7 +145,7 @@ export default Vue.extend({
       // 展开节点列表
       node.expanded = true;
     },
-    appendLevel(node: TreeNode<number, TreeData>, data: TreeData) {
+    appendLevel(node: TreeNode<number, TreeData>) {
       const newChild: TreeData = { label: "新节点", children: [] };
       const parent = node.parent;
 
@@ -160,9 +166,14 @@ export default Vue.extend({
             Promise.reject("名称不能为空")
         )
         .then((value: string) =>
+          includeInObject(value, this.data, "label")
+            ? value
+            : Promise.reject("不能与已存在的重复")
+        )
+        .then((value: string) =>
           getData(this.appendApi, {
             params: {
-              [this.removeType]: data.label
+              [this.removeType]: value
             }
           }).then(() => value)
         )
@@ -180,7 +191,7 @@ export default Vue.extend({
     remove(node: TreeNode<number, TreeData>, data: TreeData) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
-      const index = children.findIndex((d: TreeData) => d.value === data.value);
+      const index = children.findIndex((d: TreeData) => d.label === data.label);
 
       this.$confirm(`即将删除“${data.label}”, 是否继续?`, "注意", {
         confirmButtonText: "确定",
@@ -219,6 +230,11 @@ export default Vue.extend({
         )
         .then((value: string) =>
           value === data.label ? Promise.reject("名称未改变") : value
+        )
+        .then((value: string) =>
+          includeInObject(value, this.data, "label")
+            ? value
+            : Promise.reject("不能与已存在的重复")
         )
         .then((value: string) =>
           // 先删除

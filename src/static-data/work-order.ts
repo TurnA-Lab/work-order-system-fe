@@ -11,20 +11,10 @@ export const Class1 = new Map([
 export enum Status {
   "未通过" = -1,
   "审核中",
-  "学院通过",
-  "科室通过"
+  "已通过"
 }
 
 export const statusList = enum2List(Status);
-
-// 科室审核状态
-export enum OfficeStatus {
-  "未通过" = -1,
-  "审核中",
-  "通过"
-}
-
-export const officeStatusList = enum2List(OfficeStatus);
 
 // 是否结束
 export enum EndStatus {
@@ -66,12 +56,7 @@ export enum NoOrYes {
   "是"
 }
 
-const NoOrYesObject = {
-  否: false,
-  是: true
-};
-
-export const noOrYesList = enum2List(NoOrYes, NoOrYesObject);
+export const noOrYesList = enum2List(NoOrYes);
 
 // 男女
 export enum Gender {

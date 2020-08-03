@@ -23,7 +23,7 @@ import Vue from "vue";
 
 import WhatTable from "@/components/Etc/WhatTable.vue";
 import { Award } from "@/interface/list-data";
-import { Status } from "@/static-data/work-order";
+import { Status, statusList } from "@/static-data/work-order";
 import { getData, postData } from "@/utils/fetchData";
 
 export default Vue.extend({
@@ -65,7 +65,10 @@ export default Vue.extend({
           width: 100,
           labelList: "Status",
           show: "reason",
-          showCondition: -1
+          showCondition: -1,
+          filters: statusList.map(status => {
+            return { text: status.value, value: status.key };
+          })
         },
         {
           button: true,
@@ -144,17 +147,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    fetchData() {
-      postData(
-        "/api/user/award/list",
-        {},
-        {
-          params: {
-            page: this.pagination.pageIndex,
-            size: this.pagination.pageSize
-          }
+    fetchData(filters: { [key: string]: string | number }) {
+      this.options.loading = true;
+
+      postData("/api/user/award/list", filters, {
+        params: {
+          page: this.pagination.pageIndex,
+          size: this.pagination.pageSize
         }
-      )
+      })
         .then(({ list, total }: { list: Award[]; total: number }) => {
           (this.tableData as Award[]) = list;
           this.pagination.total = total;

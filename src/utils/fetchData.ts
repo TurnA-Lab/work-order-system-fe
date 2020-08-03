@@ -33,6 +33,7 @@ export const getData = (api: string, config: AxiosRequestConfig = {}) =>
  */
 export const postData = (
   api: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any,
   config: AxiosRequestConfig = {}
 ) =>

@@ -18,6 +18,7 @@ interface TreeNode<K, D> {
   loaded: boolean;
   loading: boolean;
   parent: TreeNode<K, D>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   store: any;
   visible: boolean;
   disabled: boolean;

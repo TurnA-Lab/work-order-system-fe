@@ -129,7 +129,7 @@
             :disabled="editIsDisable"
           >
             <el-option
-              v-for="item in options.officeStatus"
+              v-for="item in options.status"
               :key="item.key"
               :label="item.value"
               :value="item.key"
@@ -174,11 +174,7 @@ import Vue from "vue";
 
 import FilePreviewerBtn from "@/components/Etc/FileViewerBtn.vue";
 import { Achievement, Kind } from "@/interface/list-data";
-import {
-  noOrYesList,
-  officeStatusList,
-  yearList
-} from "@/static-data/work-order";
+import { noOrYesList, statusList, yearList } from "@/static-data/work-order";
 import { LabelList } from "@/utils/enum2List";
 import { fetchKindList, postData } from "@/utils/fetchData";
 import { allNotNull } from "@/utils/validate";
@@ -198,7 +194,7 @@ export default Vue.extend({
       kind: Kind[];
       patentIsUsed: LabelList[];
       schoolYears: string[];
-      officeStatus: LabelList[];
+      status: LabelList[];
     }; // 下拉选项列表
   } {
     return {
@@ -211,7 +207,7 @@ export default Vue.extend({
         kind: [],
         patentIsUsed: noOrYesList,
         schoolYears: yearList,
-        officeStatus: officeStatusList
+        status: statusList
       }
     };
   },

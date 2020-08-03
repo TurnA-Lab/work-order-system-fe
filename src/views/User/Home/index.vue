@@ -1,8 +1,10 @@
 <template>
-  <main class="user">
-    <user-card></user-card>
-    <user-menu></user-menu>
-  </main>
+  <div>
+    <main class="user">
+      <user-card></user-card>
+      <user-menu></user-menu>
+    </main>
+  </div>
 </template>
 
 <script lang="ts">

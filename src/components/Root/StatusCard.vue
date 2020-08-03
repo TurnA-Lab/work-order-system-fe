@@ -156,7 +156,7 @@ export default Vue.extend({
 
     border-radius: 50%;
     background-color: rgb(53, 73, 94);
-    color: $main;
+    color: var(--main);
     transition: transform 0.3s ease-out;
 
     display: flex;
